@@ -1,0 +1,1 @@
+SUBDIRS = seis util 

@@ -1,0 +1,101 @@
+#
+#Sep.Prog.defs.compile
+#
+# This is where we attempt to set smart
+# defaults for various platforms.
+# 
+# These can be overwritten in either the SEP.site.defs
+# or in individual Makefiles.  The only exception
+# is GNU and SEP_ARCH which must be either be
+# in SEP.override.defaults, located  before the first
+# include statement in the makefile, or set as enviornmental variable
+#
+# For a more complete explenation of all of the possible variables
+# see the SEP.site.config file
+
+#=======================================================================#
+#                        GENERIC DEFAULTS                               #
+#=======================================================================#
+
+
+#Sort of Non-compiler specific defaults
+
+CPP                :=  @CPP@
+FPP                :=  ${SEPBINDIR}/spp
+FPP               :=  @FPP@
+
+#-----------#
+#C DEFAULTS #
+#-----------#
+
+
+LDFLAGS            :=   @OLDFLAGS@
+
+CC                  :=   @CC@
+CEXT                :=   c
+CLD                 :=   @CC@ @OLDFLAGS@
+CLEVEL               =  
+OCOPTIMFLAGS         =   -O${COLEVEL}
+OCDEBUGFLAGS         :=   -g
+OCDEFINES            =  @DEFINES@
+OCFLAGS             :=  @OCPPFLAGS@ @CFLAGS@  -c 
+OCLIBS              :=  @OCLIBS@
+
+
+
+#-------------#
+#F77 DEFAULTS #
+#-------------#
+
+F77C                :=   @FC@
+F77_COMPILER_TYPE    = 
+F77LD               :=   @FC@ @OFCLDFLAGS@
+F77OLEVEL            =   ${OLEVEL}
+F77OPTIMFLAGS        =   -O${F77OLEVEL}
+F77PARFLAGS         :=   
+OF77DEBUGFLAGS       :=   -g
+OF77DEFINES          =   @FCPFLAGS@
+OF77FLAGS           :=   @FCFLAGS@  -c 
+OF77LD_FLAGS_BEFORE  =  ${OLD_FLAGS_BEFORE}
+OF77LD_FLAGS_AFTER   =  ${OLD_FLAGS_AFTER}
+OF77LIBDIRS         :=
+OF77LIBS             =   @OFCLIBS@
+RATFOR               =   $(SEPBINDIR)/ratfor77
+SAT                  =   ${SEPBINDIR}/sat
+SAW                  =   ${SEPBINDIR}/saw
+SAWF                 =   ${SEPBINDIR}/sawf
+CF77DEFINES          =   @CFCDEFINES@
+ifndef F77EXT
+	F77EXT             =   f
+endif
+
+
+#-------------#
+#F90 DEFAULTS #
+#-------------#
+F90C                :=   @FC@ -I.
+F90_COMPILER_TYPE    =
+F90EXT              :=   f90 
+F90LD               :=   @FC@ @OFCLDFLAGS@
+F90OLEVEL            =   ${OLEVEL}
+F90OPTIMFLAGS        =   -O${FCOLEVEL}
+F90PARFLAGS         :=  
+F90MODSUFFIX         =   @FCMODSUFFIX@
+OF90DEBUGFLAGS      :=   -g
+OF90DEFINES          =  @OFCDEFINES@
+OF90FLAGS           :=  @OFCFLAGS@ -c
+OF90LIBDIRS         :=
+OF90LIBS              =   @OFCLIBS@
+RATFOR90             =   $(SEPBINDIR)/ratfor90
+SAW90                =   ${SEPBINDIR}/saw90
+SAWF90               =   ${SEPBINDIR}/sawf90
+F90INCFLAG           =   @FCINCFLAG@
+CFCDEFINES          =   @CFCDEFINES@
+
+
+#LIBRARY DEFINITIONS
+AR                  :=    ar
+ARFLAGS             :=    cr
+LD                  :=    ld
+LIB_LD_OPTIONS      :=    -r 
+RANLIB              :=    ranlib

@@ -1,0 +1,6 @@
+#setenv OMP_FCLD -mp
+#setenv FC "ifort -O3 -openmp"
+setenv FC gfortran-mp-5
+setenv CC gcc-mp-5
+setenv X_LIBS  -L/opt/local/lib
+./configure   --enable-maintainer-mode --prefix=/opt/SEP

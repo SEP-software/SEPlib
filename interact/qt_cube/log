@@ -1,0 +1,360 @@
+gmake -f Makefile.qmake  all
+gmake[1]: Entering directory `/net/server/opt_local/SEP/seplib/interact/qt_cube'
+icc -c -m64 -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_QT3SUPPORT_LIB -DQT3_SUPPORT -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I../../../../QT/mkspecs/linux-g++-64 -I. -I../../../../QT/include/QtCore -I../../../../QT/include/QtGui -I../../../../QT/include/Qt3Support -I../../../../QT/include -I../../seplib_base/include -I../../include -I. -o centerwindow.o centerwindow.cpp
+icc: command line remark #10148: option '-W' not supported
+view.h(178): remark #1572: floating-point equality and inequality comparisons are unreliable
+         if(x==y && pos==0 && event==0) ;
+               ^
+
+view.h(181): remark #1572: floating-point equality and inequality comparisons are unreliable
+       if(x==y && pos==0 && event==0) ;
+             ^
+
+view.h(184): remark #1572: floating-point equality and inequality comparisons are unreliable
+          if(x==y && pos==0 && event==0) ;
+                ^
+
+view.h(187): remark #1572: floating-point equality and inequality comparisons are unreliable
+         if(x==y && pos==0 && event==0) ;
+               ^
+
+view.h(190): remark #1572: floating-point equality and inequality comparisons are unreliable
+         if(x==y && pos==0 && event==0) ;
+               ^
+
+view.h(193): remark #1572: floating-point equality and inequality comparisons are unreliable
+         if(x==y && pos==0 && event==0) ;
+               ^
+
+view.h(196): remark #1572: floating-point equality and inequality comparisons are unreliable
+         if(x==y && pos==0 && event==0) ;
+               ^
+
+view.h(199): remark #1572: floating-point equality and inequality comparisons are unreliable
+         if(x==y && pos==0 && event==0) ;
+               ^
+
+view.h(205): remark #1572: floating-point equality and inequality comparisons are unreliable
+           if(x==y && pos==0 && event==0) ;
+                 ^
+
+view.h(220): remark #1572: floating-point equality and inequality comparisons are unreliable
+      virtual void set_pcts(float pt, float pb){ if(pt==pb); }
+                                                        ^
+
+clipwindow.h(42): error #11: unrecognized preprocessing directive
+  #import "slice_types.h"
+   ^
+
+centerwindow.cpp(34): remark #383: value copied to temporary, reference to temporary used
+    QFont font("Arial", 12, QFont::Normal);
+               ^
+
+centerwindow.cpp(58): remark #981: operands are evaluated in unspecified order
+      windows[i]->set_windows(nviews,windows);
+                  ^
+
+centerwindow.cpp(85): remark #383: value copied to temporary, reference to temporary used
+    if(com[1].contains("none")>0) return;
+                       ^
+
+centerwindow.cpp(85): remark #981: operands are evaluated in unspecified order
+    if(com[1].contains("none")>0) return;
+              ^
+
+centerwindow.cpp(86): remark #383: value copied to temporary, reference to temporary used
+    if(com[2].contains("quit")){
+                       ^
+
+centerwindow.cpp(86): remark #981: operands are evaluated in unspecified order
+    if(com[2].contains("quit")){
+              ^
+
+centerwindow.cpp(93): remark #383: value copied to temporary, reference to temporary used
+    if(com[1].contains("menu")){
+                       ^
+
+centerwindow.cpp(93): remark #981: operands are evaluated in unspecified order
+    if(com[1].contains("menu")){
+              ^
+
+centerwindow.cpp(95): remark #383: value copied to temporary, reference to temporary used
+      if(com[2].contains("Clip")){
+                         ^
+
+centerwindow.cpp(95): remark #981: operands are evaluated in unspecified order
+      if(com[2].contains("Clip")){
+                ^
+
+centerwindow.cpp(104): remark #383: value copied to temporary, reference to temporary used
+      else if(com[2].contains("Orient")){
+                              ^
+
+centerwindow.cpp(104): remark #981: operands are evaluated in unspecified order
+      else if(com[2].contains("Orient")){
+                     ^
+
+centerwindow.cpp(108): remark #981: operands are evaluated in unspecified order
+             menuBars[i]->actionRespond(com);
+                          ^
+
+centerwindow.cpp(112): remark #383: value copied to temporary, reference to temporary used
+     else if(com[2].contains("main")>0 && com[3].contains("mouse") >0){
+                             ^
+
+centerwindow.cpp(112): remark #981: operands are evaluated in unspecified order
+     else if(com[2].contains("main")>0 && com[3].contains("mouse") >0){
+                    ^
+
+centerwindow.cpp(112): remark #383: value copied to temporary, reference to temporary used
+     else if(com[2].contains("main")>0 && com[3].contains("mouse") >0){
+                                                          ^
+
+centerwindow.cpp(112): remark #981: operands are evaluated in unspecified order
+     else if(com[2].contains("main")>0 && com[3].contains("mouse") >0){
+                                                 ^
+
+centerwindow.cpp(116): remark #383: value copied to temporary, reference to temporary used
+      else if(com[2].contains("main")>0 && com[3].contains("status") >0){
+                              ^
+
+centerwindow.cpp(116): remark #981: operands are evaluated in unspecified order
+      else if(com[2].contains("main")>0 && com[3].contains("status") >0){
+                     ^
+
+centerwindow.cpp(116): remark #383: value copied to temporary, reference to temporary used
+      else if(com[2].contains("main")>0 && com[3].contains("status") >0){
+                                                           ^
+
+centerwindow.cpp(116): remark #981: operands are evaluated in unspecified order
+      else if(com[2].contains("main")>0 && com[3].contains("status") >0){
+                                                  ^
+
+centerwindow.cpp(123): remark #981: operands are evaluated in unspecified order
+          menuBars[iv]->actionRespond(com);
+                        ^
+
+centerwindow.cpp(126): remark #981: operands are evaluated in unspecified order
+          menuBars[i]->actionRespond(com);
+                       ^
+
+centerwindow.cpp(131): remark #383: value copied to temporary, reference to temporary used
+      if(com[2].contains("resize")>0){
+                         ^
+
+centerwindow.cpp(131): remark #981: operands are evaluated in unspecified order
+      if(com[2].contains("resize")>0){
+                ^
+
+centerwindow.cpp(140): remark #383: value copied to temporary, reference to temporary used
+      if(com[2].contains("repaint")>0){
+                         ^
+
+centerwindow.cpp(140): remark #981: operands are evaluated in unspecified order
+      if(com[2].contains("repaint")>0){
+                ^
+
+centerwindow.cpp(143): remark #383: value copied to temporary, reference to temporary used
+      if(com[2].contains("attach")>0){
+                         ^
+
+centerwindow.cpp(143): remark #981: operands are evaluated in unspecified order
+      if(com[2].contains("attach")>0){
+                ^
+
+centerwindow.cpp(144): remark #383: value copied to temporary, reference to temporary used
+        if(com[3].contains("true")>0){
+                           ^
+
+centerwindow.cpp(144): remark #981: operands are evaluated in unspecified order
+        if(com[3].contains("true")>0){
+                  ^
+
+centerwindow.cpp(148): remark #383: value copied to temporary, reference to temporary used
+        else if(com[3].contains("false")>0){
+                                ^
+
+centerwindow.cpp(148): remark #981: operands are evaluated in unspecified order
+        else if(com[3].contains("false")>0){
+                       ^
+
+centerwindow.cpp(164): remark #383: value copied to temporary, reference to temporary used
+    if(stat_view.contains("mouse") >0) {
+                          ^
+
+centerwindow.cpp(167): remark #383: value copied to temporary, reference to temporary used
+    else if(stat_view.contains("position") >0) {
+                               ^
+
+centerwindow.cpp(171): remark #383: value copied to temporary, reference to temporary used
+      else if(stat_view.contains("pick") >0) {
+                                 ^
+
+centerwindow.cpp(187): remark #383: value copied to temporary, reference to temporary used
+    else if(stat_view.contains("value") >0) {
+                               ^
+
+centerwindow.cpp(234): remark #383: value copied to temporary, reference to temporary used
+      mouse_lab=funcs["zoom"]->status;
+                      ^
+
+centerwindow.cpp(269): remark #383: value copied to temporary, reference to temporary used
+    com.push_back(QString::number(50)); com.push_back("main");
+                                                      ^
+
+centerwindow.cpp(272): remark #981: operands are evaluated in unspecified order
+   QString sizec=QString::number(0)+":"+QString::number(wold)+":"+
+                                       ^
+
+centerwindow.cpp(272): remark #981: operands are evaluated in unspecified order
+   QString sizec=QString::number(0)+":"+QString::number(wold)+":"+
+                                                                 ^
+
+centerwindow.cpp(273): remark #981: operands are evaluated in unspecified order
+      QString::number(hold)+":"+QString::number(wnew)+":"+
+                               ^
+
+centerwindow.cpp(273): remark #981: operands are evaluated in unspecified order
+      QString::number(hold)+":"+QString::number(wnew)+":"+
+                                                         ^
+
+centerwindow.cpp(275): remark #383: value copied to temporary, reference to temporary used
+    com.push_back("resize"); com.push_back(sizec);
+                  ^
+
+centerwindow.cpp(293): remark #383: value copied to temporary, reference to temporary used
+    for(int i=0; i< 8; i++) com.push_back("");
+                                          ^
+
+centerwindow.cpp(296): remark #981: operands are evaluated in unspecified order
+    com[0]=QString::number(iactive);
+          ^
+
+centerwindow.cpp(307): remark #383: value copied to temporary, reference to temporary used
+        mouse_lab=funcs["pick"]->status;
+                        ^
+
+centerwindow.cpp(316): remark #383: value copied to temporary, reference to temporary used
+        mouse_lab=funcs["navigate"]->status;
+                        ^
+
+centerwindow.cpp(324): remark #383: value copied to temporary, reference to temporary used
+      if(stat_view.contains("mouse")>0){
+                            ^
+
+centerwindow.cpp(327): remark #383: value copied to temporary, reference to temporary used
+      else if(stat_view.contains("pick")>0){
+                                 ^
+
+centerwindow.cpp(330): remark #383: value copied to temporary, reference to temporary used
+      else if(stat_view.contains("value")>0){
+                                 ^
+
+centerwindow.cpp(333): remark #383: value copied to temporary, reference to temporary used
+      else if(stat_view.contains("position")>0){
+                                 ^
+
+centerwindow.cpp(341): remark #383: value copied to temporary, reference to temporary used
+       mouse_lab=funcs["zoom"]->status;
+                       ^
+
+centerwindow.cpp(349): remark #383: value copied to temporary, reference to temporary used
+        nelem=tour[itour].count("-");
+                                ^
+
+centerwindow.cpp(349): remark #981: operands are evaluated in unspecified order
+        nelem=tour[itour].count("-");
+                          ^
+
+centerwindow.cpp(350): remark #383: value copied to temporary, reference to temporary used
+        for(int i=0; i < nelem+1; i++) com.push_back(tour[itour].section("-",i,i));
+                                                                         ^
+
+centerwindow.cpp(350): remark #981: operands are evaluated in unspecified order
+        for(int i=0; i < nelem+1; i++) com.push_back(tour[itour].section("-",i,i));
+                                                                 ^
+
+centerwindow.cpp(372): remark #383: value copied to temporary, reference to temporary used
+    com2.push_back("50");
+                   ^
+
+centerwindow.cpp(373): remark #383: value copied to temporary, reference to temporary used
+    com2.push_back(" ");
+                   ^
+
+centerwindow.cpp(381): remark #981: operands are evaluated in unspecified order
+        ln.remove(ln.length()-1,ln.length());
+                                ^
+
+centerwindow.cpp(381): remark #981: operands are evaluated in unspecified order
+        ln.remove(ln.length()-1,ln.length());
+           ^
+
+centerwindow.cpp(397): remark #383: value copied to temporary, reference to temporary used
+      funcs["pick"]=new mouse_pick();
+            ^
+
+centerwindow.cpp(398): remark #383: value copied to temporary, reference to temporary used
+      funcs["navigate"]=new mouse_orient();
+            ^
+
+centerwindow.cpp(399): remark #383: value copied to temporary, reference to temporary used
+      funcs["zoom"]=new mouse_zoom();
+            ^
+
+centerwindow.cpp(400): remark #383: value copied to temporary, reference to temporary used
+  	cur_func=funcs["zoom"];
+  	               ^
+
+centerwindow.cpp(404): remark #383: value copied to temporary, reference to temporary used
+  		mainViews.push_back(new QSplitter(Qt::Vertical,middleBox));
+  		                    ^
+
+centerwindow.cpp(406): remark #383: value copied to temporary, reference to temporary used
+  		menuBars.push_back(new menu_bar(pars,datas,8, temp_ch));
+  		                   ^
+
+centerwindow.cpp(409): remark #383: value copied to temporary, reference to temporary used
+  		windows.push_back(new DrawWindow(i,pars,pos,mym,pk,datas,idat,colort,cur_func));
+  		                  ^
+
+centerwindow.cpp(412): remark #981: operands are evaluated in unspecified order
+  		mainViews[i]->addWidget(menuBars[i]);
+  		              ^
+
+centerwindow.cpp(413): remark #981: operands are evaluated in unspecified order
+  		mainViews[i]->addWidget(windows[i]);
+  		              ^
+
+centerwindow.cpp(422): remark #383: value copied to temporary, reference to temporary used
+  		mainViews.push_back(new QSplitter(Qt::Vertical, newWindow));
+  		                    ^
+
+centerwindow.cpp(423): remark #383: value copied to temporary, reference to temporary used
+  		menuBars.push_back(new menu_bar(pars,datas,8, temp_ch));
+  		                   ^
+
+centerwindow.cpp(428): remark #383: value copied to temporary, reference to temporary used
+  		windows.push_back(new DrawWindow(i,pars,pos,mym,pk,datas,idat,colort,cur_func));
+  		                  ^
+
+centerwindow.cpp(429): remark #981: operands are evaluated in unspecified order
+  		lay->addWidget(mainViews[i]);
+  		     ^
+
+centerwindow.cpp(431): remark #981: operands are evaluated in unspecified order
+  	    mainViews[i]->addWidget(menuBars[i]);
+  	                  ^
+
+centerwindow.cpp(432): remark #981: operands are evaluated in unspecified order
+  		mainViews[i]->addWidget(windows[i]);
+  		              ^
+
+centerwindow.cpp(443): remark #981: operands are evaluated in unspecified order
+      windows[i]->set_mouse_func(funcs[text]);
+                  ^
+
+compilation aborted for centerwindow.cpp (code 2)
+gmake[1]: *** [centerwindow.o] Error 2
+gmake[1]: Leaving directory `/net/server/opt_local/SEP/seplib/interact/qt_cube'
+gmake: *** [all-local] Error 2

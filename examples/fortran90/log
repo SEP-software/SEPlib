@@ -1,0 +1,7 @@
+f90     -I/usr/local/SEP/include -I. -64  -extend_source -I/usr/local/SEP/include -c  -O      -o scale_it.o  ./scale_it.f90 
+f90  -64 -L/usr/local/SEP/lib -L/usr/local/SEP/lib  scale_it.o  -L/usr/local/SEP/lib   -lsep3df90 -lsep3d -lsepf90 -lsep  -lmp   
+ld64: WARNING 84: /usr/lib64/mips4/libmp.so is not used for resolving any symbol.
+ld64: WARNING 85: definition of exit_ in /usr/local/SEP/lib/libsepf90.a(fortstubs90.o) preempts that definition in /usr/lib64/mips4/libffio.so.
+/usr/bin/install -c ./a.out scale_it.x
+/usr/bin/rm ./a.out
+rm scale_it.o

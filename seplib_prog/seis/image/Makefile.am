@@ -1,0 +1,56 @@
+
+EXTRA_DIST = AMO.F90sep CAM.F90sep OFF2ANG.F90sep Phase.F90sep SRM.F90sep \
+Stolt.F90sep Kirch_2d_depth.csep Lloyd_vel.F90sep
+
+
+bin_PROGRAMS = 
+if HAVE_FORTRAN
+bin_PROGRAMS +=  OFF2ANG  SRM Kirch_2d_depth    #AMO
+endif
+
+#AM_FFLAGS = $(OMP_FCFLAGS)
+LDADD = $(SEPCWP) $(SEPTRAVEL) $(SUPERSET) $(SEPFFT) $(SEPLIB)  -lm
+
+#AMO_SOURCES = AMO.f90
+#AMO_LDADD = ${SEPIMAGEF90} ${SEPFFTF90} ${SEPMATHF90} -lsepvector \
+#-lsepvectorf90 ${FFTW_FCLD} ${SEPLIB2DF90} ${FCLIBS}
+#AMO_LDFLAGS = $(OMP_FCLD)
+
+OFF2ANG_SOURCES=OFF2ANG.f90
+OFF2ANG_LDADD=${SEPIMAGEF90} ${SEPMATHF90} ${SEPAUXF90} -lsepvectorf90 \
+	-lsepvector ${FFTW_FCLD} ${SEPLIB2DF90} ${SEPFFTF90} ${FCLIBS}
+#OFF2ANG_LDFLAGS=$(OMP_FCLD)
+
+Lloyd_vel_SOURCES=Lloyd_vel.f90
+Lloyd_vel_LDADD=-lsepweif90 ${SUPERSETF90} ${SEPLIB2DF90} ${SEPFFTF90} ${SEPMATHF90} ${SEPGEEF90} -lsepparf90 ${FFTW_FCLD} ${FCLIBS}
+
+CAM_SOURCES=CAM.f90
+CAM_LDADD=-lsepweif90 ${SUPERSETF90} ${SEPLIB2DF90} ${SEPFFTF90} ${SEPMATHF90} ${SEPGEEF90} -lsepparf90 ${FFTW_FCLD} -lseppar ${FCLIBS}
+
+
+SRM_SOURCES=SRM.f90
+SRM_LDADD=${SEPIMAGEF90} ${SEPMATHF90} ${SEPAUXF90} ${FFTW_FCLD} ${SEPFFTF90} \
+-lsepvector -lsepvectorf90 ${SEPLIB2DF90} ${FCLIBS}
+#SRM_LDFLAGS=$(OMP_FCLD)
+
+
+Phase_SOURCES=Phase.f90
+Phase_LDADD=-lsepweif90 ${SUPERSETF90} ${SEPLIB2DF90} ${SEPFFTF90} \
+ ${SEPMATHF90}  ${FFTW_FCLD} ${SEPGEEF90} -lsepparf90 -lseppar ${FCLIBS}
+
+Kirch_2d_depth.c: Kirch_2d_depth.csep
+
+AMO.f90: AMO.f90s
+AMO.f90s: AMO.F90sep
+CAM.f90s: CAM.F90sep
+OFF2ANG.f90: OFF2ANG.f90s
+OFF2ANG.f90s: OFF2ANG.F90sep
+Phase.f90: Phase.f90s
+Phase.f90s: Phase.F90sep
+SRM.f90: SRM.f90s
+SRM.f90s: SRM.F90sep
+Stolt.f90: Stolt.f90s
+Stolt.f90s: Stolt.F90sep
+
+include $(top_srcdir)/include/fortran.rules
+

@@ -1,0 +1,2 @@
+
+SUBDIRS = grafconv segy su
