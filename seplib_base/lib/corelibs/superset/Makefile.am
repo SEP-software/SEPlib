@@ -3,7 +3,7 @@ EXTRA_DIST =  rite.inc.in
 
 SUPERSET=axes.c init.c reed.c debug.c keys.c rite.c drn.c tagstream.c \
 header.c list.c rite_file.c headval.c ntraces.c type_usage.c grid.c \
-extra_keys.c conform.c  struct_sepc.c 
+extra_keys.c conform.c  struct_sepc.c fortran_junk.c
 
 MPISUPER=mpi_thread.c coord.c  convert.c  transfer.c
 

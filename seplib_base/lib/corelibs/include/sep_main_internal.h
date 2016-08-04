@@ -23,77 +23,77 @@ int get_data_name(char *tag,char *string_out);
 
 
 /*fortran junk to be rmoved some day*/
-void srite2_f(const char *tag, void *v, const int sz);
-void srite2_i(const char *tag, void *v, const int sz);
-void srite2_c(const char *tag, void *v, const int sz);
-void sreed2_f(const char *tag, void *v, const int sz);
-void sreed2_i(const char *tag, void *v, const int sz);
-void sreed2_c(const char *tag, void *v, const int sz);
+int srite2_f(const char *tag, void *v, const int sz,const char *typ);
+int srite2_i(const char *tag, void *v, const int sz,const char *typi);
+int srite2_c(const char *tag, void *v, const int sz,const char *typ);
+int sreed2_f(const char *tag, void *v, const int sz,const char *typ);
+int sreed2_i(const char *tag, void *v, const int sz,const char *typ);
+int sreed2_c(const char *tag, void *v, const int sz,const char *typ);
 
-void srite_f(const char *tag, void *v, const int sz);
-void srite_i(const char *tag, void *v, const int sz);
-void srite_c(const char *tag, void *v, const int sz);
-void sreed_f(const char *tag, void *v, const int sz);
-void sreed_i(const char *tag, void *v, const int sz);
-void sreed_c(const char *tag, void *v, const int sz);
+int srite_f(const char *tag, void *v, const int sz);
+int srite_i(const char *tag, void *v, const int sz);
+int srite_c(const char *tag, void *v, const int sz);
+int sreed_f(const char *tag, void *v, const int sz);
+int sreed_i(const char *tag, void *v, const int sz);
+int sreed_c(const char *tag, void *v, const int sz);
 
-void srite_window_i(const char *tag,  int, int *ng, int *nw, int *fw, int *jw, int sz,
+int srite_window_i(const char *tag,  int*, int *ng, int *nw, int *fw, int *jw, int sz,
   void *val);
-void srite_window_f(const char *tag,  int, int *ng, int *nw, int *fw, int *jw, int sz,
+int srite_window_f(const char *tag,  int*, int *ng, int *nw, int *fw, int *jw, int sz,
   void *val);
-void srite_window_c(const char *tag,  int, int *ng, int *nw, int *fw, int *jw, int sz,
+int srite_window_c(const char *tag,  int*, int *ng, int *nw, int *fw, int *jw, int sz,
   void *val);
-void sreed_window_i(const char *tag,  int, int *ng, int *nw, int *fw, int *jw, int sz,
+int sreed_window_i(const char *tag,  int*, int *ng, int *nw, int *fw, int *jw, int sz,
   void *val);
-void sreed_window_f(const char *tag,  int, int *ng, int *nw, int *fw, int *jw, int sz,
+int sreed_window_f(const char *tag,  int*, int *ng, int *nw, int *fw, int *jw, int sz,
   void *val);
-void sreed_window_c(const char *tag,  int, int *ng, int *nw, int *fw, int *jw, int sz,
+int sreed_window_c(const char *tag,  int*, int *ng, int *nw, int *fw, int *jw, int sz,
   void *val);
 
-void tetch_f_f(const char *arg, const char *typ, void *val);
-void tetch_i_f(const char *arg, const char *typ, void *val);
-void tetch_s_f(const char *arg, const char *typ, void *val);
-void tetch_l_f(const char *arg, const char *typ, void *val);
+int tetch_f_f(const char *arg, const char *typ, void *val);
+int tetch_i_f(const char *arg, const char *typ, void *val);
+int tetch_s_f(const char *arg, const char *typ, void *val);
+int tetch_l_f(const char *arg, const char *typ, void *val);
 
-void putch_f_f(const char *arg, const char *typ, void *val);
-void putch_i_f(const char *arg, const char *typ, void *val);
-void putch_s_f(const char *arg, const char *typ, void *val);
-void putch_l_f(const char *arg, const char *typ, void *val);
+int putch_f_f(const char *arg, const char *typ, void *val);
+int putch_i_f(const char *arg, const char *typ, void *val);
+int putch_s_f(const char *arg, const char *typ, void *val);
+int putch_l_f(const char *arg, const char *typ, void *val);
 
-void hetch_f_f_a(const char *arg, const char *typ, void *val);
-void hetch_i_f_a(const char *arg, const char *typ, void *val);
-void hetch_f_f(const char *arg, const char *typ, void *val);
-void hetch_i_f(const char *arg, const char *typ, void *val);
-void hetch_s_f(const char *arg, const char *typ, void *val);
-void hetch_l_f(const char *arg, const char *typ, void *val);
+int hetch_f_f_a(const char *arg, const char *typ, void *val);
+int hetch_i_f_a(const char *arg, const char *typ, void *val);
+int hetch_f_f(const char *arg, const char *typ, void *val);
+int hetch_i_f(const char *arg, const char *typ, void *val);
+int hetch_s_f(const char *arg, const char *typ, void *val);
+int hetch_l_f(const char *arg, const char *typ, void *val);
 
-void getch_f_f_a(const char *arg, const char *typ, void *val);
-void getch_i_f_a(const char *arg, const char *typ, void *val);
-void getch_f_f(const char *arg, const char *typ, void *val);
-void getch_i_f(const char *arg, const char *typ, void *val);
-void getch_s_f(const char *arg, const char *typ, void *val);
-void getch_l_f(const char *arg, const char *typ, void *val);
+int getch_f_f_a(const char *arg, const char *typ, void *val);
+int getch_i_f_a(const char *arg, const char *typ, void *val);
+int getch_f_f(const char *arg, const char *typ, void *val);
+int getch_i_f(const char *arg, const char *typ, void *val);
+int getch_s_f(const char *arg, const char *typ, void *val);
+int getch_l_f(const char *arg, const char *typ, void *val);
 
-void fetch_f_f_a(const char *arg, const char *typ, void *val);
-void fetch_i_f_a(const char *arg, const char *typ, void *val);
-void fetch_f_f(const char *arg, const char *typ, void *val);
-void fetch_i_f(const char *arg, const char *typ, void *val);
-void fetch_s_f(const char *arg, const char *typ, void *val);
-void fetch_l_f(const char *arg, const char *typ, void *val);
+int fetch_f_f_a(const char *arg, const char *typ, void *val);
+int fetch_i_f_a(const char *arg, const char *typ, void *val);
+int fetch_f_f(const char *arg, const char *typ, void *val);
+int fetch_i_f(const char *arg, const char *typ, void *val);
+int fetch_s_f(const char *arg, const char *typ, void *val);
+int fetch_l_f(const char *arg, const char *typ, void *val);
 
-void auxpar_f_f_a(const char *arg, const char *typ, void *val,const char *tag);
-void auxpar_i_f_a(const char *arg, const char *typ, void *val,const char *tag);
-void auxpar_f_f(const char *arg, const char *typ, void *val,const char *tag);
-void auxpar_i_f(const char *arg, const char *typ, void *val,const char *tag);
-void auxpar_s_f(const char *arg, const char *typ, void *val,const char *tag);
-void auxpar_l_f(const char *arg, const char *typ, void *val,const char *tag);
+int auxpar_f_f_a(const char *arg, const char *typ, void *val,const char *tag);
+int auxpar_i_f_a(const char *arg, const char *typ, void *val,const char *tag);
+int auxpar_f_f(const char *arg, const char *typ, void *val,const char *tag);
+int auxpar_i_f(const char *arg, const char *typ, void *val,const char *tag);
+int auxpar_s_f(const char *arg, const char *typ, void *val,const char *tag);
+int auxpar_l_f(const char *arg, const char *typ, void *val,const char *tag);
 
-void auxputch_f_f_a(const char *arg, const char *typ, void *val,const char *tag);
-void auxputch_i_f_a(const char *arg, const char *typ, void *val,const char *tag);
-void auxputch_f_f(const char *arg, const char *typ, void *val,const char *tag);
-void auxputch_i_f(const char *arg, const char *typ, void *val,const char *tag);
-void auxputch_s_f(const char *arg, const char *typ, void *val,const char *tag);
-void auxputch_l_f(const char *arg, const char *typ, void *val,const char *tag);
+int auxputch_f_f_a(const char *arg, const char *typ, void *val,const char *tag);
+int auxputch_i_f_a(const char *arg, const char *typ, void *val,const char *tag);
+int auxputch_f_f(const char *arg, const char *typ, void *val,const char *tag);
+int auxputch_i_f(const char *arg, const char *typ, void *val,const char *tag);
+int auxputch_s_f(const char *arg, const char *typ, void *val,const char *tag);
+int auxputch_l_f(const char *arg, const char *typ, void *val,const char *tag);
 
 #ifdef USE_SOCKETS
 extern int socklisten(  int , int );
