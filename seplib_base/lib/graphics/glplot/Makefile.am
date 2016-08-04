@@ -12,4 +12,4 @@ gl_tjust.c gl_transp.c gl_uarea.c gl_uarrow.c gl_uclip.c gl_udraw.c \
 gl_umove.c gl_upendn.c gl_upmark.c gl_vplotint.c gl_where.c \
 gl_simpleaxis.c gl_opttic.c gl_barplot.c gl_barint.c gl_nice.c
 
-libglplot_la_LIBADD = ../../corelibs/sep/libsep.la ../../../../vplot/libvplot/libvplotf90.la ../../../../vplot/libvplot/libvplot.la $(FCLIBS) -lm
+#libglplot_la_LIBADD = ../../corelibs/sep/libsep.la ../../../../vplot/libvplot/libvplotf90.la ../../../../vplot/libvplot/libvplot.la $(FCLIBS) -lm
