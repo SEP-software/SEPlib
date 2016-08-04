@@ -284,7 +284,7 @@ contains
 
 
 subroutine doc_0()
-  call doc0()
+  call doc1("")
 end subroutine
 
 subroutine doc_1(str)

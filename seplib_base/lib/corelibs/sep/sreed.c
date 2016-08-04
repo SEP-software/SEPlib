@@ -261,7 +261,7 @@ _XFUNCPROTOEND
 }
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-int sreed2(char *tag, void *buf, int nbytes, char* format)
+int sreed2(const char *tag, void *buf, int nbytes, const char* format)
 _XFUNCPROTOEND
 #else
 int sreed2(tag,buf,nbytes,format)

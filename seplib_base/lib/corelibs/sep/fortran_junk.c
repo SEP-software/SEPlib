@@ -98,9 +98,9 @@ int auxpar_l_f(const char *arg, const char *typ, void *val,const char *fle){retu
 int auxpar_s_f(const char *arg, const char *typ, void *val,const char *fle){return auxpar(arg,typ,val,fle);}
 
 int auxputch_f_f_a(const char *arg, const char *typ, void *val,const char *fle){return auxputch(arg,typ,val,fle);}
-int auxputch_f_i_a(const char *arg, const char *typ, void *val,const char *fle){return auxputch(arg,typ,val,fle);}
+int auxputch_i_f_a(const char *arg, const char *typ, void *val,const char *fle){return auxputch(arg,typ,val,fle);}
 int auxputch_f_f(const char *arg, const char *typ, void *val,const char *fle){return auxputch(arg,typ,val,fle);}
-int auxputch_f_i(const char *arg, const char *typ, void *val,const char *fle){return auxputch(arg,typ,val,fle);}
-int auxputch_f_s(const char *arg, const char *typ, void *val,const char *fle){return auxputch(arg,typ,val,fle);}
-int auxputch_f_l(const char *arg, const char *typ, void *val,const char *fle){return auxputch(arg,typ,val,fle);}
+int auxputch_i_f(const char *arg, const char *typ, void *val,const char *fle){return auxputch(arg,typ,val,fle);}
+int auxputch_s_f(const char *arg, const char *typ, void *val,const char *fle){return auxputch(arg,typ,val,fle);}
+int auxputch_l_f(const char *arg, const char *typ, void *val,const char *fle){return auxputch(arg,typ,val,fle);}
 
