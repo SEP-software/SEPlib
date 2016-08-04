@@ -10,7 +10,7 @@ module sep3d_struct_mod
   
   interface
   
-       integer function sep3d_set_header_vals_sf(t1,t2,v) bind(c,name="sep3d_set_header_vals_s")
+       integer function sep3d_set_header_vals_sf(t1,t2,v) bind(c,name="sep3d_set_header_vals_sf")
      import
      character(C_CHAR),dimension(*) ,intent(in) :: t1,t2
      real(C_FLOAT),dimension(*),intent(in) :: v
@@ -23,13 +23,13 @@ module sep3d_struct_mod
      import
      character(C_CHAR),dimension(*) ,intent(in) :: t1
     end function
-         integer function sep3d_set_header_vals_si(t1,t2,v) bind(c,name="sep3d_set_header_vals_s")
+         integer function sep3d_set_header_vals_si(t1,t2,v) bind(c,name="sep3d_set_header_vals_si")
      import
      character(C_CHAR),dimension(*) ,intent(in) :: t1,t2
      integer(C_INT),dimension(*),intent(in) :: v
     end function
   
-       integer function sep3d_set_header_vals_if(t1,t2,v) bind(c,name="sep3d_set_header_vals_s")
+       integer function sep3d_set_header_vals_if(t1,t2,v) bind(c,name="sep3d_set_header_vals_if")
      import
      character(C_CHAR),dimension(*) ,intent(in) :: t1
           integer(C_INT) ,value :: t2
@@ -37,27 +37,27 @@ module sep3d_struct_mod
     end function
     
     
-         integer function sep3d_set_header_vals_ii(t1,t2,v) bind(c,name="sep3d_set_header_vals_s")
+         integer function sep3d_set_header_vals_ii(t1,t2,v) bind(c,name="sep3d_set_header_vals_ii")
      import
      character(C_CHAR),dimension(*) ,intent(in) :: t1
      integer(C_INT) ,value :: t2
      integer(C_INT),dimension(*),intent(out) :: v
     end function
   
-     integer function sep3d_grab_header_vals_sf(t1,t2,v) bind(c,name="sep3d_grab_header_vals_s")
+     integer function sep3d_grab_header_vals_sf(t1,t2,v) bind(c,name="sep3d_grab_header_vals_sf")
      import
      character(C_CHAR),dimension(*) ,intent(in) :: t1,t2
      real(C_FLOAT),dimension(*),intent(out) :: v
     end function
     
     
-         integer function sep3d_grab_header_vals_si(t1,t2,v) bind(c,name="sep3d_grab_header_vals_s")
+         integer function sep3d_grab_header_vals_si(t1,t2,v) bind(c,name="sep3d_grab_header_vals_si")
      import
      character(C_CHAR),dimension(*) ,intent(in) :: t1,t2
      integer(C_INT),dimension(*),intent(out) :: v
     end function
   
-       integer function sep3d_grab_header_vals_if(t1,t2,v) bind(c,name="sep3d_grab_header_vals_s")
+       integer function sep3d_grab_header_vals_if(t1,t2,v) bind(c,name="sep3d_grab_header_vals_if")
      import
      character(C_CHAR),dimension(*) ,intent(in) :: t1
           integer(C_INT) ,value :: t2
@@ -65,48 +65,48 @@ module sep3d_struct_mod
     end function
     
     
-         integer function sep3d_grab_header_vals_ii(t1,t2,v) bind(c,name="sep3d_grab_header_vals_s")
+         integer function sep3d_grab_header_vals_ii(t1,t2,v) bind(c,name="sep3d_grab_header_vals_ii")
      import
      character(C_CHAR),dimension(*) ,intent(in) :: t1
      integer(C_INT) ,value :: t2
      integer(C_INT),dimension(*),intent(in) :: v
     end function
   
-   integer function sep3d_riteff(t1,t2,n,f,j,v,i1,i2,i3,i4) bind(c,name="sep3d_rite")
+   integer function sep3d_riteff(t1,t2,n,f,j,v,i1,i2,i3,i4) bind(c,name="sep3d_riteff")
      import
      character(C_CHAR),dimension(*) ,intent(in) :: t1,t2
      integer(C_INT),dimension(*),intent(in) :: n,f,j
      real(C_FLOAT),dimension(*),intent(in) :: v
      integer(C_INT),intent(in),value :: i1,i2,i3,i4
     end function
-       integer function sep3d_riteif(t1,t2,n,f,j,v,i1,i2,i3,i4) bind(c,name="sep3d_rite")
+       integer function sep3d_riteif(t1,t2,n,f,j,v,i1,i2,i3,i4) bind(c,name="sep3d_riteif")
      import
      character(C_CHAR),dimension(*) ,intent(in) :: t1,t2
      integer(C_INT),dimension(*),intent(in) :: n,f,j
      integer(C_INT),dimension(*),intent(in) :: v
      integer(C_INT),intent(in),value :: i1,i2,i3,i4
     end function
-       integer function sep3d_ritecf(t1,t2,n,f,j,v,i1,i2,i3,i4) bind(c,name="sep3d_rite")
+       integer function sep3d_ritecf(t1,t2,n,f,j,v,i1,i2,i3,i4) bind(c,name="sep3d_ritecf")
      import
      character(C_CHAR),dimension(*) ,intent(in) :: t1,t2
      integer(C_INT),dimension(*),intent(in) :: n,f,j
      complex(C_FLOAT),dimension(*),intent(in) :: v
      integer(C_INT),intent(in),value :: i1,i2,i3,i4
     end function
-           integer function sep3d_reedcf(t1,t2,i1,i2,i3,v) bind(c,name="sep3d_read_data")
+           integer function sep3d_reedcf(t1,t2,i1,i2,i3,v) bind(c,name="sep3d_read_datacf")
      import
      character(C_CHAR),dimension(*) ,intent(in) :: t1,t2
      complex(C_FLOAT),dimension(*),intent(out) :: v
      integer(C_INT),intent(in),value :: i1,i2,i3
     end function
     
-               integer function sep3d_reedif(t1,t2,i1,i2,i3,v) bind(c,name="sep3d_read_data")
+               integer function sep3d_reedif(t1,t2,i1,i2,i3,v) bind(c,name="sep3d_read_dataif")
      import
      character(C_CHAR),dimension(*) ,intent(in) :: t1,t2
      integer(C_INT),dimension(*),intent(out) :: v
      integer(C_INT),intent(in),value :: i1,i2,i3
     end function
-               integer function sep3d_reedff(t1,t2,i1,i2,i3,v) bind(c,name="sep3d_read_data")
+               integer function sep3d_reedff(t1,t2,i1,i2,i3,v) bind(c,name="sep3d_read_dataff")
      import
      character(C_CHAR),dimension(*) ,intent(in) :: t1,t2
      real(C_FLOAT),dimension(*),intent(out) :: v

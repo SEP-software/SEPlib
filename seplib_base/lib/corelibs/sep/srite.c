@@ -232,7 +232,7 @@ return((int)(*info->write_func)(info,info->ioinf,buf,nbytes));
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN 
-int srite2(char *tag, void *buf, int nbytes, char* format)
+int srite2(const char *tag, void *buf, int nbytes, const char* format)
 _XFUNCPROTOEND 
 #else
 int srite2(tag,buf,nbytes,format)
