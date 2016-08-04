@@ -18,8 +18,8 @@ examples/ratfor90/scale_it.rs90 examples/sep2df90 examples/sep2df90/Makefile \
 examples/sep2df90/scale_it.f90
 
 
-SUBDIRS = include docs config ratfor90 seplib_base/include seplib_base/tools seplib_base/lib/corelibs vplot seplib_base seplib_prog \
-seplib_java sep_python interact
+SUBDIRS = include docs config ratfor90 seplib_base/include seplib_base/tools seplib_base/lib/corelibs vplot seplib_base seplib_prog sep_python
+#seplib_java  interact
 
 DIST_DIRS = seplib_prog seplib_local vplot ratfor90
 
