@@ -7,31 +7,31 @@ implicit none
 
  
 interface 
-      integer function sreed_i(tag,ar,sz) bind(c,name="sreed")
+      integer function sreed_i(tag,ar,sz) bind(c,name="sreed_i")
     import
     character(C_CHAR),dimension(*),intent(in) ::tag
     integer(C_INT),dimension(*),intent(out) :: ar
     integer(C_INT),intent(in),value :: sz
   end function
-      integer function sreed_f(tag,ar,sz) bind(c,name="sreed")
+      integer function sreed_f(tag,ar,sz) bind(c,name="sreed_f")
     import
     character(C_CHAR),dimension(*),intent(in) ::tag
     real(C_FLOAT),dimension(*),intent(out) :: ar
     integer(C_INT),intent(in),value :: sz
   end function
-        integer function sreed_c(tag,ar,sz) bind(c,name="sreed")
+        integer function sreed_c(tag,ar,sz) bind(c,name="sreed_c")
     import
     character(C_CHAR),dimension(*),intent(in) ::tag
     complex(C_FLOAT),dimension(*),intent(out) :: ar
     integer(C_INT),intent(in) ,value:: sz
   end function
-        integer function srite_f(tag,ar,sz) bind(c,name="srite")
+        integer function srite_f(tag,ar,sz) bind(c,name="srite_f")
     import
     character(C_CHAR),dimension(*),intent(in) ::tag
     real(C_FLOAT),dimension(*),intent(in) :: ar
     integer(C_INT),intent(in),value :: sz
   end function
-          integer function srite_c(tag,ar,sz) bind(c,name="srite")
+       integer function srite_c(tag,ar,sz) bind(c,name="srite_c")
     import
     character(C_CHAR),dimension(*),intent(in) ::tag
     complex(C_FLOAT),dimension(*),intent(in) :: ar
@@ -64,7 +64,7 @@ interface
     integer(C_INT),dimension(*),intent(in) :: n,f,j,ng
     real(C_FLOAT), dimension(*),intent(out) :: buf
   end function
-  integer function sreed_window_i(tag,nd,ng,n,f,j,sz,buf) bind(c,name="sreed_window")
+  integer function sreed_window_i(tag,nd,ng,n,f,j,sz,buf) bind(c,name="sreed_window_i")
   import
   character(C_CHAR),dimension(*), intent(in) :: tag
     integer(C_INT), intent(in),value :: sz
@@ -73,7 +73,7 @@ interface
     integer(C_INT),dimension(*),intent(in) :: n,f,j,ng
     integer(C_INT), dimension(*),intent(out) :: buf
   end function
-  integer function sreed_window_c(tag,nd,ng,n,f,j,sz,buf) bind(c,name="sreed_window")
+  integer function sreed_window_c(tag,nd,ng,n,f,j,sz,buf) bind(c,name="sreed_window_c")
   import
   character(C_CHAR),dimension(*), intent(in) :: tag
     integer(C_INT), intent(in),value :: sz
@@ -83,7 +83,7 @@ interface
     complex(C_FLOAT), dimension(*),intent(out) :: buf
   end function
 
-    integer function srite_window_f(tag,nd,ng,n,f,j,sz,buf) bind(c,name="srite_window")
+    integer function srite_window_f(tag,nd,ng,n,f,j,sz,buf) bind(c,name="srite_window_f")
     import
     character(C_CHAR),dimension(*), intent(in) :: tag
      integer(C_INT), intent(in),value :: sz
@@ -92,7 +92,7 @@ interface
     integer(C_INT),dimension(*),intent(in) :: n,f,j,ng
     real(C_FLOAT), dimension(*),intent(in) :: buf
   end function
-    integer function srite_window_i(tag,nd,ng,n,f,j,sz,buf)bind(c,name="srite_window")
+    integer function srite_window_i(tag,nd,ng,n,f,j,sz,buf)bind(c,name="srite_window_i")
     import
     character(C_CHAR),dimension(*), intent(in) :: tag
     integer(C_INT), intent(in),value :: sz
@@ -101,7 +101,7 @@ interface
     integer(C_INT),dimension(*),intent(in) :: n,f,j,ng
     integer(C_INT), dimension(*),intent(in) :: buf
   end function
-    integer function srite_window_c(tag,nd,ng,n,f,j,sz,buf)bind(c,name="srite_window")
+    integer function srite_window_c(tag,nd,ng,n,f,j,sz,buf)bind(c,name="srite_window_c")
     import
     character(C_CHAR),dimension(*), intent(in) :: tag
     integer(C_INT), intent(in),value :: sz
@@ -150,13 +150,13 @@ interface
   end function
   
   
-        integer function sreed2_f(tag,ar,sz,typ) bind(c,name="sreed2")
+        integer function sreed2_f(tag,ar,sz,typ) bind(c,name="sreed2_f")
     import
     character(C_CHAR),dimension(*),intent(in) ::tag,typ
     real(C_FLOAT),dimension(*),intent(out) :: ar
     integer(C_INT),intent(in),value :: sz
   end function
-       integer function sreed2_i(tag,ar,sz,typ) bind(c,name="sreed2")
+       integer function sreed2_i(tag,ar,sz,typ) bind(c,name="sreed2_i")
     import
     character(C_CHAR),dimension(*),intent(in) ::tag,typ
     integer(C_INT),dimension(*),intent(out) :: ar
@@ -164,13 +164,13 @@ interface
   end function
  
  
-       integer function srite2_f(tag,ar,sz,typ) bind(c,name="srite2")
+       integer function srite2_f(tag,ar,sz,typ) bind(c,name="srite2_f")
     import
     character(C_CHAR),dimension(*),intent(in) ::tag,typ
     real(C_FLOAT),dimension(*),intent(out) :: ar
     integer(C_INT),intent(in),value :: sz
   end function
-       integer function srite2_i(tag,ar,sz,typ) bind(c,name="srite2")
+       integer function srite2_i(tag,ar,sz,typ) bind(c,name="srite2_i")
     import
     character(C_CHAR),dimension(*),intent(in) ::tag,typ
     integer(C_INT),dimension(*),intent(out) :: ar

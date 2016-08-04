@@ -10,9 +10,6 @@ interface
 
  
  
-   subroutine doc0() bind(c,name="doc")
-    import
-  end subroutine 
  
   subroutine doc1(string) bind(c,name="doc")
     import
@@ -32,32 +29,32 @@ interface
  
  !GETCH
 
-   integer function getch_l_f(arg,typ,val) bind(c,name="getch")
+   integer function getch_l_f(arg,typ,val) bind(c,name="getch_l_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     integer(C_INT) :: val
   end function
-    integer function getch_s_f(arg,typ,val) bind(c,name="getch")
+    integer function getch_s_f(arg,typ,val) bind(c,name="getch_s_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     character(C_CHAR),dimension(*) :: val
   end function
-    integer function getch_f_f(arg,typ,val) bind(c,name="getch")
+    integer function getch_f_f(arg,typ,val) bind(c,name="getch_f_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     real(C_FLOAT) :: val
   end function
-   integer function getch_i_f(arg,typ,val) bind(c,name="getch")
+   integer function getch_i_f(arg,typ,val) bind(c,name="getch_i_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     integer(C_INT) :: val
   end function
-      integer function getch_f_f_a(arg,typ,val) bind(c,name="getch")
+      integer function getch_f_f_a(arg,typ,val) bind(c,name="getch_f_f_a")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     real(C_FLOAT),dimension(*) :: val
   end function
-   integer function getch_i_f_a(arg,typ,val) bind(c,name="getch")
+   integer function getch_i_f_a(arg,typ,val) bind(c,name="getch_i_f_a")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     integer(C_INT),dimension(*) :: val
@@ -65,124 +62,124 @@ interface
   
   
   !PUTCH
-    integer function putch_i_f(arg,typ,val) bind(c,name="putch")
+    integer function putch_i_f(arg,typ,val) bind(c,name="putch_i_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     integer(C_INT) :: val
   end function
   
-    integer function putch_s_f(arg,typ,val) bind(c,name="putch")
+    integer function putch_s_f(arg,typ,val) bind(c,name="putch_s_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     character(C_CHAR),dimension(*) :: val
   end function
-    integer function putch_f_f(arg,typ,val) bind(c,name="putch")
+    integer function putch_f_f(arg,typ,val) bind(c,name="putch_f_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     real(C_FLOAT) :: val
   end function
-      integer function putch_l_f(arg,typ,val) bind(c,name="putch")
+      integer function putch_l_f(arg,typ,val) bind(c,name="putch_l_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     logical(C_BOOL) :: val
   end function
   
     !FETCH
-    integer function fetch_i_f(arg,typ,val) bind(c,name="fetch")
+    integer function fetch_i_f(arg,typ,val) bind(c,name="fetch_i_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     integer(C_INT) :: val
   end function
   
-    integer function fetch_s_f(arg,typ,val) bind(c,name="fetch")
+    integer function fetch_s_f(arg,typ,val) bind(c,name="fetch_s_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     character(C_CHAR),dimension(*) :: val
   end function
-    integer function fetch_f_f(arg,typ,val) bind(c,name="fetch")
+    integer function fetch_f_f(arg,typ,val) bind(c,name="fetch_f_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     real(C_FLOAT) :: val
   end function
-      integer function fetch_l_f(arg,typ,val) bind(c,name="fetch")
+      integer function fetch_l_f(arg,typ,val) bind(c,name="fetch_l_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     logical(C_BOOL) :: val
   end function
   
       !TETCH
-    integer function tetch_i_f(arg,typ,val) bind(c,name="tetch")
+    integer function tetch_i_f(arg,typ,val) bind(c,name="tetch_i_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     integer(C_INT) :: val
   end function
   
-    integer function tetch_s_f(arg,typ,val) bind(c,name="tetch")
+    integer function tetch_s_f(arg,typ,val) bind(c,name="tetch_s_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     character(C_CHAR),dimension(*) :: val
   end function
-    integer function tetch_f_f(arg,typ,val) bind(c,name="tetch")
+    integer function tetch_f_f(arg,typ,val) bind(c,name="tetch_f_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     real(C_FLOAT) :: val
   end function
-      integer function tetch_l_f(arg,typ,val) bind(c,name="tetch")
+      integer function tetch_l_f(arg,typ,val) bind(c,name="tetch_l_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     logical(C_BOOL) :: val
   end function
   
   !HETCH
-    integer function hetch_i_f(arg,typ,val) bind(c,name="hetch")
+    integer function hetch_i_f(arg,typ,val) bind(c,name="hetch_i_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     integer(C_INT) :: val
   end function
   
-    integer function hetch_s_f(arg,typ,val) bind(c,name="hetch")
+    integer function hetch_s_f(arg,typ,val) bind(c,name="hetch_s_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     character(C_CHAR),dimension(*) :: val
   end function
-    integer function hetch_f_f(arg,typ,val) bind(c,name="hetch")
+    integer function hetch_f_f(arg,typ,val) bind(c,name="hetch_f_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     real(C_FLOAT) :: val
   end function
-      integer function hetch_f_f_a(arg,typ,val) bind(c,name="hetch")
+      integer function hetch_f_f_a(arg,typ,val) bind(c,name="hetch_f_f_a")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     real(C_FLOAT),dimension(*) :: val
   end function
-      integer function hetch_i_f_a(arg,typ,val) bind(c,name="hetch")
+      integer function hetch_i_f_a(arg,typ,val) bind(c,name="hetch_i_f_a")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     integer(C_INT),dimension(*) :: val
   end function
   
   !AUXP
-      integer function auxpar_l_f(arg,typ,val,tag) bind(c,name="auxpar")
+      integer function auxpar_l_f(arg,typ,val,tag) bind(c,name="auxpar_l_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ,tag
     logical(C_BOOL) :: val
   end function
-    integer function auxpar_s_f(arg,typ,val,tag) bind(c,name="auxpar")
+    integer function auxpar_s_f(arg,typ,val,tag) bind(c,name="auxpar_s_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ,tag
     character(C_CHAR),dimension(*) :: val
   end function
-    integer function auxpar_f_f(arg,typ,val,tag) bind(c,name="auxpar")
+    integer function auxpar_f_f(arg,typ,val,tag) bind(c,name="auxpar_f_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ,tag
     real(C_FLOAT) :: val
   end function
-      integer function auxpar_i_f(arg,typ,val,tag) bind(c,name="auxpar")
+      integer function auxpar_i_f(arg,typ,val,tag) bind(c,name="auxpar_i_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ,tag
     integer(C_INT) :: val
   end function
-      integer function auxpar_f_f_a(arg,typ,val,tag) bind(c,name="auxpar")
+      integer function auxpar_f_f_a(arg,typ,val,tag) bind(c,name="auxpar_f_f_a")
     import
     character(C_CHAR),dimension(*) ::arg,typ,tag
     real(C_FLOAT),dimension(*) :: val
@@ -196,23 +193,23 @@ interface
   
   
     !AUXPUTCH
-    integer function auxputch_i_f(arg,typ,val,tag) bind(c,name="auxputch")
+    integer function auxputch_i_f(arg,typ,val,tag) bind(c,name="auxputch_i_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ,tag
     integer(C_INT) :: val
   end function
   
-    integer function auxputch_s_f(arg,typ,val,tag) bind(c,name="auxputch")
+    integer function auxputch_s_f(arg,typ,val,tag) bind(c,name="auxputch_s_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ,tag
     character(C_CHAR),dimension(*) :: val
   end function
-    integer function auxputch_f_f(arg,typ,val,tag) bind(c,name="auxputch")
+    integer function auxputch_f_f(arg,typ,val,tag) bind(c,name="auxputch_f_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ,tag
     real(C_FLOAT) :: val
   end function
-      integer function auxputch_l_f(arg,typ,val,tag) bind(c,name="auxputch")
+      integer function auxputch_l_f(arg,typ,val,tag) bind(c,name="auxputch_l_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ,tag
     logical(C_BOOL) :: val

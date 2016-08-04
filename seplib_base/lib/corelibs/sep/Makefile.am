@@ -14,7 +14,7 @@ helixcart.c sepstrsync.c streamlist.c strformats.c septagstream.c sepfile.c  sta
 CUBE2 = auxclose.c auxin.c hclose.c hcount.c head.c input.c make_unpipe.c \
 output.c sepwindow.c slice.c snap.c sreed.c srite.c sseek.c ssize.c sep_err.c \
 sepdoc.c noieeeint.c puthead.c putlin.c sepalloc.c seploc.c tetch.c warn.c \
-auxputhead.c separg.c
+auxputhead.c separg.c fortran_junk.c
 
 #This is what i am calling sep_pars_internal, should not
 #be available to the outside world (e.g. no sep_pars_external or fortstubs.)
