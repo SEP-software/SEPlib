@@ -8,7 +8,8 @@ getgridtag.c putgetgridwindow.c getheaderbytes.c getkeyindex.c getkeyname.c \
 getkeytype.c getkeyfirstbyte.c getkeyfmt.c putvalbindex.c putvalbname.c \
 putvalheaders.c getvalbindex.c getvalbname.c getvalheaders.c \
 handle_file_pointers.c copykeys.c copy_grid.c init_3d.c sep_3d_close.c \
-tag_is_pipe.c extractvalbyindex.c insertvalbyindex.c reorder.c reorder2.c
+tag_is_pipe.c extractvalbyindex.c insertvalbyindex.c reorder.c reorder2.c \
+fortran_junk.c
 if HAVE_FORTRAN
 libsep3d_la_SOURCES += sep3d.f90
 libsep3d_la_LIBADD = ../sep/libsep.la $(FCLIBS) -lm

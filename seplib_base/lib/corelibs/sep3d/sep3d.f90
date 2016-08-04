@@ -48,25 +48,25 @@ interface
     integer(C_INT),intent(in) :: ikey
   end function
 
-  integer function sep_put_val_headers_if(tag,n,f,ar) bind(c,name="sep_put_val_headers")
+  integer function sep_put_val_headers_if(tag,n,f,ar) bind(c,name="sep_put_val_headers_if")
     import
     character(C_CHAR), dimension(*) :: tag
     integer(C_INT),intent(in) :: n,f
     integer(C_INT),dimension(*),intent(in) :: ar
   end function
-    integer function sep_put_val_headers_ff(tag,n,f,ar) bind(c,name="sep_put_val_headers")
+    integer function sep_put_val_headers_ff(tag,n,f,ar) bind(c,name="sep_put_val_headers_ff")
     import
     character(C_CHAR), dimension(*) :: tag
     integer(C_INT),intent(in) :: n,f
     real(C_FLOAT),dimension(*),intent(in) :: ar
   end function
-    integer function sep_get_val_headers_if(tag,n,f,ar) bind(c,name="sep_get_val_headers")
+    integer function sep_get_val_headers_if(tag,n,f,ar) bind(c,name="sep_get_val_headers_if")
     import
     character(C_CHAR), dimension(*) :: tag
     integer(C_INT),intent(in) :: n,f
     integer(C_INT),dimension(*),intent(out) :: ar
   end function
-      integer function sep_get_val_headers_ff(tag,n,f,ar) bind(c,name="sep_get_val_headers")
+      integer function sep_get_val_headers_ff(tag,n,f,ar) bind(c,name="sep_get_val_headers_ff")
           import
     character(C_CHAR), dimension(*) :: tag
     integer(C_INT),intent(in) :: n,f
