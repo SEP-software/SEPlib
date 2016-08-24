@@ -179,7 +179,7 @@ interface
     character(C_CHAR),dimension(*) ::arg,typ,tag
     integer(C_INT) :: val
   end function
-      integer function auxpar_f_f_a(arg,typ,val,tag) bind(c,name="auxpar_f_f_a")
+     integer function auxpar_f_f_a(arg,typ,val,tag) bind(c,name="auxpar_f_f_a")
     import
     character(C_CHAR),dimension(*) ::arg,typ,tag
     real(C_FLOAT),dimension(*) :: val
@@ -193,6 +193,18 @@ interface
   
   
     !AUXPUTCH
+  integer function auxputch_i_f_a(arg,typ,val,tag) bind(c,name="auxputch_i_f_a")
+    import
+    character(C_CHAR),dimension(*) ::arg,typ,tag
+    integer(C_INT),dimension(*) :: val
+  end function
+  integer function auxputch_f_f_a(arg,typ,val,tag) bind(c,name="auxputch_f_f_a")
+    import
+    character(C_CHAR),dimension(*) ::arg,typ,tag
+    real(C_FLOAT),dimension(*) :: val
+  end function
+
+
     integer function auxputch_i_f(arg,typ,val,tag) bind(c,name="auxputch_i_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ,tag
@@ -274,7 +286,8 @@ interface auxpar
 end interface
 
 interface auxputch
-  module procedure auxpu_i_f,auxpu_s_f,auxpu_f_f,auxpu_l_f
+  module procedure auxpu_i_f,auxpu_s_f,auxpu_f_f,auxpu_l_f,&
+    auxpu_i_f_a,auxpu_f_f_a
 end interface
 
 interface doc
@@ -489,6 +502,19 @@ integer function auxpu_f_f(arg,typ,val,tag)
   character(len=*) arg,typ,tag
   real :: val
   auxpu_f_f= auxputch_f_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val,trim(tag)//C_NULL_CHAR)
+end function
+
+integer function auxpu_i_f_a(arg,typ,val,tag)
+  character(len=*) arg,typ,tag
+  integer :: val(:)
+  auxpu_i_f_a= auxputch_i_f_a(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val,trim(tag)//C_NULL_CHAR)
+end function
+
+
+integer function auxpu_f_f_a(arg,typ,val,tag)
+  character(len=*) arg,typ,tag
+  real :: val(:)
+  auxpu_f_f_a= auxputch_f_f_a(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val,trim(tag)//C_NULL_CHAR)
 end function
 
 
