@@ -114,9 +114,6 @@ program Miss
   else
      pknown = (pmm /= 0.)
   end if
-   do i=1,size(pmm)
-     if(abs(pmm(i)) >.001)  pmm(i)=1
-   end do
   maxlag = maxval (aa%lag)
   if (padout*n1 >= maxlag) known (n2 - maxlag + 1:n2) = .true.
 
