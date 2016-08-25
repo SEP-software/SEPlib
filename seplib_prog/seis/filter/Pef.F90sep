@@ -76,7 +76,7 @@ program Pef3
   dim = sep_dimension ()
   allocate (n (dim), n0 (dim), center (dim), a (dim), gap (dim))
   call from_history (n)
-  call to_history ("n",n)
+  call to_history ("nm",n)
   a=1; n0=1; center=1; gap=1
   call from_param ("a", a)
   center = 1
@@ -130,16 +130,16 @@ program Pef3
      call to_history (axisname(i),1)
   end do
   call to_history ("lag", aa%lag)
-!  do i=1, size (aa%lag)
-!     if (i < 10) then
-!        write (varname,"(a,i1)") "lag",i
-!     else if (i < 100) then
-!        write (varname,"(a,i2)") "lag",i
-!     else
-!        write (varname,"(a,i3)") "lag",i
-!     end if
-!     call to_history_int (varname, aa%lag (i))
-!  end do
+  do i=1, size (aa%lag)
+     if (i < 10) then
+        write (varname,"(a,i1)") "lag",i
+     else if (i < 100) then
+        write (varname,"(a,i2)") "lag",i
+     else
+        write (varname,"(a,i3)") "lag",i
+     end if
+     call to_history_int (varname, aa%lag (i))
+  end do
   call sep_write (aa%flt)
  
   call sep_close ()

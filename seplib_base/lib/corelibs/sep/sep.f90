@@ -1445,7 +1445,7 @@ contains
        write (fmt, "(i2)") n
        write (buffer, "(" // fmt // '(i9:",")' // ")") value
        call strip_blanks (buffer)
-    !   call auxputlin (trim(tag_out), "        " // name // "=" // trim (buffer))
+       call auxputlin (trim(tag_out), "        " // name // "=" // trim (buffer))
     else
        do i=1, n
           if (i < 10) then
