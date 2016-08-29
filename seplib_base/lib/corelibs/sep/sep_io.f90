@@ -200,15 +200,15 @@ interface srite
 end interface
 
 interface sreed_window
-  module procedure srw_f_1,srw_f_2,srw_f_3,srw_f_4
-  module procedure srw_i_1,srw_i_2,srw_i_3,srw_i_4
-  module procedure srw_c_1,srw_c_2,srw_c_3,srw_c_4
+  module procedure srw_f_1,srw_f_2,srw_f_3,srw_f_4,srw_f_5
+  module procedure srw_i_1,srw_i_2,srw_i_3,srw_i_4,srw_i_5
+  module procedure srw_c_1,srw_c_2,srw_c_3,srw_c_4,srw_c_5
 end interface
 
 interface srite_window
-  module procedure sww_f_1,sww_f_2,sww_f_3,sww_f_4
-  module procedure sww_i_1,sww_i_2,sww_i_3,sww_i_4
-  module procedure sww_c_1,sww_c_2,sww_c_3,sww_c_4
+  module procedure sww_f_1,sww_f_2,sww_f_3,sww_f_4,sww_f_5
+  module procedure sww_i_1,sww_i_2,sww_i_3,sww_i_4,sww_i_5
+  module procedure sww_c_1,sww_c_2,sww_c_3,sww_c_4,sww_c_5
 end interface
 
 contains
@@ -525,6 +525,7 @@ integer function srw_i_3(tag,nd,ng,n,f,j,sz,buf)
   integer,intent(out), dimension(:,:,:) :: buf
   srw_i_3=sreed_window_i(trim(tag)//C_NULL_CHAR,nd,ng,n,f,j,sz,buf)
 end function
+
 integer function srw_i_4(tag,nd,ng,n,f,j,sz,buf)
   character(len=*),intent(in) :: tag
   integer,intent(in) :: nd,sz
@@ -532,6 +533,15 @@ integer function srw_i_4(tag,nd,ng,n,f,j,sz,buf)
   integer,intent(out), dimension(:,:,:,:) :: buf
   srw_i_4=sreed_window_i(trim(tag)//C_NULL_CHAR,nd,ng,n,f,j,sz,buf)
 end function
+
+integer function srw_i_5(tag,nd,ng,n,f,j,sz,buf)
+  character(len=*),intent(in) :: tag
+  integer,intent(in) :: nd,sz
+  integer,intent(in),dimension(:) :: n,f,j,ng
+  integer,intent(out), dimension(:,:,:,:,:) :: buf
+  srw_i_5=sreed_window_i(trim(tag)//C_NULL_CHAR,nd,ng,n,f,j,sz,buf)
+end function
+
 integer function srw_f_1(tag,nd,ng,n,f,j,sz,buf)
   character(len=*),intent(in) :: tag
   integer,intent(in) :: nd,sz
@@ -553,6 +563,14 @@ integer function srw_f_3(tag,nd,ng,n,f,j,sz,buf)
   real,intent(out), dimension(:,:,:) :: buf
   srw_f_3=sreed_window_f(trim(tag)//C_NULL_CHAR,nd,ng,n,f,j,sz,buf)
 end function
+
+integer function srw_f_5(tag,nd,ng,n,f,j,sz,buf)
+  character(len=*),intent(in) :: tag
+  integer,intent(in) :: nd,sz
+  integer,intent(in),dimension(:) :: n,f,j,ng
+  real,intent(out), dimension(:,:,:,:,:) :: buf
+  srw_f_5=sreed_window_f(trim(tag)//C_NULL_CHAR,nd,ng,n,f,j,sz,buf)
+end function
 integer function srw_f_4(tag,nd,ng,n,f,j,sz,buf)
   character(len=*),intent(in) :: tag
   integer,intent(in) :: nd,sz
@@ -560,6 +578,7 @@ integer function srw_f_4(tag,nd,ng,n,f,j,sz,buf)
   real,intent(out), dimension(:,:,:,:) :: buf
   srw_f_4=sreed_window_f(trim(tag)//C_NULL_CHAR,nd,ng,n,f,j,sz,buf)
 end function
+
 integer function srw_c_1(tag,nd,ng,n,f,j,sz,buf)
   character(len=*),intent(in) :: tag
   integer,intent(in) :: nd,sz
@@ -580,6 +599,13 @@ integer function srw_c_3(tag,nd,ng,n,f,j,sz,buf)
   integer,intent(in),dimension(:) :: n,f,j,ng
   complex,intent(out), dimension(:,:,:) :: buf
   srw_c_3=sreed_window_c(trim(tag)//C_NULL_CHAR,nd,ng,n,f,j,sz,buf)
+end function
+integer function srw_c_5(tag,nd,ng,n,f,j,sz,buf)
+  character(len=*),intent(in) :: tag
+  integer,intent(in) :: nd,sz
+  integer,intent(in),dimension(:) :: n,f,j,ng
+  complex,intent(out), dimension(:,:,:,:,:) :: buf
+  srw_c_5=sreed_window_c(trim(tag)//C_NULL_CHAR,nd,ng,n,f,j,sz,buf)
 end function
 integer function srw_c_4(tag,nd,ng,n,f,j,sz,buf)
   character(len=*),intent(in) :: tag
@@ -620,6 +646,13 @@ integer function sww_i_4(tag,nd,ng,n,f,j,sz,buf)
   integer,intent(in), dimension(:,:,:,:) :: buf
   sww_i_4=srite_window_i(trim(tag)//C_NULL_CHAR,nd,ng,n,f,j,sz,buf)
 end function
+integer function sww_i_5(tag,nd,ng,n,f,j,sz,buf)
+  character(len=*),intent(in) :: tag
+  integer,intent(in) :: nd,sz
+  integer,intent(in),dimension(:) :: n,f,j,ng
+  integer,intent(in), dimension(:,:,:,:,:) :: buf
+  sww_i_5=srite_window_i(trim(tag)//C_NULL_CHAR,nd,ng,n,f,j,sz,buf)
+end function
 integer function sww_f_1(tag,nd,ng,n,f,j,sz,buf)
   character(len=*),intent(in) :: tag
   integer,intent(in) :: nd,sz
@@ -648,6 +681,13 @@ integer function sww_f_4(tag,nd,ng,n,f,j,sz,buf)
   real,intent(in), dimension(:,:,:,:) :: buf
   sww_f_4=srite_window_f(trim(tag)//C_NULL_CHAR,nd,ng,n,f,j,sz,buf)
 end function
+integer function sww_f_5(tag,nd,ng,n,f,j,sz,buf)
+  character(len=*),intent(in) :: tag
+  integer,intent(in) :: nd,sz
+  integer,intent(in),dimension(:) :: n,f,j,ng
+  real,intent(in), dimension(:,:,:,:,:) :: buf
+  sww_f_5=srite_window_f(trim(tag)//C_NULL_CHAR,nd,ng,n,f,j,sz,buf)
+end function
 integer function sww_c_1(tag,nd,ng,n,f,j,sz,buf)
   character(len=*),intent(in) :: tag
   integer,intent(in) :: nd,sz
@@ -675,6 +715,13 @@ integer function sww_c_4(tag,nd,ng,n,f,j,sz,buf)
   integer,intent(in),dimension(:) :: n,f,j,ng
   complex,intent(in), dimension(:,:,:,:) :: buf
   sww_c_4=srite_window_c(trim(tag)//C_NULL_CHAR,nd,ng,n,f,j,sz,buf)
+end function
+integer function sww_c_5(tag,nd,ng,n,f,j,sz,buf)
+  character(len=*),intent(in) :: tag
+  integer,intent(in) :: nd,sz
+  integer,intent(in),dimension(:) :: n,f,j,ng
+  complex,intent(in), dimension(:,:,:,:,:) :: buf
+  sww_c_5=srite_window_c(trim(tag)//C_NULL_CHAR,nd,ng,n,f,j,sz,buf)
 end function
 
 
