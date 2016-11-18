@@ -7,3 +7,6 @@ Makefile.in
 ylwrap
 *.a
 *.la
+*~
+sitedef.h
+m4
