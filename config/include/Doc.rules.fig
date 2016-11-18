@@ -90,7 +90,6 @@ rebuildpaper : FORCE
 #%.buildPDF:  %.build
 #	${MAKE} PDF_BUILD=1 ${RESDIR}/$*.pdf
 
-PS2PDF = pstopdf 
 %.buildPDFN:  
 	${PS2PDF} ${RESDIR}/$*.ps
 	${ECHO} '#!/bin/sh' > ${RESDIR}/$*.sh

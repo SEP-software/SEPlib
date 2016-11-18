@@ -3,11 +3,12 @@ source /opt/intel/compilerpro-12.0.1.107/bin/ifortvars.csh intel64
 #setenv OMP_FCLD -mp
 setenv FC "ifort -O3 "
 setenv FC gfortran
-setenv FC "ifort -O3 -openmp"
+setenv FC "ifort -O3"
 setenv CC icc 
 setenv CC icc
 setenv CC "gcc -g"
 setenv LIBS -L/usr/X11R6/lib64
+setenv X_CFLAGS -I/usr/include/netpbm
 setenv CFCDEFINES -DpgiFortran
 setenv FCDEFINES "-D_GNU_SOURCE"
 setenv FFTW_FCLD "-L/usr/local/FFTW/FFT3_INTEL/lib -lfftw3f"

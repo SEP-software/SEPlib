@@ -144,35 +144,31 @@ endif
 ifeq (${RATF90},yes)
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.rst
-	${RATFOR90}  -sep  ${RATFLAGS90} <$< >$*.unrat
-	< $*.unrat   ${F90PRE}  -C >$*.${F90EXT}
+	${RATFOR90}  -sep  ${RATFLAGS90} <$< >$*.${F90EXT}
 	${F90_COMPILE}  $*.${F90EXT}
 ifneq (${SAVE_FORTRAN}, yes)
-	@${RM} $*.${F90EXT} $*.unrat
+	@${RM} $*.${F90EXT} 
 endif
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.rs
-	${RATFOR90}  -sep  ${RATFLAGS90} <$< >$*.unrat
-	<$*.unrat  ${F90PRE}  -C >$*.${F90EXT}
+	${RATFOR90}  -sep  ${RATFLAGS90} <$< >$*.${F90EXT}
 	${F90_COMPILE}  $*.${F90EXT}
 ifneq (${SAVE_FORTRAN}, yes)
-	@${RM} $*.${F90EXT} $*.unrat
+	@${RM} $*.${F90EXT} 
 endif
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.rt
-	${RATFOR90}   <$< >$*.unrat
-	<$*.unrat  ${F90PRE}  -C >$*.${F90EXT}
+	${RATFOR90}   <$< >$*.${F90EXT}
 	${F90_COMPILE}  $*.${F90EXT}
 ifneq (${SAVE_FORTRAN}, yes)
-	@${RM} $*.${F90EXT} $*.unrat
+	@${RM} $*.${F90EXT} 
 endif
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.r
-	${RATFOR90}   <$< >$*.unrat
-	<$*.unrat  ${F90PRE}  -C >$*.${F90EXT}
+	${RATFOR90}   <$< >$*.${F90EXT}
 	${F90_COMPILE}  $*.${F90EXT}
 ifneq (${SAVE_FORTRAN}, yes)
-	@${RM} $*.${F90EXT} $*.unrat
+	@${RM} $*.${F90EXT}
 endif
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.RS
@@ -188,20 +184,18 @@ endif
 endif #END OF RATF90=yes
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.lop
-	${RATFOR90}   <$< >$*.unrat -sep
-	<$*.unrat  ${F90PRE}  >$*.${F90EXT}
+	${RATFOR90}   <$< >$*.${F90EXT} -sep
 	${F90_COMPILE}  $*.${F90EXT}
 ifneq (${SAVE_FORTRAN}, yes)
-	@${RM} $*.${F90EXT} $*.unrat
+	@${RM} $*.${F90EXT} 
 endif
 
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.clop
-	${RATFOR90}   <$< >$*.unrat -sep -complex
-	<$*.unrat  ${F90PRE}  >$*.${F90EXT}
+	${RATFOR90}   <$< >$*.${F90EXT} -sep -complex
 	${F90_COMPILE}  $*.${F90EXT}
 ifneq (${SAVE_FORTRAN}, yes)
-	@${RM} $*.${F90EXT} $*.unrat
+	@${RM} $*.${F90EXT} 
 endif
 
 
@@ -210,19 +204,16 @@ ${OBJDIR}/%.o: ${SRCDIR}/%.dclop
 	<$*.unrat  ${F90PRE}  >$*.${F90EXT}
 	${F90_COMPILE}  $*.${F90EXT}
 ifneq (${SAVE_FORTRAN}, yes)
-	@${RM} $*.${F90EXT} $*.unrat
+	@${RM} $*.${F90EXT} 
 endif
 
 
 %.${F90EXT}:	${SRCDIR}/%.lop
-	${RATFOR90}   <$< >$*.unrat -sep
-	<$*.unrat  ${F90PRE}  >$*.${F90EXT}
-	@${RM} $*.unrat
+	${RATFOR90}   <$< >$*.${F90EXT} -sep
 
 %.${F90EXT}:	${SRCDIR}/%.dclop
 	${RATFOR90}   <$< >$*.unrat -sep -dcomplex
 	<$*.unrat  ${F90PRE}  >$*.${F90EXT}
-	@${RM} $*.unrat
 
 %.${F90EXT}:	${SRCDIR}/%.clop
 	${RATFOR90}   <$< >$*.unrat -sep -complex
@@ -231,9 +222,7 @@ endif
 
 
 %.${F90EXT}:	${SRCDIR}/%.r90
-	${RATFOR90}   <$< >$*.unrat -sep
-	<$*.unrat  ${F90PRE}  >$*.${F90EXT}
-	@${RM} $*.unrat
+	${RATFOR90}   <$< >$*.${F90EXT} -sep
 
 
 #${OBJDIR}/%.o: ${SRCDIR}/%.clop
@@ -241,7 +230,7 @@ endif
 #	<$*.unrat  ${F90PRE} | ${CLOPTRAN} >$*.${F90EXT}
 #	${F90_COMPILE}  $*.${F90EXT}
 #ifneq (${SAVE_FORTRAN}, yes)
-#	@${RM} $*.${F90EXT} $*.unrat
+#	@${RM} $*.${F90EXT}
 #endif
 
 #${OBJDIR}/%.o: ${SRCDIR}/%.dclop
@@ -249,7 +238,7 @@ endif
 #	<$*.unrat  ${F90PRE} | ${DCLOPTRAN} >$*.${F90EXT}
 #	${F90_COMPILE}  $*.${F90EXT}
 #ifneq (${SAVE_FORTRAN}, yes)
-#	@${RM} $*.${F90EXT} $*.unrat
+#	@${RM} $*.${F90EXT} 
 #endif
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.img
@@ -257,29 +246,27 @@ ${OBJDIR}/%.o: ${SRCDIR}/%.img
 	<$*.unrat  ${F90PRE} | ${LOPTRAN} >$*.${F90EXT}
 	${F90_COMPILE}  $*.${F90EXT}
 ifneq (${SAVE_FORTRAN}, yes)
-	@${RM} $*.${F90EXT} $*.unrat
+	@${RM} $*.${F90EXT} 
 endif
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.r90
-	${RATFOR90}   <$< >$*.unrat
-	<$*.unrat  ${F90PRE} >$*.${F90EXT}
+	${RATFOR90}   <$< >$*.${F90EXT}
 	${F90_COMPILE}  $*.${F90EXT}
 ifneq (${SAVE_FORTRAN}, yes)
-	@${RM} $*.${F90EXT} $*.unrat
+	@${RM} $*.${F90EXT} 
 endif
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.rs90
-	${RATFOR90}  -sep  ${RATFLAGS90} <$< >$*.unrat
-	<$*.unrat  ${F90PRE}  -C >$*.${F90EXT}
+	${RATFOR90}  -sep  ${RATFLAGS90} <$< >$*.${F90EXT}
 	${F90_COMPILE}  $*.${F90EXT}
 ifneq (${SAVE_FORTRAN}, yes)
-	@${RM} $*.${F90EXT} $*.unrat
+	@${RM} $*.${F90EXT} 
 endif
 
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.FS90
 	${SAWF90} $< | sed s/C#/#/ | sed s/"DIR NOBOUNDS"// | \
-	sed s/auxpar,auxputch/auxpar/  | ${F90PRE} > $*.%{F90EXT}
+	sed s/auxpar,auxputch/auxpar/  | ${F90PRE} > $*.%{FEXT}
 	${F90_COMPILE}  $*.${F90EXT}
 ifneq (${SAVE_FORTRAN}, yes)
 	@${RM} $*.${F90EXT}
