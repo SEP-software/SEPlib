@@ -1,4 +1,4 @@
-#!@SH@
+#!/usr/bin/sh
 # ----------
 #$=head1 NAME
 #$ 

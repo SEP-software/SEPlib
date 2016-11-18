@@ -1,4 +1,4 @@
-#!@CSH@ -f
+#!/usr/bin/csh -f
 #$
 #$=head1 NAME
 #$
