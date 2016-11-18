@@ -29,3 +29,5 @@ depcomp
 autom4te.cache
 aclocal.m4
 config.guess
+junk.mod
+*.sw*

@@ -49,5 +49,6 @@ TARGET_LINK_LIBRARIES(Patch  sepaux sep3d sep)
 TARGET_LINK_LIBRARIES(Scat3d  superset sep3d sep)
 TARGET_LINK_LIBRARIES(Window3d  superset sep3d sep)
 TARGET_LINK_LIBRARIES(Reshape  superset sep3d sep)
+install(TARGETS Scat DESTINATION bin)
 
 
