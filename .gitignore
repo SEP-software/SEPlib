@@ -10,3 +10,8 @@ ylwrap
 *~
 sitedef.h
 m4
+*.bin
+*.include
+ltmain.sh
+.libs
+.deps
