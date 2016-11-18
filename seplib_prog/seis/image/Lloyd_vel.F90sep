@@ -46,7 +46,7 @@
 program lloyd
 use sep3d_struct_mod
 use lloyd_mod
-use sep
+use sep_mod
 implicit none
 type(sep3d) :: slow_s
 real, allocatable :: slow(:),bound(:),ref_slow(:),slice(:),junk(:,:)
@@ -55,7 +55,7 @@ integer :: nref,i,iref,izs,ia,ib,imap,n(3),ntot
 logical :: vel_map,notfirst
 
 call SEP_ADD_DOC()
-call sep_init(SOURCE)
+call sep_init()
 call from_param("nref",nref,4)
 call from_param("vel_map",vel_map,.false.)
 call init_lloyd();
@@ -83,7 +83,8 @@ notfirst=.false.
 ntot=0
 iref=0
 do izs=1,n(3)
-   call sreed("in",slow,size(slice)*4)
+   if(size(slice)*4/= sreed("in",slow,size(slice)*4))&
+    call seperr("trouble reading in")
    slice=1./slow
    iref=lloyd_go(slice,ref_slow,nref,bound,err,iref)
    ntot=ntot+iref
@@ -96,12 +97,14 @@ do izs=1,n(3)
        end do
        slow(ib)=1./ref_slow(imap)
      end do
-     call srite("out",slow,size(slow)*4)
+     if(4*size(slow)/= srite("out",slow,size(slow)*4)) &
+      call seperr("trouble writing out data")
    else
      junk=-1
      junk(1:iref,1)=ref_slow
      junk(1:iref,2)=bound
-     call srite("out",junk,size(junk)*4)
+     if(size(junk)*4/= srite("out",junk,size(junk)*4))&
+       call seperr("trouble writing out")
    end if
      
 end do

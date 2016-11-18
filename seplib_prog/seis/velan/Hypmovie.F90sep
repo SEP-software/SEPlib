@@ -67,7 +67,7 @@ integer, allocatable, dimension (:,:,:) :: itab1
 integer, allocatable, dimension (:,:,:) :: itab2
 integer nt, nx, nv
 call SEP_ADD_DOC()
-call SEP_INIT(SOURCE)
+call SEP_INIT()
   if (0>= hetch('n1','d',nt )) then
     call erexit('Trouble reading  n1 from history  ')
   end if

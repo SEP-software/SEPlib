@@ -86,7 +86,6 @@ use sep
 
 implicit none
 integer :: i_node,n_node,ierr
-integer, external :: sep_thread_num
 logical stat
 
 call SEP_ADD_DOC()

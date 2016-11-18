@@ -101,8 +101,8 @@ program Headdis
   character(len=128) :: temp_ch
   character(len=4096) :: key_list
   logical :: usegrid,read_more,list_keys,found
-  call SEP_ADD_DOC(SOURCE)
-  call SEP_INIT(SOURCE)
+  call SEP_ADD_DOC()
+  call SEP_INIT()
   call init_3d()
 !             GET PRELIMINARY PARAMETERS, SET SOME PROGRAM VARIABLES,
 !                   CHECK DATA, DO SOME PRELIMINARY ALLOCATION

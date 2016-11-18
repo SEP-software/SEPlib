@@ -65,7 +65,7 @@ program fx2d
   integer	n1,n2, w1,w2, k1,k2, noper,n3
   real lambda
   call SEP_ADD_DOC()
-  call sep_init(SOURCE)
+  call sep_init()
   call sep_begin_prog()
 ! get parameters from history and parameter files and set defaults
    call from_history("n1",n1)

@@ -148,7 +148,7 @@ use sep
   implicit none
   integer		n1, n2, n3
  call SEP_ADD_DOC()
- call SEP_INIT(SOURCE)
+ call SEP_INIT()
     if (0>= hetch('n1','d',n1 )) then
       call erexit('Trouble reading  n1 from history  ')
     end if

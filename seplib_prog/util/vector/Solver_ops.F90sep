@@ -77,7 +77,7 @@ integer :: blocks
 logical :: esize8,verb
 real :: scr,sci
 
-call sep_init(SOURCE)
+call sep_init()
 call SEP_ADD_DOC()
 call sep_begin_prog()
 

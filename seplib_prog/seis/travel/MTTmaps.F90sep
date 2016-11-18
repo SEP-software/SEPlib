@@ -177,7 +177,7 @@ real 	rmax,zmax,apmax,v,thetamax
 !      input slowness map parameters
 !
 call SEP_ADD_DOC()
-call sep_init(SOURCE)
+call sep_init()
 call sep_begin_prog()
   if (0>= hetch('n1','d',nz )) then
     call erexit('Trouble reading  n1 from history  ')

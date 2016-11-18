@@ -100,7 +100,7 @@ use sep
 implicit none
 real, allocatable, dimension (:) :: hdrs
 call SEP_ADD_DOC()
-call SEP_INIT(SOURCE)
+call SEP_INIT()
 allocate (hdrs(6))
 call submain (hdrs)
 end program zyxabc 

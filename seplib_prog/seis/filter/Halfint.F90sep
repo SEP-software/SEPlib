@@ -60,7 +60,7 @@ program halfint_it
   real,allocatable :: pp(:), qq(:)
   integer conj,inv, n1,n2,n3
   call SEP_ADD_DOC()
-  call sep_init(SOURCE)
+  call sep_init()
   call sep_begin_prog()
 ! read input parameter and allocate working space
   call from_history("n1",n1)

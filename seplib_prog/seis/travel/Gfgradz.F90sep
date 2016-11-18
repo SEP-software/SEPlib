@@ -88,7 +88,7 @@ program  Gfgradz
   implicit none
   integer		n1, n2
   call SEP_ADD_DOC()
-  call SEP_INIT(SOURCE)
+  call SEP_INIT()
   call sep_begin_prog()
     if (0>= getch('n1','d',n1 )) then
       call erexit('Trouble reading  n1 from param  ')

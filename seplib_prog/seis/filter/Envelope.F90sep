@@ -57,7 +57,7 @@ program envelope
   complex ,allocatable::cdata(:), ctop(:)
 
   call SEP_ADD_DOC()
-  call sep_init(SOURCE)
+  call sep_init()
 
   call from_history("n1",xn1)
   call from_history("n2",xn2,1)

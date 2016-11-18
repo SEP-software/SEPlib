@@ -65,7 +65,7 @@ program Stolt
   !! input  is kz-khx-khy-kmx-kmy
   !! output is kz-khx-khy-kmx-kmy-ro
 
-  use sep
+  use sep_mod
   use utilities_mod
   use storm_mod
 
@@ -80,7 +80,7 @@ program Stolt
 
   logical     :: verb, push, scale
   real        :: eps,vel
-  integer     :: stat
+  integer     :: stat,ierr
 
   !! z-hx-hy-ngathers
   complex, dimension(:,:,:,:), pointer :: data
@@ -182,14 +182,14 @@ program Stolt
            call sep_write(data)
         end do
      end do
-  call sseek('out',0,0)
+  ierr= sseek('out',0,0)
   if(verb) write(0,*) "OK"
 
   !----------------------------------------------------------------
   call storm_init(nth,az,ahx,ahy,amx,amy,eps,push,scale)
 
   !----------------------------------------------------------------
-     call sseek('in',0,0)
+     ierr= sseek('in',0,0)
 
      do imy=1,amy%n
         !----------------------------------------------------------------     

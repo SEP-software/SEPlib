@@ -118,7 +118,7 @@ program Gauss
   integer i1,i2,i3,ngauss,ierr,igauss
   real,dimension(:,:), allocatable :: array
   real,allocatable :: max1(:),max2(:),max3(:),maxvel(:),var(:)
-  call sep_init(SOURCE)
+  call sep_init()
   call SEP_ADD_DOC()
   call sep_begin_prog()
 !READ IN THE PARAMETERS
