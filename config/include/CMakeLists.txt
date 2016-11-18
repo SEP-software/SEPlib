@@ -41,7 +41,8 @@ set(SEPINCDIR ${CMAKE_INSTALL_PREFIX}/include)
 
  
   set(xin  "${CMAKE_CURRENT_SOURCE_DIR}/local.defs.in")
-  set(xout "${CMAKE_CURRENT_BINARY_DIR}/${fileOut}")
+  set(xout "${CMAKE_CURRENT_BINARY_DIR}/local.defs")
   configure_file ( ${xin} ${xout})
 
-install(FILES ${DONOTHING} ${xout} DESTINATION include)
+MESSAGE("FILES ${DONOTHING} ${xout} DESTINATION include")
+install(FILES ${DONOTHING}  DESTINATION include)
