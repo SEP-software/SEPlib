@@ -15,3 +15,9 @@ m4
 ltmain.sh
 .libs
 .deps
+libtool
+install-sh
+missing
+stamp-h1
+configure
+config.sub
