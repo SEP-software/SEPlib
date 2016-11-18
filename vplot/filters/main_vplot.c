@@ -109,7 +109,6 @@
  *  Bob Clapp 10-98  Switched to POSIX (ala Sloaris) for LINUX signals
  */
 
-#include<sitedef.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -136,16 +135,8 @@ extern char     sepheadwhere[];
 #endif /* SEP */
 
 
-#if defined(HAVE_TERMIO_H)
 #include	<termio.h>
-#else
-#if defined (HAVE_SGTTY_H)
 #include	<sgtty.h>
-#else
-#include	<sys/ioctl.h>
-#include	<sgtty.h>
-#endif
-#endif /* USG */
 #include	<sys/types.h>
 #include	<sys/stat.h>
 #include	<ctype.h>
@@ -167,56 +158,6 @@ extern char     sepheadwhere[];
 #include	"./include/extern.h"
 
 
-#if defined(HAVE_TERMIO_H)
-#else /* USG */
-/*
- * signal catching
- */
-#ifdef SIGFNC_RTN_VOID
-void            cleanup (void);
-#else
-int             cleanup (void);
-#endif
-int             signum[] =
-{
-#ifdef LINUX
- SIGHUP, SIGINT, SIGQUIT, SIGIOT, SIGBUS, SIGPIPE, SIGTERM, SIGXCPU, SIGXFSZ
-#else
- SIGHUP, SIGINT, SIGQUIT, SIGIOT, SIGEMT, SIGPIPE, SIGTERM, SIGXCPU, SIGXFSZ
-#endif
-};
-#define NOSIG (sizeof (signum)/sizeof (int))	/* number of signals caught */
-#if defined(SOLARIS ) || defined(LINUX)
-struct sigaction   errhandler =
-{
-#ifdef LINUX
- cleanup, 0, 0
-#else
- 0, cleanup, 0
-#endif
-};
-struct sigaction   ignored =
-{
-#ifdef LINUX
- SIG_IGN, 0, 0
-#else
- 0, SIG_IGN, 0
-#endif
-};
-struct sigaction   oldvec;
-#else /*SOLARIS*/
-int             sigvec ();
-struct sigvec   errhandler =
-{
- cleanup, 0, 0
-};
-struct sigvec   ignored =
-{
- SIG_IGN, 0, 0
-};
-struct sigvec   oldvec;
-#endif /*SOLARIS*/
-#endif /* USG */
 
 /* the name of the temporary file */
 static char *tspoolnam=(char*)NULL;
@@ -354,44 +295,7 @@ MIXED		vartemp;
 
     nulldev ();			/* Just to make sure it gets loaded */
 
-#if defined(HAVE_TERMIO_H)
 
-#else /* USG */
-    /*
-     * This getpar for signal is only included for debugging purposes. By
-     * using a signal option, one can stop any signals from being caught. 
-     */
-    vartemp.s = &(string[0]);
-    if (getpar ("signal", "s", vartemp) == 0)
-    {
-/*#ifdef SOLARIS*/
-#if defined(SOLARIS) || defined(LINUX)
-        sigfillset(&(errhandler.sa_mask));
-#endif
-	for (ii = 0; ii < NOSIG; ++ii)
-	{
-#if defined(SOLARIS) || defined(LINUX)
-	    if (-1 == sigaction (signum[ii], &ignored, &oldvec))
-	    {
-		ERR (FATAL, name, "Bad sigvec call!");
-	    }
-	    if (oldvec.sa_handler == ignored.sa_handler)
-		(void) sigaction (signum[ii], &oldvec, (struct sigaction *) NULL);
-	    else
-		(void) sigaction (signum[ii], &errhandler, (struct sigaction *) NULL);
-#else
-	    if (-1 == sigvec (signum[ii], &ignored, &oldvec))
-	    {
-		ERR (FATAL, name, "Bad sigvec call!");
-	    }
-	    if (oldvec.sv_handler == ignored.sv_handler)
-		(void) sigvec (signum[ii], &oldvec, (struct sigvec *) NULL);
-	    else
-		(void) sigvec (signum[ii], &errhandler, (struct sigvec *) NULL);
-#endif
-	}
-    }
-#endif /* USG */
 
 /*
  ****************************************************************************
@@ -630,46 +534,6 @@ MIXED		vartemp;
     return 0;
 }
 
-#if defined(HAVE_TERMIO_H)
-#else /* USG */
-#ifdef SIGFNC_RTN_VOID
-void cleanup (void)
-#else
-int cleanup (void)
-#endif
-{
-#ifndef SOLARIS
-#ifndef LINUX
-    sigblock (~(SIGKILL | SIGSTOP | SIGCONT));
-#endif
-#endif
-    char            dummystr[] = " "; 
-    dev.close (CLOSE_INTERRUPT);
-    message (MESG_ON,dummystr);
-    ERR (COMMENT, name, "Interrupted out.");
-    dev.close (CLOSE_DONE);
-    /*  delete the temporary copy of piped input if there is one*/
-    removtemp();
-    /*
-     * Let them see what they are doing again 
-     */
-    if (!allowecho)
-    {
-/*#ifdef SOLARIS*/
-#if defined(SOLARIS) || defined(LINUX)
-	ioctl (pltoutfd, TCSETAW, (char *) (&tty_clean_state));
-#else
-	ioctl (pltoutfd, TIOCLSET, (char *) (&tty_clean_local_mode));
-	ioctl (pltoutfd, TIOCSETN, (char *) (&tty_clean_state));
-#endif
-    }
-    exit (0);
-#ifndef SIGFNC_RTN_VOID
-/*NOTREACHED*/
-    return 0;
-#endif
-}
-#endif /* USG */
 
 /* routine to copy a file to a temporary file, used to copy stdin so that
  * it can be reread as required

@@ -51,25 +51,14 @@
  * Bob Clapp 10/98 
  *      Changed signals from bsd to posix1 for linux
  */
-#include	<sitedef.h>
 #include	<stdio.h>
 #include	<math.h>
-#if defined(HAVE_TERMIO_H)
 #include	<termio.h>
-#endif
-#if defined(SYS_IOCTL_H)
 #include	<sys/ioctl.h>
-#endif
-#if defined(HAVE_SGTTY_H)
 #include	<sgtty.h>
-#endif
-#if  defined(HAVE_SYS_TYPES_H)
 #include	<sys/types.h>
-#endif
 
-#if  defined(HAVE_SYS_STAT_H)
 #include	<sys/stat.h>
-#endif
 #include	<fcntl.h>
 #include	<ctype.h>
 #include	<string.h>
@@ -97,15 +86,8 @@
 #define		GETPAR	getpar
 #endif /* SEP */
 
-#if defined(HAVE_TERMIO_H)
 struct termio	tty_clean_state;
 struct termio	tty_plot_state;
-#else
-struct sgttyb   tty_clean_state;
-struct sgttyb   tty_plot_state;
-int             tty_clean_local_mode;
-int             tty_plot_local_mode;
-#endif /* USG */
 
 /* 
  * The following variables must ALWAYS
@@ -338,13 +320,6 @@ struct stat     pltoutstat;
 FILE           *pltout, *pltin;
 FILE           *controltty;
 char            outbuf[BUFSIZ];
-#if defined(HAVE_STDLIB_H)
-#include <stdlib.h>
-#else
-char           *malloc (size_t);
-char           *realloc (char *, size_t);
-char           *getenv (const char *);
-#endif
 char            group_name[MAXFLEN + 1];
 int             group_number = 0;
 FILE           *pltinarray[MAXIN];
@@ -488,7 +463,6 @@ MIXED		vartemp;
     getpar ("echo", "1", vartemp);
     if (!allowecho)
     {
-#if defined(HAVE_TERMIO_H)
 	if (ioctl (pltoutfd, TCGETA, &tty_clean_state) == -1)
 	{
 		ERR (FATAL, name, "Bad ioctl call!");
@@ -499,18 +473,6 @@ MIXED		vartemp;
 	{
 		ERR (FATAL, name, "Bad ioctl call! (2)");
 	}
-#else /* USG */
-	ioctl (pltoutfd, TIOCGETP, (char *) (&tty_clean_state));
-	bcopy ((char *) (&tty_clean_state), (char *) (&tty_plot_state),
-	       sizeof (struct sgttyb));
-	ioctl (pltoutfd, TIOCLGET, (char *) (&tty_clean_local_mode));
-	tty_plot_local_mode = tty_clean_local_mode | LLITOUT;
-	ioctl (pltoutfd, TIOCLSET, (char *) (&tty_plot_local_mode));
-	tty_plot_state.sg_flags &= (~ECHO);
-	tty_plot_state.sg_flags &= (~LCASE);
-	tty_plot_state.sg_flags |= (CBREAK);
-	ioctl (pltoutfd, TIOCSETN, (char *) (&tty_plot_state));
-#endif /* USG */
     }
     vartemp.i = &endpause;
     getpar ("endpause", "1", vartemp);

@@ -26,11 +26,7 @@
 /*
  * mandatory declarations
  */
-#ifdef SEP
-char            name[] = "Vppen";
-#else
-char            name[] = "vppen";
-#endif
+char            name[] = "Svppen";
 #include "vpdoc.h"
 
 /*

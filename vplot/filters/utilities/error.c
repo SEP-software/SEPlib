@@ -40,7 +40,6 @@
  * which in turn must go through message.
  */
 
-#include <sitedef.h>
 
 #if HAVE_STDLIB_H
 #include <stdlib.h>
@@ -146,14 +145,7 @@ char		dummystring[1]={'\0'};
 	}
 	if (!allowecho)		/* restore terminal to original tty state */
 	{
-#if defined(HAVE_TERMIO_H)
 	    ioctl ((int) (fileno (pltout)), TCSETAW, &tty_clean_state);
-#else /* USG */
-	    (void) ioctl ((int) (fileno (pltout)), TIOCLSET,
-			  (char *) (&tty_clean_local_mode));
-	    (void) ioctl ((int) (fileno (pltout)), TIOCSETN,
-			  (char *) (&tty_clean_state));
-#endif /* USG */
 	}
 	exit (-1);
     }

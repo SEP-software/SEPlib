@@ -26,7 +26,6 @@
  & Bob Clapp
  *  Changed signals from BSD to POSIX1 for LINUX
  */
-#include <sitedef.h>
 
 #include	<stdio.h>
 #include	<stdlib.h>
@@ -35,16 +34,7 @@
 #define		GETPAR	getpar
 
 
-#if defined(HAVE_TERMIO_H)
 #include	<termio.h>
-#else /* USG */
-#ifdef LINUX
-#include	<bsd/sgtty.h>
-#else
-#include	<sys/ioctl.h>
-#include	<sgtty.h>
-#endif
-#endif /* USG */
 #include	<sys/types.h>
 #include	<sys/stat.h>
 #include	<ctype.h>
@@ -153,14 +143,9 @@ char		dummystr[] = " ";
      */
     if (!allowecho)
     {
-#if defined(HAVE_TERMIO_H)
 	if (ioctl (pltoutfd, TCSETAW, &tty_clean_state) == -1)
 	{
 		ERR (FATAL, name, "Bad ioctl call!");
 	}
-#else /* USG */
-	ioctl (pltoutfd, TIOCLSET, (char *) (&tty_clean_local_mode));
-	ioctl (pltoutfd, TIOCSETN, (char *) (&tty_clean_state));
-#endif /* USG */
     }
 }

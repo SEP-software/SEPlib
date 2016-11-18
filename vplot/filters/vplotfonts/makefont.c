@@ -88,21 +88,14 @@
  * - Joe Dellinger, Stanford University Dept of Earth Science
  */
 
-#include <sitedef.h>
 #include <stdio.h>
 #include "../include/params.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#if HAVE_STDLIB_H
 #include <stdlib.h>
-#else
-extern char    *malloc (size_t);
-#endif
-#if HAVE_STRING_H
 #include <string.h>
-#endif
 
 #define EOCBIT 0x8000	/* END OF CHARACTER MARK OR POLYGON BIT */
 #define DRAWBIT 0x4000	/* DRAW BIT */

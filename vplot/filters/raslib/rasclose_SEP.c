@@ -37,7 +37,6 @@ FILE           *colout;
     switch (status)
     {
     case CLOSE_NORMAL:
-#ifdef SEP
 	Puthead ("Color table:\n");
 	for (value = 0; value < NCOLOR; value++)
 	{
@@ -48,7 +47,6 @@ FILE           *colout;
 	    }
 	}
 	Puthead ("\n");
-#endif
 
 	if (!grf_format && esize == 1 && colfile[0])
 	{

@@ -24,6 +24,7 @@ DQ	\"([^"\n]*\"\")*[^"\n]*["\n]
 #include <stdlib.h>
 #include <ctype.h>
 #include "../loclib/fastpar.h"
+ extern ssize_t read (int __fd, void *__buf, size_t __nbytes) __wur;
 static int massage(char *string,char *out,int len,int quote);
 
 
