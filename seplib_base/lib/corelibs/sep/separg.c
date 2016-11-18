@@ -62,7 +62,6 @@ B<sep>
 /*	
  * Written Bob: 030426 
  */
-#include <sitedef.h>
 #include <string.h>
 #include <stdio.h>
 #include <sep_main_external.h>

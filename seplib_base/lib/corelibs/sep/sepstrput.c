@@ -7,7 +7,6 @@
  * Author: dave 7/27/94  Made sepstrputlast more efficient.
  * Revised: stew 2/25/95 Deleted unused inline[256] variable
  */
-#include <sitedef.h>
 #if HAVE_STRING_H
 #include <string.h>
 #endif

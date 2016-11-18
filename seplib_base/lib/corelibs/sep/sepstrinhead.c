@@ -29,11 +29,6 @@
  modified Stew Levin   6/2/99  Replace ifdef to to GNU standard
  */
 
-#include <sitedef.h>
-#ifdef RS6000
-#undef __STR__
-#endif
-
 #if defined(CRAY) && defined(__STDC__)
 #undef __STDC__
 #include <stdio.h>
@@ -43,13 +38,8 @@
 #endif
 #include <string.h>
 
-#ifdef HAVE_ERRNO_H
 #include <errno.h>
-#endif
 
-#ifndef STDC_HEADERS
-extern int errno;
-#endif
 
 
 #include <sys/types.h>

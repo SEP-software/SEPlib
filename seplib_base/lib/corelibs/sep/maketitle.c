@@ -16,7 +16,6 @@ Print program name, user, time and system in header file
 /* maketitle 2/13/91 dave: changed for ansi and POSIX compatibility */
 /* maketitle 7/18/97  bob: prototypes*/
  
-#include <sitedef.h>
 #if HAVE_STRING_H
 #include <string.h>
 #endif

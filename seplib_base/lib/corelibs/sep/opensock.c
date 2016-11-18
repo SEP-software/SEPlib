@@ -89,17 +89,11 @@
  */
 
 
-#include <sitedef.h>
 
 #include <sys/types.h>
 
-#ifdef HAVE_ERRNO_H
 #include <errno.h>
-#endif
 
-#ifndef STDC_HEADERS
-extern int errno;
-#endif
 
 #include <sys/time.h>
 #include <sys/ioctl.h>
@@ -116,11 +110,7 @@ extern int errno;
 #include <netdb.h>
 #include <string.h>
 #include <unistd.h>
-#if defined (HAVE_STDLIB_H)
 #include<stdlib.h>
-#else
-extern int atoi();
-#endif /* HAVE_STDLIB  */
 
 #include "sep_main_internal.h"
 
@@ -294,6 +284,7 @@ int opensock2( remhost, portstr )
 #include <signal.h>
 static int ringring;
 
+#define RETSIGTYPE void
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
 static RETSIGTYPE catchem( int signo ) { ringring = 0; }

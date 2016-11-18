@@ -1,7 +1,7 @@
 
 COPY_FILES=sep_old_external.h sep_pars_external.h \
 sep3d.h sepcube.h prototypes.h sep_fortran.h seplib.h \
-sep_main_external.h vplot.h glplot.h sepmath.h sepmathf.h \
+sep_main_external.h vplot.h  sepmath.h sepmathf.h \
 sepvector.h sepvectorf.h sepfftf.h sepfft.h septravel.h sepvelan.h \
 sepvelanf.h superset.h cfortran.h sepaux.h sepconvert.h \
 sepfilterf.h sepfilter.h hwt.h mpi_sep.h sep3dc.h sulib.h sep_par.h\

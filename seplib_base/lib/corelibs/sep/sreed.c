@@ -109,7 +109,6 @@ Modified: Stew Levin  05-08-96
 Modified: Robert Clapp 08-18-97 Added prototypes
 Modified: Robert Clapp 6-1-99 Switched to GNU Prototypes
 */
-#include <sitedef.h>
 #include <stdio.h>
 #include <assert.h>
 
@@ -117,20 +116,12 @@ Modified: Robert Clapp 6-1-99 Switched to GNU Prototypes
 #include <sepcube.h>
 #include "sep_main_internal.h"
 
-#if defined(HAVE_SYS_TYPES_H)
 #include <sys/types.h>
-#endif
-#if defined(HAVE_SOCKET)
 #include <sys/socket.h>
-#endif
 
-#if defined(HAVE_RPC_RPC_H)
 #include <rpc/rpc.h>
-#endif
 
-#if defined(HAVE_RPC_TYPES_H)
 #include <rpc/types.h>
-#endif
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
@@ -139,7 +130,71 @@ _XFUNCPROTOEND
 #else
 static int sreed_xdr();
 #endif
+#if NeedFunctionPrototypes
+_XFUNCPROTOBEGIN
+long long sreedll(const char *tag, void *buf, const long long nbytes)
+_XFUNCPROTOEND
+#else
+long long sreed(tag,buf,nbytes)
+const char *tag;
+char *buf;
+const long long nbytes;
+#endif
+{
+streaminf *info;
 
+
+
+/*fprintf(stderr,"SREED %d \n",nbytes);*/
+
+if( nbytes== 0 ) return 0;
+
+assert( tag != 0 );
+assert( buf != 0 );
+
+info = tag_info( tag, TAG_IN );
+
+assert( info != 0 );
+
+/* check if this is the first I/O for this tag */
+if( info->ioinf == 0 ){
+    /* if it is then we open the dataset */
+    (*info->open_func)( info, &(info->ioinf) );
+     if( !info->valid ){seperr("sreed(): invalid input tag %s\n",tag);}
+}
+
+#ifdef TMC_DISK_ARRAY
+
+if( is_tmc_array(buf) && info->iotype != CM_SDA_IO && 
+			 info->iotype != CM_REG_IO  ){
+     seperr("sreed(): tag %s, CM array and not setup for CM  I/O \n",tag);
+}
+
+if( IS_TMC_FMT(info->format_num) && info->iotype != CM_SDA_IO ){
+     seperr("sreed(): tag %s, raw CM format and not setup for SDA I/O \n",tag);
+}
+
+#endif
+
+/* check to see if the data is compressed, if so return error */
+
+/* If native format is the same as xdr (SUN,IBM,HP etc.) we don't need
+ * any conversions */
+
+
+#ifdef WORDS_BIGENDIAN
+     	return( (long long)(*info->read_func)(info,info->ioinf, buf,nbytes));
+
+#else
+
+if( IS_XDR_FMT( info->format_num ) ){
+	return( sreed_xdr(info,buf,nbytes,info->format_num));
+}else{
+     	return((long long) (*info->read_func)(info,info->ioinf, buf,nbytes));
+}
+#endif
+
+}
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
 int sreed(const char *tag, void *buf, int nbytes)

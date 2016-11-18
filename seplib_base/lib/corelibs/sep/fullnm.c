@@ -65,7 +65,6 @@ B<sep>
  */
 
 
-#include <sitedef.h>
 #include <prototypes.h>
 
 /* FROM GNU Bash */

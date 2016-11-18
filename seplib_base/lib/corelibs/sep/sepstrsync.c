@@ -46,7 +46,6 @@
  *         supporting Unix domain sockets.
  * Revised: Robert Clapp 7/19/97 Prototypes
  */
-#include <sitedef.h>
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>

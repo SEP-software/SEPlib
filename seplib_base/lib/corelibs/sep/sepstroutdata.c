@@ -16,7 +16,6 @@
  * Recised: R.G. Clapp  7-19-97 Bob Prototype=good
  *
  */
-#include <sitedef.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <limits.h>

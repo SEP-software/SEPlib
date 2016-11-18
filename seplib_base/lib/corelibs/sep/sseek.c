@@ -94,7 +94,6 @@ B<sep>
    
  */
 
-#include <sitedef.h>
 #include <stdio.h>
 #include <string.h>
 #include<math.h>

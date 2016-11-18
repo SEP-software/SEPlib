@@ -15,7 +15,6 @@ Opens up dataset of type STREAMSCR
  Modified: Bob 7/97 Changed prototypes
  *
  */
-#include <sitedef.h>
 #include <stdio.h>
 #include <fcntl.h>
 

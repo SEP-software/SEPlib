@@ -15,7 +15,6 @@
  *                                opens the "in" file.
  * Revised: Stew Levin  5/6/95    Don't use non-posix strdup()
  */
-#include <sitedef.h>
 #include<stdlib.h>
 #if defined(CRAY) && defined(__STDC__)
 #undef __STDC__

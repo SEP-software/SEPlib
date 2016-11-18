@@ -9,7 +9,6 @@
  * Revised 12-18-97 biondo  made type='l' equivalent to type='1' 
    for saw compatibility
  */
-#include <sitedef.h>
 #include    <stdio.h>
 #include "fastpar.h"
 #include <sepcube.h>

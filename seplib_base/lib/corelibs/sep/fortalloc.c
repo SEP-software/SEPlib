@@ -36,7 +36,6 @@
  * 
  */
 
-#include <sitedef.h>
 #include "sep_fortran_internal.h"
 #include <stdlib.h>
 

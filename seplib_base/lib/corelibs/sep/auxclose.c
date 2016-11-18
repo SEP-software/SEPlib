@@ -56,7 +56,6 @@ WHERE
  * Revised: 10/21/94 Dave Nichols, check for valid close fn. before using it.
  * Revised:  7/19/97 Robert Clapp, prototyping, returns
  */
-#include <sitedef.h>
 #include <stdio.h>
 #include "streamlist.h"
 #include "sep_main_internal.h"

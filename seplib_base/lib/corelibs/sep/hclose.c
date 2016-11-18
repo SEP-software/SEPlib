@@ -76,7 +76,6 @@ B<sep>
  *                                
  */
 
-#include <sitedef.h>
 #include <stdio.h>
 #include "sep_main_internal.h"
 #include <sep_main_external.h>

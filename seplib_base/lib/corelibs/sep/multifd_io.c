@@ -22,19 +22,14 @@
  * Revised:  6/2/98 Bob:  Added GNU ifedfdefs
  */
 
-#include <sitedef.h>
-#if defined(HAVE_FCNTL_H)
 #include <fcntl.h>
-#endif
 
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
 
 
-#ifdef HAVE_ERRNO_H
 #include <errno.h>
-#endif
 
 #ifndef STDC_HEADERS
 extern int errno;

@@ -1,4 +1,3 @@
-#include <sitedef.h>
  
 #ifdef RS6000
 #undef __STR__
@@ -7,13 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#ifdef HAVE_ERRNO_H
 #include <errno.h>
-#endif
-
-#ifndef STDC_HEADERS
-extern int errno;
-#endif
 
 #include <sys/types.h>
 #include <sys/stat.h>

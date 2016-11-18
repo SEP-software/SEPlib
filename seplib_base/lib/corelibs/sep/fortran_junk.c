@@ -20,6 +20,30 @@ int srite2_c(const char *tag,void *v, const int sz,const char *typ){
 int srite2_i(const char *tag,void *v, const int sz,const char *typ){
   return  srite2(tag,v,sz,typ);
 }
+long long sreedll_i(const char *tag,void *v, const long long sz){
+  return sreed(tag,v,sz);
+}
+long long sreedll_c(const char *tag,void *v, const long long sz){
+  return sreed(tag,v,sz);
+}
+long long sreedll_x(const char *tag,void *v, const long long sz){
+  return sreed(tag,v,sz);
+}
+long long sreedll_f(const char *tag,void *v, const long long sz){
+  return sreed(tag,v,sz);
+}
+long long sritell_x(const char *tag,void *v, const long long sz){
+  return srite(tag,v,sz);
+}
+long long sritell_c(const char *tag,void *v, const long long sz){
+  return srite(tag,v,sz);
+}
+long long sritell_i(const char *tag,void *v, const long long sz){
+  return srite(tag,v,sz);
+}
+long long sritell_f(const char *tag,void *v, const long long sz){
+  return srite(tag,v,sz);
+}
 int sreed_f(const char *tag,void *v, const int sz){
   return sreed(tag,v,sz);
 }

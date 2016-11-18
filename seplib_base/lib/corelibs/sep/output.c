@@ -112,7 +112,6 @@ DISTR
  Revised: D. Nichols 7/29/91  Use filename expansion routine expandnm()
  Revised: R. clapp  7/18/97   Added lib_internal include
  */
-#include <sitedef.h>
 #include <stdio.h>
 #include <sep_main_external.h>
 #include "sep_main_internal.h"

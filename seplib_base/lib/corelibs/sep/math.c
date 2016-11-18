@@ -78,7 +78,6 @@ Author:Robert G. Clapp
 #define NOT_SET -1
 
 
-#include<sitedef.h>
 #if HAVE_STRING_H
 #include <string.h>
 #endif

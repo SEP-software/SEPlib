@@ -59,7 +59,6 @@ KEYWORDS: file create open.
  *                                     what the if conditions hsould be
  */
 
-#include <sitedef.h>
 #include <sepcube.h>
 #include <fcntl.h>
 #include <unistd.h>

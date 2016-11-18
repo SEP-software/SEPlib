@@ -1,5 +1,6 @@
 #ifndef SUPERSET_H
 #define SUPERSET_H dfad
+#include<sepConfig.h>
 #include<sep3d.h>
 
 

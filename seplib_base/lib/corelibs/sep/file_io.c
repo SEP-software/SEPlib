@@ -19,7 +19,6 @@
    Modified Robert G. Clapp 12/18/97 Added STREAMSOCKOUT
   
  */
-#include <sitedef.h>
 #include <fcntl.h>
 #include <assert.h>
 #include <stdio.h>

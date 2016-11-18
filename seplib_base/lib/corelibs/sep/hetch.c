@@ -109,7 +109,6 @@ B<sep>
  * Revised  dave 12/17/91 Added call to force input buffering for pipes.
  * Revised  dave     1994 Use new sepstrpar function.
  */
-#include <sitedef.h>
 #include <stdio.h>
 
 #include <sep_pars_external.h>

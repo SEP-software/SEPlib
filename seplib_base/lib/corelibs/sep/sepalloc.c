@@ -71,7 +71,6 @@ B<sep>
  * modified   7/20/97 R. Clapp: Moved malloc deifintions ifdef to sepcube.h
  *                              malloc is used everywhere, seems to be a waste;
  */
-#include <sitedef.h>
 #include <sep_main_external.h>
 #include <stdlib.h>
 #include <stdio.h>

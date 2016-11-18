@@ -75,7 +75,6 @@ B<sep>
  * Revised: dave 9/17/90  Use stdarg for ANSI-C compilers
  * Revised: Bob 10/99  Introduce auxputhead
  */
-#include <sitedef.h>
 #include <stdio.h>
 #include    "streamlist.h"
 #include <sep_pars_external.h>

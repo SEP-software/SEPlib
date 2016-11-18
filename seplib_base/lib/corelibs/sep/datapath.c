@@ -104,13 +104,8 @@ B<sep>
 	Revised R. Clapp 6/1/99 Switched to GNU protyping
  */
 
-#include <sitedef.h>
 
-#if defined(HAVE_SYS_UTSNAME_H)
 #include <sys/utsname.h>
-#else
-#include <sys/param.h>
-#endif
 
 #include <sepcube.h>
 #include <stdio.h>
@@ -165,8 +160,6 @@ char *datapath(datapth)
 
   	       if(getch("datapath","s",datapth))
 			; 
-	       else if((envptr = getenv("DATAPATH")) != NULL) 
-						strcpy(datapth,envptr);
 	       else if((pathfile = fopen(".datapath","r")) != NULL)
 						readpath(pathfile,datapth);
 	       else if (
@@ -178,6 +171,8 @@ char *datapath(datapth)
 	       else if ((username = getlogin()) != NULL && *username != '\0')
 						sprintf(datapth,"%s/%s/_",
 							default_dir,username);
+	       else if((envptr = getenv("DATAPATH")) != NULL) 
+						strcpy(datapth,envptr);
 	       else if ( (username = getenv("USER")) != NULL && *username != '\0')
 	 	     				sprintf(datapth,"%s/%s/_",
 							default_dir,username);

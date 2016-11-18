@@ -1,4 +1,3 @@
-#include <sitedef.h>
 #include <stdio.h>
 #if defined(HAVE_SOCKET)
 #include <sys/socket.h>

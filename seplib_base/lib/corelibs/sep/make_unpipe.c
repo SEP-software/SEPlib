@@ -44,7 +44,6 @@ B<sep>
  * Modified  5/8/96  Stew Levin, expanded strdup() to malloc + strcpy
  *                   so LINUX gcc would shut up.
 */
-#include <sitedef.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>

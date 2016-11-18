@@ -42,7 +42,6 @@ B<sep>
  *
  * Modified 7/14/83 S. Levin   added err() and perror() diagnostics
  */
-#include <sitedef.h>
 #include    <stdio.h>
 #include "sepstream.h"
 #include <assert.h>

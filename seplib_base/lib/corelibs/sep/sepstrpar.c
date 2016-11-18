@@ -27,7 +27,6 @@
  * Revised: Bob    7/18/97 prototypes
  */
 
-#include <sitedef.h>
 #include <string.h>
 #include <assert.h>
 

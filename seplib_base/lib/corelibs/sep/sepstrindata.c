@@ -14,7 +14,6 @@
  * Revised  B. Clapp   6/2/99  Start GNU conversion
  *
  */
-#include <sitedef.h>
 #include <stdio.h>
 #include <fcntl.h>
 

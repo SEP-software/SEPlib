@@ -5,7 +5,7 @@
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-extern char* get_format( char *tag );
+extern char* get_format(const  char *tag );
 extern char *expandnm(char*,char*);
 extern void grab_history(const char *tag,char *buf, int nmax,int *nsize);
 extern char *datapath(char*);
@@ -40,6 +40,8 @@ extern int snap( char*, int, int, void* );
 extern void set_format( char*, char* );
 extern int slice (char*,int,int,int,void*);
 extern int sreed_raw(char*,void*,int);
+extern long long sreedll(const char *, void *,const long long);
+extern long long sritell(const char *, void *,const long long);
 extern int sreed2(const char*,void*,int,const char*);
 extern int srite(const char*, void*, int);
 extern size_t sreed_big(const char*, void*,size_t);

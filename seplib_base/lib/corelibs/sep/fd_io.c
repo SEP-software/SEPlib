@@ -18,10 +18,7 @@
    Modified Robert  Clapp 10/6/98 replaced tell call because now non-standard
    Modified Robert  Clapp 6/1/99 Introduce GNU defs, include possixstat.h
  */
-#include <sitedef.h>
-#if defined (HAVE_FCNTL_H)
 #include <fcntl.h>
-#endif
 
 #include <unistd.h>
 #include <assert.h>
@@ -30,13 +27,7 @@
 #include "streamlist.h"
 #include "sep_main_internal.h"
 #include <sepcube.h>
-#ifdef _POSIX_SOURCE
 #include <unistd.h>
-#else /* not posix source */
-#define SEEK_SET 0
-#define SEEK_CUR 1
-#define SEEK_END 2
-#endif
 
 #include "../include/posixstat.h"
 

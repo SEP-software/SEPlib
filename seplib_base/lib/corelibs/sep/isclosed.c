@@ -17,23 +17,16 @@ Check if stream is closed and available for reuse
  * Revised: Robert G. Clapp 7/18/97    Added prototyping
  & Revised: Robert G. Clapp 6/2/99  GNUed it
  */
-#include <sitedef.h>
 #include <stdio.h>
 
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 
-#ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
-#endif
 
 
 
 
-#ifdef HAVE_ERRNO_H
 #include <errno.h>
-#endif
 
 
 

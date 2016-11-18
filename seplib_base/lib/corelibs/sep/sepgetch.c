@@ -103,7 +103,6 @@ B<sep>
  * Revided: bob    7/97   Added prototypes, include lib_internal.h
  */
 
-#include <sitedef.h>
 #include <stdlib.h>
 #include "fastpar.h"
 #include <string.h>
@@ -119,12 +118,12 @@ extern int sepxargc; extern char **sepxargv;
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-int getch( const char *tag, char *type, void *ptr )
+int getch( const char *tag, const char *type, void *ptr )
 _XFUNCPROTOEND
 #else
 int
 getch(tag,type,ptr)
-char *tag, *type;
+const char *tag, *type;
 char* ptr;
 #endif
 {
@@ -189,11 +188,11 @@ B<sep>
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-int getch_add_string(char *string)
+int getch_add_string(const char *string)
 _XFUNCPROTOEND
 #else
 int getch_add_string(string)
-char *string;
+const char *string;
 #endif
 {
      char* copy;

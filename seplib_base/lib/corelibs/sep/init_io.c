@@ -9,7 +9,6 @@
  * Revised: Bob   7/20/97 changed to NeedFunctionProto
  * Revised: Bob   12/18/97 added STREAMSOCKOUT
  */
-#include <sitedef.h>
 #include "streamlist.h"
 #include "sep_main_internal.h"
 #include <sep_main_external.h>

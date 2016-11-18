@@ -171,7 +171,6 @@ AUTHOR
          Modified: Adam Halpert : Changed "Illegal window axis" calculation (Feb 10)
 
 */
-#include <sitedef.h>
 #if HAVE_STRING_H
 #include <string.h>
 #endif

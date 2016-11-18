@@ -1,4 +1,3 @@
-#include <sitedef.h>
 /*
  interupts are disabled for improved speed 
 11-12-90	Martin Karrenbach

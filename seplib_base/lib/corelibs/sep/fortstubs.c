@@ -1,5 +1,3 @@
-#include <sitedef.h>
-#include "cfortran.h"
 #include <unistd.h>
 #include <sepcube.h>
 #include "sep_fortran_internal.h"

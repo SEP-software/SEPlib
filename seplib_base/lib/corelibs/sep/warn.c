@@ -86,7 +86,6 @@ KEYWORDS: error exit quit
  * Revised: dave 9/17/90  Use stdarg for ANSI-C compilers		
  * Revised: dave 10/9/91  renamed seperr
  */
-#include <sitedef.h>
 #include <stdio.h>
 #include <sep_main_external.h>
 #if NeedFunctionPrototypes

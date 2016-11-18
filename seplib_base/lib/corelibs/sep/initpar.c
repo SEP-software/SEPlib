@@ -44,7 +44,6 @@ B<sep>
 /*
  * Author: Stewart A. Levin   MRDC  4/14/89   
  */
-#include <sitedef.h>
 
 #if HAVE_STDLIB_H
 #include <stdlib.h>
