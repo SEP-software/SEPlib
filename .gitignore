@@ -21,3 +21,8 @@ missing
 stamp-h1
 configure
 config.sub
+config.status
+config.log
+fullpath
+makefont
+depcomp
