@@ -2,3 +2,8 @@
 Makefile.in
 *sitedef.h.in
 *Makefile
+*.lo
+*.o
+ylwrap
+*.a
+*.la
