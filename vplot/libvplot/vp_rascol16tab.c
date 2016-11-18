@@ -1,4 +1,3 @@
-#include <sitedef.h>
 #include "../include/vplot.h"
 /*
  * vp_rascoltab

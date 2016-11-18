@@ -105,26 +105,11 @@ int             doclength =
  sizeof documentation / sizeof documentation[0]
 };
 
-#include        <sitedef.h>
 #include	<stdio.h>
 #include 	<string.h>
-#if HAVE_SYS_IOCTL_H
 #include	<sys/ioctl.h>
-#endif
-#if defined(SGI) || defined(LINUX) || defined(LINUX64) || defined(CYGWIN) || defined(SGI64)
 #include	<termios.h>
-#else
-#if defined(CRAY)
-#include        <sys/ttold.h>
-#else
-#if HAVE_SGTTY_H
-#include	<sgtty.h>
-#endif
-#endif
-#endif
-#if HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
 #include	<ctype.h>
 #include	"../../include/vplot.h"
 #include	"../../filters/include/params.h"
@@ -133,11 +118,7 @@ int             doclength =
 #define MAXLINE 24*84
 #define NL  '\n'
 
-#if defined(SGI) || defined(LINUX)|| defined(LINUX64) || defined(CYGWIN) || defined(SGI64)
 struct termios  ttystat;
-#else
-struct sgttyb   ttystat;
-#endif
 #if !(defined(__stdc__) || defined(__STDC__))
 FILE           *
 fopen (), *fdopen ();
@@ -180,21 +161,13 @@ int             line_count;
      * If no arguments, and not in a pipeline, self document 
      */
     piped_in = ioctl ((fileno (stdin)),
-#if defined(SGI) || defined(LINUX) || defined(LINUX64) || defined(CYGWIN) || defined(SGI64)
 	TCGETA,
-#else
-	TIOCGETP,
-#endif
 	&ttystat);
     if (argc == 1 && !piped_in)
     {
 	for (i = 0; i < doclength; i++)
 	    printf ("%s\n", documentation[i]);
-#if defined(__stdc__) || defined(__STDC__)
 	return (0);
-#else
-	exit (0);
-#endif
     }
 
 /*

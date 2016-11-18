@@ -74,11 +74,7 @@
 #include "../include/params.h"
 #include "../include/extern.h"
  
-#ifdef SEP
 #define GETPAR getch
-#else
-#define GETPAR getpar
-#endif
 
 Display		*pen_display;
 GC		pen_gc;

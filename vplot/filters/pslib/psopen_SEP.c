@@ -103,11 +103,7 @@
 extern char    *getenv ();
 #endif
 
-#ifdef SEP
 #define GETPAR getch
-#else
-#define GETPAR getpar
-#endif
 
 
 #ifndef DEFAULT_PAPER_SIZE

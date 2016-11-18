@@ -22,7 +22,6 @@
  *      Added g/_g double precision versions
  */
 
-#include<prototypes.h>
 #include <stdio.h>
 #include "../include/vplot.h"
 #include "round.h"

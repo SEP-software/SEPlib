@@ -18,11 +18,7 @@
 #include "xtpen.h"
 
 /* declarations */
-#ifdef SEP
-char            name[] = "Xtpen";
-#else
-char            name[] = "xtpen";
-#endif
+char            name[] = "Sxtpen";
 #include "xtdoc.h"
 
 /* device routine table */

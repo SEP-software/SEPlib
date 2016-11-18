@@ -30,11 +30,7 @@
 /*
  * mandatory declarations and initializations
  */
-#ifdef SEP
-char            name[] = "Pspen";
-#else
-char            name[] = "pspen";
-#endif
+char            name[] = "Spspen";
 #include "psdoc.h"
 
 /*

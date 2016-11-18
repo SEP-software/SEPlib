@@ -15,18 +15,11 @@
 
 10/96 - Biondo :  Added V(elocity) color table
  */
-#include <sitedef.h>
 #include <stdio.h>
-#if HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
 #include <math.h>
-#if HAVE_STRING_H
 #include <string.h>
-#endif
-#if HAVE_STRINGS_H
 #include <strings.h>
-#endif
 #include <assert.h>
 #include "../include/vplot.h"
 

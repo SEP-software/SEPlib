@@ -31,12 +31,8 @@
 #include        "../include/intcom.h"
 #include        "../include/extern.h"
 
-#ifdef SEP
 #define GETPAR getch
-#else
-#define GETPAR getpar
-#endif
-
+;
 FileInfo       *inFiles;
 int		num_files;
 

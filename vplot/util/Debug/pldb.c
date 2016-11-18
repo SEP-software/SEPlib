@@ -112,34 +112,15 @@ int             doclength =
  *  Anybody want to clean this mess up?
  */
 
-#include        <sitedef.h>
 #include	<stdio.h>
-#if HAVE_STDLIB_H
 #include        <stdlib.h>
-#endif
-#if HAVE_SYS_IOCTL_H
 #include	<sys/ioctl.h>
-#endif
-#if defined(SGI) || defined(LINUX) ||defined(LINUX64) || defined(CYGWIN) || defined(SGI64)
 #include        <termios.h>
-#else
-#if defined(CRAY)
-#include        <sys/ttold.h>
-#else
-#if HAVE_SGTTY_H
-#include        <sgtty.h>
-#endif
-#endif
-#endif
 #include	<ctype.h>
 #include	"../../include/vplot.h"
 #include	"../../filters/include/params.h"
 
-#if defined(SGI) || defined(LINUX) ||defined(LINUX64) || defined(CYGWIN) || defined(SGI64)
 struct termios  ttystat;
-#else
-struct sgttyb   ttystat;
-#endif
 
 #if !(defined(__stdc__) || defined(__STDC__))
 FILE           *
@@ -182,21 +163,13 @@ int             retstat = 0;
      * If no arguments, and not in a pipeline, self document 
      */
     piped_in = ioctl ((fileno (stdin)),
-#if defined(SGI) || defined(LINUX) ||defined(LINUX64) || defined(CYGWIN)
 	TCGETA,
-#else
-	TIOCGETP,
-#endif
 	&ttystat);
     if (argc == 1 && !piped_in)
     {
 	for (i = 0; i < doclength; i++)
 	    printf ("%s\n", documentation[i]);
-#if defined(__stdc__) || defined(__STDC__)
         return (0);
-#else
-	exit (0);
-#endif
     }
 
 /*
