@@ -1,5 +1,5 @@
 module paul  
-  use quantile_mod
+  use gee_quantile_mod
   implicit none
   real, private :: p = 2.0
   contains

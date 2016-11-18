@@ -41,7 +41,7 @@
 !!$
 !!$=cut
 module irls  
-  use quantile_mod
+  use gee_quantile_mod
   implicit none
   contains
   integer function l1 (res, weight)

@@ -1,0 +1,14 @@
+cmake_minimum_required(VERSION 2.8)
+project(SEPLIB-base-lib-util-math)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../include)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/../sepaux)
+
+set (SOURCES 
+pctrist.f90   rand.f90	 vtris.f90
+ ptridiag.f90  rand_mod.f90
+ quant.f90	   sqroot.c
+  rand01.f90    subfslan.f90)
+
+
+add_library(sepmath ${SOURCES})
+install(TARGETS sepmath DESTINATION lib)

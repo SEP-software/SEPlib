@@ -1,7 +1,7 @@
 module fixbad  
 ! Given a PEF, find bad data and restore it.
   use mis2_mod
-  use quantile_mod
+  use gee_quantile_mod
   use helicon
   implicit none
   contains

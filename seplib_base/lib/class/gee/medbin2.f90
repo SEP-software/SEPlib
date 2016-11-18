@@ -1,5 +1,5 @@
 module medbin2_mod	
-  use quantile_mod
+  use gee_quantile_mod
 
   implicit none
   integer,                               private :: n1, n2, nd

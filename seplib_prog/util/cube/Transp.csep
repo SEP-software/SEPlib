@@ -19,7 +19,7 @@ Transp  <in.H >out.H
 
 =item max_memory/maxsize  -  int 
 
-       [10]  Maximum memory to use in  megabytes
+       [1000]  Maximum memory to use in  megabytes
 
 =item verb - int
 
@@ -161,7 +161,7 @@ if(*verb==1){
 
 
 if(0==getch("max_memory","d",mem)){
-  if(0==getch("maxsize","d",mem)) *mem=10;
+  if(0==getch("maxsize","d",mem)) *mem=1000;
 }
 
 

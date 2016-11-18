@@ -49,7 +49,7 @@ module pefest
   use helicon
   use misinput
   use pef
-  use quantile_mod
+  use gee_quantile_mod
   implicit none
   contains
   subroutine pefest1( niter, yy, aa)

@@ -35,7 +35,7 @@
 !!$
 !!$=cut
 !!$
-module quantile_mod  
+module gee_quantile_mod  
 ! quantile finder.    median = gee_quantile( size(a)/2, a)
   implicit none
   contains
