@@ -228,7 +228,6 @@ sep_3d *info;
 int i1;
 int n;
 float *fval;
-fprintf(stderr,"In set header \n");
 
 info = tag_info_sep3d(sep3dname, INQUIRE);  /* get info on this tag */
 if(info == SEPNULL) /* Not a valid */

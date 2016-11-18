@@ -31,3 +31,8 @@ aclocal.m4
 config.guess
 junk.mod
 *.sw*
+junk.err
+penmp
+*mod
+log
+build

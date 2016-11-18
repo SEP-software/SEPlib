@@ -574,7 +574,15 @@ contains
 !!$=cut
   subroutine sep_init (source)
     character (len=*), intent (in), optional :: source
-    call initpar ()
+    character(len=9998) :: tmp
+     integer :: nargs,i
+    call get_command_argument(0, tmp)
+    call init_args (tmp)
+    nargs= command_argument_count()
+    do  i=1,nargs
+      call get_command_argument(i,tmp)
+      call getch_add_string(tmp) 
+    end do
     if (present (source)) call doc (source)
   end subroutine sep_init
 

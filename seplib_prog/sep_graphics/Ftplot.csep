@@ -72,6 +72,8 @@ B<sep_graphics>
 
 */
 
+#define pi 3.1415926536
+
 /*
 
  KEYWORDS Fourier-transform vplot plotting
@@ -179,6 +181,7 @@ float xmin,xmax,*xminp,*xmaxp,*dist;
 
 ADD_DEF_SEP_DOC
 
+#include<complex.h>
 #include <sep.main>
 MAIN()
 {
@@ -188,7 +191,7 @@ MAIN()
   float f,df,xmins,xmaxs,fmins,fmaxs,tmins,tmaxs,ch,cw,vs,xc,yc;
   float *x,*y,x0num,dxnum,t0num,dtnum,f0num,dfnum,thi,fhi,wide;
   float rad180;
-  complex *cy;
+  float complex *cy;
   char plot[10],wate[10],string[40],slabel[40];
 
    vp_filep(outstream); /* tell plotting routines where to stick it */
@@ -213,7 +216,7 @@ MAIN()
 
   x = (float *) calloc ((lfft+2)*2,sizeof(float));
   y = x+lfft+2;
-  cy = (complex *) y;
+  cy = (float complex *) y;
   wide = 9.0;  thi = 2.25;  fhi = 2.25;
   charsz=4;  ch = charsz/20.0;  cw = 3.0*ch/5.0;  vs = 3.0*ch/10.0;
   rad180 = 180./pi; 
@@ -278,12 +281,12 @@ MAIN()
 
          /* apply time shift */
          {
-           complex tmp; float omt;
+           float complex tmp; float omt;
            for (jf=0; jf<nf; jf++){
                        omt = t0*jf*df*2.*3.1415926536;
                        tmp = cy[jf];
-                       cy[jf].re = cos(omt)*tmp.re + -sin(omt)*tmp.im;
-                       cy[jf].im = sin(omt)*tmp.re + cos(omt)*tmp.im;
+                       __real__ cy[jf] = cos(omt)*__real__ tmp+ -sin(omt)*__imag__ tmp;
+                       __imag__ cy[jf] = sin(omt)*__real__ tmp + cos(omt)*__imag__ tmp;
 
            }
          }
@@ -291,7 +294,7 @@ MAIN()
 
   if (plot[0]=='d') {
     for (jf=0; jf<nf; jf++)
-      x[jf] = cy[jf].re*cy[jf].re + cy[jf].im*cy[jf].im;
+      x[jf] =__real__ cy[jf]*__real__ cy[jf] + __imag__ cy[jf]*__imag__ cy[jf];
     minmax (x,nf,&xmin,&xmax);
     if(xmin == xmax) { xmax += .00002; }
     for (jf=0; jf<nf; jf++)
@@ -304,13 +307,13 @@ MAIN()
     }
   else if (plot[0]=='p') {
     for (jf=0; jf<nf; jf++)
-      x[jf] = atan2(cy[jf].im,cy[jf].re)*rad180;
+      x[jf] = atan2(__imag__ cy[jf],__real__ cy[jf])*rad180;
     xmin = -180; xmax = 180.0; dxnum = 180.0; x0num = xmin;
     strcpy (slabel,"PHASE (DEGREES)");
     }
   else if (plot[0]=='u') {
     for (jf=0; jf<nf; jf++)
-      x[jf] = atan2(cy[jf].im,cy[jf].re)*rad180;
+      x[jf] = atan2(__imag__ cy[jf],__real__ cy[jf])*rad180;
     for (jf=1; jf<nf; jf++)
       y[jf] = x[jf] - x[jf-1];
     for (jf=1; jf<nf; jf++){
@@ -332,7 +335,7 @@ MAIN()
     }
   else {
     for (jf=0; jf<nf; jf++)
-      x[jf] = sqrt(cy[jf].re*cy[jf].re + cy[jf].im*cy[jf].im);
+      x[jf] = sqrt(__real__ cy[jf]*__real__ cy[jf] +__imag__ cy[jf]*__imag__ cy[jf]);
     minmax (x,nf,&xmin,&xmax);
     if(xmin == xmax) { xmax += .00002; }
     for (jf=0; jf<nf; jf++)

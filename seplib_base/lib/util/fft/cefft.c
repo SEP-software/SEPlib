@@ -84,7 +84,7 @@ B<sepfft>
 static int oldlx = 0;
 static float *workbuf = ((float *) NULL);
 cefft (x,lx,isign,scale)
-complex *x;
+float complex *x;
 int lx,isign; double scale;
    {
     int log2lx, ix, ierr;
@@ -157,16 +157,16 @@ static double sintab[]
 */
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-int cefft (complex *x,int lx,int isign,float scale)
+int cefft (float complex *x,int lx,int isign,float scale)
 _XFUNCPROTOEND
 #else
 int cefft (x,lx,isign,scale)
-complex *x;
+float complex *x;
 int lx,isign; float scale;
 #endif
    {
-	register complex *px,*qx;
-	complex *xplx;
+	register float complex *px,*qx;
+	float complex *xplx;
 	int m,j,k,step;
 	float temp,real,imag;
 	double cn,sn,cd,sd,dtemp,*psintab;
@@ -177,8 +177,8 @@ int lx,isign; float scale;
 	   {
 		if(px < (qx=x+j))
 		  {
-			temp = qx->re; qx->re = px->re; px->re = temp;
-			temp = qx->im; qx->im = px->im; px->im = temp;
+			temp = __real__(*qx); __real__(*qx) = __real__(*px); __real__(*px) = temp;
+			temp = __imag__(*qx); __imag__(*qx) = __imag__(*px); __imag__(*px) = temp;
 		  }
 		for (m=lx>>1; m>=1 && j>=m; j-=m, m>>=1);
 	   }
@@ -187,11 +187,11 @@ int lx,isign; float scale;
 	   {
 		if (scale != 1.)
 		  {
-			px->re *= scale; px->im *= scale;
-			qx->re *= scale; qx->im *= scale;
+			__real__(*px) *= scale; __imag__(*px) *= scale;
+			__real__(*qx) *= scale; __imag__(*qx) *= scale;
 		  }
-		temp = qx->re; qx->re = px->re-temp; px->re += temp;
-		temp = qx->im; qx->im = px->im-temp; px->im += temp;
+		temp = __real__(*qx); __real__(*qx) = __real__(*px)-temp; __real__(*px) += temp;
+		temp = __imag__(*qx); __imag__(*qx) = __imag__(*px)-temp; __imag__(*px) += temp;
 	   }
 	/* remaining butterflies */
 	for (j=2, psintab=sintab; j<lx; j=step)
@@ -208,12 +208,12 @@ int lx,isign; float scale;
 			for(px=x+k; px<xplx; px+=step)
 			   {
 				qx = px+j;
-				real = cn*qx->re-sn*qx->im;
-				imag = sn*qx->re+cn*qx->im;
-				qx->re = px->re-real;
-				qx->im = px->im-imag;
-				px->re += real;
-				px->im += imag;
+				real = cn*__real__(*qx)-sn*__imag__(*qx);
+				imag = sn*__real__(*qx)+cn*__imag__(*qx);
+				__real__(*qx) = __real__(*px)-real;
+				__imag__(*qx) = __imag__(*px)-imag;
+				__real__(*px) += real;
+				__imag__(*px) += imag;
 			   }
 			dtemp = cd*cn+sd*sn;
 			sn += sd*cn-cd*sn;

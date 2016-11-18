@@ -1,6 +1,7 @@
 module extrapolation_mod
 use slow_mod
 use data_mod
+use sep3d_struct_mod
 use wavelet_mod
 use kernal_mod
 use wave_mod
@@ -25,7 +26,6 @@ contains
 
 logical function extrapolate_init()
 integer ierr
-integer, external :: sep_thread_num
 logical :: restart
 extrapolate_init=.true.
 
@@ -181,7 +181,6 @@ logical stat,restart
 real :: x_min, x_max
 integer :: nx, nt_delay,ix0_rec,img_jt,status,idone
 integer :: node_nsx,i_processor,node_isx,ierr,iown,ic,nsteps
-integer, external :: sep_thread_num
 real,pointer :: shot_block(:,:),wave_x_min_max(:,:),tmp_shot_block(:,:)
 type(sep3d) :: wave_s
 integer,allocatable :: ndone(:)

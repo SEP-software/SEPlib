@@ -1848,8 +1848,11 @@ void new_clip(char *tag,  int iblock, int nb1, int nb2, float bpclip,float epcli
   nc=0;
   while(iread < big){
     nblock=MIN((int)(big-iread),1000000);
-    if(4*nblock!=sreed("in",temp,4*nblock))
-      seperr("trouble raeding in data block \n");
+fprintf(stderr,"www \n");
+    int ierr=sreed("in",temp,4*nblock);
+fprintf(stderr,"www \n");
+    if(ierr!=4*nblock)
+      seperr("trouble reading in data block %d \n",ierr);
     for(i=ilast; i < nblock ; i+=ij,nc++) tempb[nc]=temp[i];
     ilast=i-nblock;
     iread+=nblock;

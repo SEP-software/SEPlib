@@ -8,6 +8,7 @@ Purpose:
 
 */	 
 
+#include<sepConfig.h>
 #include <seplib.h> 
 #include<string.h>
 #include <superset.h>

@@ -5,7 +5,7 @@
 #decipher-Bob
 
 CUBE1 = datapath.c expandnm.c fd_io.c file_io.c findnm.c sepfsize.c fullnm.c \
-init_io.c isapipe.c isatape.c isclosed.c isordinary.c maketitle.c multifd_io.c \
+init_io.c isapipe.c  isclosed.c isordinary.c maketitle.c multifd_io.c \
 noheader.c opensock.c redin.c redout.c sepstrindata.c sepstrinhead.c \
 sepstrinoutdata.c sepstrinouthead.c sepstroutdata.c sepstrouthead.c \
 sepstrsocketdata.c sepstrsockethead.c sepstrscrdata.c sepstrscrhead.c \

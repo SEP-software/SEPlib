@@ -15,6 +15,7 @@ DQ	\"([^"\n]*\"\")*[^"\n]*["\n]
  * Revised 2-25-95 stew changed bcopy to memcpy, modified renaming
  *                      of yylook->getpar_yylook, etc. for Solaris
  */
+ extern ssize_t read (int __fd, void *__buf, size_t __nbytes) __wur;
 #include <sitedef.h>
 #if HAVE_STRING_H
 #include <string.h>
@@ -28,15 +29,7 @@ static int massage();
 
 
 #define MAX_INPUT_DEPTH 10
-#if !defined(FLEX)
-#undef input
-#define input() ((int) *(input_stack[input_depth]++))
-#undef unput
-/* The redundant  =(c) insures side effects of expressions occur */
-#define unput(c) (*(--(input_stack[input_depth]))=(c))
-#else 
 YY_BUFFER_STATE input_state[MAX_INPUT_DEPTH];
-#endif
 
 #define yywrap getpar_pop_input
 #define yylex getpar_lexscan
@@ -235,9 +228,7 @@ register int qlen;
 	  if(input_depth++ == MAX_INPUT_DEPTH)
 		seperr("too many nested par files\n");
 	  input_stack[input_depth] = buffer;
-#if defined(FLEX)
   input_state[input_depth] =yy_scan_string(input_stack[input_depth]);
-#endif
 	  if(dealloc) dealloc_stack[input_depth] = buffer;
 	  else dealloc_stack[input_depth] = (char *) NULL;
 	}
@@ -245,7 +236,6 @@ register int qlen;
 	int
 	yywrap()
 	{
-#if defined(FLEX)
  yy_delete_buffer(input_state[input_depth] );
   if(((char *) NULL) != dealloc_stack[input_depth]) {
 	free(dealloc_stack[input_depth]);
@@ -254,13 +244,6 @@ register int qlen;
  input_depth--;
  if(input_depth >=0)
 	 yy_switch_to_buffer(input_state[input_depth] );
-#else
-	  if(((char *) NULL) != dealloc_stack[input_depth]) {
-		free(dealloc_stack[input_depth]);
-		dealloc_stack[input_depth] = (char *) NULL;
-		}
-	  input_stack[input_depth--] = (char *) NULL;
-#endif
 	  if(input_depth < 0){ return(1);}
 	  return(0);
 	}

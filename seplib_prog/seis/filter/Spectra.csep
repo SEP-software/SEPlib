@@ -99,10 +99,8 @@ B<seis/filter>
 #include <seplib.h>
 #include <sepmath.h>
 #include <sepfft.h>
-#if HAVE_STRING_H
 #include <string.h>
-#endif
-
+#include<complex.h>
 #define AMPLITUDE 1
 #define POWER     2
 #define DB        3
@@ -116,13 +114,13 @@ int main (argc, argv, envp)
 	int n1pad,n1out,n2out,n3out,eout;
 	float o1,d1,d2,d3,d1out,o1out,d2out,d3out;
 	int i2,i3,i,j,i2out,i3out,ier,iphase;
-	complex cdelay;
+	float complex cdelay;
 	char *name;
 	char mode[20],phaze[20];
         char mag[20];
         char label1[BUFSIZ];
 	float *temp,*spec;
-	complex *cdata,*phase;
+	float complex *cdata,*phase;
         int *inorm;
         int magopt;
         float magmax;
@@ -181,11 +179,11 @@ ADD_SEP_DOC
 	n3out=(n3-1)/j3+1;
 
 	/* allocate working space */
-	cdata  = (complex*) malloc(n1pad*sizeof(complex));
+	cdata  = (float complex*) malloc(n1pad*sizeof(float complex));
 	temp   = (float*) malloc(n1*sizeof(float));
 	spec   = (float*) malloc(n1pad*n2out*sizeof(float));
 	inorm  = (int*) malloc(n2out*sizeof(int));
-	if (iphase) phase = (complex*) malloc(n1pad*n2out*sizeof(complex));
+	if (iphase) phase = (float complex*) malloc(n1pad*n2out*sizeof(float complex));
 
 	/* put parameter values out */
 	putch("n1","d",&n1out);
@@ -227,7 +225,7 @@ ADD_SEP_DOC
 	hclose();
 
 	for (i=0;i<n1pad*n2out;i++) spec[i] =0.;
-	if (iphase) for (i=0;i<n1pad*n2out;i++) phase[i] =scmplx(0.,0);
+	if (iphase) for (i=0;i<n1pad*n2out;i++) phase[i] =0;
 	for (i=0;i< n2out;i++) inorm[i] =0;
   
 	/* loop over all traces */
@@ -239,22 +237,22 @@ ADD_SEP_DOC
 			/* read in data-trace */
 			if(sreed("in",temp,n1*esize)!=n1*esize) 
 				seperr("Problem reading data\n");
-			for (i=0;i<n1pad;i++) cdata[i]=scmplx(0.,0.);
+			for (i=0;i<n1pad;i++) cdata[i]=0;
 			for (i=0;i<n1;i++) {
-				if (esize==4) cdata[i].re += temp[i];
-				else cdata[i]=scadd(cdata[i],scmplx(temp[2*i],temp[2*i+1]));
+				if (esize==4) __real__ cdata[i] += temp[i];
+				else cdata[i]=cdata[i]+temp[2*i]+_Complex_I*temp[2*i+1];
 			}
     
 			/* calculate spectrum */
 			cefft(cdata,n1pad,1,1./sqrt(1.*n1pad));
 
 			/* add into spec */
-			for (i=0;i<n1pad;i++) spec[i2out*n1pad+i/j1] += sccabs(cdata[i]);
+			for (i=0;i<n1pad;i++) spec[i2out*n1pad+i/j1] += cabsf(cdata[i]);
 			inorm[i2out] += 1;
 			if (iphase) for (i=0;i<n1pad;i++) {
-				cdelay=scexp(scmplx(0., (2*pi*i*d1out*o1)));
-				cdata[i]=scmult(cdata[i],cdelay);
-				phase[i2out*n1pad+i]= scadd(cdata[i],phase[i2out*n1pad+i]);
+				cdelay=cexpf(_Complex_I*(2*pi*i*d1out*o1));
+				cdata[i]=cdata[i]*cdelay;
+				phase[i2out*n1pad+i]= cdata[i]+phase[i2out*n1pad+i];
 			}
 		}
 
@@ -290,7 +288,7 @@ ADD_SEP_DOC
                         }
 
 			if (iphase) {
-				for (i=0;i<n1pad*n2out;i++) spec[i] =atan2(phase[i].im,phase[i].re);
+				for (i=0;i<n1pad*n2out;i++) spec[i] =atan2(__imag__ phase[i],__real__ phase[i]);
 				for (i=0;i<n2out;i++)       /*    write phase */
 					if (srite("phase",(spec+i*n1pad),n1out*4) != n1out*4) 
 						seperr("Problem writing phase\n");
@@ -299,7 +297,7 @@ ADD_SEP_DOC
 			/*  then  zero output */
 			for (i=0;i<n1pad*n2out;i++) spec[i] =0.;
 			for (i=0;i<n2out;i++) inorm[i]=0;
-			if (iphase) for (i=0;i<n1pad*n2out;i++) phase[i] =scmplx(0.,0);
+			if (iphase) for (i=0;i<n1pad*n2out;i++) phase[i] =0.;
 		}
 	}
          sep_end_prog();

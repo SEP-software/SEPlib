@@ -73,7 +73,6 @@ B<sepfft>
  * Modified  5/8/96  Stew Levin  (Mobil) corrected ROWCC declaration
  *                        for Fortran subroutine linkage.
  */
-#include<sepfftf.h>
 /* 	cvfft	nx complex vectors to nx complex vectors in core
  *
  *	x	input/output array
@@ -82,39 +81,9 @@ B<sepfft>
  *	isign	sign of sqrt(-1)
  *	scale	scale factor; sqrt(1./nx) conserves energy
 */
-#if NeedFunctionPrototypes
-_XFUNCPROTOBEGIN
-int cvfft (complex *x,int lx,int nx,int isign,double scale)
-_XFUNCPROTOEND
-#else
-int cvfft (x,lx,nx,isign,scale)
-complex *x;
-int lx,nx,isign; double scale;
-#endif
-#if defined CONVEX || defined __convex__
-   { 
-    float rscale;
-    static int ione = 1;
-    int sign2, ierr, nelt;
-
-    if(isign > 0) {
-	sign2 = -1;
-	rscale = scale * ((float) nx);
-    } else {
-	sign2 = 1;
-	rscale = scale;
-    }
-
-    cffts_(x,&nx,&lx,&lx,&ione,&sign2,&ierr);
-    if(ierr!=0) seperr("cffts ierr=%d\n",ierr);
-
-    if(rscale != 1.0) {
-	 nelt = lx*nx*2;
-	 sscal_(&nelt,&rscale,x,&ione);
-    }
-   }
-#else
-   {
+#include<complex.h>
+int cvfft (float complex *x,int lx,int nx,int isign,double scale)
+      {
     float rscale, sign2, *xx;
 
     rscale = scale;
@@ -125,4 +94,3 @@ int lx,nx,isign; double scale;
 
 	return 0;
    }
-#endif

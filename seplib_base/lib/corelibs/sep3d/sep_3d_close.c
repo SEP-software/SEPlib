@@ -39,10 +39,7 @@ Purpose:
 
 */	 
 
-#include <sitedef.h>
-#if HAVE_STRING_H
 #include <string.h>
-#endif
 #include<stdio.h>
 #include <sep3d.h>
 #include "streamlist.h"

@@ -137,6 +137,7 @@ B<util/info>
 #include <math.h>
 #include <signal.h>
 #include <inttypes.h>
+#include<complex.h>
 
 #if defined(__STDC__) || defined(__stdc__)
 void uncode_location(uint64_t loc, uint64_t *block, int *loc_a, int ndim);
@@ -161,8 +162,8 @@ typedef struct {
       int ndim,maxsize,param;
       float* f_databuf[2];
       float f_maxv,f_minv,co_maxv,co_minv;
-      complex *co_databuf[2];
-      complex co_minv_r,co_minv_i,co_maxv_r,co_maxv_i;
+      float complex *co_databuf[2];
+      float complex co_minv_r,co_minv_i,co_maxv_r,co_maxv_i;
       double sqrs,f_mean;
       char want[256];
       unsigned char *ch_databuf[2];
@@ -215,30 +216,30 @@ void *scanbuf(void *arg) {
         } else if(par->esize==8){
     
           for(i1=0; i1 < par->read_in/par->esize; i1++){
-            double co_re = par->co_databuf[ibuf][i1].re;
-            double co_im = par->co_databuf[ibuf][i1].im;
+            double co_re = __real__ par->co_databuf[ibuf][i1];
+            double co_im = __imag__ par->co_databuf[ibuf][i1];
             amplitude=hypot(co_re,co_im);
     
             par->f_mean=par->f_mean+ amplitude;
             par->sqrs=par->sqrs+amplitude * amplitude;
     
-            if(par->co_databuf[ibuf][i1].re > par->f_maxv){
-              par->f_maxv=par->co_databuf[ibuf][i1].re;
+            if(__real__ par->co_databuf[ibuf][i1]> par->f_maxv){
+              __real__ par->f_maxv=par->co_databuf[ibuf][i1];
               par->co_maxv_r=par->co_databuf[ibuf][i1];
               uncode_location(i1+par->countsav[ibuf],par->block,par->maxloc,par->ndim);
             }
-            if(par->co_databuf[ibuf][i1].im > par->co_maxv){
-              par->co_maxv=par->co_databuf[ibuf][i1].im;
+            if(__imag__ par->co_databuf[ibuf][i1] > par->co_maxv){
+              par->co_maxv=__imag__ par->co_databuf[ibuf][i1];
               par->co_maxv_i=par->co_databuf[ibuf][i1];
               uncode_location(i1+par->countsav[ibuf],par->block,par->cmaxloc,par->ndim);
             }
-            if(par->co_databuf[ibuf][i1].re < par->f_minv){
-              par->f_minv=par->co_databuf[ibuf][i1].re;
+            if(__real__ par->co_databuf[ibuf][i1] < par->f_minv){
+              par->f_minv=__real__ par->co_databuf[ibuf][i1];
               par->co_minv_r=par->co_databuf[ibuf][i1];
               uncode_location(i1+par->countsav[ibuf],par->block,par->minloc,par->ndim);
             }
-            if(par->co_databuf[ibuf][i1].im < par->co_minv){
-              par->co_minv=par->co_databuf[ibuf][i1].im;
+            if(__imag__ par->co_databuf[ibuf][i1] < par->co_minv){
+              par->co_minv=__imag__ par->co_databuf[ibuf][i1];
               par->co_minv_i=par->co_databuf[ibuf][i1];
               uncode_location(i1+par->countsav[ibuf],par->block,par->cminloc,par->ndim);
             }
@@ -337,8 +338,8 @@ MAIN(){
     par->f_mean = 0.; par->count = 0; par->nzero = 0; 
     par->f_maxv = -SEP_MAXFLOAT; par->f_minv = SEP_MAXFLOAT; par->sqrs = 0.0;
     par->co_maxv=-SEP_MAXFLOAT; par->co_minv=SEP_MAXFLOAT;
-    par->co_databuf[0] = (complex*)alloc((int)( mem*sizeof(complex) ));
-    par->co_databuf[1] = (complex*)alloc((int)( mem*sizeof(complex) ));
+    par->co_databuf[0] = (float complex*)alloc((int)( mem*sizeof(float complex) ));
+    par->co_databuf[1] = (float complex*)alloc((int)( mem*sizeof(float complex) ));
   } else if(par->esize==1) {
     par->f_mean = 0.; par->count = 0; par->nzero = 0; 
     par->f_maxv = -SEP_MAXFLOAT; par->f_minv = SEP_MAXFLOAT; par->sqrs = 0.0;
@@ -418,32 +419,32 @@ MAIN(){
     else           printf("norm=%g \n",norm);
     if(par->esize==8){
     if(0==strcmp(par->want,"max") || 0==strcmp(par->want,"all")){
-      if( par->param==0 ) printf("maximum real value = (%g,%g) at ",par->co_maxv_r.re,par->co_maxv_r.im);
-      else           printf("maxval_real=(%g,%g)",par->co_maxv_r.re,par->co_maxv_r.im);
+      if( par->param==0 ) printf("maximum real value = (%g,%g) at ",__real__ par->co_maxv_r,__imag__ par->co_maxv_r);
+      else           printf("maxval_real=(%g,%g)",__real__ par->co_maxv_r,__imag__ par->co_maxv_r);
       if( par->param==0 ) { for(i1=0; i1<par->ndim; i1++) printf("%d ",par->maxloc[i1]); }
       printf("\n");
 
-      if( par->param==0 ) printf("maximum imaginary value = (%g,%g) at ",par->co_maxv_i.re,par->co_maxv_i.im);
-      else           printf("maxval_imag=(%g,%g)",par->co_maxv_i.re,par->co_maxv_i.im);
+      if( par->param==0 ) printf("maximum imaginary value = (%g,%g) at ",__real__ par->co_maxv_i,__imag__ par->co_maxv_i);
+      else           printf("maxval_imag=(%g,%g)",__imag__ par->co_maxv_i,__imag__ par->co_maxv_i);
       if( par->param==0 ) { for(i1=0; i1<par->ndim; i1++) printf("%d ",par->cmaxloc[i1]); }
       printf("\n");
     }
     if(0==strcmp(par->want,"min") || 0==strcmp(par->want,"all")){
 /*
-      printf("minimum imaginary value = (%g,%g) at ",par->co_minv_i.re,par->co_minv_i.im);
+      printf("minimum imaginary value = (%g,%g) at ",__real__ par->co_minv_i,__imag__ par->co_minv_i);
       for(i1=0; i1<par->ndim; i1++) printf("%d ",par->cminloc[i1]);
       printf("\n");
-      printf("minimum real value = (%g,%g) at ",par->co_minv_r.re,par->co_minv_r.im);
+      printf("minimum real value = (%g,%g) at ",__real__ par->co_minv_r,__imag__ par->co_minv_r);
       for(i1=0; i1<par->ndim; i1++) printf("%d ",par->minloc[i1]);
       printf("\n"); */
 
-      if( par->param==0 ) printf("minimum imaginary value = (%g,%g) at ",par->co_minv_i.re,par->co_minv_i.im);
-      else           printf("minval_imag=(%g,%g)",par->co_minv_i.re,par->co_maxv_i.im);
+      if( par->param==0 ) printf("minimum imaginary value = (%g,%g) at ",__real__ par->co_minv_i,__imag__ par->co_minv_i);
+      else           printf("minval_imag=(%g,%g)",__real__ par->co_minv_i,__imag__ par->co_maxv_i);
       if( par->param==0 ) { for(i1=0; i1<par->ndim; i1++) printf("%d ",par->cminloc[i1]); }
       printf("\n");
 
-      if( par->param==0 ) printf("minimum real value = (%g,%g) at ",par->co_minv_r.re,par->co_minv_r.im);
-      else           printf("maxval_imag=(%g,%g)",par->co_minv_r.re,par->co_minv_r.im);
+      if( par->param==0 ) printf("minimum real value = (%g,%g) at ",__real__ par->co_minv_r,__imag__ par->co_minv_r);
+      else           printf("maxval_imag=(%g,%g)",__real__ par->co_minv_r,__imag__ par->co_minv_r);
       if( par->param==0 ) { for(i1=0; i1<par->ndim; i1++) printf("%d ",par->minloc[i1]); }
       printf("\n");
     }

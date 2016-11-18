@@ -16,14 +16,9 @@
  *	Please log any further modifications made to this file:
  */
 
-#include <sitedef.h>
 #include <stdio.h>
-#if HAVE_STRING_H
 #include <string.h>
-#endif
-#if HAVE_STRINGS_H
 #include <strings.h>
-#endif
 #include "../include/params.h"
 #include "../include/extern.h"
 

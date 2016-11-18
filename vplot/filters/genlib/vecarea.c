@@ -16,18 +16,13 @@
  *	Please log any further modifications made to this file:
  */
 
-#include <sitedef.h>
 #include <stdio.h>
 #include "../include/pat.h"
 #include "../include/vertex.h"
 #include "../include/params.h"
 #include "../include/extern.h"
 
-#if HAVE_STDLIB_H
 #include <stdlib.h>
-#else
-extern char    *malloc ();
-#endif
 
 void vecarea (int npts, struct vertex  *head)
 {

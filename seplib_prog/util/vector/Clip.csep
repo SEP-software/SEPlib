@@ -124,6 +124,7 @@ B<util/vector>
  *     [loclip,hiclip] or [-clip,clip] modified as necessary by dscale.
  *     Added softclip option as per Jon's paper.
  */
+#include<complex.h>
 #include <sep3dc.h>
 #include <sepmath.h>
 ADD_DEF_SEP_DOC
@@ -144,7 +145,7 @@ MAIN ()
   int provide,iouter,providec,provides,jlast,clip_pos,nreadi;
   sep3d input;
   double ninner,ndone,nread,nbig;
-  complex *cbuf;
+  float complex *cbuf;
   float  *fbuf;
   float  *buf;
   float ftemp;
@@ -246,7 +247,7 @@ MAIN ()
 
 
   fbuf=(float*) malloc(sizeof(float)*1000000);
-  if(esize==8) cbuf=(complex*) malloc(sizeof(complex)*1000000);
+  if(esize==8) cbuf=(float complex*) malloc(sizeof(float complex)*1000000);
   buf=(float*) malloc(sizeof(float)*maxsize);
 
   make_unpipe("in");
@@ -280,11 +281,11 @@ MAIN ()
           if(esize*ndo!=sreed("in",cbuf,esize*ndo))
              seperr("trouble reading in dataset \n");
           if(pclip>100.){
-            if(nreadi==0) my_max=sccabs(cbuf[0]);
-            for(i=0; i < ndo;i++) my_max=MAX(my_max,sccabs(cbuf[i]));
+            if(nreadi==0) my_max=cabsf(cbuf[0]);
+            for(i=0; i < ndo;i++) my_max=MAX(my_max,cabsf(cbuf[i]));
           } 
           else{
-            for(i=jlast; i < ndo;i+=jskip,ibig++) buf[ibig]=sccabs(cbuf[i]);;
+            for(i=jlast; i < ndo;i+=jskip,ibig++) buf[ibig]=cabsf(cbuf[i]);;
             jlast=i-ndo;
           }
           nreadi+=ndo; 
@@ -368,8 +369,8 @@ MAIN ()
            seperr("trouble reading in dataset \n");
         /*only allow scaling when complex so this is easy*/
         for(k=0; k < ndo;k++)  {
-          cbuf[k].re=mys*cbuf[k].re;
-          cbuf[k].im=mys*cbuf[k].im;
+          __real__ cbuf[k]=mys*__real__ cbuf[k];
+          __imag__ cbuf[k]=mys*__imag__ cbuf[k];
         }
         if(esize*ndo!=srite("out",cbuf,esize*ndo))
            seperr("trouble reading in dataset \n");

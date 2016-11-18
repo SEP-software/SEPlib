@@ -2,7 +2,6 @@
 /* All rights reserved.                       */
 
 
-#include<sitedef.h>
 #include<sepmath.h>
 #include<stdlib.h>
 #include <sulib.h>

@@ -1,4 +1,5 @@
 #define SET_SDOC 1
+#include<sepConfig.h>
 /*
 
 Author: Robert Clapp, ESMB 463, 7230253

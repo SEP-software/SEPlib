@@ -114,14 +114,14 @@ Modified  10/9/86  stew    added putch's for fft parameters.
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-int fft_it(complex *trace,float sign,float center ,int n);
+int fft_it(float complex *trace,float sign,float center ,int n);
 _XFUNCPROTOEND
 #else
 int ft3d_it();
 int fft_it();
 #endif
 
-complex  *data;
+float complex  *data;
 ADD_DEF_SEP_DOC
 #include <sep.main>
 
@@ -133,7 +133,7 @@ MAIN()
 	int   d1fl=0, d2fl=0, d3fl=0;
 	char labelin[80],labelout[80],temp_ch[1024];
 	int nbig,maxsize,nlittle,tempi,nmax,i4,i3,i2,i1;
-	complex *array,*trace;
+	float complex *array,*trace;
 
         sep_begin_prog();
 
@@ -318,8 +318,8 @@ MAIN()
 	}
 
 	/*malloc memory */
-	array=(complex*)alloc(sizeof(complex)*nlittle);
-	trace=(complex*)alloc(sizeof(complex)*nmax);
+	array=(float complex*)alloc(sizeof(float complex)*nlittle);
+	trace=(float complex*)alloc(sizeof(float complex)*nmax);
 
 	/*loop over non transform axes */
 	for(i4=0; i4 < nbig; i4++) { 
@@ -332,14 +332,13 @@ MAIN()
 			for(i2=0;i2<n2;i2++){
 				for(i1=0;i1<n1;i1++){
 					for(i3=0; i3<n3;i3++) { 
-						trace[i3].re=array[i1+i2*n1+i3*n1*n2].re;
-						trace[i3].im=array[i1+i2*n1+i3*n1*n2].im;
+						__real__ trace[i3]=__real__ array[i1+i2*n1+i3*n1*n2];
+						__imag__ trace[i3]=__imag__ array[i1+i2*n1+i3*n1*n2];
 					}
 					if(0!=fft_it(trace,sign3,center3,n3))
 						seperr("trouble ffting the trace \n");
 					for(i3=0; i3<n3;i3++) { 
-						array[i1+i2*n1+i3*n1*n2].re=trace[i3].re;
-						array[i1+i2*n1+i3*n1*n2].im=trace[i3].im;
+						array[i1+i2*n1+i3*n1*n2]= trace[i3];
 					}
 				}
 			}
@@ -348,14 +347,12 @@ MAIN()
 			for(i3=0;i3<n3;i3++) {
 				for(i1=0;i1<n1;i1++) {
 					for(i2=0; i2<n2;i2++) { 
-						trace[i2].re=array[i1+i2*n1+i3*n1*n2].re;
-						trace[i2].im=array[i1+i2*n1+i3*n1*n2].im;
+						trace[i2]=array[i1+i2*n1+i3*n1*n2];
 					}
 					if(0!=fft_it(trace,sign2,center2,n2))
 						seperr("trouble ffting the trace \n");
 					for(i2=0; i2<n2;i2++) { 
-						array[i1+i2*n1+i3*n1*n2].re=trace[i2].re;
-						array[i1+i2*n1+i3*n1*n2].im=trace[i2].im;
+						array[i1+i2*n1+i3*n1*n2]=trace[i2];
 					}
 				}
 			}
@@ -364,14 +361,12 @@ MAIN()
 			for(i3=0;i3<n3;i3++){
 				for(i2=0;i2<n2;i2++){
 					for(i1=0; i1<n1;i1++) { 
-						trace[i1].re=array[i1+i2*n1+i3*n1*n2].re;
-						trace[i1].im=array[i1+i2*n1+i3*n1*n2].im;
+						trace[i1]=array[i1+i2*n1+i3*n1*n2];
 					}
 					if(0!=fft_it(trace,sign1,center1,n1))
 						seperr("trouble ffting the trace \n");
 					for(i1=0; i1<n1;i1++) { 
-						array[i1+i2*n1+i3*n1*n2].re=trace[i1].re;
-						array[i1+i2*n1+i3*n1*n2].im=trace[i1].im;
+						array[i1+i2*n1+i3*n1*n2]=trace[i1];
 					}
 				}
 			}
@@ -385,26 +380,24 @@ MAIN()
 	
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-int fft_it(complex *trace,float sign,float center ,int n)
+int fft_it(float complex *trace,float sign,float center ,int n)
 _XFUNCPROTOEND
 #else
 int fft_it(trace,sign,center,n)
-complex *trace;float sign;float center ;int n;
+float complex *trace;float sign;float center ;int n;
 #endif
 {
 	int i;
 
 	if(center > 0.0) {
 		for(i=1; i < n; i=i+2){
-			trace[i].re = - trace[i].re;
-			trace[i].im = - trace[i].im;
+			trace[i]= - trace[i];
 		}
 	}
 	i=cefft(trace,n,sign,1./sqrt(1.*n));
 	if(center<0.0){
 		for(i=1; i < n; i=i+2){
-			trace[i].re = - trace[i].re;
-			trace[i].im = - trace[i].im;
+			trace[i] = - trace[i];
 		}
 	}
 	return(0);

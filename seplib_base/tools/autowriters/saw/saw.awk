@@ -1,16 +1,9 @@
-# 1 "sawf.awk"
-# 1 "<built-in>"
-# 1 "<command line>"
-# 1 "sawf.awk"
-# 50 "sawf.awk"
 BEGIN {
  inmain = 1
  doc = 0
  enddoc = 0
  init=1
-# 64 "sawf.awk"
  implstr= "\timplicit none"
-# 73 "sawf.awk"
  }
 NF ==0 {
  print $0
@@ -33,7 +26,6 @@ $1 ~ /define|^\%/ {
  print "\tinteger fsbrk,input,output,head,idum"
  print "\texternal fsbrk,input,output,head"
  print "\tinteger loc, locore"
-# 119 "sawf.awk"
  print "\tcharacter*1 basecore(1)"
  print "\tcommon/falloc/basecore\n"
  next

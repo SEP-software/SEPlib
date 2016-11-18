@@ -94,31 +94,31 @@ $*/
  */
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-int refft(register complex *x,int lx,int isign,float scale,int mode)
+int refft(register float complex *x,int lx,int isign,float scale,int mode)
 _XFUNCPROTOEND
 #else
 int refft(x,lx,isign,scale,mode)
-register complex *x;
+register float complex *x;
 int lx,isign,mode; float scale;
 #endif
    {
-	register complex *xp,*xn;
+	register float complex *xp,*xn;
 	float real,imag,xsumre,xsumim,xdifre,xdifim;
 	double aa,cn,sn,cd,sd,arg;
 
 	if(mode > 0) 				/* real to complex */
 	  {
 		cefft(x,lx/2,isign,scale);
-		real = x->re+x->im; imag = x->re-x->im;
-		x->re = real;
+		real = __real__(*x)+__imag__(*x); imag = __real__(*x)-__imag__(*x);
+		__real__(*x) = real;
 		if (mode == 1) 			/* pack Nyquist */
-			x->im = imag;
+			__imag__(*x) = imag;
 		else				/* unpack Nyquist */
 		  {
 			xn = x+lx/2;
-			xn->re = imag;
-			xn->im = 0.; 
-			x->im = 0.;
+			__real__(*xn) = imag;
+			__imag__(*xn) = 0.; 
+			__imag__(*x) = 0.;
 		  }
 	  }
 	cn = 1.; sn = 0.;			/* initial cosine and sine */
@@ -131,31 +131,31 @@ int lx,isign,mode; float scale;
 		aa = cd*cn+sd*sn;
 		sn += sd*cn-cd*sn;		/* sin(2*arg*(xp-x)) */
 		cn -= aa;			/* cos(2*arg*(xp-x)) */
-		xsumre = 0.5*(xp->re+xn->re);
-		xsumim = 0.5*(xp->im-xn->im);
-		xdifre	= 0.5*(xp->re-xn->re);
-		xdifim = 0.5*(xp->im+xn->im);
+		xsumre = 0.5*(__real__(*xp)+__real__(*xn));
+		xsumim = 0.5*(__imag__(*xp)-__imag__(*xn));
+		xdifre	= 0.5*(__real__(*xp)-__real__(*xn));
+		xdifim = 0.5*(__imag__(*xp)+__imag__(*xn));
 		real = sn*xdifre+cn*xdifim;
 		imag = sn*xdifim-cn*xdifre;
-		xp->re = xsumre+real;
-		xp->im = imag+xsumim;
-		xn->re = xsumre-real;
-		xn->im = imag-xsumim;
+		__real__(*xp) = xsumre+real;
+		__imag__(*xp) = imag+xsumim;
+		__real__(*xn) = xsumre-real;
+		__imag__(*xn) = imag-xsumim;
 	  }
 	if(mode < 0) 				/* complex to real */
 	  {
 		if (mode == -2)			/* Nyquist not packed, */
 		  {				/* so pack it */
 			xn = x+lx/2;
-			x->im = xn->re;
-			xn->re = 0.;
+			__imag__(*x) = __real__(*xn);
+			__real__(*xn) = 0.;
 		  }
-		real = 0.5*(x->re+x->im);
-		x->im = 0.5*(x->im-x->re);
-		x->re = real;
+		real = 0.5*(__real__(*x)+__imag__(*x));
+		__imag__(*x) = 0.5*(__imag__(*x)-__real__(*x));
+		__real__(*x) = real;
 		cefft(x,lx/2,isign,scale);
 		for(xp=x,xn=x+lx/2; xp<xn; xp++)
-			xp->im = -xp->im;
+			__imag__(*xp) = -__imag__(*xp);
 	   }
        return(0);
    }

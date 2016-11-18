@@ -1,7 +1,7 @@
 module image_mod
 use extrapolation_types
 use sep3d_struct_mod
-use sep
+use sep_mod
 
 implicit none
 type(sep3d), private :: image,image_x,image_z,image_t
@@ -18,7 +18,6 @@ subroutine image_init(extrapolation,i_node)
 type(extrapolation_type)::extrapolation
 integer :: i_node
 integer :: ix
-integer, external :: srite
 real, allocatable ::imgtmp(:)
 shot_image_nminz=nint((extrapolation%image_z_min-extrapolation%z0)/extrapolation%dz)+1
 image_nz=extrapolation%nz-shot_image_nminz+1
@@ -272,7 +271,6 @@ integer :: n_block,tmp_shot_image_nminx,tmp_shot_image_nmaxx
 integer :: i_processor,ierr
 integer :: tmp_shot_image_block_size,tmp_shot_image_block_size_x,tmp_shot_image_block_size_z
 integer :: tmp_shot_image_block_size_t,send_block_size
-integer,external :: srite,sreed,sseek_block
 real,pointer :: tmp_img(:,:,:)
 
 integer :: i_n_block

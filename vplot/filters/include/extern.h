@@ -3,18 +3,8 @@
 /*
  * defines structures referred to herein
  */
-#include <sitedef.h>
 #include <sys/types.h>
-#if defined (HAVE_TERMIO_H)
 #include <termio.h>
-#else /* USG */
-#if defined(LINUX)
-#include <bsd/sgtty.h>
-#else
-#include <sys/ioctl.h>
-#include <sgtty.h>
-#endif
-#endif /* USG */
 
 #include "../include/prototypes.h"
 #include "../../include/vplot.h"
@@ -26,12 +16,7 @@
 /*
  * external variables (quite a few of them)
  */
-#if defined(HAVE_TERMIO_H)
 extern struct termio tty_clean_state;
-#else /* USG */
-extern struct sgttyb tty_clean_state;
-extern int      tty_clean_local_mode;
-#endif /* USG */
 
 /*
  * these must be DECLARED in dev.conf
@@ -390,10 +375,5 @@ extern FILE	*headstream;
 extern int 	sepxargc;
 extern char   **sepxargv;
 
-#if defined (HAVE_TERMIO_H)
 extern struct termio tty_clean_state;
-#else /* USG */
-extern struct sgttyb tty_clean_state;
-extern int      tty_clean_local_mode;
-#endif /* USG */
 #endif

@@ -1,6 +1,7 @@
 #define SET_SDOC 1
 #include <seplib.h>
 #include <superset.h>
+#include "sepConfig.h"
 #include "superset_internal.h"
 #ifdef SU_SUPPORT
 /*************************/

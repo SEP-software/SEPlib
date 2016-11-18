@@ -1,4 +1,3 @@
-#include <sitedef.h>
 #if HAVE_STDLIB_H
 #include <stdlib.h>
 #endif

@@ -19,7 +19,6 @@
  *	of dev.raster.
  */
 
-#include <sitedef.h>
 #include <stdio.h>
 #include "../include/extern.h"
 #include "../include/err.h"

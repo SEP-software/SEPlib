@@ -58,7 +58,6 @@ Authors: CWP: Jack K. Cohen, Shuki Ronen
 /**************** end self doc ********************************/
 /*Robert G. Clapp	12/9/95			*/
 /* Revised to make it independent of SU types (except val) */
-#include <sitedef.h>
 #if HAVE_STRING_H
 #include <string.h>
 #endif

@@ -88,7 +88,7 @@ int main (argc, argv, envp)
 	float dt;
 	char pad[20];
 	float *data,*filt;
-	complex *cdata,*cfilt;
+	float complex *cdata,*cfilt;
 	int it,i,j,ier;
 	double dw,w;
 
@@ -139,14 +139,14 @@ ADD_SEP_DOC
 	/* allocate working space */ 
 	data=(float *) malloc(n*sizeof(float));
 	filt=(float *) malloc(n*sizeof(float));
-	cdata=(complex *) malloc(n*sizeof(complex));
-	cfilt=(complex *) malloc(n*sizeof(complex));
+	cdata=(float complex *) malloc(n*sizeof(float complex));
+	cfilt=(float complex *) malloc(n*sizeof(float complex));
 
 	/*  read wavelet */
 	filt[0]=1. ; 
 	for (it=1; it<n; it++)  filt[it]=0.;
 	ier= sreed("filter", filt, ntfilt*4 );
-	for (it=0; it<n; it++)  cfilt[it]=scmplx(filt[it],0.);
+	for (it=0; it<n; it++)  cfilt[it]=filt[it]+0.*_Complex_I;
 
 	/*  fft wavelet */
 	cefft(cfilt,n,1.,1./sqrt(1.*n));
@@ -155,7 +155,7 @@ ADD_SEP_DOC
 	if(otfilt!=0.) {
 		dw=2*pi/(n*(double) dtfilt); w=0.;
 		for (it=0; it<n; it++) { 
-			cfilt[it]=scmult( cfilt[it], sciexp(w*otfilt)); 
+			cfilt[it]=cfilt[it]+_Complex_I*cexpf(w*otfilt); 
 			if(it==n/2) w=(-w); 
 			w=w+dw;
 		}
@@ -172,15 +172,15 @@ ADD_SEP_DOC
 		} 
 
 		/* make complex data and compute fft */
-		for (it=0; it<n; it++)  cdata[it]=scmplx(data[it],0.);
+		for (it=0; it<n; it++)  cdata[it]=data[it]+0.+_Complex_I;
 		cefft(cdata,n,1.,sqrt(1./sqrt(1.*n)));
 
 		/* do filtering and inverse fft */
-		for (it=0; it<n; it++)  cdata[it]=scmult(cdata[it],cfilt[it]);
+		for (it=0; it<n; it++)  cdata[it]=cdata[it]*cfilt[it];
 		cefft(cdata,n,-1.,sqrt(1./sqrt(1.*n)));
 
 		/* output fitlered trace */
-		for (it=0; it<n; it++)  data[it]=cdata[it].re;
+		for (it=0; it<n; it++)  data[it]=__real__ cdata[it];
 		ier=srite("out",data,4*nt);
 	}
         sep_end_prog();

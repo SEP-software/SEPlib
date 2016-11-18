@@ -120,6 +120,7 @@ B<sep_graphics>
 =cut
 
 */
+#define pi 3.1415926536
 
 /*
 

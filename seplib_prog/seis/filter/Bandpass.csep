@@ -227,7 +227,7 @@ ADD_SEP_DOC
 #define D(i,j) d[(j)*nd+(i)]
 #define MOD(i,j) (i-j*(i/j))
 
-/* static double pi=3.1415926535897932384626433832795028841971693; */
+ static double pi=3.1415926535897932384626433832795028841971693; 
 
 float *b,*d;
 int ifhi=0,iflo=0;

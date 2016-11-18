@@ -1,5 +1,4 @@
 #define SET_SDOC 1
-#include<sitedef.h>
 #if HAVE_STRING_H
 #include <string.h>
 #endif

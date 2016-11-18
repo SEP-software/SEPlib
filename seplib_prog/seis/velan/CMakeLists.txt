@@ -54,5 +54,6 @@ TARGET_LINK_LIBRARIES(Stretch  sepvelan sepaux sep3d sep)
 TARGET_LINK_LIBRARIES(Velan3d  sepvelan   sepgeef90 sepaux sepmath superset  sep3d sep)
 TARGET_LINK_LIBRARIES(Vslan  sepvelan sepfft sepmath sepaux sep3d sep)
 
-install(FILES ${progs} DESTINATION bin)
+install(FILES  Unmo Radnmo Radial NMO LMO ${progs} DESTINATION bin)
+
 

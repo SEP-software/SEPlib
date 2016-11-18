@@ -74,7 +74,6 @@ Author:  Dave Hale, Colorado School of Mines c. 1989, 1990, 1991
 *****************************************************************************/
 /**************** end self doc ********************************/
 
-#include<sitedef.h>
 #include<sepmath.h>
 #include<stdlib.h>
 #include <sulib.h>

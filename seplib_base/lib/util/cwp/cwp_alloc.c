@@ -216,7 +216,6 @@ Author:    	Dave Hale, Colorado School of Mines, 12/31/89
 *****************************************************************************/
 /**************** end self doc ********************************/
 
-#include<sitedef.h>
 #include<sepmath.h>
 #include<stdlib.h>
 #include <sulib.h>

@@ -284,7 +284,7 @@ REAL*8 :: total_time(0:20)=1.e-3 ! sum of time for a given operation.
 !___________________________________________________________________________
 ! read command line arguments
 !___________________________________________________________________________
-CALL sep_init(SOURCE)
+CALL sep_init()
 call SEP_ADD_DOC()
 call doc()
 

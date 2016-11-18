@@ -2,6 +2,7 @@
 #define SEP3d_AUX_I 1
 #include <seplib.h>
 #include <superset.h>
+#include<sepConfig.h>
 #ifdef SU_SUPPORT
 #include "superset_internal.h"
 #ifndef YES

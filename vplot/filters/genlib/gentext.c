@@ -47,21 +47,13 @@
  */
 
 
-#include <sitedef.h>
+#include <sepConfig.h>
 #include	<stdio.h>
 #include	<math.h>
-#if defined(__stdc__) || defined(__STDC__)
 #include <string.h>
-#else
-#include <strings.h>
-#endif
 #include <sys/types.h>
 #include <unistd.h>
-#if defined(USG) || defined(SOLARIS)
-#include       <fcntl.h>
-#else /* USG */
 #include	<sys/file.h>
-#endif /* USG */
 #include	"../../include/vplot.h"
 #include	"../include/extern.h"
 #include	"../include/err.h"
@@ -127,13 +119,7 @@ static double   up_orient_dx, up_orient_dy;
 static double   xorigin_f, yorigin_f, xold_f, yold_f;
 static int      ttxfont, cur_color_save, overlay_save;
 
-#if defined(HAVE_STDLIB_H)
 #include <stdlib.h>
-#else
-extern char    *malloc ();
-extern char    *calloc ();
-extern char    *getenv ();
-#endif
 
 static void
 swab_font (char *stuff, int bytecount)

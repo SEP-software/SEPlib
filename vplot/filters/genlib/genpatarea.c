@@ -18,7 +18,6 @@
  *	Make number of arguments to dev.attributes and dev.raster consistent.
  */
 
-#include <sitedef.h>
 #include <stdio.h>
 #include "../include/pat.h"
 #include "../include/vertex.h"

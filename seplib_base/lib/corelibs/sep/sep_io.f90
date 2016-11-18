@@ -38,7 +38,42 @@ interface
     integer(C_INT),intent(in),value :: sz
   end function
 
-
+      integer(kind=8) function sreedll_i(tag,ar,sz) bind(c,name="sreedll_i")
+    import
+    character(C_CHAR),dimension(*),intent(in) ::tag
+    integer(C_INT),dimension(*),intent(out) :: ar
+    integer(C_LONG_LONG),intent(in),value :: sz
+  end function
+      integer(kind=8) function sreedll_f(tag,ar,sz) bind(c,name="sreedll_f")
+    import
+    character(C_CHAR),dimension(*),intent(in) ::tag
+    real(C_FLOAT),dimension(*),intent(out) :: ar
+    integer(C_LONG_LONG),intent(in),value :: sz
+  end function
+        integer(kind=8) function sreedll_c(tag,ar,sz) bind(c,name="sreedll_x")
+    import
+    character(C_CHAR),dimension(*),intent(in) ::tag
+    complex(C_FLOAT),dimension(*),intent(out) :: ar
+    integer(C_LONG_LONG),intent(in) ,value:: sz
+  end function
+        integer(kind=8) function sritell_f(tag,ar,sz) bind(c,name="sritell_f")
+    import
+    character(C_CHAR),dimension(*),intent(in) ::tag
+    real(C_FLOAT),dimension(*),intent(in) :: ar
+    integer(C_LONG_LONG),intent(in),value :: sz
+  end function
+       integer(kind=8) function sritell_c(tag,ar,sz) bind(c,name="sritell_x")
+    import
+    character(C_CHAR),dimension(*),intent(in) ::tag
+    complex(C_FLOAT),dimension(*),intent(in) :: ar
+    integer(C_LONG_LONG),intent(in),value :: sz
+  end function
+   integer(kind=8) function sritell_i(tag,ar,sz) bind(c,name="sritell_c")
+    import
+    character(C_CHAR),dimension(*),intent(in) ::tag
+    integer(C_INT),dimension(*),intent(in) :: ar
+    integer(C_LONG_LONG),intent(in) ,value:: sz
+  end function
 
 !   integer function input() bind(c,name="sfdinput")
 !    import
@@ -183,6 +218,8 @@ end interface
 interface sreed
   module procedure sre_f_1,sre_f_2,sre_f_3,sre_f_4,sre_f_5,sre_f_0,sre_i_2
   module procedure sre_c_1,sre_c_2,sre_c_3,sre_c_4,sre_c_5,sre_i_0,sre_i_1
+    module procedure sre_f_1_ll,sre_f_2_ll,sre_f_3_ll,sre_f_4_ll,sre_f_5_ll,sre_f_0_ll,sre_i_2_ll
+  module procedure sre_c_1_ll,sre_c_2_ll,sre_c_3_ll,sre_c_4_ll,sre_c_5_ll,sre_i_0_ll,sre_i_1_ll
 end interface
 
 interface sreed2
@@ -197,6 +234,10 @@ interface srite
   module procedure sri_f_1,sri_f_2,sri_f_3,sri_f_4,sri_f_5
   module procedure sri_i_2,sri_i_0,sri_i_1
   module procedure sri_c_1,sri_c_2,sri_c_3,sri_c_4,sri_c_5
+  
+    module procedure sri_f_1_ll,sri_f_2_ll,sri_f_3_ll,sri_f_4_ll,sri_f_5_ll
+  module procedure sri_i_2_ll,sri_i_0_ll,sri_i_1_ll
+  module procedure sri_c_1_ll,sri_c_2_ll,sri_c_3_ll,sri_c_4_ll,sri_c_5_ll
 end interface
 
 interface sreed_window
@@ -502,6 +543,227 @@ integer function sri_i_1(tag,ar,sz)
   sri_i_1= srite_i(trim(tag)//C_NULL_CHAR,ar,sz)
 
 end function
+
+
+
+!!!!!!!!!!!!!!!AAAAAAAAA
+integer(kind=8) function sre_i_2_ll(tag,ar,sz)
+  character(len=*) tag
+  integer,dimension(:,:),intent(out)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sre_i_2_ll= sreedll_i(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+integer(kind=8)  function sre_i_1_ll(tag,ar,sz)
+  character(len=*) tag
+  integer,dimension(:),intent(out)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sre_i_1_ll= sreedll_i(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+integer(kind=8)  function sre_i_0_ll(tag,ar,sz)
+  character(len=*) tag
+  integer,intent(out)  :: ar
+    integer(kind=8), intent(in) :: sz
+   integer :: x(1)
+  sre_i_0_ll= sreedll_i(trim(tag)//C_NULL_CHAR,x,sz)
+  ar=x(1)
+end function
+
+!FLOAT SREEDS
+integer(kind=8)  function sre_f_1_ll(tag,ar,sz)
+  character(len=*) tag
+  real,dimension(:),intent(out)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sre_f_1_ll= sreedll_f(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+integer(kind=8)  function sre_f_0_ll(tag,ar,sz)
+  character(len=*) tag
+  real,intent(out)  :: ar
+    integer(kind=8), intent(in) :: sz
+    real :: x(1)
+
+  sre_f_0_ll= sreedll_f(trim(tag)//C_NULL_CHAR,x,sz)
+  ar=x(1)
+end function
+integer(kind=8)  function sre_f_2_ll(tag,ar,sz)
+  character(len=*) tag
+  real,dimension(:,:),intent(out)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sre_f_2_ll= sreedll_f(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+integer(kind=8)  function sre_f_3_ll(tag,ar,sz)
+  character(len=*) tag
+  real,dimension(:,:,:),intent(out)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sre_f_3_ll= sreedll_f(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+integer(kind=8)  function sre_f_4_ll(tag,ar,sz)
+  character(len=*) tag
+  real,dimension(:,:,:,:),intent(out)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sre_f_4_ll= sreedll_f(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+integer(kind=8)  function sre_f_5_ll(tag,ar,sz)
+  character(len=*) tag
+  real,dimension(:,:,:,:,:),intent(out)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sre_f_5_ll= sreedll_f(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+!COMPLEX SREEDS
+integer(kind=8)  function sre_c_1_ll(tag,ar,sz)
+  character(len=*) tag
+  complex,dimension(:),intent(out)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sre_c_1_ll= sreedll_c(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+integer(kind=8)  function sre_c_2_ll(tag,ar,sz)
+  character(len=*) tag
+  complex,dimension(:,:),intent(out)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sre_c_2_ll= sreedll_c(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+integer(kind=8)  function sre_c_3_ll(tag,ar,sz)
+  character(len=*) tag
+  complex,dimension(:,:,:),intent(out)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sre_c_3_ll= sreedll_c(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+integer(kind=8)  function sre_c_4_ll(tag,ar,sz)
+  character(len=*) tag
+  complex,dimension(:,:,:,:),intent(out)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sre_c_4_ll= sreedll_c(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+integer(kind=8)  function sre_c_5_ll(tag,ar,sz)
+  character(len=*) tag
+  complex,dimension(:,:,:,:,:),intent(out)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sre_c_5_ll= sreedll_c(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+!SRITE FLOATS
+integer(kind=8)  function sri_f_1_ll(tag,ar,sz)
+  character(len=*),intent(in)  ::tag
+  real,dimension(:),intent(in)  :: ar
+  integer(kind=8), intent(in) :: sz
+  sri_f_1_ll= sritell_f(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+integer(kind=8)  function sri_f_0_ll(tag,ar,sz)
+  character(len=*),intent(in)  ::tag
+  real,intent(out)  :: ar
+  real :: x(1)
+  integer(kind=8), intent(in) :: sz
+  sri_f_0_ll= sritell_f(trim(tag)//C_NULL_CHAR,x,sz)
+  ar=x(1)
+end function
+integer(kind=8)  function sri_f_2_ll(tag,ar,sz)
+  character(len=*),intent(in) :: tag
+  real,dimension(:,:),intent(in)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sri_f_2_ll= sritell_f(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+integer(kind=8)  function sri_f_3_ll(tag,ar,sz)
+  character(len=*),intent(in) :: tag
+  real,dimension(:,:,:),intent(in)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sri_f_3_ll= sritell_f(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+integer(kind=8)  function sri_f_4_ll(tag,ar,sz)
+  character(len=*),intent(in) :: tag
+  real,dimension(:,:,:,:),intent(in)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sri_f_4_ll= sritell_f(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+integer(kind=8)  function sri_f_5_ll(tag,ar,sz)
+  character(len=*),intent(in) :: tag
+  real,dimension(:,:,:,:,:),intent(in)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sri_f_5_ll= sritell_f(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+!SREED COMPLEX
+integer(kind=8)  function sri_c_1_ll(tag,ar,sz)
+  character(len=*),intent(in)  ::tag
+  complex,dimension(:),intent(in)  :: ar
+  integer(kind=8), intent(in) :: sz
+  sri_c_1_ll= sritell_c(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+integer(kind=8)  function sri_c_2_ll(tag,ar,sz)
+  character(len=*),intent(in) :: tag
+  complex,dimension(:,:),intent(in)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sri_c_2_ll= sritell_c(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+integer(kind=8)  function sri_c_3_ll(tag,ar,sz)
+  character(len=*),intent(in) :: tag
+  complex,dimension(:,:,:),intent(in)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sri_c_3_ll= sritell_c(tag,ar,sz)
+end function
+integer(kind=8)  function sri_c_4_ll(tag,ar,sz)
+  character(len=*),intent(in) :: tag
+  complex,dimension(:,:,:,:),intent(in)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sri_c_4_ll= sritell_c(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+integer(kind=8)  function sri_c_5_ll(tag,ar,sz)
+  character(len=*),intent(in) :: tag
+  complex,dimension(:,:,:,:,:),intent(in)  :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sri_c_5_ll= sritell_c(trim(tag)//C_NULL_CHAR,ar,sz)
+end function
+
+!SRITE INTEGERS
+integer(kind=8)  function sri_i_2_ll(tag,ar,sz)
+  character(len=*),intent(in) ::tag
+  integer,dimension(:,:) ,intent(in) :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sri_i_2_ll= sritell_i(trim(tag)//C_NULL_CHAR,ar,sz)
+
+end function
+integer(kind=8)  function sri_i_0_ll(tag,ar,sz)
+  character(len=*),intent(in) ::tag
+  integer,intent(in) :: ar
+    integer(kind=8), intent(in) :: sz
+   integer :: x(1)
+
+  x(1)=ar
+  sri_i_0_ll= sritell_i(trim(tag)//C_NULL_CHAR,x,sz)
+
+end function
+integer(kind=8)  function sri_i_1_ll(tag,ar,sz)
+  character(len=*),intent(in) ::tag
+  integer,dimension(:) ,intent(in) :: ar
+    integer(kind=8), intent(in) :: sz
+
+  sri_i_1_ll= sritell_i(trim(tag)//C_NULL_CHAR,ar,sz)
+
+end function
+
+
+!!!!!!!!!!!!!!!!!!!!!AAAAAAA
+
+
+
+
 
 !sreed window
 integer function srw_i_1(tag,nd,ng,n,f,j,sz,buf)

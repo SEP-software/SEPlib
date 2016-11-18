@@ -132,6 +132,7 @@ copyright (c) 1991 Stanford University
 /*
 Author: Shuki Ronen, July 1982.
 */
+#define pi 3.1415926436
 /*
  * Keyword: hidden line plotting :      
  */

@@ -46,5 +46,5 @@ TARGET_LINK_LIBRARIES(Log superset sep3d sep)
 TARGET_LINK_LIBRARIES(Math_base superset sep3d sep)
 
 
-install(FILES ${progs} DESTINATION bin)
+install(FILES ${progs} arithpar DESTINATION bin)
 

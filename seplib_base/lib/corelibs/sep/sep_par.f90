@@ -9,7 +9,11 @@ implicit none
 interface 
 
  
- 
+ subroutine sep_prog_stat(nm,i1,i2,i3) bind(c,name="sep_prog_stat")
+  import
+    character(C_CHAR), dimension(*) :: nm
+    integer(C_INT),value :: i2,i1,i3
+  end subroutine
  
   subroutine doc1(string) bind(c,name="doc")
     import

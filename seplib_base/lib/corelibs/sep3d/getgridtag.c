@@ -55,7 +55,6 @@ AUTHOR
 *
 */
 
-#include <sitedef.h>
 #if HAVE_STRING_H
 #include <string.h>
 #endif
