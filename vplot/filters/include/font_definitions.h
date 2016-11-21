@@ -31,23 +31,23 @@
  * Here are the fonts that we want included at compile time into gentext.c.
  * All other fonts will be loaded at runtime on demand.
  */
-#include <../vplotfonts/cyrilc.include>
-#include <../vplotfonts/misc.include>
-#include <../vplotfonts/gothgbt.include>
-#include <../vplotfonts/pen.include>
-#include <../vplotfonts/gothgrt.include>
-#include <../vplotfonts/romanc.include>
-#include <../vplotfonts/gothitt.include>
-#include <../vplotfonts/romand.include>
-#include <../vplotfonts/greekc.include>
-#include <../vplotfonts/romans.include>
-#include <../vplotfonts/greeks.include>
-#include <../vplotfonts/romant.include>
-#include <../vplotfonts/italicc.include>
-#include <../vplotfonts/scriptc.include>
-#include <../vplotfonts/italict.include>
-#include <../vplotfonts/scripts.include>
-#include <../vplotfonts/math.include>
+#include <../genlib/cyrilc.include>
+#include <../genlib/misc.include>
+#include <../genlib/gothgbt.include>
+#include <../genlib/pen.include>
+#include <../genlib/gothgrt.include>
+#include <../genlib/romanc.include>
+#include <../genlib/gothitt.include>
+#include <../genlib/romand.include>
+#include <../genlib/greekc.include>
+#include <../genlib/romans.include>
+#include <../genlib/greeks.include>
+#include <../genlib/romant.include>
+#include <../genlib/italicc.include>
+#include <../genlib/scriptc.include>
+#include <../genlib/italict.include>
+#include <../genlib/scripts.include>
+#include <../genlib/math.include>
 
 
 
