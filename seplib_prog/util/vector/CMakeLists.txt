@@ -45,6 +45,29 @@ TARGET_LINK_LIBRARIES(Clip superset sep3d sep)
 TARGET_LINK_LIBRARIES(Log superset sep3d sep)
 TARGET_LINK_LIBRARIES(Math_base superset sep3d sep)
 
+macro(makeLink src dest target)
+ add_custom_target(${target} ALL
+   COMMAND ${CMAKE_COMMAND} -E create_symlink ${src} ${dest} 
+    DEPENDS  ${src} COMMENT "mklink ${src} -> ${dest}")
+   set(LINKS ${LINKS} ${dest})
+endmacro()
 
-install(FILES ${progs} arithpar DESTINATION bin)
+
+makelink(Clip Scale clip_target)
+makelink(Math_base Cadd cadd_lin)
+makelink(Math_base Add add_lin)
+makelink(Math_base Pow pow_link)
+makelink(Math_base Gpow gpow_lin)
+makelink(Math_base Cabs2 cabs2_link)
+makelink(Math_base Cabs cabs_lin)
+makelink(Math_base Conj conj_link)
+makelink(Math_base Imag imag_link)
+makelink(Math_base Real real_link)
+makelink(Math_base Rtoc rtoc_link)
+makelink(Math_base Cmplx cmplx_link)
+
+
+
+
+install(FILES ${links} ${progs} arithpar DESTINATION bin)
 

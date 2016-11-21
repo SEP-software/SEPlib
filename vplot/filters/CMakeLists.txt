@@ -47,4 +47,4 @@ ADD_EXECUTABLE(Sraspen ${SEPPEN_BASE})
 TARGET_LINK_LIBRARIES(Sraspen ras_pen_SEP  genlib vplotutil loclib  vplot tseplib sep ${X11_XAW} ${X11_XT} ${X11_LIBRARIES} m)
 
 
-
+install(TARGETS Sraspen raspen Spspen pspen Svppen vppen Sxtpen xtpen  DESTINATION bin)

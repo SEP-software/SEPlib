@@ -12,7 +12,7 @@ Doc.rules.idoc Prog.rules.shell Doc.rules.test README SEP.bottom
 SEP.distr.bottom SEP.distr.defs SEP.distr.dir Prg.rules.lib SEP.distr.rules 
 sepweb.top SEP.distr.top Prog.defs.top septex.tar septex.pl sepbook.pl
 not_found
-rog.defs.compile
+Prog.defs.compile
     SEP.generic.defs
             SEP.lib.defs
    Doc.defs.top
