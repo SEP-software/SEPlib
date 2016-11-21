@@ -33,18 +33,13 @@
  *	Added support for ppm output, (ppmpen, Ppmpen).
  */
 
-#include<sitedef.h>
 
 #include <stdio.h>
 #include "../include/enum.h"
 #include "../include/extern.h"
 #include "../include/err.h"
 #include "../include/params.h"
-#if defined(__stdc__) || defined(__STDC__)
 #include <string.h>
-#else
-#include <strings.h>
-#endif
 #include <ctype.h>
 #define DEFAULT_OUT	isatty(fileno(pltout))
 #include "raspen.h"

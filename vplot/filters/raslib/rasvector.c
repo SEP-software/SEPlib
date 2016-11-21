@@ -17,7 +17,6 @@
  * Joe Dellinger (SEP), May 7 1989
  *	RGB version added.
  */
-#include<sitedef.h>
 
 #include <stdlib.h>
 #include <stdio.h>

@@ -16,7 +16,6 @@ DQ	\"([^"\n]*\"\")*[^"\n]*["\n]
  *                      of yylook->getpar_yylook, etc. for Solaris
  */
  extern ssize_t read (int __fd, void *__buf, size_t __nbytes) __wur;
-#include <sitedef.h>
 #if HAVE_STRING_H
 #include <string.h>
 #endif

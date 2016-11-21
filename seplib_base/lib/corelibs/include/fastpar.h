@@ -1,4 +1,3 @@
-#include <sitedef.h>
 #ifndef FASTPAR_H
 #define FASTPAR_H
 #include <prototypes.h>

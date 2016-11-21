@@ -442,7 +442,7 @@ static void release_event(Widget w, XtPointer client_data, XEvent *ev, Boolean *
   int rc;
   pid_t waitpid;
   char cmdbuf[BUFSIZ];
-  char parfile[MAXPATHLEN+5];
+  char parfile[9999+5];
   char *cptr;
   XButtonEvent *bev = (XButtonEvent *) ev;
   Rectangle *rect;

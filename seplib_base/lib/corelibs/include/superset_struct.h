@@ -1,6 +1,5 @@
 #ifndef STREAMIN3d_H
 #define STREAMIN3d_H adfasd
-#include <sitedef.h>
 #include <sep_file_types.h>
 
 #include <stdio.h>

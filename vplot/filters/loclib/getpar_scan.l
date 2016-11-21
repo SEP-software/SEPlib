@@ -14,30 +14,21 @@ DQ	\"([^"\n]*\"\")*[^"\n]*["\n]
  * Revised 9-3-92 dave  deal with null tags properly.
  * Revised 2-25-95 stew changed bcopy to memcpy, modified renaming
  *                      of yylook->getpar_yylook, etc. for Solaris
- * Revised 3=26=15 stew drop suballoc 
  */
-#include <sitedef.h>
-#include "../include/extern.h"
+ extern ssize_t read (int __fd, void *__buf, size_t __nbytes) __wur;
 #if HAVE_STRING_H
 #include <string.h>
 #endif
-#include <stdlib.h>
 #include <ctype.h>
+#include "../include/extern.h"
 #include "../loclib/fastpar.h"
- extern ssize_t read (int __fd, void *__buf, size_t __nbytes) __wur;
-static int massage(char *string,char *out,int len,int quote);
+
+extern char *alloc(size_t);
+static int massage();
 
 
 #define MAX_INPUT_DEPTH 10
-#if !defined(FLEX)
-#undef input
-#define input() ((int) *(input_stack[input_depth]++))
-#undef unput
-/* The redundant  =(c) insures side effects of expressions occur */
-#define unput(c) (*(--(input_stack[input_depth]))=(c))
-#else 
 YY_BUFFER_STATE input_state[MAX_INPUT_DEPTH];
-#endif
 
 #define yywrap getpar_pop_input
 #define yylex getpar_lexscan
@@ -53,22 +44,22 @@ static struct {
        } yy;
 
 
-#ifdef notdef
 #define WORDSIZE 8
-static int  SMALLBLOCK = 0;
+static int  SMALLBLOCK = /*4096*/ -1;
 static char
-*suballoc (size_t size)
+*suballoc (size)
+int size;
 {
 	static char *myblock = (char *) NULL; static int bytesleft = 0;
-	char *ptr; extern char *alloc(size_t);
-	size_t allocsize;
+	char *ptr;
+	int allocsize;
 
 	if (size % WORDSIZE == 0) {
 		allocsize = size;
 	} else {
 		allocsize = ( (size / WORDSIZE) + 1) * WORDSIZE;
 		}
-	if(allocsize >= SMALLBLOCK) return(alloc(allocsize));
+	if(allocsize > SMALLBLOCK) return(alloc(allocsize));
 	else
 	  { 
 	    if(bytesleft < allocsize)
@@ -85,13 +76,11 @@ static char
 	   return(ptr);
 	  }
 }
-#endif/*notdef*/
 
 static int  prime[10] = {31,29,23,19,17,13,11,7,5,3};
-int getpar_hash(
-register char *array,
-register int len
-               )
+int getpar_hash(array,len)
+register char *array;
+register int len;
 {
   register int hash;
   register int i;
@@ -103,12 +92,11 @@ register int len
 }
 
 /* workhorse to decode par files; shell already parses command line */
-void getpar_scan(
-register hash_item **queue,
-register int qlen
-                )
+getpar_scan(queue,qlen)
+register hash_item **queue;
+register int qlen;
 {
- extern int yylex(void);
+ extern int yylex();
 
  while(yylex()) {
 	getpar_hash_store(queue,qlen,yy.tag,yy.val,yy.tlen,yy.vlen);
@@ -119,10 +107,14 @@ register int qlen
 }
 
 /* read parfile into core and put buffer on scan input stack */
-void getpar_stack_par(char *val)
+getpar_stack_par(val)
+char *val;
 {
  register char *buffer;
  register int fd, len;
+ extern int file();
+/* extern se fsize();*/
+ extern char *alloc(size_t);
 
     fd = file(val,0);
     len = (int)fsize(fd);
@@ -132,7 +124,7 @@ void getpar_stack_par(char *val)
     buffer[len+1]='\n';
     buffer[len+2]='\0';
 
-    getpar_push_input(buffer,1*0);
+    getpar_push_input(buffer,1);
 		/* this is the trouble spot */
     close(fd);
 }
@@ -141,14 +133,11 @@ void getpar_stack_par(char *val)
 #define getpar_hash_compare(next1,tag1,tlen1)  \
  ((next1)->tlen == (tlen1) && 0 == memcmp((next1)->tag,tag1,tlen1))
 
-void getpar_hash_store(
-hash_item **q,
-int qlen,
-register char *tag,
-register char *val,
-register int tlen,
-int vlen
-                 )
+getpar_hash_store(q,qlen,tag,val,tlen,vlen)
+hash_item **q;
+register char *tag, *val;
+register int tlen;
+int qlen, vlen;
 {
  register hash_item *hold, *next;
  static int storetime = 0;
@@ -164,7 +153,7 @@ int vlen
 	hold = next; next = next->next;
 	}
 
- hold->next = next = (hash_item *) alloc(sizeof(hash_item));
+ hold->next = next = (hash_item *) suballoc((int) (sizeof(hash_item)));
  next->next = (hash_item *) NULL;
  next->tlen = tlen;
  next->tag = tag;
@@ -173,11 +162,11 @@ int vlen
  next->timestamp = storetime++;
 }
 
-hash_item *getpar_hash_lookup(
-register hash_item **q,
-register int qlen,
-register char *tag,
-register int tlen)
+hash_item *getpar_hash_lookup(q,qlen,tag,tlen)
+register hash_item **q;
+register char *tag;
+register int tlen;
+register int qlen;
 {
  register hash_item *next;
 
@@ -194,36 +183,36 @@ register int tlen)
 %S FOUNDTAG
 %%
 <FOUNDTAG>{SQ}		{
-			 yy.vlen = yyleng-2; yy.val=alloc(yy.vlen+1);
+			 yy.vlen = yyleng-2; yy.val=suballoc(yy.vlen+1);
 			 yy.vlen = massage(yytext+1,yy.val,yy.vlen,yytext[0]);
 			 yy.val[yy.vlen]='\0'; BEGIN 0; return(FOUNDTAG);
 			 }
 <FOUNDTAG>{DQ}		{
-			 yy.vlen = yyleng-2; yy.val=alloc(yy.vlen+1);
+			 yy.vlen = yyleng-2; yy.val=suballoc(yy.vlen+1);
 			 yy.vlen = massage(yytext+1,yy.val,yy.vlen,yytext[0]);
 			 yy.val[yy.vlen]='\0'; BEGIN 0; return(FOUNDTAG);
 			 }
 <FOUNDTAG>[^'"]{NONWHITE}*	{
-				 yy.vlen=yyleng; yy.val=alloc(yy.vlen+1);
+				 yy.vlen=yyleng; yy.val=suballoc(yy.vlen+1);
 		 		 memcpy(yy.val,yytext,yy.vlen+1); BEGIN 0;
 				 return(FOUNDTAG);
 				 }
 ^{TAG}/{NONWHITE}	{
-			 yy.tlen=yyleng-1; yy.tag=alloc(yy.tlen+1);
+			 yy.tlen=yyleng-1; yy.tag=suballoc(yy.tlen+1);
 			 memcpy(yy.tag,yytext,yy.tlen);
 			 yy.tag[yy.tlen]='\0'; BEGIN FOUNDTAG;
 			 }
 ([ \t]{TAG})/{NONWHITE}	{
-			 yy.tlen=yyleng-2; yy.tag=alloc(yy.tlen+1);
+			 yy.tlen=yyleng-2; yy.tag=suballoc(yy.tlen+1);
 			 memcpy(yy.tag,yytext+1,yy.tlen);
 			 yy.tag[yy.tlen]='\0'; BEGIN FOUNDTAG;
 			 }
 ^{TAG}/{WHITE}       	{
-                         yy.tlen=yyleng-1; yy.tag=alloc(yy.tlen+1);
+                         yy.tlen=yyleng-1; yy.tag=suballoc(yy.tlen+1);
                          memcpy(yy.tag,yytext,yy.tlen);
                          yy.tag[yy.tlen]='\0'; yy.val=NULL; return(FOUNDTAG);
                          }
-([ \t]{TAG})/{WHITE}	{ yy.tlen=yyleng-2; yy.tag=alloc(yy.tlen+1);
+([ \t]{TAG})/{WHITE}	{ yy.tlen=yyleng-2; yy.tag=suballoc(yy.tlen+1);
 			  memcpy(yy.tag,yytext+1,yy.tlen);
 			  yy.tag[yy.tlen]='\0'; yy.val=NULL; return(FOUNDTAG);
 			}
@@ -231,14 +220,14 @@ register int tlen)
 .	|
 \n	;
 %%
-	void getpar_push_input(register char *buffer,register int dealloc)
+	getpar_push_input(buffer,dealloc)
+	register char *buffer;
+	register int dealloc;
 	{
 	  if(input_depth++ == MAX_INPUT_DEPTH)
 		seperr("too many nested par files\n");
 	  input_stack[input_depth] = buffer;
-#if defined(FLEX)
   input_state[input_depth] =yy_scan_string(input_stack[input_depth]);
-#endif
 	  if(dealloc) dealloc_stack[input_depth] = buffer;
 	  else dealloc_stack[input_depth] = (char *) NULL;
 	}
@@ -246,7 +235,6 @@ register int tlen)
 	int
 	yywrap()
 	{
-#if defined(FLEX)
  yy_delete_buffer(input_state[input_depth] );
   if(((char *) NULL) != dealloc_stack[input_depth]) {
 	free(dealloc_stack[input_depth]);
@@ -255,19 +243,14 @@ register int tlen)
  input_depth--;
  if(input_depth >=0)
 	 yy_switch_to_buffer(input_state[input_depth] );
-#else
-	  if(((char *) NULL) != dealloc_stack[input_depth]) {
-		free(dealloc_stack[input_depth]);
-		dealloc_stack[input_depth] = (char *) NULL;
-		}
-	  input_stack[input_depth--] = (char *) NULL;
-#endif
 	  if(input_depth < 0){ return(1);}
 	  return(0);
 	}
 
 	static int
-	massage(char *string,char *out,int len,int quote)
+	massage(string,out,len,quote)
+	register char *string, *out;
+	register int len, quote;
 	{
  	register int i,j;
 	

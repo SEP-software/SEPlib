@@ -131,9 +131,6 @@ char * sep_tail(name)
     if(result == (char *) NULL) return(name);
     else return(result+1);
 }
-#if !defined (HAVE_STDLIB_H)
-extern char *putenv ();
-#endif /* HAVE_STDLIB_H  */
 /* datapath may be a semi-colon separated list of paths */
 /* we must construct a semi-colon seprated list of filenames from it */
 #if NeedFunctionPrototypes

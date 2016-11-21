@@ -29,9 +29,6 @@
 /*
  * Erase the graphics area
  */
-#include<sitedef.h>
-
-#include <sitedef.h>
 #include	<stdio.h>
 #include	"../include/erasecom.h"
 #include	"../include/enum.h"

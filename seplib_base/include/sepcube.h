@@ -11,7 +11,6 @@
  *
  */
 
-#include <sitedef.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <prototypes.h>
@@ -19,35 +18,10 @@
 /* Moved this to the general include file because almost everything uses
    malloc - questionable  -Bob*/
 
-#if defined(HAVE_STDLIB_H)
 #include <stdlib.h>
 /* library name redefinitions, to prevent name conflicts  */
-#if defined(CRAY)
-#define _lib_sep(name) sep_##name
-#define head _lib_sep(head)
-#define input _lib_sep(input)
-#define output _lib_sep(output)
-#endif
-#else
-extern char *malloc ();
-extern char *realloc ();
-extern void free ();
-#endif
-#endif
 
-#if defined(__STDC__) && defined(CRAY)
-/* typedef int FILE_DESCR; */
-#ifndef FILE_DESCR
 #define FILE_DESCR int
-#endif
-#endif
-
-
-
-/* typedef int FILE_DESCR; */
-#ifndef FILE_DESCR
-#define FILE_DESCR int
-#endif
 
 
 
@@ -55,3 +29,4 @@ extern void free ();
 #include<sep_old_external.h>
 #include<sep_main_external.h>
 #include<sep_pars_external.h>
+#endif

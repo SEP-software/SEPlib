@@ -16,7 +16,6 @@
  *	Please log any further modifications made to this file:
  */
 #include<stdio.h>
-#include<sitedef.h>
 
 
 #include "raspen.h"

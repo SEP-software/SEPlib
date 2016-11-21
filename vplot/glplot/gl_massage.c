@@ -5,11 +5,7 @@
  */
 #include "glplot.h"
 #include <stdio.h>
-#if defined(HAVE_STDLIB_H)
 #include <stdlib.h>
-#else
-extern char    *malloc (size_t);
-#endif
 #ifdef USE_PROTO
 #define A1(FTYP,SUF) \
 int gl_massage ## SUF (FTYP *min, FTYP *max, FTYP *mid, FTYP *dev)

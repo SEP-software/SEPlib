@@ -26,11 +26,7 @@
 #include "../include/enum.h"
 #include "../include/attrcom.h"
 
-#if HAVE_STDLIB_H
 #include <stdlib.h>
-#else
-extern char    *malloc ();
-#endif
 
 /* Make the damn modulo function work for negative numbers */
 #define MODULO(A,B)	(((A)>=0)?((A)%(B)):(((A)%(B)+(B))%(B)))

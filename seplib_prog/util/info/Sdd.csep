@@ -114,7 +114,6 @@ static int   beg,nelem;
 static char buf_new[MAX_LINE_LENGTH],buf_old[MAX_LINE_LENGTH*2];
 #include<sepmath.h>
 
-#include<sitedef.h>
 int ddreed (char *intag,float *ptr,int length,int esize);
 int dd_fill(char *ptr,char *bufcar,int length);
 int ddrite(char *outtag,float *ptr,int length,int esize);

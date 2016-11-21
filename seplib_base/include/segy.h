@@ -1,4 +1,3 @@
-#include<sitedef.h>
 #ifndef SU_SEP2
 #define SU_SEP2 ads
 

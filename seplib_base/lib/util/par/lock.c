@@ -121,7 +121,7 @@ int check_sleep(int sleeptime);
 int lockfile_create(const char *lockfile, int nsec, int flags)
 {
 	struct stat	st, st1;
-	char		tmplock[MAXPATHLEN];
+	char		tmplock[9999];
 	char		sysname[256];
 	char		buf[8];
 	char		*p;
@@ -138,7 +138,7 @@ int lockfile_create(const char *lockfile, int nsec, int flags)
 	/*
 	 *	Safety measure.
 	 */
-	if (strlen(lockfile) + 32 > MAXPATHLEN) {
+	if (strlen(lockfile) + 32 > 9999) {
 		errno = ENAMETOOLONG;
 		return L_ERROR;
 	}

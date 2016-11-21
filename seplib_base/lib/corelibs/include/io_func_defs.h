@@ -1,4 +1,3 @@
-#include <sitedef.h>
 #ifndef IO_FUNC_DEFS_H
 #define IO_FUNC_DEFS_H 1
 

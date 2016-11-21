@@ -18,7 +18,6 @@
  *			what to do.
  *     7-18-97 bob prototypes, declare voids, etc
  */
-#include <sitedef.h>
 #include "../include/extern.h"
 #include "fastpar.h"
 #include <stdio.h>

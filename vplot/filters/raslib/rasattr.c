@@ -21,7 +21,6 @@
 /*
  * control graphics attributes
  */
-#include <sitedef.h>
 #include <stdio.h>
 #include "../include/attrcom.h"
 #include "../include/extern.h"

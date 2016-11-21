@@ -21,7 +21,6 @@
  *	specified!
  */
 
-#include<sitedef.h>
 #include <stdio.h>
 #include "../include/closestat.h"
 #include "../include/err.h"

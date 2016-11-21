@@ -67,7 +67,6 @@ Author:Robert G. Clapp
 /*#include <sep.main>*/
 #include<unistd.h>
 /*#include <seplib.h>*/
-#include <sitedef.h>
 #include <sys/types.h>
 #include <string.h>
 #include <seplib.h>
@@ -78,11 +77,7 @@ Author:Robert G. Clapp
 #include<strings.h>
 
 
-#if defined (HAVE_STDLIB_H)
 #include<stdlib.h>
-#else
-extern int atoi();
-#endif /* HAVE_STDLIB  */
 #define STRING_SIZE 20024
     char zero_check[9];
 

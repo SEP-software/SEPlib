@@ -1,5 +1,4 @@
 #include <prototypes.h>
-#include <sitedef.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -95,11 +94,9 @@ int auxputch_i_f(const char *arg, const char *typ, void *val,const char *tag);
 int auxputch_s_f(const char *arg, const char *typ, void *val,const char *tag);
 int auxputch_l_f(const char *arg, const char *typ, void *val,const char *tag);
 
-#ifdef USE_SOCKETS
 extern int socklisten(  int , int );
 extern int opensock2( char* , char* );
 extern int opensock1( char*, int);
-#endif /*END OF SOCKETS*/
 
 _XFUNCPROTOEND
 #else /*END OF NO PROTO */
@@ -113,11 +110,9 @@ extern int isordinary();
 extern char *maketitle();
 
 
-#ifdef USE_SOCKETS
 extern int socklisten();
 extern int opensock2();
 extern int opensock1();
-#endif /*END OF SOCKETS*/
 #endif /*END OF NO PROTO */
 
 /*  $Id: sep_main_internal.h,v 1.3 2004/04/08 22:32:27 bob Exp $ */

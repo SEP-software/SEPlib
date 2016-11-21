@@ -17,17 +17,11 @@
    for saw compatibility
    Revised  6-2-99   Bob Begun translation to GNU standards
  */
-#include <sitedef.h>
 #include<string.h>
 #include<strings.h>
 #include <stdio.h>
 
-#if defined (HAVE_STDLIB_H)
 #include<stdlib.h>
-#else
-extern int atoi();
-#endif /* HAVE_STDLIB  */
-
 #include <math.h>
 #include "fastpar.h"
 
