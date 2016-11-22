@@ -27,7 +27,7 @@ extern int make_unpipe(char*);
 extern int noheader(void);
 extern int redin(void);
 extern int redout(void);
-extern int sepwarn(int wrn, char *format, ... );
+extern int sepwarn(const int wrn,const  char *format, ... );
 extern int sep_prog( char *arg);
 extern int separg(int iarg, char *arg);
 extern int seperr( const char *format, ... );

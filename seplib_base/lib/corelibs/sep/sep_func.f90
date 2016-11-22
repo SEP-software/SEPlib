@@ -7,6 +7,11 @@ implicit none
  
 interface 
 
+    subroutine sepwarn(err,string) bind(c,name="sepwarn")
+    import
+    integer(c_int), intent(in) :: err
+    character(C_CHAR), dimension(*),intent(in) :: string
+  end subroutine
     subroutine seperr(string) bind(c,name="seperr")
     import
     character(C_CHAR), dimension(*),intent(in) :: string
