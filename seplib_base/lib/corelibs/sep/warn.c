@@ -100,7 +100,7 @@ _XFUNCPROTOEND
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
 /*VARARGS1*/
-int sepwarn(int warn, char *format, ... )
+int sepwarn(const int warn,const char *format, ... )
 _XFUNCPROTOEND
 #else
 /*VARARGS0*/

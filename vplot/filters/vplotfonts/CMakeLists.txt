@@ -32,7 +32,13 @@ FOREACH(font ${FONTS})
      COMMAND  cat ${mycheck} ${myheader}  ${mydim} ${myaddr} ${mywidthl} ${mywidthr} ${mysymbol} ${mysvec} ${myig} > ${outfile}
      DEPENDS "${infile}" makefont
      )
-  set(outFiles ${outFiles} "${outfile}")
+    set_source_files_properties(
+    ${outfile}
+    PROPERTIES GENERATED TRUE
+    )
+   ADD_DEPENDENCIES(genlib ${outfile})
+   MESSAGE("TRIED TO DO THIS genlib ${outfile}")
+  set(fontFiles ${fontFiles} "${outfile}")
 ENDFOREACH(font)
-ADD_CUSTOM_TARGET(ProcessFiles ALL DEPENDS ${outFiles})
-install(FILES ${outFiles} DESTINATION include)
+ADD_CUSTOM_TARGET(ProcessFiles ALL DEPENDS ${fontFiles})
+install(FILES ${fontFiles} DESTINATION include)

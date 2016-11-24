@@ -39,5 +39,14 @@ ENDFOREACH(cprog)
 TARGET_LINK_LIBRARIES(Scp3d superset sep3d sep)
 set(SCRIPTS Sls	 Smv3d	    Srm3d     Zero)
 
+macro(makeLink src dest target)
+ add_custom_target(${target} ALL
+   COMMAND ${CMAKE_COMMAND} -E create_symlink ${src} ${dest}
+    DEPENDS  ${src} COMMENT "mklink ${src} -> ${dest}")
+   set(LINKS ${LINKS} ${dest})
+endmacro()
+
+
+
 install(FILES ${progs} ${scripts} DESTINATION bin)
 
