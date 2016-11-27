@@ -9,9 +9,8 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 set(SEPlib_MAJOR_VERSION 8)
 set(SEPlib_MINOR_VERSION 1)
-set(SEPlib_VERSION
+set(SEPlib_VERSION_STRING
   ${SEPlib_MAJOR_VERSION}.${SEPlib_MINOR_VERSION})
-MESSAGE("${SEPlib_VERSION}  SEPLIB")
 enable_language(Fortran C CXX)
 set(CMAKE_Fortran_MODULE_DIRECTORY  ${CMAKE_INSTALL_PREFIX}/include)
 
@@ -20,10 +19,35 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pg")
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -O2")
 set(DEFAULT_DOC_PATH ${CMAKE_INSTALL_PREFIX}/bin)
 
-configure_file(SEPlibConfigVersion.cmake.in
-  "${PROJECT_BINARY_DIR}/SEPlibConfigVersion.cmake" @ONLY)
-configure_file(SEPlibConfig.cmake.in
-  "${PROJECT_BINARY_DIR}/SEPlibConfig.cmake" @ONLY)
+SET(SEPlib_DIRNAME_lib     "lib")
+SET(SEPlib_DIRNAME_include "include")
+
+INCLUDE(CMakePackageConfigHelpers)
+
+CONFIGURE_PACKAGE_CONFIG_FILE(
+  "${CMAKE_CURRENT_SOURCE_DIR}/SEPlibConfig.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/SEPlibConfig.cmake"
+  INSTALL_DESTINATION
+    ${SEPlib_DIRNAME_lib}
+  PATH_VARS
+    SEPlib_DIRNAME_lib
+    SEPlib_DIRNAME_include
+  )
+
+INSTALL(
+  FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/SEPlibConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/SEPlibConfigVersion.cmake
+  DESTINATION
+    ${SEPlib_DIRNAME_lib}
+  )
+  
+  INSTALL(
+  EXPORT
+    SEPlibExports
+  DESTINATION
+    ${SEPlib_DIRNAME_lib}
+  )
 install(FILES "${PROJECT_BINARY_DIR}/SEPlibConfig.cmake"
   DESTINATION lib/cmake)
 install(FILES "${PROJECT_BINARY_DIR}/SEPlibConfigVersion.cmake"

@@ -4,7 +4,13 @@
 #  SEPINCDIR - include directories for SEPlib
 #  SEPLIBDIR    - SEPlib library directory
 #  SEPBINDIR     - SEPlib binary directory
+@PACKAGE_INIT@
 
-set(SEPINCDIR  @CMAKE_INSTALL_PREFIX@/include)
-set(SEPLIBDIR  @CMAKE_INSTALL_PREFIX@/lib)
-set(SEPBINDIR  @CMAKE_INSTALL_PREFIX@/bin)
+if(NOT TARGET sep)
+  INCLUDE(${CMAKE_CURRENT_LIST_DIR}/SEPlibExports.cmake)
+endif()
+
+
+
+set(SEPINCDIR SEPlib_INCLUDE_DIR)
+

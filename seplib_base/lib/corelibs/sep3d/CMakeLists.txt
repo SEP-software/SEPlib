@@ -22,4 +22,4 @@ getheadertag.c	     getvalbname.c	putkey.c)
 
 
 add_library(sep3d ${SOURCES})
-install(TARGETS sep3d DESTINATION lib)
+install(TARGETS sep3d DESTINATION lib EXPORT SEPlibExports)
