@@ -1,0 +1,10 @@
+
+# - Config file for the FooBar package
+# It defines the following variables
+#  SEPINCDIR - include directories for SEPlib
+#  SEPLIBDIR    - SEPlib library directory
+#  SEPBINDIR     - SEPlib binary directory
+
+set(SEPINCDIR  @CMAKE_INSTALL_PREFIX@/include)
+set(SEPLIBDIR  @CMAKE_INSTALL_PREFIX@/lib)
+set(SEPBINDIR  @CMAKE_INSTALL_PREFIX@/bin)
