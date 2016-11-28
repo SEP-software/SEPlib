@@ -1,4 +1,4 @@
-#!@PERL@
+#!/usr/bin/env perl
 # A short little Perl script to get around the problems Merge and Cat
 # sometimes have without input redirection.
 unless (-f STDIN) {

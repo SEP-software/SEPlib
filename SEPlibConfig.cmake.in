@@ -10,7 +10,11 @@ if(NOT TARGET sep)
   INCLUDE(${CMAKE_CURRENT_LIST_DIR}/SEPlibExports.cmake)
 endif()
 
+get_cmake_property(_variableNames VARIABLES)
 
+
+set_and_check(SEPlib_DIRNAME_lib "@PACKAGE_SEPlib_DIRNAME_lib@")
+set_and_check(SEPlib_DIRNAME_include "@PACKAGE_SEPlib_DIRNAME_include@")
 
 set(SEPINCDIR SEPlib_INCLUDE_DIR)
 

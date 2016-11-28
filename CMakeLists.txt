@@ -24,6 +24,8 @@ SET(SEPlib_DIRNAME_include "include")
 
 INCLUDE(CMakePackageConfigHelpers)
 
+
+
 CONFIGURE_PACKAGE_CONFIG_FILE(
   "${CMAKE_CURRENT_SOURCE_DIR}/SEPlibConfig.cmake.in"
   "${CMAKE_CURRENT_BINARY_DIR}/SEPlibConfig.cmake"
@@ -42,16 +44,11 @@ INSTALL(
     ${SEPlib_DIRNAME_lib}
   )
   
-  INSTALL(
-  EXPORT
-    SEPlibExports
-  DESTINATION
-    ${SEPlib_DIRNAME_lib}
-  )
-install(FILES "${PROJECT_BINARY_DIR}/SEPlibConfig.cmake"
-  DESTINATION lib/cmake)
-install(FILES "${PROJECT_BINARY_DIR}/SEPlibConfigVersion.cmake"
-  DESTINATION lib/cmake)
+  
+install(FILES ${PROJECT_BINARY_DIR}/SEPlibConfig.cmake
+${PROJECT_BINARY_DIR}/SEPlibConfigVersion.cmake
+  DESTINATION lib)
+
 find_package(SU)
 if(SU_LIBRARIES)
 set(SU_SUPPORT true)
@@ -76,6 +73,7 @@ FIND_LIBRARY(X11_XT Xt HINTS /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 )
 FIND_LIBRARY(X11_XAW Xaw HINTS /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 )
 
 
+  
 install(FILES ${PROJECT_BINARY_DIR}/sepConfig.h  DESTINATION include)
 add_subdirectory(ratfor90)
 add_subdirectory(seplib_base)
@@ -83,3 +81,11 @@ add_subdirectory(vplot)
 add_subdirectory(seplib_prog)
 add_subdirectory(sep_python)
 add_subdirectory(config)
+
+
+INSTALL(
+  EXPORT
+    SEPlibExports
+  DESTINATION
+    ${SEPlib_DIRNAME_lib}
+  )
