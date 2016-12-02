@@ -59,6 +59,7 @@ CHECK_INCLUDE_FILES(termio.h HAVE_TERMIO_H)
 CHECK_INCLUDE_FILES(string.h HAVE_STRING_H)
 CHECK_INCLUDE_FILES(strings.h HAVE_STRINGS_H)
 CHECK_INCLUDE_FILES(stdio.h HAVE_STDIO_H)
+CHECK_INCLUDE_FILES(sys/ioctl.h HAVE_IOCTL_H)
  
 # add the binary tree to the search path for include files
 # so that we will find TutorialConfig.h

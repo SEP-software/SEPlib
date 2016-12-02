@@ -48,6 +48,9 @@
 #if HAVE_STRING_H
 #include <string.h>
 #endif
+#if HAVE_IOCTL_H
+include <sys/ioctl.h> 
+#endif
 
 #include <stdio.h>
 #include "../include/prototypes.h"

@@ -23,6 +23,7 @@ DQ	\"([^"\n]*\"\")*[^"\n]*["\n]
 #include "../include/sep_file_types.h"
 #include "../include/streamlist.h"
 extern char *alloc(size_t);
+ #include <unistd.h>
 static int massage();
 
 
