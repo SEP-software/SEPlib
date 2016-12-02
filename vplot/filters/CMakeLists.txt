@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 2.8)
 set(VPLOT_FONTDIR ${CMAKE_INSTALL_PREFIX}/include)
 
 
+
 add_subdirectory(genlib)
 add_subdirectory(utilities)
 add_subdirectory(loclib)

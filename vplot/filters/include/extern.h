@@ -3,8 +3,12 @@
 /*
  * defines structures referred to herein
  */
+#include <sepConfig.h>
 #include <sys/types.h>
-#include <termio.h>
+
+#if defined(HAVE_TERMIO_H)
+#include<termio.h>
+#endif
 
 #include "../include/prototypes.h"
 #include "../../include/vplot.h"

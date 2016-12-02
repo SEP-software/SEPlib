@@ -54,15 +54,15 @@ endif(SU_LIBRARIES)
 find_package(FFTW )
 
 
+INCLUDE (CheckIncludeFiles)
+CHECK_INCLUDE_FILES(termio.h HAVE_TERMIO_H)
+CHECK_INCLUDE_FILES(string.h HAVE_STRING_H)
+CHECK_INCLUDE_FILES(strings.h HAVE_STRINGS_H)
+CHECK_INCLUDE_FILES(stdio.h HAVE_STDIO_H)
  
 # add the binary tree to the search path for include files
 # so that we will find TutorialConfig.h
 include_directories("${PROJECT_BINARY_DIR}")
-
-configure_file (
-  "${PROJECT_SOURCE_DIR}/sepConfig.h.in"
-  "${PROJECT_BINARY_DIR}/sepConfig.h"
-  )
 
 
 MESSAGE ( STATUS "Searching for X11..." )
@@ -79,6 +79,13 @@ add_subdirectory(vplot)
 add_subdirectory(seplib_prog)
 add_subdirectory(sep_python)
 add_subdirectory(config)
+
+
+configure_file (
+  "${PROJECT_SOURCE_DIR}/sepConfig.h.in"
+  "${PROJECT_BINARY_DIR}/sepConfig.h"
+  )
+
 
 
 INSTALL(

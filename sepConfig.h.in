@@ -2,3 +2,7 @@
 #define DEFAULT_DOC_PATH "@DEFAULT_DOC_PATH@"
 #define VPLOT_FONT_DIR "@VPLOT_FONT_DIR@"
 #cmakedefine SU_SUPPORT
+#cmakedefine HAVE_TERMIO_H
+#cmakedefine HAVE_STDIO_H
+#cmakedefine HAVE_STRING_H
+#cmakedefine HAVE_STRINGS_H

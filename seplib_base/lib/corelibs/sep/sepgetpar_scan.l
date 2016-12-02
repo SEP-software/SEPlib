@@ -15,7 +15,6 @@ DQ	\"([^"\n]*\"\")*[^"\n]*["\n]
  * Revised 2-25-95 stew changed bcopy to memcpy, modified renaming
  *                      of yylook->getpar_yylook, etc. for Solaris
  */
- extern ssize_t read (int __fd, void *__buf, size_t __nbytes) __wur;
 #if HAVE_STRING_H
 #include <string.h>
 #endif
