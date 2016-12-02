@@ -1,4 +1,4 @@
 #pragma once
 #define DEFAULT_DOC_PATH "@DEFAULT_DOC_PATH@"
 #define VPLOT_FONT_DIR "@VPLOT_FONT_DIR@"
-#define SU_SUPPORT
+#cmakedefine SU_SUPPORT

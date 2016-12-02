@@ -39,14 +39,12 @@ CONFIGURE_PACKAGE_CONFIG_FILE(
 INSTALL(
   FILES
     ${CMAKE_CURRENT_BINARY_DIR}/SEPlibConfig.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/SEPlibConfigVersion.cmake
   DESTINATION
     ${SEPlib_DIRNAME_lib}
   )
   
   
 install(FILES ${PROJECT_BINARY_DIR}/SEPlibConfig.cmake
-${PROJECT_BINARY_DIR}/SEPlibConfigVersion.cmake
   DESTINATION lib)
 
 find_package(SU)

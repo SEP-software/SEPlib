@@ -20,7 +20,7 @@ endif
 
 
 #Read in default program defs
-include ${SEPINC}/local.defs.in
+include ${SEPINC}/local.defs
 include ${SEPINC}/Prog.defs.top
 
 #Document

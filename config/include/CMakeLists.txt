@@ -44,4 +44,4 @@ set(SEPINCDIR ${CMAKE_INSTALL_PREFIX}/include)
   set(xout "${CMAKE_CURRENT_BINARY_DIR}/local.defs")
   configure_file ( ${xin} ${xout})
 
-install(FILES ${DONOTHING}  DESTINATION include)
+install(FILES ${DONOTHING} ${xout}  DESTINATION include)
