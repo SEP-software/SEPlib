@@ -40,6 +40,7 @@
  * which in turn must go through message.
  */
 
+#include <sepConfig.h>
 
 #if HAVE_STDLIB_H
 #include <stdlib.h>
@@ -143,6 +144,7 @@ char		dummystring[1]={'\0'};
 	    dev.close (CLOSE_DONE);
 	    fflush (pltout);
 	}
+	/*
 	if (!allowecho)		/* restore terminal to original tty state */
 	{
 #if defined(HAVE_TERMIO_H)
@@ -154,6 +156,7 @@ char		dummystring[1]={'\0'};
 			  (char *) (&tty_clean_state));
 #endif /* USG */
 	}
+	*/
 	exit (-1);
     }
 }

@@ -6,3 +6,8 @@
 #cmakedefine HAVE_STDIO_H
 #cmakedefine HAVE_STRING_H
 #cmakedefine HAVE_STRINGS_H
+#cmakedefine HAVE_SYS_IOCTL_H
+#cmakedefine HAVE_SYS_STAT
+#cmakedefine HAVE_SGTTY_H
+#cmakedefine HAVE_SYS_TYPES_H
+#cmakedefine HAVE_SYS_TERMIOS_H
