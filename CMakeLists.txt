@@ -65,7 +65,7 @@ CHECK_INCLUDE_FILES(sys/types.h HAVE_SYS_TYPES_H)
 CHECK_INCLUDE_FILES(sys/termios.h HAVE_SYS_TERMIOS_H)
 CHECK_INCLUDE_FILES(sgtty.h HAVE_SGTTY_H) 
 
-
+ 
 # add the binary tree to the search path for include files
 # so that we will find TutorialConfig.h
 include_directories("${PROJECT_BINARY_DIR}")
