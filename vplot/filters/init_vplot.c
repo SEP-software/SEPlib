@@ -51,12 +51,21 @@
  * Bob Clapp 10/98 
  *      Changed signals from bsd to posix1 for linux
  */
+#include	<sepConfig.h>
 #include	<stdio.h>
 #include	<math.h>
+#if defined(HAVE_TERMIO_H)
 #include	<termio.h>
+#endif
+#if defined(SYS_IOCTL_H)
 #include	<sys/ioctl.h>
+#endif
+#if defined(HAVE_SGTTY_H)
 #include	<sgtty.h>
+#endif
+#if  defined(HAVE_SYS_TYPES_H)
 #include	<sys/types.h>
+#endif
 
 #include	<sys/stat.h>
 #include	<fcntl.h>
@@ -86,8 +95,6 @@
 #define		GETPAR	getpar
 #endif /* SEP */
 
-struct termio	tty_clean_state;
-struct termio	tty_plot_state;
 
 /* 
  * The following variables must ALWAYS
@@ -320,6 +327,13 @@ struct stat     pltoutstat;
 FILE           *pltout, *pltin;
 FILE           *controltty;
 char            outbuf[BUFSIZ];
+#if defined(HAVE_STDLIB_H)
+#include <stdlib.h>
+#else
+char           *malloc (size_t);
+char           *realloc (char *, size_t);
+char           *getenv (const char *);
+#endif
 char            group_name[MAXFLEN + 1];
 int             group_number = 0;
 FILE           *pltinarray[MAXIN];
@@ -461,19 +475,6 @@ MIXED		vartemp;
      */
     vartemp.i = &allowecho;
     getpar ("echo", "1", vartemp);
-    if (!allowecho)
-    {
-	if (ioctl (pltoutfd, TCGETA, &tty_clean_state) == -1)
-	{
-		ERR (FATAL, name, "Bad ioctl call!");
-	}
-	tty_plot_state = tty_clean_state;
-	tty_plot_state.c_lflag &= ~ECHO;
-	if (ioctl (pltoutfd, TCSETAW, &tty_plot_state) == -1)
-	{
-		ERR (FATAL, name, "Bad ioctl call! (2)");
-	}
-    }
     vartemp.i = &endpause;
     getpar ("endpause", "1", vartemp);
     vartemp.i = &cachepipe;

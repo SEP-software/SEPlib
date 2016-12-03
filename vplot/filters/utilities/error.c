@@ -40,17 +40,12 @@
  * which in turn must go through message.
  */
 
+#include <sepConfig.h>
 
-#if HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
 
-#if HAVE_STRING_H
+
 #include <string.h>
-#endif
-#if HAVE_IOCTL_H
-include <sys/ioctl.h> 
-#endif
 
 #include <stdio.h>
 #include "../include/prototypes.h"
@@ -146,17 +141,19 @@ char		dummystring[1]={'\0'};
 	    dev.close (CLOSE_DONE);
 	    fflush (pltout);
 	}
-	if (!allowecho)		/* restore terminal to original tty state */
+	/*
+	if (!allowecho)		
 	{
 #if defined(HAVE_TERMIO_H)
 	    ioctl ((int) (fileno (pltout)), TCSETAW, &tty_clean_state);
-#else /* USG */
+#else 
 	    (void) ioctl ((int) (fileno (pltout)), TIOCLSET,
 			  (char *) (&tty_clean_local_mode));
 	    (void) ioctl ((int) (fileno (pltout)), TIOCSETN,
 			  (char *) (&tty_clean_state));
-#endif /* USG */
+#endif 
 	}
+	*/
 	exit (-1);
     }
 }

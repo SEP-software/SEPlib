@@ -249,7 +249,7 @@ typedef struct _my_pars my_pars;
 #include<sulib.h>
 #include<sep3dc.h>
 
-#ifdef HAVE_STRING_H
+#if defined(HAVE_STRING_H)
 #include <string.h>
 #endif
 

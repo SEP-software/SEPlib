@@ -109,11 +109,14 @@
  *  Bob Clapp 10-98  Switched to POSIX (ala Sloaris) for LINUX signals
  */
 
+#include<sepConfig.h>
+#define SEP 1
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include "./include/extern.h"
 
+#ifdef SEP
 
 #define		OUT	sepoutwhere
 #define		HEAD	sepheadwhere
@@ -124,9 +127,24 @@
 #include	<sep.main>
 #define		GETPAR	fetch
 
+#else /* SEP */
+#include	<stdio.h>
+#include	<math.h>
+#include	<string.h>
+#define		GETPAR	getpar
+#endif /* SEP */
 
 
+#if defined(HAVE_TERMIO_H)
 #include	<termio.h>
+#else
+#if defined (HAVE_SGTTY_H)
+#include	<sgtty.h>
+#else
+#include	<sys/ioctl.h>
+#include	<sgtty.h>
+#endif
+#endif /* USG */
 #include	<sys/types.h>
 #include	<sys/stat.h>
 #include	<ctype.h>
@@ -160,6 +178,7 @@ static char *tspoolnam=(char*)NULL;
  * learn how to do this. (Especially you, Jon!)
  */
 
+#ifdef SEP
 int             xsepxargc;
 char          **xsepxargv;
 char            scrap[MAXFLEN + 1];
@@ -167,23 +186,45 @@ int             hclose_done = NO;
 int             fake_header = NO;
 int MAIN (void)
 
+#else /* SEP */
+int             sepxargc;
+char          **sepxargv;	/* for getpar */
+int MAIN_(void){return 0;} /* dummy for shared linkage */
+main (argc, argv)
+    int             argc;
+    char           *argv[];
+#endif /* SEP */
 {
+#ifndef SEP
+int             in_isatty, num_vplot, docflag;
+char            instring[MAXFLEN + 1];
+MIXED		vartemp;
+#endif /* SEP */
 
+int ii;
 char           *cptr;
 char           *stringptr;
 FILE           *temp;
 char            string[MAXFLEN + 1];
 int		tempfileindex = -1;
-int ii;
 
     nulldev ();			/* Just to make sure it gets loaded */
 
+#ifndef SEP
+    orig_argv0 = argv[0];
+    if (stringptr = strrchr(argv[0], '/'))
+	strncpy (callname, ++stringptr, 24);
+    else
+	strncpy (callname, argv[0], 24);
+#else /* SEP */
     orig_argv0 = sepxargv[0];
     if (stringptr = strrchr(sepxargv[0], '/'))
 	strncpy (callname, ++stringptr, 24);
     else
 	strncpy (callname, sepxargv[0], 24);
+#endif /* SEP */
 
+#ifdef SEP
     pltout = outstream;
     if (redout ())
     {
@@ -236,6 +277,31 @@ int ii;
 	hclose ();
 	hclose_done = YES;
     }
+#else /* SEP */
+
+    /*
+     * If no arguments, and not in a pipeline, self document "wstype="
+     * doesn't count as an argument for our purposes 
+     */
+    in_isatty = isatty ((int) (fileno (stdin)));
+    sepxargc = argc;
+    sepxargv = argv;
+    docflag = 0;
+    if (argc == 1)
+	docflag = 1;
+    if ((argc == 2) && !strncmp ("wstype=", argv[1], 7))
+	docflag = 1;
+    vartemp.i = &docflag;
+    getpar ("selfdoc", "1", vartemp);
+    if (in_isatty && docflag)
+    {
+	for (int ii = 0; ii < doclength; ii++)
+	    printf ("%s\n", documentation[ii]);
+	exit (0);
+    }
+
+    pltout = stdout;
+#endif /* SEP */
 
 
 /*
@@ -253,6 +319,7 @@ int ii;
  */
 
 
+#ifdef SEP
     if (instream != NULL)
     {
 	if (infileno >= MAXIN)
@@ -337,6 +404,118 @@ int ii;
 	}
     }
 
+#else /* SEP */
+    /*
+     * first process pipe input 
+     */
+    if (!in_isatty)
+    {
+	if (infileno >= MAXIN)
+	{
+	    ERR (FATAL, name, "too many input files (%d max)", MAXIN);
+	}
+
+  	if( cachepipe )
+        {
+            if( (pltinarray[infileno] = tempcopy( stdin,string) ) == NULL )
+            {
+                ERR( FATAL, name, "copy of piped input failed");
+	    }
+
+            tspoolnam = strdup(string);
+
+            /* check for zero length input (e.g. /dev/null ) */
+	    if( pltinarray[infileno] != (FILE*)-1 ) {
+
+	    strcpy( pltinname[infileno], string );
+	    /* remember what number this file is so we can delete it later*/
+	    tempfileindex = infileno;
+            infileno++;
+	    }
+        }
+        else
+        {
+	    if (!allow_pipe)
+	    {
+	    	ERR (WARN, name, "cannot use pipes with this device, try cachepipe=y ");
+	    }
+	    else
+	    {
+	    	strcpy (pltinname[infileno], "stdin");
+	    	pltinarray[infileno] = stdin;
+	    	infileno++;
+	    }
+	}
+    }
+
+    /*
+     * next process in= inputfiles If they set num_vplot, also look for in1=
+     * in2= etc 
+     */
+
+    num_vplot = 0*tempfileindex;
+    vartemp.i = &num_vplot;
+    getpar ("numvplot", "d", vartemp);
+
+    for (ii = 0; ii <= num_vplot; ii++)
+    {
+	if (ii == 0)
+	    strcpy (instring, "in");
+	else
+	    sprintf (instring, "in%d", ii);
+
+        vartemp.s = &(string[0]);
+	if (getpar (instring, "s", vartemp))
+	{
+	    if ((temp = fopen (string, "r")) != NULL)
+	    {
+		if (infileno >= MAXIN)
+		{
+		    ERR (FATAL, name, "too many input files (%d max)", MAXIN);
+		}
+		strcpy (pltinname[infileno], string);
+		pltinarray[infileno] = temp;
+		infileno++;
+	    }
+	    else
+	    {
+		ERR (WARN, name, "cannot open %s", string);
+	    }
+	}
+    }
+
+    /*
+     * finally process input line for non-getpar arguments and assume they
+     * are also input files 
+     */
+    for (sepxargc--, sepxargv++; sepxargc; sepxargc--, sepxargv++)
+    {
+	cptr = *sepxargv;
+	while (*cptr)
+	{
+	    if (*cptr == '=')
+		break;
+	    cptr++;
+	}
+	if (*cptr)
+	    continue;
+	cptr = *sepxargv;
+	if ((temp = fopen (cptr, "r")) != NULL)
+	{
+	    if (infileno >= MAXIN)
+	    {
+		ERR (FATAL, name, "too many input files (%d max)", MAXIN);
+	    }
+	    strcpy (pltinname[infileno], cptr);
+	    pltinarray[infileno] = temp;
+	    infileno++;
+	}
+	else
+	{
+	    ERR (WARN, name, "cannot open %s", cptr);
+	}
+    }
+#endif /* SEP */
 
 /*
  ****************************************************************************
@@ -346,12 +525,14 @@ int ii;
 
     proc_vplot ();
 
+#ifdef SEP
     if (!hclose_done)
     {
 	Puthead ("\tn3=%d\n", nplots);
 	hclose ();
 	hclose_done = YES;
     }
+#endif /* SEP */
 
     /*  delete the temporary copy of piped input if there is one*/
     removtemp();

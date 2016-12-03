@@ -109,6 +109,7 @@
  *  Bob Clapp 10-98  Switched to POSIX (ala Sloaris) for LINUX signals
  */
 
+#include<sepConfig.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -135,8 +136,16 @@ extern char     sepheadwhere[];
 #endif /* SEP */
 
 
+#if defined(HAVE_TERMIO_H)
 #include	<termio.h>
+#else
+#if defined (HAVE_SGTTY_H)
 #include	<sgtty.h>
+#else
+#include	<sys/ioctl.h>
+#include	<sgtty.h>
+#endif
+#endif /* USG */
 #include	<sys/types.h>
 #include	<sys/stat.h>
 #include	<ctype.h>
@@ -294,7 +303,6 @@ MIXED		vartemp;
 #endif /* SEP */
 
     nulldev ();			/* Just to make sure it gets loaded */
-
 
 
 /*

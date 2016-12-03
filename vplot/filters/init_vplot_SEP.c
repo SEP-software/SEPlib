@@ -51,17 +51,25 @@
  * Bob Clapp 10/98 
  *      Changed signals from bsd to posix1 for linux
  */
+#include<sepConfig.h>
+#define SEP 1
 #include	<stdio.h>
 #include	<stdlib.h>
 #include	<math.h>
+#if defined(HAVE_TERMIO_H)
 #include	<termio.h>
-#include	<sys/ioctl.h>
-#include	<sgtty.h>
-#include	<sys/types.h>
-
-#if  defined(HAVE_SYS_STAT_H)
-#include	<sys/stat.h>
 #endif
+#if defined(SYS_IOCTL_H)
+#include	<sys/ioctl.h>
+#endif
+#if defined(HAVE_SGTTY_H)
+#include	<sgtty.h>
+#endif
+#if  defined(HAVE_SYS_TYPES_H)
+#include	<sys/types.h>
+#endif
+
+#include	<sys/stat.h>
 #include	<fcntl.h>
 #include	<ctype.h>
 #include	<string.h>
@@ -83,10 +91,12 @@
 
 #define		OPEN_ERROR	-1
 
+#ifdef SEP
 #define		GETPAR	fetch
+#else
+#define		GETPAR	getpar
+#endif /* SEP */
 
-struct termio	tty_clean_state;
-struct termio	tty_plot_state;
 
 /* 
  * The following variables must ALWAYS
@@ -430,6 +440,7 @@ MIXED		vartemp;
 	{
 	    fstat (pltoutfd, &pltoutstat);
 	    fstat (stderrfd, &stderrstat);
+#ifdef SEP
 	    if ((pltoutstat.st_dev == stderrstat.st_dev))
 		/*
 		 * Something in seplib makes the next 2 tests not work, I
@@ -439,6 +450,11 @@ MIXED		vartemp;
 		 * in at. We should probably get this fixed sometime. - Joe
 		 * D. 
 		 */
+#else
+	    if ((pltoutstat.st_dev == stderrstat.st_dev) &&
+		(pltoutstat.st_ino == stderrstat.st_ino) &&
+		(pltoutstat.st_rdev == stderrstat.st_rdev))
+#endif /* SEP */
 	    {
 		allowecho = NO;
 		message = dev.message;
@@ -455,8 +471,10 @@ MIXED		vartemp;
      */
     vartemp.i = &allowecho;
     getpar ("echo", "1", vartemp);
+    /*
     if (!allowecho)
     {
+#if defined(HAVE_TERMIO_H)
 	if (ioctl (pltoutfd, TCGETA, &tty_clean_state) == -1)
 	{
 		ERR (FATAL, name, "Bad ioctl call!");
@@ -467,7 +485,20 @@ MIXED		vartemp;
 	{
 		ERR (FATAL, name, "Bad ioctl call! (2)");
 	}
+#else 
+	ioctl (pltoutfd, TIOCGETP, (char *) (&tty_clean_state));
+	bcopy ((char *) (&tty_clean_state), (char *) (&tty_plot_state),
+	       sizeof (struct sgttyb));
+	ioctl (pltoutfd, TIOCLGET, (char *) (&tty_clean_local_mode));
+	tty_plot_local_mode = tty_clean_local_mode | LLITOUT;
+	ioctl (pltoutfd, TIOCLSET, (char *) (&tty_plot_local_mode));
+	tty_plot_state.sg_flags &= (~ECHO);
+	tty_plot_state.sg_flags &= (~LCASE);
+	tty_plot_state.sg_flags |= (CBREAK);
+	ioctl (pltoutfd, TIOCSETN, (char *) (&tty_plot_state));
+#endif 
     }
+    */
     vartemp.i = &endpause;
     getpar ("endpause", "1", vartemp);
     vartemp.i = &cachepipe;
