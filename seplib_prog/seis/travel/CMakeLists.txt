@@ -48,5 +48,5 @@ TARGET_LINK_LIBRARIES(Hwt2d  septravel superset sep3d sep)
 TARGET_LINK_LIBRARIES(Hwt3d  septravel superset sep3d sep)
 TARGET_LINK_LIBRARIES(MTTmaps  sepcwp superset sep3d sep)
 
-install(FILES ${progs} DESTINATION bin)
+install(PROGRAMS ${progs} DESTINATION bin)
 

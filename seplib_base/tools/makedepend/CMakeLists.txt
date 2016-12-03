@@ -3,4 +3,4 @@ project(SEPLIB-base-tool-makedepend)
 
 
 
-install(FILES Makedepend DESTINATION bin)
+install(PROGRAMS Makedepend DESTINATION bin)

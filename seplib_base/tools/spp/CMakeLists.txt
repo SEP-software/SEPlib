@@ -3,4 +3,4 @@ project(SEPLIB-base-tool-spp)
 
 
 
-install(FILES spp DESTINATION bin)
+install(PROGRAMS spp DESTINATION bin)

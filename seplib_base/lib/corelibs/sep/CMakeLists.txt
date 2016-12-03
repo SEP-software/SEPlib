@@ -47,7 +47,7 @@ hclose.c	 putch_format.c  sepstrouthead.c)
 
 
 set(SOURCES ${SOURCES} sep.f90       sep_func.f90  sep_mod.f90  sep_par.f90
- sep_io.f90    sep_oo.f90)
+ sep_io.f90    )
 
 
 add_library(sep ${SOURCES})

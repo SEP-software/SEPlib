@@ -48,5 +48,5 @@ endmacro()
 
 
 
-install(FILES ${progs} ${scripts} DESTINATION bin)
+install(PROGRAMS ${progs} ${scripts} DESTINATION bin)
 

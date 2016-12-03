@@ -1,0 +1,5 @@
+export FC=ifort
+export CC=gcc
+export CMAKE_PREFIX_PATH="/opt/FFTW:/opt/SU"
+export CMAKE_INSTALL_PREFIX=/opt/SEP/8.0_gc5_i
+cmake -DCMAKE_INSTALL_PREFIX=/opt/SEP/8.0_gc5_i   ../seplib_src

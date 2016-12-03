@@ -69,5 +69,5 @@ makelink(Math_base Cmplx cmplx_link)
 
 
 
-install(FILES ${links} ${progs} arithpar DESTINATION bin)
+install(PROGRAMS ${links} ${progs} arithpar DESTINATION bin)
 

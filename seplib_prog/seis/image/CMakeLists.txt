@@ -56,5 +56,5 @@ TARGET_LINK_LIBRARIES(CAM sepwei sepfft seppar superset  sep3d sep ${FFTW_LIBRAR
 TARGET_LINK_LIBRARIES(Phase sepwei sepfft seppar superset sep3d sep ${FFTW_LIBRARIES})
 endif(FFTW_LIBRARIES)
 
-install(FILES ${progs} DESTINATION bin)
+install(PROGRAMS ${progs} DESTINATION bin)
 

@@ -82,5 +82,5 @@ TARGET_LINK_LIBRARIES(Bandpass superset sep3d sep)
 TARGET_LINK_LIBRARIES(Again superset sep3d sep)
 
 
-install(FILES ${progs} DESTINATION bin)
+install(PROGRAMS ${progs} DESTINATION bin)
 

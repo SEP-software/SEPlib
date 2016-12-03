@@ -43,5 +43,5 @@ TARGET_LINK_LIBRARIES(Synch3d superset sep3d sep)
 TARGET_LINK_LIBRARIES(Window_key superset sep3d sep)
 
 
-install(FILES ${progs} DESTINATION bin)
+install(PROGRAMS ${progs} DESTINATION bin)
 
