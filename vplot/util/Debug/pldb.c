@@ -162,9 +162,12 @@ int             retstat = 0;
     /*
      * If no arguments, and not in a pipeline, self document 
      */
+/*
     piped_in = ioctl ((fileno (stdin)),
 	TCGETA,
 	&ttystat);
+*/
+piped_in=0;
     if (argc == 1 && !piped_in)
     {
 	for (i = 0; i < doclength; i++)

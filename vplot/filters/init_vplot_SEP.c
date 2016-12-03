@@ -69,9 +69,7 @@
 #include	<sys/types.h>
 #endif
 
-#if  defined(HAVE_SYS_STAT_H)
 #include	<sys/stat.h>
-#endif
 #include	<fcntl.h>
 #include	<ctype.h>
 #include	<string.h>
@@ -99,15 +97,6 @@
 #define		GETPAR	getpar
 #endif /* SEP */
 
-#if defined(HAVE_TERMIO_H)
-struct termio	tty_clean_state;
-struct termio	tty_plot_state;
-#else
-struct sgttyb   tty_clean_state;
-struct sgttyb   tty_plot_state;
-int             tty_clean_local_mode;
-int             tty_plot_local_mode;
-#endif /* USG */
 
 /* 
  * The following variables must ALWAYS
@@ -340,12 +329,7 @@ struct stat     pltoutstat;
 FILE           *pltout, *pltin;
 FILE           *controltty;
 char            outbuf[BUFSIZ];
-#if defined(HAVE_STDLIB_H)
 #include <stdlib.h>
-#else
-char           *malloc ();
-char           *realloc ();
-#endif
 char            group_name[MAXFLEN + 1];
 int             group_number = 0;
 FILE           *pltinarray[MAXIN];
