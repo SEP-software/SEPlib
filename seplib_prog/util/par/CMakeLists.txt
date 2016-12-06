@@ -56,5 +56,5 @@ TARGET_LINK_LIBRARIES(Solver_ops_split sepaux superset sep3d sep)
 TARGET_LINK_LIBRARIES(Split_first superset sep3d sep)
 
 
-install(FILES ${progs} DESTINATION bin)
+install(PROGRAMS ${progs} DESTINATION bin)
 

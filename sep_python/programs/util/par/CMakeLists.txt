@@ -5,4 +5,4 @@ project(SEPLIB-python-base-core)
 set(PYS
 Parallel
 )
-install(FILES ${PYS} DESTINATION bin)
+install(PROGRAMS ${PYS} DESTINATION bin)

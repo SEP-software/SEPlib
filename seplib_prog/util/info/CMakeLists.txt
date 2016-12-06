@@ -51,5 +51,5 @@ TARGET_LINK_LIBRARIES(Get superset sep3d sep)
 TARGET_LINK_LIBRARIES(Sdd superset sep3d sep)
 
 
-install(FILES ${progs} DESTINATION bin)
+install(PROGRAMS ${progs} DESTINATION bin)
 

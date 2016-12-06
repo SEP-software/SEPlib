@@ -63,5 +63,5 @@ if(FFTW_LIBRARIES)
 TARGET_LINK_LIBRARIES(Rtm2d  sepmodel superset sep3d sep ${FFTW_LIBRARIES})
 endif(FFTW_LIBRARIES)
 
-install(FILES ${progs} DESTINATION bin)
+install(PROGRAMS ${progs} DESTINATION bin)
 

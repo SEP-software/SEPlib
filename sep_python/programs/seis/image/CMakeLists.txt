@@ -7,4 +7,4 @@ mig_off_nfs  model_off
 mig_off	  mig_ph       OFF2ANG_Par
 )
 
-install(FILES ${PYS} DESTINATION bin)
+install(PROGRAMS ${PYS} DESTINATION bin)

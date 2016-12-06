@@ -67,9 +67,7 @@
 #include	<sys/types.h>
 #endif
 
-#if  defined(HAVE_SYS_STAT_H)
 #include	<sys/stat.h>
-#endif
 #include	<fcntl.h>
 #include	<ctype.h>
 #include	<string.h>
@@ -97,15 +95,6 @@
 #define		GETPAR	getpar
 #endif /* SEP */
 
-#if defined(HAVE_TERMIO_H)
-struct termio	tty_clean_state;
-struct termio	tty_plot_state;
-#else
-struct sgttyb   tty_clean_state;
-struct sgttyb   tty_plot_state;
-int             tty_clean_local_mode;
-int             tty_plot_local_mode;
-#endif /* USG */
 
 /* 
  * The following variables must ALWAYS
@@ -480,34 +469,6 @@ MIXED		vartemp;
      */
     vartemp.i = &allowecho;
     getpar ("echo", "1", vartemp);
-    /*
-    if (!allowecho)
-    {
-#if defined(HAVE_TERMIO_H)
-	if (ioctl (pltoutfd, TCGETA, &tty_clean_state) == -1)
-	{
-		ERR (FATAL, name, "Bad ioctl call!");
-	}
-	tty_plot_state = tty_clean_state;
-	tty_plot_state.c_lflag &= ~ECHO;
-	if (ioctl (pltoutfd, TCSETAW, &tty_plot_state) == -1)
-	{
-		ERR (FATAL, name, "Bad ioctl call! (2)");
-	}
-#else 
-	ioctl (pltoutfd, TIOCGETP, (char *) (&tty_clean_state));
-	bcopy ((char *) (&tty_clean_state), (char *) (&tty_plot_state),
-	       sizeof (struct sgttyb));
-	ioctl (pltoutfd, TIOCLGET, (char *) (&tty_clean_local_mode));
-	tty_plot_local_mode = tty_clean_local_mode | LLITOUT;
-	ioctl (pltoutfd, TIOCLSET, (char *) (&tty_plot_local_mode));
-	tty_plot_state.sg_flags &= (~ECHO);
-	tty_plot_state.sg_flags &= (~LCASE);
-	tty_plot_state.sg_flags |= (CBREAK);
-	ioctl (pltoutfd, TIOCSETN, (char *) (&tty_plot_state));
-#endif 
-    }
-    */
     vartemp.i = &endpause;
     getpar ("endpause", "1", vartemp);
     vartemp.i = &cachepipe;
