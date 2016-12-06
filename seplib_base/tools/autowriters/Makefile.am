@@ -1,2 +1,0 @@
-
-SUBDIRS = sat saw

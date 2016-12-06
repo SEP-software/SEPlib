@@ -1,1 +1,0 @@
-SUBDIRS = cube vector rep

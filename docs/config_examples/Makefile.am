@@ -1,3 +1,0 @@
-
-EXTRA_DIST = RUN_THIS.base RUN_THIS.darwin RUN_THIS.intel RUN_THIS.irix \
-RUN_THIS.solaris RUN_THIS.cygwin RUN_THIS.bob RUN_THIS_INTEL.sep RUN_THIS_GNU.sep

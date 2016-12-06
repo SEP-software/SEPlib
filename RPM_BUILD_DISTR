@@ -1,3 +1,0 @@
-#/bin/csh -f
-source LOCAL_CONFIG
-./configure  --with-su=/usr/local/SU --with-file-2gb --with-ppm=yes --with-motif=yes
