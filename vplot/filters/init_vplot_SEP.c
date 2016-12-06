@@ -340,12 +340,7 @@ struct stat     pltoutstat;
 FILE           *pltout, *pltin;
 FILE           *controltty;
 char            outbuf[BUFSIZ];
-#if defined(HAVE_STDLIB_H)
 #include <stdlib.h>
-#else
-char           *malloc ();
-char           *realloc ();
-#endif
 char            group_name[MAXFLEN + 1];
 int             group_number = 0;
 FILE           *pltinarray[MAXIN];
