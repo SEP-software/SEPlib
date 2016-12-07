@@ -9,4 +9,4 @@ pstexpen	vp_OverUnderAniso
 vp_annotate vp_Unrotate
 Rasterize	vp_OverUnderIso)
 
-install(FILES ${SCRIPTS} DESTINATION bin)
+install(PROGRAMS ${SCRIPTS} DESTINATION bin)

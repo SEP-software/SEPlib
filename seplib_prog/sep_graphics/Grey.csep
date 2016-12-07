@@ -1051,7 +1051,7 @@ int it;
       index=0; n1=datain.n1[0]; n2=datain.n2; 
     }
     else{
-      index=atoi(gainpanel); n1=datain.n1[0]; n2=datain.n2; 
+      index=atoi(gainpanel)-1; n1=datain.n1[0]; n2=datain.n2; 
     }
     new_clip("in",index,n1,n2,bpclip,epclip,&datamin,&datamax);
     minval[1] = datamin;
@@ -1848,9 +1848,7 @@ void new_clip(char *tag,  int iblock, int nb1, int nb2, float bpclip,float epcli
   nc=0;
   while(iread < big){
     nblock=MIN((int)(big-iread),1000000);
-fprintf(stderr,"www \n");
     int ierr=sreed("in",temp,4*nblock);
-fprintf(stderr,"www \n");
     if(ierr!=4*nblock)
       seperr("trouble reading in data block %d \n",ierr);
     for(i=ilast; i < nblock ; i+=ij,nc++) tempb[nc]=temp[i];
