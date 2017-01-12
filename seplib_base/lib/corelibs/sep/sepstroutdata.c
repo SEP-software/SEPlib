@@ -203,7 +203,9 @@ int randit
                 if(randit==1){
                      mkrandom_string(exp_name,my_name);
                  }
-                else strcpy(my_name,exp_name);
+                else{
+                  strcpy(my_name,exp_name);
+                }
         	if( file_count == 0 ){
 	   			strcpy( all_names,my_name);
         }else{

@@ -13,9 +13,8 @@ default :
 
 
 
-#include ${SEPINC}/SEP.machine.type #what we do locally
 ifndef SEP_ARCH
-SEP_ARCH=@SEP_ARCH@
+SEP_ARCH=linux
 endif
 
 

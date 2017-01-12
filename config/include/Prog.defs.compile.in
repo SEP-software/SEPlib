@@ -20,26 +20,26 @@
 
 #Sort of Non-compiler specific defaults
 
-CPP                :=  @CPP@
+CPP                :=  gcc -g -E
+FPP               :=  /lib/cpp
 FPP                :=  ${SEPBINDIR}/spp
-FPP               :=  @FPP@
 
 #-----------#
 #C DEFAULTS #
 #-----------#
 
 
-LDFLAGS            :=   @OLDFLAGS@
+LDFLAGS            :=    -L${SEPLIBDIR}
 
 CC                  :=   @CC@
 CEXT                :=   c
-CLD                 :=   @CC@ @OLDFLAGS@
+CLD                 :=   @CLD@ -g  -L${SEPLIBDIR}
 CLEVEL               =  
 OCOPTIMFLAGS         =   -O${COLEVEL}
 OCDEBUGFLAGS         :=   -g
-OCDEFINES            =  @DEFINES@
-OCFLAGS             :=  @OCPPFLAGS@ @CFLAGS@  -c 
-OCLIBS              :=  @OCLIBS@
+OCDEFINES            =   -D${SEP_ARCH}
+OCFLAGS             := @SYSCFLAGS@ -I${SEPINCDIR}  -g -O2  -c 
+OCLIBS              :=  -L/usr/X11R6/lib64
 
 
 
@@ -47,24 +47,24 @@ OCLIBS              :=  @OCLIBS@
 #F77 DEFAULTS #
 #-------------#
 
-F77C                :=   @FC@
+F77C                :=   ifort -O3
 F77_COMPILER_TYPE    = 
-F77LD               :=   @FC@ @OFCLDFLAGS@
+F77LD               :=   ifort -O3  ${LDFLAGS} -L${SEPLIBDIR}
 F77OLEVEL            =   ${OLEVEL}
 F77OPTIMFLAGS        =   -O${F77OLEVEL}
 F77PARFLAGS         :=   
 OF77DEBUGFLAGS       :=   -g
-OF77DEFINES          =   @FCPFLAGS@
-OF77FLAGS           :=   @FCFLAGS@  -c 
+OF77DEFINES          =      -DSOURCE='"'${FULLSRC}/$(notdir $<)'"' 
+OF77FLAGS           :=     -g -FR  -c 
 OF77LD_FLAGS_BEFORE  =  ${OLD_FLAGS_BEFORE}
 OF77LD_FLAGS_AFTER   =  ${OLD_FLAGS_AFTER}
 OF77LIBDIRS         :=
-OF77LIBS             =   @OFCLIBS@
+OF77LIBS             =    -lm -L/usr/X11R6/lib64
 RATFOR               =   $(SEPBINDIR)/ratfor77
 SAT                  =   ${SEPBINDIR}/sat
 SAW                  =   ${SEPBINDIR}/saw
 SAWF                 =   ${SEPBINDIR}/sawf
-CF77DEFINES          =   @CFCDEFINES@
+CF77DEFINES          =   -DpgiFortran -DpgiFortran
 ifndef F77EXT
 	F77EXT             =   f
 endif
@@ -73,24 +73,24 @@ endif
 #-------------#
 #F90 DEFAULTS #
 #-------------#
-F90C                :=   @FC@ -I.
+F90C                :=   @F90C@
 F90_COMPILER_TYPE    =
 F90EXT              :=   f90 
-F90LD               :=   @FC@ @OFCLDFLAGS@
+F90LD               :=   @F90LD@  ${LDFLAGS} -L${SEPLIBDIR}
 F90OLEVEL            =   ${OLEVEL}
 F90OPTIMFLAGS        =   -O${FCOLEVEL}
 F90PARFLAGS         :=  
-F90MODSUFFIX         =   @FCMODSUFFIX@
+F90MODSUFFIX         =    
 OF90DEBUGFLAGS      :=   -g
-OF90DEFINES          =  @OFCDEFINES@
-OF90FLAGS           :=  @OFCFLAGS@ -c
+OF90DEFINES          =  
+OF90FLAGS           :=  @SYSF90FLAGS@  -I${SEPINCDIR} -c
 OF90LIBDIRS         :=
-OF90LIBS              =   @OFCLIBS@
+OF90LIBS              =    -lm -L/usr/X11R6/lib64
 RATFOR90             =   $(SEPBINDIR)/ratfor90
 SAW90                =   ${SEPBINDIR}/saw90
 SAWF90               =   ${SEPBINDIR}/sawf90
-F90INCFLAG           =   @FCINCFLAG@
-CFCDEFINES          =   @CFCDEFINES@
+F90INCFLAG           =   -I
+CFCDEFINES          =   -DpgiFortran -DpgiFortran
 
 
 #LIBRARY DEFINITIONS

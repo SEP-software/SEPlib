@@ -12,7 +12,6 @@ Doc.rules.idoc Prog.rules.shell Doc.rules.test README SEP.bottom
 SEP.distr.bottom SEP.distr.defs SEP.distr.dir Prg.rules.lib SEP.distr.rules 
 sepweb.top SEP.distr.top Prog.defs.top septex.tar septex.pl sepbook.pl
 not_found
-Prog.defs.compile
     SEP.generic.defs
             SEP.lib.defs
    Doc.defs.top
@@ -35,13 +34,24 @@ endif(PS2PDF)
 
 
 
+set(SEP ${CMAKE_INSTALL_PREFIX})
 set(SEPBINDIR ${CMAKE_INSTALL_PREFIX}/bin)
 set(SEPLIBDIR ${CMAKE_INSTALL_PREFIX}/lib)
 set(SEPINCDIR ${CMAKE_INSTALL_PREFIX}/include)
+set(CC ${CMAKE_C_COMPILER})
+set(CLD ${CMAKE_C_COMPILER})
+set(F90C ${CMAKE_Fortran_COMPILER})
+set(F90LD ${CMAKE_Fortran_COMPILER})
+set(SYSCFLAGS ${CMAKE_C_FLAGS})
+set(SYSF90FLAGS ${CMAKE_Fortran_FLAGS})
 
  
+  set(min  "${CMAKE_CURRENT_SOURCE_DIR}/Prog.defs.compile.in")
+  set(mout "${CMAKE_CURRENT_BINARY_DIR}/Prog.defs.compile")
+  configure_file (${min} ${mout})
+
   set(xin  "${CMAKE_CURRENT_SOURCE_DIR}/local.defs.in")
   set(xout "${CMAKE_CURRENT_BINARY_DIR}/local.defs")
-  configure_file ( ${xin} ${xout})
+  configure_file (${xin} ${xout})
 
-install(FILES ${DONOTHING} ${xout}  DESTINATION include)
+install(FILES ${DONOTHING} ${xout} ${mout}  DESTINATION include)

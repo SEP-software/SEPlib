@@ -49,6 +49,16 @@ TARGET_LINK_LIBRARIES(Patch  sepaux sep3d sep)
 TARGET_LINK_LIBRARIES(Scat3d  superset sep3d sep)
 TARGET_LINK_LIBRARIES(Window3d  superset sep3d sep)
 TARGET_LINK_LIBRARIES(Reshape  superset sep3d sep)
-install(PROGRAMS Scat DESTINATION bin)
+
+macro(makeLink src dest target)
+ add_custom_target(${target} ALL
+   COMMAND ${CMAKE_COMMAND} -E create_symlink ${src} ${dest}
+    DEPENDS  ${src} COMMENT "mklink ${src} -> ${dest}")
+   set(LINKS ${LINKS} ${dest})
+endmacro()
+
+makelink(Window3d Window window_link)
+
+install(PROGRAMS ${links} Scat DESTINATION bin)
 
 

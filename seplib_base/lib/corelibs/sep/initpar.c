@@ -48,9 +48,9 @@ B<sep>
 #if HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
-#if HAVE_STRING_H
+
 #include <string.h>
-#endif
+
 #include <sep_pars_external.h>
 int sepxargc;
 char **sepxargv;

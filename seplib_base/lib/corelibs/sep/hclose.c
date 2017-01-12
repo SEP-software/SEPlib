@@ -96,7 +96,6 @@ int hclose()
 {
 
 static streaminf *outinfo;
-
 if( outinfo == 0 )  outinfo = tag_info( "out", TAG_OUT );
 if( outinfo == 0 ) return 0;
 
