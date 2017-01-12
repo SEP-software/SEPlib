@@ -23,7 +23,6 @@ configure
 config.sub
 config.status
 config.log
-fullpath
 makefont
 depcomp
 autom4te.cache
