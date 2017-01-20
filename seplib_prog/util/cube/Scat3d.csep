@@ -17,9 +17,9 @@ Cat3d header.H [header2.H .....] [pars]
 
         [3] which axis to concatenate along
 
-=item		max_memory - int 
+=item		maxsize,max_memory - int 
 
-        [5] maximum memory in words
+        [5000] maximum memory in MB
 
 =item		virtual    - int 
 
@@ -86,7 +86,7 @@ Author:Robert G. Clapp
 _XFUNCPROTOBEGIN
 
 void get_parameters(int argc,char **argv,char **files,
-	int *nfiles,int *axis,int *max_memory,int *cat_type,int *ndout,int *virtual,int *nspace);
+	int *nfiles,int *axis,long long *max_memory,int *cat_type,int *ndout,int *virtual,int *nspace);
 
 void put_parameters2(char **files,int nfiles,int axis,
 	int cat_type, int ndim, int *n_out,float *o_out, float *d_out, 
@@ -99,7 +99,7 @@ void check_parameters2(char **files,int nf,
 	char **unit_out);
 
 int cat_it(char **files,int nf, int *n1, int *n_axis, 
-	int *cat_after, int max_memory, int axis, int cat_type, int *n_out, int virtual,int nspace);
+	int *cat_after, long long max_memory, int axis, int cat_type, int *n_out, int virtual,int nspace);
 
 _XFUNCPROTOEND
 #endif
@@ -113,7 +113,8 @@ char **argv;
 	int *n_shift,*shift,counter1,counter2,counter3,esize;
 	char **files,temp_ch[512],
 		label[STRING_SIZE],temp2_ch[129];
-	int max_memory,axis_volume,*n_axis,*volume_in,*volume_out,ib,ia,old_drn;
+	int axis_volume,*n_axis,*volume_in,*volume_out,ib,ia,old_drn;
+        long long max_memory;
 	int cat_type,ndim_list[100],ngrid_out[3];
 	float *o_out,o,*d_out,d;
 	char *volume_char,hff_out[256],files_in[MAX_FILES][MAX_FILE_SIZE],*temp_t[1];
@@ -189,7 +190,7 @@ int cat_it(file,nf,n1,n_axis,cat_after,max_memory,axis,cat_type)
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-int cat_it(char **files,int nf, int *n1, int *cat_axis, int *cat_after, int max_memory, int axis, int cat_type, int *ngrid_out, int virtual,int nspace)
+int cat_it(char **files,int nf, int *n1, int *cat_axis, int *cat_after, long long max_memory, int axis, int cat_type, int *ngrid_out, int virtual,int nspace)
 _XFUNCPROTOEND
 #endif
 {
@@ -336,7 +337,7 @@ _XFUNCPROTOEND
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
 void get_parameters(int argc,char **argv,char **files,
-	int *nfiles, int *axis,int *max_memory,int *cat_type, int *ndim, int *virtual,int *nspace)
+	int *nfiles, int *axis,long long *max_memory,int *cat_type, int *ndim, int *virtual,int *nspace)
 _XFUNCPROTOEND
 #endif
 {
@@ -372,7 +373,7 @@ _XFUNCPROTOEND
 	*nfiles=nf;
 
 	if(0==getch("axis","d",axis)) *axis=3;
-	if(0==getch("max_memory","d",max_memory)) *max_memory=5;
+	if(0==getch("max_memory","d",max_memory)) *max_memory=5000;
 	*max_memory=*max_memory*1000000;
 	if(*nfiles==0)  seperr("found 0 valid sepfiles to concatenate \n");
 	ax=*axis;
@@ -410,6 +411,7 @@ _XFUNCPROTOEND
 	if((*cat_type==CAT_DATA || *axis==1) && *virtual==1) 
 	seperr("Can not do a virtual cat on a sepcube or when catenating along 1st axis\n");
 
+  *nspace=0;
 
   if(*axis==1 &&  *cat_type!=CAT_DATA)
    seperr("You can not concatenate along the first axis when you have headers");
