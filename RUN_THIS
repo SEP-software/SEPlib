@@ -1,17 +1,9 @@
-#setenv OMP_FCLD -mp
-#setenv FC "ifort -O3 -openmp"
-setenv FC gfortran
-setenv CC icc 
-setenv CC gcc
-setenv LIBS -L/usr/X11R6/lib64
-setenv CFCDEFINES -DpgiFortran
-setenv MPI_FLAGS "-I/opt/MPI/include"
-setenv MPI_LD    "-L/opt/MPI/lib   -lmpich -lpthread"
-setenv FFTW_FCLD "-L/usr/local/FFTW/FFT3_INTEL/lib -lfftw3f"
-setenv MPI_FCLD "-L/opt/MPI/lib -lmpichf90  -lfmpich  -lmpich -Bstatic"
-setenv FFTW_FCLD "-L/opt/FFTW/lib -lfftw3f"
-##
-
-#./configure  --enable-maintainer-mode --prefix=/scr1/bob/SEP 
-./configure --with-mpi  --enable-maintainer-mode --prefix=/usr/local/SEP/SEP6.4.6 --with-su=/usr/local/SU
+export CMAKE_FORTRAN_COMPILER=ifort
+export CMAKE_C_COMPILER=icc
+export CWP_ROOT=/opt/SU
+export CC=icc
+export FC=ifort
+export CMAKE_PREFIX_PATH="/opt/FFTW:/opt/SU"
+export CMAKE_INSTALL_PREFIX=/opt/SEP/SEP8.1
+cmake -DCMAKE_INSTALL_PREFIX=/opt/SEP/SEP8.1   .. 
 make

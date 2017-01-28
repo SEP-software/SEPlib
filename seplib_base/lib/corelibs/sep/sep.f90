@@ -581,7 +581,7 @@ contains
     nargs= command_argument_count()
     do  i=1,nargs
       call get_command_argument(i,tmp)
-      call getch_add_string(trim(tmp)) 
+      call getch_add_string(trim(tmp)//C_NULL_CHAR) 
     end do
     if (present (source)) call doc (source)
   end subroutine sep_init
