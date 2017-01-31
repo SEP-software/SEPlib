@@ -46,6 +46,11 @@ macro(makeLink src dest target)
    set(LINKS ${LINKS} ${dest})
 endmacro()
 
+makelink(Srm3d Rm3d rm3d_link)
+makelink(Srm3d Rm rm_link)
+makelink(Scp3d Cp3d Cp3d_link)
+makelink(Scp3d Cp cp_link)
+makelink(Sls Ls ls_link)
 
 
 install(PROGRAMS ${progs} ${SCRIPTS} DESTINATION bin)
