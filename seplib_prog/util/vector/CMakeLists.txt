@@ -49,7 +49,7 @@ macro(makeLink src dest target)
  add_custom_target(${target} ALL
    COMMAND ${CMAKE_COMMAND} -E create_symlink ${src} ${dest} 
     DEPENDS  ${src} COMMENT "mklink ${src} -> ${dest}")
-   set(LINKS ${LINKS} ${dest})
+   set(LINKS ${LINKS} ${CMAKE_CURRENT_BINARY_DIR}/${dest})
 endmacro()
 
 
@@ -69,5 +69,5 @@ makelink(Math_base Cmplx cmplx_link)
 
 
 
-install(PROGRAMS ${links} ${progs} arithpar DESTINATION bin)
+install(PROGRAMS ${LINKS} ${progs} arithpar DESTINATION bin)
 

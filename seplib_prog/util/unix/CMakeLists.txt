@@ -37,13 +37,27 @@ FOREACH(cprog ${CSEP})
 ENDFOREACH(cprog)
 
 TARGET_LINK_LIBRARIES(Scp3d superset sep3d sep)
+
+
 set(SCRIPTS Sls	 Smv3d	    Srm3d     Zero)
+FOREACH(prg ${SCRIPTS})
+   configure_file (
+  "${PROJECT_SOURCE_DIR}/${prg}"
+  "${PROJECT_BINARY_DIR}/${prg}"
+  )
+   install(PROGRAMS  ${prg} DESTINATION bin)
+ENDFOREACH(prg)
+
+	
+
+
+
 
 macro(makeLink src dest target)
  add_custom_target(${target} ALL
    COMMAND ${CMAKE_COMMAND} -E create_symlink ${src} ${dest}
     DEPENDS  ${src} COMMENT "mklink ${src} -> ${dest}")
-   set(LINKS ${LINKS} ${dest})
+   set(LINKS ${LINKS} ${CMAKE_CURRENT_BINARY_DIR}/${dest})
 endmacro()
 
 makelink(Srm3d Rm3d rm3d_link)
@@ -53,5 +67,5 @@ makelink(Scp3d Cp cp_link)
 makelink(Sls Ls ls_link)
 
 
-install(PROGRAMS ${progs} ${SCRIPTS} DESTINATION bin)
+install(PROGRAMS ${progs} ${LINKS}  DESTINATION bin)
 
