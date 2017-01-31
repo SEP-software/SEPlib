@@ -11,5 +11,15 @@ sep3dc.h      sep_fortran.h	   sepvectorf.h		superset.h
 sep3d.h       seplib.h		   sepvector.h		vplot.h
 sepaux.h      sep_main_external.h  sepvelanf.h)
 
+configure_file (
+  "${PROJECT_SOURCE_DIR}/su.h.in"
+  "${PROJECT_BINARY_DIR}/su.h"
+  )
+
+configure_file (
+  "${PROJECT_SOURCE_DIR}/segy.h.in"
+  "${PROJECT_BINARY_DIR}/segy.h"
+  )
+
 
 install(FILES ${INCLUDES} DESTINATION include)
