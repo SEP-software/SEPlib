@@ -30,7 +30,7 @@ public:
   
     void zero_bufs();
     int i_v1,i_v2;
-    int bound,bsmall,baxes;
+    /* int bound,bsmall,baxes */;
 
 
 

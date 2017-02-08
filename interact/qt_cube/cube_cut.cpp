@@ -60,8 +60,8 @@ void cube_cut::viewit(QPainter *painter,QPen *pen, slice *fact, dataset *dat,ori
     top_x_e=top_x_e-shift;
     
     shift=(int)(slope*(side_x_e-side_x_b));
-    side_y_b=side_y_b;
-    side_y_e=side_y_e;
+    side_y_b=side_y_b /*stew-->*/ - shift;
+    side_y_e=side_y_e /*stew-->*/ - shift;
     this->delete_slices();
     this->delete_orient();
     

@@ -377,10 +377,10 @@ void CenterWindow::load_tour(QString text){
  if ((fd=fopen(text.toAscii().constData(),"r")) == NULL) fprintf(stderr,"PROBLEM OPENING \n");
 
  while (!feof(fd)){
-    fgets(line, 1000, fd);
+    if(NULL == fgets(line, 1000, fd)) break;
     if (0!=strncmp (line,"#",1)) {
       ln=line;
-      ln.trimmed();
+      (void) ln.trimmed();
       ln.remove(ln.length()-1,ln.length());
       tour.push_back(ln);
     }

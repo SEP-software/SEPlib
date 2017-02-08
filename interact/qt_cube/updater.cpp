@@ -1117,7 +1117,7 @@ void updater::load_history(QString text){
  if ((fd=fopen(text.ascii(),"r")) == NULL) fprintf(stderr,"PROBLEM OPENING \n");
  std::vector<QString> lines;
   while (!feof(fd)){
-    fgets(line, 1000, fd);
+    if(NULL == fgets(line, 1000, fd)) break;
     if (0!=strncmp (line,"#",1)) {
       ln=line;
       ln.stripWhiteSpace();

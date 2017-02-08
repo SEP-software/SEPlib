@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "seispak_reg_io.h"
 #include "assert.h"
 
@@ -7,7 +8,10 @@ seispak_reg_io_float::seispak_reg_io_float(QString tagit,hypercube* d, bool sw, 
   float fhdr[125];
   char bhdr[3000];
   int sz=2000; 
-  fread((void*)bhdr,1,sz,fd);
+  if((size_t) sz != fread((void*)bhdr,1,sz,fd)) {
+     perror("seispak_reg_io_float: ");
+     exit(EXIT_FAILURE);
+  }
   memcpy((void*)fhdr,(const void*)(bhdr+12),500);
   memcpy((void*)ihdr,(const void*)(bhdr+12),500);
   fseek(fd,0,0);
@@ -17,7 +21,10 @@ seispak_reg_io_float::seispak_reg_io_float(QString tagit,hypercube* d, bool sw, 
   fclose(fd);  
      set_trace_basics(tagit,d,reel_head,header,sw,pars,in);
   
-  fread((void*)bhdr,1,reel_head,fd);
+  if((size_t) reel_head != fread((void*)bhdr,1,reel_head,fd)) {
+     perror("seispak_reg_io_float: ");
+     exit(EXIT_FAILURE);
+  }
   int ibeg=(ihdr[14]-1)*4+12;
   for(int i=0; i < ihdr[1]; i++){
     QString val;
@@ -47,7 +54,10 @@ seispak_reg_io_float::seispak_reg_io_float(QString tagit,hypercube* d, bool sw, 
   int sz=100; 
   set_trace_basics(tagit,d,0,240,sw,pars,in);
 
-  fread((void*)bhdr,1,sz,fd);
+  if((size_t) sz != fread((void*)bhdr,1,sz,fd)) {
+     perror("seispak_reg_io_float: ");
+     exit(EXIT_FAILURE);
+  }
   memcpy((void*)fhdr,(const void*)(bhdr+12),160);
   memcpy((void*)ihdr,(const void*)(bhdr+12),160);
   //axes[0].n=ihdr[2];  axes[0].d=fhdr[3]; axes[1].n=ihdr[4]; axes[2].n=ihdr[5];
@@ -55,7 +65,10 @@ seispak_reg_io_float::seispak_reg_io_float(QString tagit,hypercube* d, bool sw, 
   header=ihdr[1]*4; reel_head=(ihdr[0]+2)*4;
   fclose(fd);
   
-  fread((void*)bhdr,1,reel_head,fd);
+  if((size_t) reel_head != fread((void*)bhdr,1,reel_head,fd)) {
+     perror("seispak_reg_io_float: ");
+     exit(EXIT_FAILURE);
+  }
   int ibeg=(ihdr[14]-1)*4+12;
   for(int i=0; i < ihdr[1]; i++){
     QString val;
@@ -77,7 +90,10 @@ seispak_reg_io_short::seispak_reg_io_short(QString tagit,hypercube* d, bool sw, 
   float fhdr[125];
   char bhdr[3000];
   int sz=2000; 
-  fread((void*)bhdr,1,sz,fd);
+  if((size_t) sz != fread((void*)bhdr,1,sz,fd)) {
+     perror("seispak_reg_io_short: ");
+     exit(EXIT_FAILURE);
+  }
   memcpy((void*)fhdr,(const void*)(bhdr+12),500);
   memcpy((void*)ihdr,(const void*)(bhdr+12),500);
   fseek(fd,0,0);
@@ -87,7 +103,10 @@ seispak_reg_io_short::seispak_reg_io_short(QString tagit,hypercube* d, bool sw, 
   fclose(fd);
    set_trace_basics(tagit,d,reel_head,header,sw,pars,in);
 
-  fread((void*)bhdr,1,reel_head,fd);
+  if((size_t) reel_head !=  fread((void*)bhdr,1,reel_head,fd)) {
+     perror("seispak_reg_io_short: ");
+     exit(EXIT_FAILURE);
+  }
   int ibeg=(ihdr[14]-1)*4+12;
   for(int i=0; i < ihdr[1]; i++){
     QString val;

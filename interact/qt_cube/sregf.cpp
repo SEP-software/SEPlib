@@ -8,7 +8,7 @@ void sregf::read_all(string tag,hypercube_float *cube){
      char errmsg[] = "Dataset(%d) and sepcube(%d) not the same size\n";
      seperr(errmsg, this->get_n123(),cube->get_n123());
    }
-   if(4*this->get_n123()!=sreed_big(tag.c_str(),cube->vals,this->get_n123()*4)) {
+   if(4*this->get_n123()!=(long long) sreed_big(tag.c_str(),cube->vals,this->get_n123()*4)) {
      char errmsg[] = "Trouble reading data from tag %s\n";
      seperr(errmsg,tag.c_str());
    }

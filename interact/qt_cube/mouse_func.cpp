@@ -12,7 +12,7 @@ void mouse_func::del_pt(std::vector <slice*>slices,int islice,int ix, int iy, or
     int iloc[8];
 (void) pos; // silence unused argument warning
     if(draw_o==0){}
-    if(islice<0) {com->at(1)=="none"; return;}
+    if(islice<0) {com->at(1)/*=*/="none"; return;}
     int ia1=slices[islice]->get_iax1(), ia2=slices[islice]->get_iax2();
     slices[islice]->get_data_loc(ix,iy,iloc);
     com->at(1)="pick"; com->at(2)="del";
@@ -26,7 +26,7 @@ void mouse_func::del_pt(std::vector <slice*>slices,int islice,int ix, int iy, or
 }
 void mouse_func::update_pos(std::vector <slice*>slices, int islice,int ix, int iy, orient_cube *pos, std::vector<QString> *com, draw_other *draw_o){
       if(draw_o==0){}
-    if(islice<0 && ivalid_down!=-5) {com->at(1)=="none"; return;}
+    if(islice<0 && ivalid_down!=-5) {com->at(1)/*=*/="none"; return;}
   if(ivalid_down==-5){
     ivalid_down=-1;
      com->at(1)="orient"; com->at(2)="vsize_end"; 
@@ -38,7 +38,7 @@ void mouse_func::update_pos(std::vector <slice*>slices, int islice,int ix, int i
 }
 void mouse_func::update_range(std::vector<slice*>slices,int islice, int ix,int iy, orient_cube *pos, std::vector<QString> *com, draw_other *draw_o){
        if(draw_o==0){}
-    if(islice<0) {com->at(1)=="none"; return;}
+    if(islice<0) {com->at(1)/*=*/="none"; return;}
 
    com->at(1)="none";
    if(ivalid_down!=islice){
@@ -50,7 +50,7 @@ void mouse_func::update_range(std::vector<slice*>slices,int islice, int ix,int i
 void mouse_func::range_down(std::vector<slice*>slices,int islice, int ix,int iy, orient_cube *pos, std::vector<QString> *com, draw_other *draw_o){
  if((int)slices.size()==0 || pos==0 ){}
     if(draw_o==0){}
-    if(islice<0) {com->at(1)=="none"; return;}
+    if(islice<0) {com->at(1)/*=*/="none"; return;}
 
  ivalid_down=islice;
   down_x=ix; down_y=iy;
@@ -60,7 +60,7 @@ void mouse_func::range_down(std::vector<slice*>slices,int islice, int ix,int iy,
 }
 void mouse_func::range_move(std::vector<slice*>slices,int islice, int ix,int iy, orient_cube *pos, std::vector<QString> *com, draw_other *draw_o){
     if(draw_o==0){}
-    if(islice<0) {com->at(1)=="none"; return;}
+    if(islice<0) {com->at(1)/*=*/="none"; return;}
 
   if((int)slices.size() ==0 && pos==0 ){}
   com->at(1)="none";
@@ -82,7 +82,7 @@ void mouse_func::add_pt(std::vector <slice*>slices,int islice,int ix, int iy, or
 (void) pos; // quiet unused argument complaint
     if(draw_o==0){}
 
-    if(islice<0) {com->at(1)=="none"; return;}
+    if(islice<0) {com->at(1)/*=*/="none"; return;}
  int iold[8],iloc[8];
 
     int ia1=slices[islice]->get_iax1(), ia2=slices[islice]->get_iax2();
@@ -107,7 +107,7 @@ void mouse_func::add_pt(std::vector <slice*>slices,int islice,int ix, int iy, or
 void mouse_func::reset(std::vector <slice*>slices,int islice,int ix, int iy, orient_cube *pos, std::vector<QString> *com, draw_other *draw_o)
 {
     if(draw_o==0 || (ix==0 && iy==0 && islice==0 && ((int)slices.size())==0)){}
-    if(islice<0) {com->at(1)=="none"; return;}
+    if(islice<0) {com->at(1)/*=*/="none"; return;}
 
     int beg[8],end[8],order[8];
     pos->get_orders(order);
@@ -128,7 +128,7 @@ void mouse_func::reset(std::vector <slice*>slices,int islice,int ix, int iy, ori
 
 void mouse_func::move_pt(std::vector<slice*>slices,int islice, int ix,int iy, orient_cube *pos, std::vector<QString> *com, draw_other *draw_o){
     if(draw_o==0){}
-    if(islice<0) {com->at(1)=="none"; return;}
+    if(islice<0) {com->at(1)/*=*/="none"; return;}
 
   if((int)slices.size() ==0 && pos==0 ){}
   com->at(1)="none";

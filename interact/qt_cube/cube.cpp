@@ -60,8 +60,8 @@ void cube::viewit(QPainter *painter,QPen *pen, slice *fact,
     top_x_e=top_x_e-shift;
     
     shift=(int)(slope*(side_x_e-side_x_b));
-    side_y_b=side_y_b;
-    side_y_e=side_y_e;
+    side_y_b=side_y_b /*stew-->*/ - shift;
+    side_y_e=side_y_e /*stew-->*/ - shift;
     this->delete_slices();
  
      for(int i=0; i < 3; i++) slices.push_back(fact->clone());

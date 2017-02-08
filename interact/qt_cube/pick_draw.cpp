@@ -111,7 +111,7 @@ void pick_draw::read_file(const QString &text){
    if ((fd=fopen(text.ascii(),"r")) == NULL) fprintf(stderr,"PROBLEM OPENING \n");
    int i=0;
   while (!feof(fd)){
-    fgets(line, 1000, fd);
+    if(NULL == fgets(line, 1000, fd)) break;
     if (0!=strncmp (line,"#",1)) {
 
       sscanf(line,"%s %f %f %f %f %f %f %f %f %d %d", color,&floc[0],&floc[1],&floc[2],&floc[3],
@@ -228,8 +228,8 @@ void pick_draw::check_create_oc(orient_cube *pos){
   pos->convert_picks(old,nw);
   delete old;
   for(int i=0; i < nw->return_size(); i++){
-     pick_new *p=nw->return_pick(i),*dumb;
-     dumb=orient_planes[orient_num]->buck->add_pick(p->iloc,p->pos,p->type,p->col,p->extra);
+     pick_new *p=nw->return_pick(i)/*,*dumb*/;
+     (void) /*dumb=*/orient_planes[orient_num]->buck->add_pick(p->iloc,p->pos,p->type,p->col,p->extra);
      delete nw->picks[i];
   }
 }

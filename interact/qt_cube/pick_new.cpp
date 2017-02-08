@@ -23,7 +23,7 @@ void pick_new::pick_delete(){
 }
 void picks_new::get_parse_picks(picks_vec *buck,QString col,int typ,int extra){
 
-  std::vector<pick_new*>:: iterator iend=buck->picks.end(),it;
+  std::vector<pick_new*>:: iterator /*iend=buck->picks.end(),*/ it;
   int nend=buck->picks.size();
   for(int i=0; i < (int)bucket.size(); i++) buck->add_pick(bucket[i]);
 

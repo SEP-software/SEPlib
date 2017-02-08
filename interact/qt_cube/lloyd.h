@@ -15,7 +15,7 @@ public:
  void solve_it();
  virtual void compute_center(){}
   virtual void compute_distort(){}
-  virtual void change_regions(const int iter){ if(iter==iter){}}
+  virtual void change_regions(const int iter){ if(iter){}else{}}
 
    int iter,niter;
   private:

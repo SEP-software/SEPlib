@@ -173,12 +173,12 @@ void fastmarch::calc_time(float s1, float s2, float s3, float *ttime){
  }
 void fastmarch::update (int p1, int p2, int p3, float* tj, unsigned char* mj, float s)
 {
-  double  /*b,*/ c, t1=0, t2=0;
+  double  /*b, c, */ t1=0.0, t2=0.0;
   unsigned int k, i;
   double aaa,bbb,ccc,ddd;
   unsigned int jjj;
 // fprintf(stderr,"CHECK IT %d %d %d \n",p1,n1,order);   
-  /*b =*/ c = 0.; i = k = 0;
+  /*b = c = 0.;*/ i = k = 0;
   ddd=1.; jjj = 0;
   aaa = bbb = ccc = 0.;
 
