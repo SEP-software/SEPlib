@@ -52,12 +52,13 @@ extern void struct_dump(struct _sep*);
 extern void process_one(struct _sep *);
 extern int  pad_it(char *,char *,int,int*,int*,int*,int,int);
 extern int pad_portion(char*,char*,int,int,int,int*,int*,int*,int,int,int*,int*,int grab_input(char *,int*,int*,int));
-int oc_patch_put(char *tag, int ipatch, int esize,char *buf);
-int oc_patch_get(char *tag, int ipatch, int esize,char *buf);
-void oc_patch_init(int ndim,int *nin, int *nwind, int *npatch, int *npatches);
-void oc_patch_clean();
-void oc_patch_bound(int ipatch,int esize, float *buf);
-
+extern int oc_patch_put(char *tag, int ipatch, int esize,char *buf);
+extern int oc_patch_get(char *tag, int ipatch, int esize,char *buf);
+extern void oc_patch_init(int ndim,int *nin, int *nwind, int *npatch, int *npatches);
+extern void oc_patch_clean();
+extern void oc_patch_bound(int ipatch,int esize, float *buf);
+extern int init_loop_calc(int ndims,int *n,char *string,int max_size);
+extern int do_sep_loop(char *name, int *nwind, int *fwind);
 _XFUNCPROTOEND
 #else
 extern int arrayreadf();
@@ -76,4 +77,6 @@ extern void struct_dump();
 extern void process_one();
 extern int  pad_it();
 extern int pad_portion();
+extern int init_loop_calc();
+extern int do_sep_loop();
 #endif

@@ -105,6 +105,8 @@ int mpi_sep_open_lock(char *fname);
 int mpi_sep_close_lock(char *fname,int fd);
 int mpi_sep_check_lock_file(char *fname);
 int mpi_sep_create_group(int ngrp, int *use);
+int sep_num_thread(void);
+int sep_thread_num(void);
 #else
 void mpi_open_lock();
 void mpi_close_lock();
@@ -124,6 +126,8 @@ int mpi_sep_next_group();
 int mpi_sep_valid_nproc();
 int mpi_sep_valid_processors();
 int mpi_sep_jobs_running();
+int sep_num_thread();
+int sep_thread_num();
 #endif
 
 #endif
