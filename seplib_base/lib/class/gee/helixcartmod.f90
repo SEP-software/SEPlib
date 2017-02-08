@@ -12,7 +12,7 @@
 !!$
 !!$=over 4
 !!$
-!!$=item n - <int(:)>
+!!$=item nn - <int(:)>
 !!$
 !!$          cartesian axes
 !!$
