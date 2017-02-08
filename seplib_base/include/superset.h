@@ -1,6 +1,6 @@
 #ifndef SUPERSET_H
 #define SUPERSET_H dfad
-#include<sepConfig.h>
+#include <sepConfig.h>
 #include<sep3d.h>
 
 
@@ -58,9 +58,9 @@ extern int sep3d_read_data_section_list(char *sep3din, int ithread, int nwind, i
 extern int sep3d_read_data_sections(char *sep3din, int ithread, int nwind, int fwind, int jwind,char *data);
 extern int sep3d_set_coord(char *sep3dname,int *coords);
 extern int sep3d_grab_coord(char *sep3dname,int *coords);
-
-
-
+extern int sep3d_grab_inorder(const char *, int *);
+extern int sep3d_set_inorder(const char *);
+extern int sep3d_unset_inorder(const char *);
 extern int sep3d_read_header_all(char *sep3din,int *nwind, int *fwind, int *jwind, int *nh);
 extern int sep3d_read_header_local(char *sep3din,int *nwind, int *fwind, int *jwind, int *nh);
 extern int sep3d_rite_all(char *tag, char *sep3dname, int *nwind, int *fwind,
@@ -169,6 +169,7 @@ extern int sep3d_sync(char *tag, char *sep3dname);
 extern int sep3d_have_dff(char *tag);
 extern int sep3d_copy_coords(char *sep3in,char *sep3dout);
 extern int sep3d_broadcast_data(int ifrom,  int esize, int nelem, char *data);
+extern void sep_mpi_stop(void);
 
 
 

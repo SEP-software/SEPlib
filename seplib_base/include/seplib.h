@@ -45,7 +45,11 @@
 #include <sepcube.h>
 #include <sepmath.h>
 
+#if defined(HAVE_STDLIB_H)
 #include <time.h>
+#else
+extern long time();
+#endif
 
 
 #endif
