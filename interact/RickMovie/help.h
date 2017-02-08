@@ -1,3 +1,5 @@
+#ifndef RICKMOVIE_HELP_H
+#define RICKMOVIE_HELP_H
 Movie - display cubic array of data in XWindows-Motif\n\
 \n\
 USAGE: Movie in=datafile [ data pars ] [ display pars ]\n\
@@ -267,4 +269,9 @@ HELP FUNCTIONS: print self documentation from various places\n\
 	\"Help\"	\"Movie Functions\"\n\
 	\"Help\"	\"Color Functions\"\n\
 	\"Help\"	\"Picking Functions\"\n\
-	\"Help\"	\"Status Functions\"\n\
+	\"Help\"	\"Status Functions\"\n
+
+
+extern void HelpPrint (char *start,char *finish);
+extern void HelpMore (char *start,char *finish);
+#enduf

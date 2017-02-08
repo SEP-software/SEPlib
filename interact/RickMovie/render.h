@@ -1,3 +1,5 @@
+#ifndef RICKMOVIE_RENDER_H
+#define RICKMOVIE_RENDER_H
 /*
 render object definition
 
@@ -59,5 +61,29 @@ typedef struct {
 	} *RenderAttr;
 
 /* typed returns */
-Render RenderInit (/*data*/);
-Buffer RenderBuffer (/*render*/);
+extern Render RenderInit (void);
+extern void RenderSize (int wide,int hite);
+extern void RenderHorz (Data data,Map hmap,Map vmap,Map zmap,Map map4,Map map5,int h0,int v0,Render render,int margins[],RenderAttr attr);
+extern void RenderVert (Data data,Map hmap,Map vmap,Map zmap,Map map4,Map map5,int h0,int v0,Render render,int margins[],RenderAttr attr);
+extern void RenderDeep (Data data,Map hmap,Map vmap,Map zmap,Map map4,Map map5,int h0,int v0,Render render,int margins[],RenderAttr attr);
+extern int RenderBufferValue ( Render render, int x, int y);
+extern int RenderShadowValue ( Render render, int x, int y);
+extern Buffer RenderBuffer (Render render);
+extern void RenderDraw (void);
+extern void RenderInfo (Render render);
+void RenderSavePar (void);
+extern void RenderLine (Render render,int x0,int y0,int x1,int y1,int color);
+extern void RenderSetInterp (int mode);
+extern void RenderTogglePolarity (void);
+extern void RenderToggleInterp (void);
+extern void RenderSetFenceTransp (int transparency);
+extern void RenderSetLow (int low);
+extern void RenderSetHigh (int high);
+extern void RenderSetGradient (int vol_transp);
+extern void RenderClear (void);
+extern void RenderMap (Render render);
+extern void RenderMapDump (void);
+extern void RenderImageDump (void);
+extern void RenderRect (int *h0,int *v0,int *nh,int *nv);
+
+#endif

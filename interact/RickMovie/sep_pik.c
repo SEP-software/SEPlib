@@ -4,6 +4,13 @@
 pick list subroutines
 */
 
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <stdlib.h>
+#ifdef MACOS
+#include <unistd.h>
+#include <fcntl.h>
+#endif
 #include <stdio.h>
 #include "main.h"
 #include "axis.h"
@@ -14,12 +21,14 @@ pick list subroutines
 #include "plane.h"
 #include "pick.h"
 #include "pik.h"
+#include "draw.h"
+#include "ui.h"
 
 /* main pik object */
 PikList pik=0;
 
 /* initialize pik object; read pick= file */
-PikInit ()
+void PikInit (void)
 	{
 	extern Data data;
 
@@ -39,7 +48,7 @@ PikInit ()
 	}
 
 /* read pick file */
-PikRead ()
+void PikRead (void)
 	{
 	int iaxis, ipik;
 	FILE *fd;
@@ -68,9 +77,7 @@ PikRead ()
 	}
 
 /* write pick file */
-PikWrite (filename,fd)
-char *filename;
-FILE *fd;
+void PikWrite ( char *filename, FILE *fd)
 	{
 	int ipik, count=0;
 	extern Data data;
@@ -96,8 +103,7 @@ FILE *fd;
 	}
 
 /* draw pick pik0 or all picks (pik0 = NO_INDEX) on all planes */
-PikDraw (pik0,draw)
-int pik0, draw;
+void PikDraw (int pik0,int draw)
 	{
 	int ipik, range1, range2, pik1, pik2, dir, frame, x, y, x0, y0, hskew, vskew, size;
 	Plane plane;
@@ -151,8 +157,7 @@ int pik0, draw;
 	}
 
 /* draw an "x" */
-PikDrawEx (x,y,draw)
-int x, y, draw;
+void PikDrawEx (int x,int y,int draw)
 	{
 	if (!pik) return;
 	DrawLine (x+pik->size,y+pik->size,x-pik->size,y-pik->size,draw);
@@ -160,8 +165,7 @@ int x, y, draw;
 	}
 
 /* draw a box of specified size */
-PikDrawBox (x,y,size,draw)
-int x, y, size, draw;
+void PikDrawBox (int x,int y,int size,int draw)
 	{
 	if (!pik) return;
 	DrawLine (x+size,y+size,x-size,y+size,draw);
@@ -171,8 +175,7 @@ int x, y, size, draw;
 	}
 
 /* find nearest visible pick on mouse pick plane */
-PikNear (x,y)
-int x, y;
+int PikNear (int x,int y)
 	{
 	PickPoint_ pick;
 	int i, ipik, near, inear, range1, range2, distance, frame, dir, dir1, dir2, x1, y1;
@@ -207,9 +210,7 @@ int x, y;
 	return (inear);
 	}
 
-PikCoord (ipik,plane,x,y)
-int ipik, *x, *y;
-Plane plane;
+int PikCoord (int ipik,Plane plane,int *x,int *y)
 	{
 	int hskew=0, vskew=0, x1, y1;
 
@@ -229,8 +230,7 @@ Plane plane;
 	}
 
 /* inquire about pick nearest to mouse pick */
-PikQuery (x,y)
-int x, y;
+void PikQuery (int x,int y)
 	{
 	int inear;
 	extern Data data;
@@ -250,8 +250,7 @@ int x, y;
 	}
 
 /* add a pick at mouse pick location */
-PikAdd (x,y)
-int x, y;
+void PikAdd (int x,int y)
 	{
 	int iaxis;
 	PickPoint_ pick;
@@ -266,8 +265,7 @@ int x, y;
 	}
 
 /* delete nearest pick to mouse pick location */
-PikDelete (x,y)
-int x,y;
+void PikDelete (int x,int y)
 	{
 	int inear, ipik, iaxis;
 
@@ -290,8 +288,7 @@ int x,y;
 	}
 
 /* move nearest pick to mouse pick location */
-PikMove (x,y)
-int x, y;
+void PikMove (int x, int y)
 	{
 	int inear, iaxis;
 	PickPoint_ pick;
@@ -313,7 +310,7 @@ int x, y;
 	}
 
 /* undo a pick modification operation */
-PikUndo ()
+void PikUndo (void)
 	{
 	int iaxis, save;
 
@@ -349,7 +346,7 @@ PikUndo ()
 
 
 /* print attributes of pick list */
-PikInfo ()
+void PikInfo (void)
 	{
 	Message message;
 
@@ -363,7 +360,7 @@ PikInfo ()
 	}
 
 /* save parameters */
-PikSave ()
+void PikSave (void)
 	{
 	Message message;
 
@@ -374,7 +371,7 @@ PikSave ()
 		pik->size);
 	UISaveMessage (message);
 	}
-PikIncreaseSize ()
+void PikIncreaseSize (void)
 	{
 	if (!pik) return;
 	PikDraw (NO_INDEX,ERASE);
@@ -383,7 +380,7 @@ PikIncreaseSize ()
 	PikInfo ();
 	}
 
-PikDecreaseSize ()
+void PikDecreaseSize (void)
 	{
 	if (!pik) return;
 	if (pik->size < 2) return;
@@ -393,7 +390,7 @@ PikDecreaseSize ()
 	PikInfo ();
 	}
 
-PikIncreaseRange ()
+void PikIncreaseRange (void)
 	{
 	if (!pik) return;
 	PikDraw (NO_INDEX,ERASE);
@@ -404,7 +401,7 @@ PikIncreaseRange ()
 
 
 
-PikDecreaseRange ()
+void PikDecreaseRange (void)
 	{
 	if (!pik) return;
 	if (pik->range == 0) return;

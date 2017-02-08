@@ -4,21 +4,29 @@
 data axis to image axis map object
 does window, zoom, frame tracking, and tic labels
 */
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <stdlib.h>
+#if defined(MACOS) || defined(LINUX)
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#endif
 #include <stdio.h>
+#include <string.h>
 #include "main.h"
 #include "axis.h"
 #include "data.h"
 #include "map.h"
 #include "movie.h"
+#include "ui.h"
 
 /*
 initialize map object
 */
 Map
-MapInit (axis,name,imap)
-Axis axis;
-string name;
-int imap;
+MapInit (Axis axis,string name,int imap)
 	{
 	Map map;
 	extern Data data;
@@ -61,10 +69,7 @@ int imap;
 set map to given data axis, map, and bounds
 used when changing orientation and magnification
 */
-MapSet (map,axis,size,first,last,frame1,frame2,dframe)
-Map map;
-Axis axis;
-int first, last, size, frame1, frame2, dframe;
+void MapSet (Map map,Axis axis,int size,int first,int last,int frame1,int frame2,int dframe)
 	{
 	int resize = 0;
 
@@ -87,8 +92,7 @@ int first, last, size, frame1, frame2, dframe;
 	}
 
 /* internal utility for forcing index within bounds */
-MapBound (index,bound1,bound2)
-int index, bound1, bound2;
+int MapBound (int index,int bound1,int bound2)
 	{
 	if (bound1 < bound2) {
 		index = index > bound1 ? index : bound1;
@@ -104,9 +108,7 @@ int index, bound1, bound2;
 compute data to image maps
 compute tic spacing
 */
-MapSetSize (map,size)
-Map map;
-int size;
+void MapSetSize (Map map,int size)
 	{
 	int i, j, len;
 	float index;
@@ -154,8 +156,7 @@ int size;
 		}
 	}
 
-MapSetTics (map)
-Map map;
+void MapSetTics (Map map)
 	{
 	float first, last, dtic, tic0, tic2;
 	int i;
@@ -200,8 +201,7 @@ Map map;
 	}
 
 /* swap two axes into each other's size */
-MapSwap (a,b)
-Map a, b;
+void MapSwap (Map a,Map b)
 	{
 	Map_ A, B;
 
@@ -214,16 +214,14 @@ Map a, b;
 	}
 
 /* change direction of axis, perserving size and bounds */
-MapFlip (map)
-Map map;
+void MapFlip (Map map)
 	{
 	MapSet (map,map->axis,map->size,map->last,map->first,map->frame2,map->frame1,map->dframe);
 	}
 
 /* return data axis of map */
 Axis
-MapAxis (map)
-Map map;
+MapAxis (Map map)
 	{
 	if (!map) return (0);
 	return (map->axis);
@@ -231,8 +229,7 @@ Map map;
 
 /* return map name */
 char*
-MapName (map)
-Map map;
+MapName (Map map)
 	{
 	if (!map) return (0);
 	return (map->name);
@@ -240,8 +237,7 @@ Map map;
 
 /* return map of map */
 Vec
-MapVec (map)
-Map map;
+MapVec (Map map)
 	{
 	if (!map) return (0);
 	return (map->map);
@@ -249,24 +245,21 @@ Map map;
 
 /* return map interption */
 Vec
-MapInterp (map)
-Map map;
+MapInterp (Map map)
 	{
 	if (!map) return (0);
 	return (map->interp);
 	}
 
 /* return size of map */
-MapSize (map)
-Map map;
+int MapSize (Map map)
 	{
 	if (!map) return (0);
 	return (map->size);
 	}
 
 /* return map window size */
-MapWindow (map)
-Map map;
+int MapWindow (Map map)
 	{
 	if (!map) return (0);
 	if (map->last > map->first) return (map->last-map->first+1);
@@ -274,8 +267,7 @@ Map map;
 	}
 
 /* return zoom window size */
-MapZoom (map)
-Map map;
+int MapZoom (Map map)
 	{
 	if (!map) return (0);
 	if (map->last > map->first) return ((int)((map->last-map->first+1)*AxisZoom(map->axis)));
@@ -283,72 +275,63 @@ Map map;
 	}
 
 /* return first element of map */
-MapFirst (map)
-Map map;
+int MapFirst (Map map)
 	{
 	if (!map) return (0);
 	return (map->first);
 	}
 
 /* return last element of map */
-MapLast (map)
-Map map;
+int MapLast (Map map)
 	{
 	if (!map) return (0);
 	return (map->last);
 	}
 
 /* return lowest element of map */
-MapLow (map)
-Map map;
+int MapLow (Map map)
 	{
 	if (!map) return (0);
 	return (map->first<map->last?map->first:map->last);
 	}
 
 /* return highest element of map */
-MapHigh (map)
-Map map;
+int MapHigh (Map map)
 	{
 	if (!map) return (0);
 	return (map->first>map->last?map->first:map->last);
 	}
 
 /* return frame of map */
-MapFrame (map)
-Map map;
+int MapFrame (Map map)
 	{
 	if (!map) return (0);
 	return (map->frame);
 	}
 
 /* return map position */
-MapFrame1 (map)
-Map map;
+int MapFrame1 (Map map)
 	{
 	if (!map) return (0);
 	return (map->imap);
 	}
 
 /* number of frames */
-MapNFrame (map)
-Map map;
+int MapNFrame (Map map)
 	{
 	if (!map) return (0);
 	return (map->frame2>map->frame1?(map->frame2-map->frame1+1):(map->frame1-map->frame2+1));
 	}
 
 /* return previous frame of map */
-MapPrev (map)
-Map map;
+int MapPrev (Map map)
 	{
 	if (!map) return (0);
 	return (map->prev);
 	}
 
 /* return saved frame of map */
-MapSave (map)
-Map map;
+int MapSave (Map map)
 	{
 	if (!map) return (0);
 	return (map->save);
@@ -356,8 +339,7 @@ Map map;
 
 /* return first tic of map */
 float
-MapTic0 (map)
-Map map;
+MapTic0 (Map map)
 	{
 	if (!map) return (0);
 	return (map->tic0);
@@ -365,16 +347,14 @@ Map map;
 
 /* return last tic of map */
 float
-MapTic2 (map)
-Map map;
+MapTic2 (Map map)
 	{
 	if (!map) return (0);
 	return (map->tic2);
 	}
 
 /* return number of tics of map */
-MapNtic (map)
-Map map;
+int MapNtic (Map map)
 	{
 	if (!map) return (0);
 	return (map->ntic);
@@ -382,32 +362,28 @@ Map map;
 
 /* return tic spacing of map */
 float
-MapDtic (map)
-Map map;
+MapDtic (Map map)
 	{
 	if (!map) return (0);
 	return (map->dtic);
 	}
 
 /* return start frame */
-MapMovie1 (map)
-Map map;
+int MapMovie1 (Map map)
 	{
 	if (!map) return (0);
 	return (map->frame1);
 	}
 
 /* return end frame */
-MapMovie2 (map)
-Map map;
+int MapMovie2 (Map map)
 	{
 	if (!map) return (0);
 	return (map->frame2);
 	}
 
 /* return frame increment */
-MapDmovie (map)
-Map map;
+int MapDmovie (Map map)
 	{
 	if (!map) return (0);
 	return (map->dframe);
@@ -415,17 +391,14 @@ Map map;
 
 /* return tic spacing of map */
 char*
-MapFormat (map)
-Map map;
+MapFormat (Map map)
 	{
 	if (!map) return (0);
 	return (map->format);
 	}
 
 /* set frame of map inclusive of bounds */
-MapSetFrame (map,frame)
-Map map;
-int frame;
+void MapSetFrame (Map map, int frame)
 	{
 	if (!map || frame<0) return;
 	map->prev = MapBound (map->frame,map->frame1,map->frame2);
@@ -433,34 +406,27 @@ int frame;
 	}
 
 /* set frame bounds */
-MapSetFrameBounds (map,frame1,frame2)
-Map map;
-int frame1, frame2;
+void MapSetFrameBounds (Map map,int frame1,int frame2)
 	{
 	if (!map) return;
 	MapSet (map,map->axis,map->size,map->first,map->last,frame1,frame2,map->dframe);
 	MovieSetDir (frame2-frame1);
 	}
 
-MapSetDmovie (map,dframe)
-Map map;
-int dframe;
+void MapSetDmovie (Map map,int dframe)
 	{
 	if (!map) return;
 	map->dframe = dframe;
 	}
 /* set map position */
-MapSetFrame1 (map,frame)
-Map map;
-int frame;
+void MapSetFrame1 (Map map,int frame)
 	{
 	if (!map) return;
 	map->imap = MapBound (frame,0,map->size-1);
 	}
 
 /* compute next frame depending upon animation direction and bounds */
-MapNextFrame (map)
-Map map;
+void MapNextFrame (Map map)
 	{
 	map->prev = map->frame;
 	if (map->frame1 < map->frame2) {
@@ -483,9 +449,7 @@ Map map;
 
 /* return data axis value given map index */
 float
-MapValue (map,index)
-Map map;
-int index;
+MapValue (Map map, int index)
 	{
 	index = index > 0 ? index : 0;
 	index = index < map->size ? index : map->size-1;
@@ -494,9 +458,7 @@ int index;
 	}
 
 /* return map index given axis value */
-MapIndex (map,value)
-Map map;
-float value;
+int MapIndex (Map map,float value)
 	{
 	float first, last;
 	int index;
@@ -509,18 +471,14 @@ float value;
 	}
 
 /* return map value given index */
-MapMap (map,index)
-Map map;
-int index;
+int MapMap (Map map,int index)
 	{
 	if (!map || index<0 || index >= map->size) return (NO_INDEX);
 	return (map->map[index]/map->axis->stride);
 	}
 
 /* return inverse index */
-MapInverse (map,index)
-Map map;
-int index;
+int MapInverse (Map map,int index)
 	{
 	/* fprintf(stderr,"Name: %s   Index: %d   \n",map->name,index); */
 	if (!map) return (NO_INDEX);
@@ -531,8 +489,7 @@ int index;
 	}
 
 /* print map information */
-MapInfo (map)
-Map map;
+void MapInfo (Map map)
 	{
 	Message message;
 
@@ -557,8 +514,7 @@ Map map;
 	}
 
 /* save map parameters */
-MapSavePar (map)
-Map map;
+void MapSavePar (Map map)
 	{
 	Message message;
 	int imap;
@@ -584,37 +540,43 @@ Map map;
 	}
 
 /* write map vectors to files for debugging */
-MapDump (map)
-Map map;
+void MapDump (Map map)
 	{
 	string filename;
 	int fd;
 
 	sprintf (filename,"map.%s.map.%dx32",map->name,map->size);
 	fd = creat (filename,0664);
-	write (fd,map->map,sizeof(map->map[0])*map->size);
+	if ((sizeof(map->map[0])*map->size) !=
+	write (fd,map->map,sizeof(map->map[0])*map->size)) {
+           perror("MapDump map");
+        }
 	close (fd);
 	sprintf (filename,"map.%s.inv.%dx32",map->name,map->size);
 	fd = creat (filename,0664);
-	write (fd,map->inv,sizeof(map->inv[0])*map->size);
+	if ((sizeof(map->inv[0])*map->size) !=
+	write (fd,map->inv,sizeof(map->inv[0])*map->size)) {
+           perror("MapDump inv");
+        }
 	close (fd);
 	sprintf (filename,"map.%s.interp.%dx32",map->name,map->size);
 	fd = creat (filename,0664);
-	write (fd,map->interp,sizeof(map->interp[0])*map->size);
+	if ((sizeof(map->interp[0])*map->size) !=
+	write (fd,map->interp,sizeof(map->interp[0])*map->size)) {
+           perror("MapDump interp");
+        }
 	close (fd);
 	UIMessage ("map dumped to file");
 	}
 
 /* remember map frame */
-MapSaveFrame (map)
-Map map;
+void MapSaveFrame (Map map)
 	{
 	map->save = map->frame;
 	}
 
 /* recall map frame */
-MapRestoreFrame (map)
-Map map;
+void MapRestoreFrame (Map map)
 	{
 	map->frame = map->save;
 	}

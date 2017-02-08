@@ -115,8 +115,7 @@ END\n";
 
 
 /* print text on screen */
-HelpPrint (start,finish)
-char *start, *finish;
+void HelpPrint (char *start,char *finish)
 	{
 	char *startp=0, *finishp=0;
 	extern char *help, *strstr();
@@ -130,10 +129,9 @@ char *start, *finish;
 	}
 
 /* pipe text through more */
-HelpMore (start,finish)
-char *start, *finish;
+void HelpMore (char *start,char *finish)
 	{
-	FILE *pfile, *popen();
+	FILE *pfile;
 	char *startp=0, *finishp=0;
 	extern char *help, *strstr();
 

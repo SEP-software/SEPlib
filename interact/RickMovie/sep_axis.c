@@ -4,17 +4,26 @@
 axis object code
 */
 
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <stdlib.h>
+#ifdef MACOS
+#include <unistd.h>
+#include <fcntl.h>
+#endif
 #include <stdio.h>
+#include <string.h>
+#include <seplib.h>
 #include "main.h"
 #include "axis.h"
+#include "ui.h"
 
 /*
 axis init from mandatory getpar
 n1=,o1=,d1=,label1= are length, origin, sampling, and name of first axis, etc.
 */
 Axis
-AxisInit (iaxis,stride)
-int iaxis, stride;
+AxisInit (int iaxis,int stride)
 	{
 	Axis axis;
 	string par;
@@ -52,10 +61,7 @@ int iaxis, stride;
 
 /* axis init from arguments, superceded by getpar */
 Axis
-AxisInit2 (dir,stride,label,size,first,delta,zoom)
-int dir, stride, size;
-float first, delta, zoom;
-string label;
+AxisInit2 (int dir,int stride,string label,int size,float first,float delta,float zoom)
 	{
 	Axis axis;
 	string par;
@@ -88,8 +94,7 @@ string label;
 	}
 
 /* compute axis scale */
-AxisSetScale (axis)
-Axis axis;
+void AxisSetScale (Axis axis)
 	{
 	int i;
 	char n[20];
@@ -102,24 +107,21 @@ Axis axis;
 	}
 
 /* return axis prec */
-AxisPrec (axis)
-Axis axis;
+int AxisPrec (Axis axis)
 	{
 	if (!axis) return (0);
 	else return (axis->prec);
 	}
 
 /* return axis scale */
-AxisScale (axis)
-Axis axis;
+int AxisScale (Axis axis)
 	{
 	if (!axis) return (0);
 	else return (axis->scale);
 	}
 
 /* build a list of values for the axis */
-AxisSetValues (axis)
-Axis axis;
+void AxisSetValues (Axis axis)
 	{
 	int i;
 	if (!axis) return;
@@ -131,8 +133,7 @@ Axis axis;
 	}
 
 /* return sample size of axis */
-AxisSize (axis)
-Axis axis;
+int AxisSize (Axis axis)
 	{
 	if (!axis) return (0);
 	return (axis->size);
@@ -140,8 +141,7 @@ Axis axis;
 
 /* return axis delta */
 float
-AxisDelta (axis)
-Axis axis;
+AxisDelta (Axis axis)
 	{
 	if (!axis) return (0);
 	return (axis->delta);
@@ -149,8 +149,7 @@ Axis axis;
 
 /* return axis first value */
 float
-AxisFirst (axis)
-Axis axis;
+AxisFirst (Axis axis)
 	{
 	if (!axis) return (0);
 	return (axis->first);
@@ -158,8 +157,7 @@ Axis axis;
 
 /* return last value */
 float
-AxisLast (axis)
-Axis axis;
+AxisLast (Axis axis)
 	{
 	if (!axis) return (0);
 	return (axis->first+(axis->size-1)*axis->delta);
@@ -167,8 +165,7 @@ Axis axis;
 
 /* return axis zoom */
 float
-AxisZoom (axis)
-Axis axis;
+AxisZoom (Axis axis)
 	{
 	if (!axis) return (0);
 	return (axis->zoom);
@@ -176,34 +173,28 @@ Axis axis;
 
 /* return name of axis */
 char*
-AxisLabel (axis)
-Axis axis;
+AxisLabel (Axis axis)
 	{
 	if (!axis) return (0);
 	return (axis->label);
 	}
 
 /* return stride of axis */
-AxisStride (axis)
-Axis axis;
+int AxisStride (Axis axis)
 	{
 	if (!axis) return (0);
 	return (axis->stride);
 	}
 
 /* return value of axis at given index */
-float AxisValue (axis,index)
-Axis axis;
-int index;
+float AxisValue (Axis axis,int index)
 	{
 	if (!axis || index < 0 || index >= axis->size) return (0.);
 	else return (axis->values[index]);
 	}
 
 /* return scaled value */
-AxisScaledValue (axis,index)
-Axis axis;
-int index;
+int AxisScaledValue (Axis axis, int index)
 	{
 	if (!axis) return (0);
 	if (index < 0 || index >= axis->size) return (0);
@@ -212,20 +203,17 @@ int index;
 
 /* return array of axis values */
 float*
-AxisValues (axis)
-Axis axis;
+AxisValues (Axis axis)
 	{
 	if (!axis) return (0);
 	return (axis->values);
 	}
 
 /* return index given value */
-AxisIndex (axis,value)
-Axis axis;
-float value;
+int AxisIndex (Axis axis, float value)
 	{
 	int index;
-  float findex;
+        float findex;
 
 	findex= ((value - axis->first)/ axis->delta+.5);
 	index= ((value - axis->first)/ axis->delta+.5);
@@ -234,9 +222,7 @@ float value;
 	}
 
 /* return scaled index */
-AxisScaledIndex (axis,value)
-Axis axis;
-int value;
+int AxisScaledIndex (Axis axis, int value)
 	{
 	float fvalue;
 	if (!axis) return (NO_INDEX);
@@ -247,8 +233,7 @@ int value;
 
 	
 /* return axis direction */
-AxisDir (axis)
-Axis axis;
+int AxisDir (Axis axis)
 	{
 	if (!axis) return (NO_INDEX);
 	else return (axis->dir);
@@ -256,17 +241,14 @@ Axis axis;
 
 /* return axis script */
 char*
-AxisScript (axis,index)
-Axis axis;
-int index;
+AxisScript (Axis axis, int index)
 	{
 	if (!axis || index < 0 || index >= axis->size) return ("");
 	else return (axis->script[index]);
 	}
 
 /* print info about axis */
-AxisInfo (axis)
-Axis axis;
+void AxisInfo (Axis axis)
 	{
 	Message message;
 
@@ -283,8 +265,7 @@ Axis axis;
 	}
 
 /* save axis parameters */
-AxisSavePar (axis)
-Axis axis;
+void AxisSavePar (Axis axis)
 	{
 	Message message;
 

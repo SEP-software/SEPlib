@@ -22,42 +22,45 @@
 	&map4->frame,&map4->axis->stride,&map5->frame,&map5->axis->stride,\
 	&attr->skew)
 
+
 #define ARGS \
 	/* unpacked argument list */\
-	(data,image,shadow,zbuffer,map,tmap,wide,hite,v0,h0,fence_transp,\
-	hsize,hmap,hinterp,hstride,vsize,vmap,vinterp,vstride,\
-	zsize,zframe,zstride,zdir,zinv,frame4,stride4,frame5,stride5,\
-	skew)\
+	(Buffer data,Buffer image,Shadow shadow,Zbuffer zbuffer,unsigned char map[],unsigned char tmap[],int wide,int hite,int v0,int h0,int fence_transp,\
+	int hsize,Vec hmap,Vec hinterp,int hstride,int vsize,Vec vmap,Vec vinterp,int vstride,\
+	int zsize,int zframe,int zstride,int zdir,int zinv,int frame4,int stride4,int frame5,int stride5,\
+	int skew)\
 	/* argument types */\
-	Buffer		data;	/* data cube buffer */\
-	Buffer		image;	/* render image buffer */\
-	Shadow		shadow;	/* render index shadow */\
-	Zbuffer		zbuffer;	/* render zbuffer */\
-	unsigned char	map[];	/* render opaque map */\
-	unsigned char	tmap[];	/* render transparency map */\
-	int		wide;	/* render buffer widths */\
-	int		hite;	/* render buffer heights */\
-	int		v0;	/* draw verticla origin */\
-	int		h0;	/* draw horizontal origin */\
-	int		fence_transp;	/* render transparency threshhold */\
-	int		hsize;	/* horizontal axis map size */\
-	Vec		hmap;	/* horizontal axis data2image map */\
-	Vec		hinterp;	/* horizontal axis interpolation map */\
-	int		hstride;	/* horizontal axis increment */\
-	int		vsize;	/* vertical axis map length */\
-	Vec		vmap;	/* vertical axis data2image map */\
-	Vec		vinterp;	/* vertical axis interpolation map */\
-	int		vstride;	/* vertical axis increment */\
-	int		zsize;	/* depth axis map length */\
-	int		zframe;	/* depth axis frame */\
-	int		zstride;	/* depth axis increment */\
-	int		zdir;	/* depth axis direction */\
-	int		zinv;	/* inverse mapping of depth frame */\
-	int		frame4;	/* frame of 4D axis */\
-	int		stride4;	/* stride of 4D axis */\
-	int		frame5;	/* frame of 5D axis */\
-	int		stride5;	/* stride of 5D axis */\
-	int		skew;	/* draw skew */
+	/* Buffer		data; */	/* data cube buffer */\
+	/* Buffer		image; */	/* render image buffer */\
+	/* Shadow		shadow; */	/* render index shadow */\
+	/* Zbuffer		zbuffer; */	/* render zbuffer */\
+	/* unsigned char	map[]; */	/* render opaque map */\
+	/* unsigned char	tmap[]; */	/* render transparency map */\
+	/* int		wide; */	/* render buffer widths */\
+	/* int		hite; */	/* render buffer heights */\
+	/* int		v0; */	/* draw verticla origin */\
+	/* int		h0; */	/* draw horizontal origin */\
+	/* int		fence_transp; */	/* render transparency threshhold */\
+	/* int		hsize; */	/* horizontal axis map size */\
+	/* Vec		hmap; */	/* horizontal axis data2image map */\
+	/* Vec		hinterp; */	/* horizontal axis interpolation map */\
+	/* int		hstride; */	/* horizontal axis increment */\
+	/* int		vsize; */	/* vertical axis map length */\
+	/* Vec		vmap; */	/* vertical axis data2image map */\
+	/* Vec		vinterp; */	/* vertical axis interpolation map */\
+	/* int		vstride; */	/* vertical axis increment */\
+	/* int		zsize; */	/* depth axis map length */\
+	/* int		zframe; */	/* depth axis frame */\
+	/* int		zstride; */	/* depth axis increment */\
+	/* int		zdir; */	/* depth axis direction */\
+	/* int		zinv; */	/* inverse mapping of depth frame */\
+	/* int		frame4; */	/* frame of 4D axis */\
+	/* int		stride4; */	/* stride of 4D axis */\
+	/* int		frame5; */	/* frame of 5D axis */\
+	/* int		stride5; */	/* stride of 5D axis */\
+	/* int		skew; */	/* draw skew */
+
+#define CALLARGSPROTO ARGS
 
 #define hdata22 hdata
 #define HARGS ARGS {\

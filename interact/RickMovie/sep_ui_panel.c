@@ -3,6 +3,15 @@
 /*
 user interface: permanent control panel plus various popup panels
 */
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <stdlib.h>
+#ifdef MACOS
+#include <unistd.h>
+#include <fcntl.h>
+#endif
+#include <Xm/FileSB.h>
+#include <Xm/XmAll.h>
 #include <Xm/DialogS.h>
 #include <Xm/Frame.h>
 #include <Xm/Label.h>
@@ -16,29 +25,29 @@ user interface: permanent control panel plus various popup panels
 #include <Xm/Text.h>
 #include <stdio.h>
 #include "main.h"
-#include "ui.h"
 #include "axis.h"
 #include "data.h"
 #include "map.h"
 #include "render.h"
+#include "plane.h"
 #include "view.h"
 #include "region.h"
 #include "pick.h"
+#include "draw.h"
 #include "movie.h"
 #include "color.h"
 #include "colorbar.h"
+#include "ui.h"
 #include <stdlib.h>
 #if defined (HAVE_STDLIB_H)
 #include<stdlib.h>
 #else
 extern int atoi();
 #endif /* HAVE_STDLIB  */
+#include <math.h>
 
 extern UI ui;
 extern Message message;
-extern UISizeSlider();
-extern UILabelReset();
-extern ViewDrawAll();
 
 /********************************* CONTROL PANEL ******************************/
 #define	CS	XmStringCreateSimple
@@ -50,14 +59,12 @@ extern ViewDrawAll();
 #undef BUTTON
 #define	BUTTON(name,callback) {\
 	Widget widget;\
-	extern callback();\
 	widget = XtVaCreateManagedWidget (name,xmPushButtonWidgetClass,parent,NULL);\
 	XtAddCallback (widget,XmNactivateCallback,(XtCallbackProc)callback,NULL);\
 	}
 /* slider generator */
 #undef SLIDER
 #define	SLIDER(name,var,value,callback) {\
-	extern callback();\
 	if (name[0] != '\0') {\
 	XtVaCreateManagedWidget (name,xmLabelWidgetClass,parent,NULL);}\
 	ui->var = XtVaCreateManagedWidget (name,xmScaleWidgetClass,parent,\
@@ -68,12 +75,10 @@ extern ViewDrawAll();
 	}
 
 /* initialize controls */
-UIControlInit1 (parent)
-Widget parent;
+void UIControlInit1 (Widget parent)
 	{
 	Widget widget;
 	WidgetList list;
-	extern UIMovie(), UIDirection();
 
 	if (!ui) return;
 	/* control panel */
@@ -110,9 +115,7 @@ Widget parent;
 	}
 
 /* toggle movie */
-UIMovie (widget,item)
-Widget widget;
-int item;
+void UIMovie (Widget widget,int item)
 	{
 	static int toggle = 0;
 
@@ -125,9 +128,7 @@ int item;
 	}
 
 /* toggle direction */
-UIDirection (widget,item)
-Widget widget;
-int item;
+void UIDirection (Widget widget,int item)
 	{
 	static int toggle = 0;
 
@@ -138,41 +139,40 @@ int item;
 		if (!View3D()) return;
 		ViewSetMovie (MOVIE_TOP);
 		MovieSetDir (MOVIE_REVERSE);
-		if (!MovieRun()) ViewDrawMovie ();
+		if (!MovieRun()) ViewDrawMovie (NULL, NULL);
 		break;
 	case 5:
 		if (!View3D()) return;
 		ViewSetMovie (MOVIE_TOP);
 		MovieSetDir (MOVIE_FORWARD);
-		if (!MovieRun()) ViewDrawMovie ();
+		if (!MovieRun()) ViewDrawMovie (NULL, NULL);
 		break;
 	case 2:
 		if (!View3D()) return;
 		ViewSetMovie (MOVIE_SIDE);
 		MovieSetDir (MOVIE_REVERSE);
-		if (!MovieRun()) ViewDrawMovie ();
+		if (!MovieRun()) ViewDrawMovie (NULL, NULL);
 		break;
 	case 3:
 		if (!View3D()) return;
 		ViewSetMovie (MOVIE_SIDE);
 		MovieSetDir (MOVIE_FORWARD);
-		if (!MovieRun()) ViewDrawMovie ();
+		if (!MovieRun()) ViewDrawMovie (NULL, NULL);
 		break;
 	case 0:
 		ViewSetMovie (MOVIE_FRONT);
 		MovieSetDir (MOVIE_REVERSE);
-		if (!MovieRun()) ViewDrawMovie ();
+		if (!MovieRun()) ViewDrawMovie (NULL, NULL);
 		break;
 	case 1:
 		ViewSetMovie (MOVIE_FRONT);
 		MovieSetDir (MOVIE_FORWARD);
-		if (!MovieRun()) ViewDrawMovie ();
+		if (!MovieRun()) ViewDrawMovie (NULL, NULL);
 		break;
 		}
 	}
 
-UIControlInit2 (parent)
-Widget parent;
+void UIControlInit2 (Widget parent)
 	{
 	if (!ui) return;
 	/* control panel */
@@ -189,8 +189,7 @@ Widget parent;
 	}
 
 /* get toggle state */
-UIGetToggle (widget)
-Widget widget;
+int UIGetToggle (Widget widget)
 	{
 	int state = 0;
 
@@ -199,24 +198,19 @@ Widget widget;
 	}
 
 /* set toggle widget state */
-UIToggleSet (widget,state)
-Widget widget;
-int state;
+void UIToggleSet (Widget widget,int state)
 	{
 	XtVaSetValues (widget,XmNset,state,NULL);
 	}
 
 /* set slider widget value between 0 and 1 */
-UISetSlider (widget,value)
-Widget widget;
-float value;
+void UISetSlider (Widget widget, float value)
 	{
 	XtVaSetValues (widget,XmNvalue,(int)(100*value),NULL);
 	}
 
-/* set slider widget value between 0 and 1 */
-UIGetSlider (widget)
-Widget widget;
+/* get slider widget value between 0 and 1 */
+int UIGetSlider (Widget widget)
 	{
 	int value = 0;
 
@@ -225,35 +219,26 @@ Widget widget;
 	}
 
 /* speed slider callback */
-UISpeed (widget,client,data)
-Widget widget;
-XtPointer client;
-XmScaleCallbackStruct *data;
+void UISpeed ( Widget widget, XtPointer client, XmScaleCallbackStruct *data)
 	{
 	MovieSetSpeed (data->value);
 	}
 
 /* contrast slider callback */
-UIContrast (widget,client,data)
-Widget widget;
-XtPointer client;
-XmScaleCallbackStruct *data;
+void UIContrast ( Widget widget, XtPointer client, XmScaleCallbackStruct *data)
 	{
 	ColorSetContrast (data->value);
 	ColorSwitch ();
 	}
 
-UIContrast0 (widget,client,data)
-Widget widget;
-XtPointer client;
-XmScaleCallbackStruct *data;
+void UIContrast0 ( Widget widget, XtPointer client, XmScaleCallbackStruct *data)
 	{
 	ColorSetContrast0 (data->value);
 	ColorSwitch ();
 	}
 
 /* reset contrast */
-UIResetContrast ()
+void UIResetContrast (void)
 	{
 	if (!ui) return;
 	ColorSetContrast (CONTRAST);
@@ -265,7 +250,7 @@ UIResetContrast ()
 
 /********************************* SIZE PANEL ******************************/
 /* bounds callback for array settings and sizing */
-UISizeRaise ()
+void UISizeRaise (void)
 	{
 	UISizeInit ();
 	UISizeReset ();
@@ -273,7 +258,7 @@ UISizeRaise ()
 	}
 
 /* initialize size control panel */
-UISizeInit ()
+void UISizeInit (void)
 	{
 	extern View view;
 	string svalue;
@@ -297,14 +282,12 @@ UISizeInit ()
 #undef BUTTON
 #define BUTTON(name,callback) {\
 	Widget widget;\
-	extern callback();\
 	widget = XtVaCreateManagedWidget (name, xmPushButtonWidgetClass, parent, NULL);\
 	XtAddCallback (widget,XmNactivateCallback,(XtCallbackProc)callback,NULL);\
 	}
 #undef SLIDER
 #define	SLIDER(axis,var,var1) {\
 	Widget widget;\
-	extern UISizeSlider(), UISizeText();\
 	widget = XtVaCreateWidget ("slider", xmRowColumnWidgetClass, parent,\
 		XmNorientation, XmHORIZONTAL,\
 		NULL);\
@@ -357,7 +340,7 @@ UISizeInit ()
 	}
 
 /* size control panel draw callback */
-UISizeDraw ()
+void UISizeDraw (void)
 	{
 	int imap, first, last, frame, dframe, size;
 	extern View view;
@@ -375,7 +358,7 @@ UISizeDraw ()
 	}
 
 /* set size control panel to current image values */
-UISizeReset ()
+void UISizeReset (void)
 	{
 	int imap, islider;
 	extern View view;
@@ -410,7 +393,7 @@ UISizeReset ()
 	}
 
 /* set size control panel to initial size values */
-UISizeInitial ()
+void UISizeInitial (void)
 	{
 	int imap, islider;
 	extern View view;
@@ -427,14 +410,13 @@ UISizeInitial ()
 	}
 
 /* close size control panel */
-UISizeClose ()
+void UISizeClose (void)
 	{
 	XtPopdown (ui->s_shell);
 	}
 
 /* synchronize size slider with slider text */
-UISizeSlider (widget)
-Widget widget;
+void UISizeSlider (Widget widget)
 	{
 	int value;
 	string svalue;
@@ -456,8 +438,7 @@ Widget widget;
 	}
 
 /* synchronize slider text with size slider */
-UISizeText (widget)
-Widget widget;
+void UISizeText (Widget widget)
 	{
 	char *svalue;
 	int islider, value;
@@ -479,10 +460,8 @@ Widget widget;
 
 /********************************* ARRAY PANEL ******************************/
 /* initialize array control panel */
-UIArrayInit ()
+void UIArrayInit (void)
 	{
-	extern UIArrayDraw(), UIArrayClose(), UIArrayDir();
-	extern UIArrayDeltaAdjust(), UIArrayEndAdjust();
 	extern Data data;
 	extern View view;
 	Widget widget, parent;
@@ -559,9 +538,7 @@ UIArrayInit ()
 	}
 
 /* set array control panel direction when orientation changes */
-UIArrayDir (widget,item)
-Widget widget;
-int item;
+void UIArrayDir (Widget widget,int item)
 	{
 	if (XmToggleButtonGetState(widget) == True) {
 		UIArrayReset (item+1);
@@ -569,7 +546,7 @@ int item;
 	}
 
 /* fetch current array control panel settings */
-UIArrayRaise ()
+void UIArrayRaise (void)
 	{
 	UIArrayInit ();
 	UIArrayReset (0);
@@ -577,8 +554,7 @@ UIArrayRaise ()
 	XtPopup (ui->a_shell,XtGrabNone);
 	}
 
-UIArrayReset (dir)
-int dir;
+void UIArrayReset (int dir)
 	{
 	extern View view;
 	extern Data data;
@@ -634,7 +610,7 @@ int dir;
 	}
 
 /* execute array control panel settings */
-UIArrayDraw ()
+void UIArrayDraw (void)
 	{
 	extern View view;
 	Axis axis;
@@ -660,14 +636,14 @@ UIArrayDraw ()
 	}
 
 /* close array control panel */
-UIArrayClose ()
+void UIArrayClose (void)
 	{
 	XtPopdown (ui->a_shell);
 	ui->shell = 0;
 	}
 
 /* synchronize array end slider with other array slider adjustments */
-UIArrayEndAdjust ()
+void UIArrayEndAdjust (void)
 	{
 	extern Data data;
 	Axis axis;
@@ -691,7 +667,7 @@ UIArrayEndAdjust ()
 	}
 
 /* synchronize array delta slider with array end slider changes */
-UIArrayDeltaAdjust ()
+void UIArrayDeltaAdjust (void)
 	{
 	int last, max, value;
 	extern Data data;
@@ -714,8 +690,7 @@ UIArrayDeltaAdjust ()
 
 int acrosS[] = {1,1,2,3,2,3,3,3,3,3};
 int dowN[] = {1,1,1,1,2,2,2,3,3,3};
-UIArrayShape (n,across,down,delta)
-int n, *across, *down, *delta;
+void UIArrayShape ( int n, int *across, int *down, int *delta)
 	{
 	double sqrt();
 	if (n < 10) {
@@ -748,7 +723,7 @@ int n, *across, *down, *delta;
 	}
 
 /********************************* LABEL PANEL ******************************/
-UILabelInit ()
+void UILabelInit (void)
 	{
 	extern View view;
 	string svalue;
@@ -774,7 +749,6 @@ UILabelInit ()
 #undef BUTTON
 #define BUTTON(name,callback) {\
 	Widget widget;\
-	extern callback();\
 	widget = XtVaCreateManagedWidget (name, xmPushButtonWidgetClass, parent, NULL);\
 	XtAddCallback (widget,XmNactivateCallback,(XtCallbackProc)callback,NULL);\
 	}
@@ -825,14 +799,14 @@ UILabelInit ()
 	XtManageChild (ui->l_base);
 	}
 
-UILabelRaise ()
+void UILabelRaise (void)
 	{
 	UILabelInit ();
 	UILabelReset ();
 	XtPopup (ui->l_shell,XtGrabNone);
 	}
 
-UILabelReset ()
+void UILabelReset (void)
 	{
 	int i;
 	extern View view;
@@ -855,7 +829,7 @@ UILabelReset ()
 		}
 	}
 
-UILabelDraw ()
+void UILabelDraw (void)
 	{
 	extern Data data;
 	extern View view;
@@ -905,18 +879,16 @@ UILabelDraw ()
 	UILabelReset ();
 	}
 
-UILabelClose ()
+void UILabelClose (void)
 	{
 	XtPopdown (ui->l_shell);
 	}
 
 /********************************* TRANSPARENT PANEL ******************************/
 /* initialize transparency control panel */
-UITranspInit ()
+void UITranspInit (void)
 	{
 	Widget widget, parent;
-	extern UITranspLow(), UITranspHigh(), UITranspGradient();
-	extern UITranspRate(), ViewDrawAll(), UITranspClose();
 
 	if (ui->t_shell) return;
 	ui->t_shell = XtVaCreatePopupShell ("transparent",xmDialogShellWidgetClass,ui->main,
@@ -962,55 +934,42 @@ UITranspInit ()
 	XtManageChild (ui->t_shell);
 	}
 
-UITranspRaise ()
+void UITranspRaise (void)
 	{
 	UITranspInit ();
 	ui->shell = ui->t_shell;
 	XtPopup (ui->t_shell,XtGrabNone);
 	}
 
-UITranspClose ()
+void UITranspClose (void)
 	{
 	XtPopdown (ui->t_shell);
 	ui->shell = 0;
 	}
 
-UITranspLow (widget,client,data)
-Widget widget;
-XtPointer client;
-XmScaleCallbackStruct *data;
+void UITranspLow ( Widget widget, XtPointer client, XmScaleCallbackStruct *data)
 	{
 	RenderSetLow (data->value);
 	}
 
-UITranspHigh (widget,client,data)
-Widget widget;
-XtPointer client;
-XmScaleCallbackStruct *data;
+void UITranspHigh ( Widget widget, XtPointer client, XmScaleCallbackStruct *data)
 	{
 	RenderSetHigh (data->value);
 	}
 
-UITranspGradient (widget,client,data)
-Widget widget;
-XtPointer client;
-XmScaleCallbackStruct *data;
+void UITranspGradient ( Widget widget, XtPointer client, XmScaleCallbackStruct *data)
 	{
 	RenderSetGradient (data->value);
 	}
 
-UITranspRate (widget,item)
-Widget widget;
-int item;
+void UITranspRate (Widget widget, int item)
 	{
 	ViewSetTranspRate (item);
 	}
 
-UIFenceInit ()
+void UIFenceInit (void)
 	{
 	Widget widget;
-	extern UIFenceOpacity(), UIFenceFront(), UIFenceSide(), UIFenceTop();
-	extern ViewDrawAll(), UIFenceClose();
 
 	if (ui->f_shell) return;
 	ui->f_shell = XtVaCreatePopupShell ("fence",xmDialogShellWidgetClass,ui->main,
@@ -1042,46 +1001,42 @@ UIFenceInit ()
 	XtManageChild (ui->f_shell);
 	}
 
-UIFenceRaise ()
+void UIFenceRaise (void)
 	{
 	UIFenceInit ();
 	ui->shell = ui->f_shell;
 	XtPopup (ui->f_shell,XtGrabNone);
 	}
 
-UIFenceClose ()
+void UIFenceClose (void)
 	{
 	XtPopdown (ui->f_shell);
 	ui->shell = 0;
 	}
 
-UIFenceFront ()
+void UIFenceFront (void)
 	{
 	ViewToggleFence(DRAW_FRONT);
 	}
 
-UIFenceSide ()
+void UIFenceSide (void)
 	{
 	ViewToggleFence(DRAW_SIDE);
 	}
 
-UIFenceTop ()
+void UIFenceTop (void)
 	{
 	ViewToggleFence(DRAW_TOP);
 	}
 
-UIFenceOpacity (widget,client,data)
-Widget widget;
-XtPointer client;
-XmScaleCallbackStruct *data;
+void UIFenceOpacity ( Widget widget, XtPointer client, XmScaleCallbackStruct *data)
 	{
 	RenderSetFenceTransp (data->value);
 	}
 
-UIInfoInit ()
+void UIInfoInit (void)
 	{
 	Widget widget;
-	extern int UIInfoClose();
 	extern char *help;
 
 	ui->i_shell = XtVaCreatePopupShell ("text",xmDialogShellWidgetClass,ui->main,
@@ -1108,8 +1063,7 @@ UIInfoInit ()
 	XtManageChild (ui->i_shell);
 	}
 
-UIInfo (text)
-char *text;
+void UIInfo (char *text)
 	{
 	extern char *help;
 
@@ -1121,19 +1075,19 @@ char *text;
 	DrawWatch (0);
 	}
 
-UIInfoClose ()
+void UIInfoClose (void)
 	{
 	XtPopdown (ui->i_shell);
 	}
 
-UISyzeRaise ()
+void UISyzeRaise (void)
 	{
 	UISyzeInit ();
 	UISyzeReset ();
 	XtPopup (ui->z_shell,XtGrabNone);
 	}
 
-UISyzeInit ()
+void UISyzeInit (void)
 	{
 	Widget parent;
 
@@ -1149,7 +1103,6 @@ UISyzeInit ()
 #undef BUTTON
 #define BUTTON(name,callback) {\
 	Widget widget;\
-	extern callback();\
 	widget = XtVaCreateManagedWidget (name,xmPushButtonWidgetClass, parent, NULL);\
 	XtAddCallback (widget,XmNactivateCallback,(XtCallbackProc)callback,NULL);\
 	}
@@ -1184,7 +1137,7 @@ UISyzeInit ()
 	XtManageChild (ui->z_base);
 	}
 
-UISyzeReset ()
+void UISyzeReset (void)
 	{
 	int imap;
 	extern View view;
@@ -1230,12 +1183,12 @@ UISyzeReset ()
 		}
 	}
 
-UISyzeClose ()
+void UISyzeClose (void)
 	{
 	XtPopdown (ui->z_shell);
 	}
 
-UISyzeInitial ()
+void UISyzeInitial (void)
 	{
 	int imap;
 	extern View view;
@@ -1250,7 +1203,7 @@ UISyzeInitial ()
 		}
 	}
 		
-UISyzeDraw ()
+void UISyzeDraw (void)
 	{
 	int imap, min, max, frame, pixels;
 	extern View view;

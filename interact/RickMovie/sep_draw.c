@@ -31,11 +31,12 @@ Xwindows drawing primitives
 #endif
 #include "draw.h"
 #include "color.h"
+#include "ui.h"
 
 Draw draw = 0;
 
 /* initialize draw object */
-DrawInit ()
+void DrawInit (void)
 	{
 	int i,j;
 	Colormap dd;
@@ -153,9 +154,8 @@ DrawInit ()
 	}
 
 /* draw image data at specified rectangle */
-DrawImage (render,h0,v0,nh,nv)
-Render render;
-int h0,v0,nh,nv; /* transfer this window of the image */
+void DrawImage (Render render,int h0,int v0,int nh,int nv)
+                      /* transfer this window of the image */
 	{
 	int x, y, wide, hite;
 	static int count=0;
@@ -177,8 +177,7 @@ int h0,v0,nh,nv; /* transfer this window of the image */
 	}
 
 /* draw a line */
-DrawLine (x1,y1,x2,y2,mode)
-int x1,y1,x2,y2,mode;
+void DrawLine (int x1,int y1,int x2,int y2,int mode)
 	{
 	if (!draw) return;
 	switch (mode) {
@@ -198,8 +197,7 @@ int x1,y1,x2,y2,mode;
 	}
 
 /* draw an arrow */
-DrawArrow (x1,y1,x2,y2,wide,mode)
-int x1,y1,x2,y2,wide,mode;
+void DrawArrow (int x1,int y1,int x2,int y2,int wide,int mode)
 	{
 	extern double atan2(), sin(), cos();
 	float theta, pi4= .7853982;
@@ -232,8 +230,7 @@ int x1,y1,x2,y2,wide,mode;
 
 
 /* draw a box */
-DrawBox (x1,y1,x2,y2,mode)
-int x1,y1,x2,y2,mode;
+void DrawBox (int x1,int y1,int x2,int y2,int mode)
 	{
 	if (!draw) return;
 	switch (mode) {
@@ -251,8 +248,7 @@ int x1,y1,x2,y2,mode;
 	}
 
 /* draw a filled rectangle */
-DrawSheet (x1,y1,x2,y2,mode)
-int x1,y1,x2,y2,mode;
+void DrawSheet (int x1,int y1,int x2,int y2,int mode)
 	{
 	if (!draw) return;
 	switch (mode) {
@@ -270,8 +266,7 @@ int x1,y1,x2,y2,mode;
 	}
 
 /* set the drawing color */
-DrawColor (color)
-int color;
+void DrawColor (int color)
 	{
 	if (!draw) return;
 	if (color >= 0) {
@@ -284,15 +279,14 @@ int color;
 	}
 
 /* set the drawing mask */
-DrawMask (mask)
-int mask;
+void DrawMask (int mask)
 	{
 	if (!draw) return;
 	XSetPlaneMask (draw->display,draw->gc,mask);
 	}
 
 /* SetDrawingWindow */
-DrawWindow (window)
+void DrawWindow (int window)
 	{
 	int wide, hite;
 
@@ -301,7 +295,7 @@ DrawWindow (window)
 	}
 
 /* clear the drawing screen */
-DrawClear ()
+void DrawClear (void)
 	{
 	int wide, hite;
 
@@ -315,9 +309,7 @@ DrawClear ()
 	}
 
 /* draw text */
-DrawText (x,y,align,text)
-int x, y, align;
-char *text;
+void DrawText (int x,int y,int align,char *text)
 	{
 	int d1, d2, d3;
 	XCharStruct cstruct;
@@ -337,9 +329,7 @@ char *text;
 	}
 
 /* set portion of color table */
-DrawColors (red,green,blue,ncolor)
-unsigned short red[], green[], blue[];
-int ncolor;
+void DrawColors ( unsigned short red[], unsigned short green[], unsigned short blue[], int ncolor)
 	{
 	int i;
 
@@ -356,23 +346,21 @@ int ncolor;
 	}
 
 /* return color table base */
-DrawColorBase()
+int DrawColorBase(void)
 	{
 	if (!draw) return (NO_INDEX);
 	return (draw->base);
 	}
 
 /* return number of colors */
-DrawColorSize ()
+int DrawColorSize (void)
 	{
 	if (!draw) return (NO_INDEX);
 	return (draw->ncolor);
 	}
 
 /* change single color */
-DrawColor1 (index,red,green,blue)
-int index;
-float red, green, blue;
+void DrawColor1 (int index,float red,float green,float blue)
 	{
 	if (!draw) return;
 	if (index < 0 || index > 255) return;
@@ -385,12 +373,11 @@ float red, green, blue;
 	}
 
 /* draw an existing pixmap */
-DrawPixmap (i)
-int i;
+int DrawPixmap (int i)
 	{
 	extern Draw draw;
 
-	if (!draw || i > draw->npmax) return;
+	if (!draw || i > draw->npmax) return(0);
 	if (draw->pms[i]) {
 		XSetPlaneMask (draw->display,draw->gc,255);
 		XCopyArea (draw->display,draw->pms[i],UICanvasWindow(),draw->gc,
@@ -401,13 +388,12 @@ int i;
 	}
 
 /* save an image region in a pixmap */
-DrawSavePixmap (i)
-int i;
+int DrawSavePixmap (int i)
 	{
 	extern Draw draw;
 	extern int _core;
 
-	if (!draw || i > draw->npmax) return;
+	if (!draw || i > draw->npmax) return(0);
 	RenderRect (&draw->h0,&draw->v0,&draw->nh,&draw->nv);
 	if (i > draw->npmax || draw->npm * draw->nh * draw->nv > _core/2) return(0);
 	if (!draw->pms[i]) {
@@ -420,7 +406,7 @@ int i;
 	}
 
 /* free all pixmap storage */
-DrawFreePixmaps ()
+void DrawFreePixmaps (void)
 	{
 	int i;
 
@@ -439,7 +425,7 @@ DrawFreePixmaps ()
 	}
 
 /* print draw info */
-DrawInfo ()
+void DrawInfo (void)
 	{
 	extern Draw draw;
 	Message message;
@@ -457,8 +443,7 @@ DrawInfo ()
 	UIMessage (message);
 	}
 
-DrawWatch (mode)
-int mode;
+void DrawWatch (int mode)
 	{
 	if (mode) {
 		XDefineCursor (draw->display,UICanvasWindow(),draw->watch);

@@ -3,12 +3,21 @@
 /*
 plot sections and profiles
 */
+#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#if defined(MACOS) || defined(LINUX)
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#endif
 #include "main.h"
 #include "axis.h"
 #include "data.h"
 #include "map.h"
 #include "view.h"
+#include "section.h"
 
 #if defined (HAVE_STDLIB_H)
 #include<stdlib.h>
@@ -17,133 +26,127 @@ extern char *getenv ();
 #endif /* _STDLIB_H  */
 
 
-PlotFrontContour ()
+void PlotFrontContour (void)
 	{
 	PlotPlane (AXIS_ACROSS,AXIS_DOWN,AXIS_DEEP,"pscontour","");
 	}
 
-PlotSideContour ()
+void PlotSideContour (void)
 	{
 	PlotPlane (-AXIS_DEEP,AXIS_DOWN,AXIS_ACROSS,"pscontour","");
 	}
 
-PlotTopContour ()
+void PlotTopContour (void)
 	{
 	PlotPlane (AXIS_ACROSS,AXIS_DEEP,AXIS_DOWN,"pscontour","");
 	}
 
-PlotFrontWiggle ()
+void PlotFrontWiggle (void)
 	{
 	PlotPlane (AXIS_ACROSS,AXIS_DOWN,AXIS_DEEP,"xwigb","");
 	}
 
-PlotSideWiggle ()
+void PlotSideWiggle (void)
 	{
 	PlotPlane (-AXIS_DEEP,AXIS_DOWN,AXIS_ACROSS,"xwigb","");
 	}
 
-PlotTopWiggle ()
+void PlotTopWiggle (void)
 	{
 	PlotPlane (AXIS_ACROSS,AXIS_DEEP,AXIS_DOWN,"xwigb","");
 	}
 
-PlotDeepProfile ()
+void PlotDeepProfile (void)
 	{
 	PlotProfile (AXIS_ACROSS,AXIS_DOWN,AXIS_DEEP,"xgraph","");
 	}
 
-PlotAcrossProfile ()
+void PlotAcrossProfile (void)
 	{
 	PlotProfile (-AXIS_DEEP,AXIS_DOWN,AXIS_ACROSS,"xgraph","");
 	}
 
-PlotDownProfile ()
+void PlotDownProfile (void)
 	{
 	PlotProfile (AXIS_ACROSS,AXIS_DEEP,AXIS_DOWN,"xgraph","");
 	}
 
-PrintFrontContour ()
+void PrintFrontContour (void)
 	{
 	PlotPlane (AXIS_ACROSS,AXIS_DOWN,AXIS_DEEP,"pscontour ","");
 	}
 
-PrintSideContour ()
+void PrintSideContour (void)
 	{
 	PlotPlane (-AXIS_DEEP,AXIS_DOWN,AXIS_ACROSS,"pscontour ","");
 	}
 
-PrintTopContour ()
+void PrintTopContour (void)
 	{
 	PlotPlane (AXIS_ACROSS,AXIS_DEEP,AXIS_DOWN,"pscontour ","");
 	}
 
-PrintFrontWiggle ()
+void PrintFrontWiggle (void)
 	{
 	PlotPlane (AXIS_ACROSS,AXIS_DOWN,AXIS_DEEP,"pswigb","");
 	}
 
-PrintSideWiggle ()
+void PrintSideWiggle (void)
 	{
 	PlotPlane (-AXIS_DEEP,AXIS_DOWN,AXIS_ACROSS,"pswigb","");
 	}
 
-PrintTopWiggle ()
+void PrintTopWiggle (void)
 	{
 	PlotPlane (AXIS_ACROSS,AXIS_DEEP,AXIS_DOWN,"pswigb","");
 	}
 
-PrintDeepProfile ()
+void PrintDeepProfile (void)
 	{
 	PlotProfile (AXIS_ACROSS,AXIS_DOWN,AXIS_DEEP,"psgraph","");
 	}
 
-PrintAcrossProfile ()
+void PrintAcrossProfile (void)
 	{
 	PlotProfile (-AXIS_DEEP,AXIS_DOWN,AXIS_ACROSS,"psgraph","");
 	}
 
-PrintDownProfile ()
+void PrintDownProfile (void)
 	{
 	PlotProfile (AXIS_ACROSS,AXIS_DEEP,AXIS_DOWN,"psgraph","");
 	}
 
-SaveFront (filename)
-char *filename;
+void SaveFront (char *filename)
 	{
 	PlotPlane (AXIS_ACROSS,AXIS_DOWN,AXIS_DEEP,"save",filename);
 	}
 
-SaveSide (filename)
-char *filename;
+void SaveSide (char *filename)
 	{
 	PlotPlane (-AXIS_DEEP,AXIS_DOWN,AXIS_ACROSS,"save",filename);
 	}
 
-SaveTop (filename)
-char *filename;
+void SaveTop (char *filename)
 	{
 	PlotPlane (AXIS_ACROSS,AXIS_DEEP,AXIS_DOWN,"save",filename);
 	}
 
-SaveDeep (filename)
-char *filename;
+void SaveDeep (char *filename)
 	{
 	PlotProfile (AXIS_ACROSS,AXIS_DOWN,AXIS_DEEP,"save",filename);
 	}
 
-SaveAcross (filename)
+void SaveAcross (char *filename)
 	{
 	PlotProfile (-AXIS_DEEP,AXIS_DOWN,AXIS_ACROSS,"save",filename);
 	}
 
-SaveDown (filename)
+void SaveDown (char *filename)
 	{
 	PlotProfile (AXIS_ACROSS,AXIS_DEEP,AXIS_DOWN,"save",filename);
 	}
 
-PlotPlane (across,down,deep,program,file)
-int across,down,deep;
-char *program,*file;
+void PlotPlane (int across,int down,int deep,char *program,char *file)
 	{
 	extern View view;
 	extern Data data;
@@ -184,7 +187,9 @@ char *program,*file;
 	else	{
 		sprintf (filename,"/usr/tmp/Movie%d",getpid());
 		}
-	write (fd=creat(filename,0664),buffer,n1*n2*sizeof(buffer));
+	if(0 > write (fd=creat(filename,0664),buffer,n1*n2*sizeof(buffer))) {
+             perror("PlotPlane ");
+        }
 	if (!strcmp (program,"save")) {
 		close (fd);
 		return;
@@ -268,14 +273,14 @@ char *program,*file;
 			hdir*(hlast-hfirst)/(n2-1),
 			AxisLabel(MapAxis(view->map[across])));
 		}
-	system (command);
+	if(-1 == system (command)) {
+           perror(command);
+        }
 	sleep (5); unlink (filename);
 	FREE (buffer);
 	}
 
-PlotProfile (across,down,deep,program,file)
-int across,down,deep;
-char *program,*file;
+void PlotProfile (int across,int down,int deep,char *program,char *file)
 	{
 	extern View view;
 	extern Data data;
@@ -311,7 +316,9 @@ char *program,*file;
 	else	{
 		sprintf (filename,"/usr/tmp/Movie%d",getpid());
 		}
-	write (fd=creat(filename,0664),buffer,n3*sizeof(buffer));
+	if(0 > write (fd=creat(filename,0664),buffer,n3*sizeof(buffer))) {
+             perror("PlotProfile ");
+        }
 	if (!strcmp (program,"save")) {
 		close (fd);
 		return;
@@ -345,15 +352,14 @@ char *program,*file;
 			AxisLabel(MapAxis(view->map[deep])),
 			AxisLabel(data->axis[DATA_VALUE]));
 		}
-	system (command);
+	if(-1 == system (command)) {
+            perror(command);
+        }
 	sleep (5); unlink (filename);
 	FREE (buffer);
 	}
 
-PlotExtractPlane (hmap,vmap,zmap,map4,map5,buffer,n1,n2,hdir,vdir)
-Map hmap,vmap,zmap,map4,map5;
-float *buffer;
-int n1, n2, hdir, vdir;
+void PlotExtractPlane (Map hmap,Map vmap,Map zmap,Map map4,Map map5,float *buffer,int n1,int n2,int hdir,int vdir)
 	{
 	extern Data data;
 	Buffer dp;
@@ -393,10 +399,7 @@ int n1, n2, hdir, vdir;
 		}
 	}
 
-PlotExtractProfile (hmap,vmap,zmap,map4,map5,buffer,n3,zdir)
-Map hmap,vmap,zmap,map4,map5;
-float *buffer;
-int n3, zdir;
+void PlotExtractProfile (Map hmap,Map vmap,Map zmap,Map map4,Map map5,float *buffer,int n3,int zdir)
 	{
 	extern Data data;
 	Buffer dp;

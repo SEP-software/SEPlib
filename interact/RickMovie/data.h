@@ -1,3 +1,5 @@
+#ifndef RICKMOVE_DATA_H
+#define RICKMOVE_DATA_H
 /*
 data object definition
 
@@ -67,13 +69,34 @@ typedef struct {
 	} *Data;
 
 /* typed returns */
-extern Data DataInit();
-extern char* DataTitle(/*data*/);
-extern Axis DataAxis(/*data,iaxis*/);
-extern Buffer DataBuffer(/*data*/);
-extern Axis DataAxis(/*data,iaxis*/);
-extern float DataValue(/*data,index*/);
-extern float DataLow ();
-extern float DataHigh ();
-extern char* DataFile ();
-extern char* DataShortName ();
+extern Data DataInit(void);
+extern void DataLoad (void);
+extern void DataLoadByte (Data data);
+extern void DataLoadFloat (Data data);
+extern float DataCent(float *x,int n,float p);
+extern char* DataLabel(Data data);
+extern char* DataTitle(Data data);
+extern char* DataFile (Data data);
+extern char* DataShortName (Data data);
+extern Axis DataAxis(Data data,int iaxis);
+extern int DataSize (Data data);
+extern int DataMaxDim (Data data);
+extern Buffer DataBuffer(Data data);
+extern float DataValue(Data data,int index);
+extern int DataValueSize (Data data);
+extern int DataValueBase (Data data);
+extern float DataLow (void);
+extern float DataHigh (void);
+extern int DataHistogram (int i);
+extern void DataComputeHistogram (Data data);
+extern int DataGridHeader (Data data,int fd);
+extern void DataGetpar (Data data);
+extern void DataInfo (Data data);
+extern void DataValueInfo (Data data);
+extern void DataSavePar (Data data);
+extern void DataDumpBytes (Data data,char *file, int fd);
+extern void DataDumpHeader (Data data,string file,int datafd,int esize);
+extern void DataDumpFloats (Data data,char *file,int fd);
+extern void Data2Float (Buffer dbuf,float *fbuf,int n,float *min,float *max);
+
+#endif

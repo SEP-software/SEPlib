@@ -5,17 +5,27 @@ Identifies and processes continginous region between bounds starting at a seed.
 There are three definitions of continginous: 6 faces +- 12 edges +- 8 corners.
 The eighth bit of the data bytes stores the region mark.
 */
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <stdlib.h>
+#ifdef MACOS
+#include <unistd.h>
+#include <fcntl.h>
+#endif
 #include <stdio.h>
 #include "main.h"
 #include "axis.h"
+#include "map.h"
 #include "data.h"
 #include "render.h"
 #include "region.h"
+#include "view.h"
+#include "ui.h"
 
 REgion region;
 
 /* initialize region object */
-RegionInit ()
+void RegionInit (void)
 	{
 	extern Data data;
 	extern REgion region;
@@ -38,8 +48,7 @@ RegionInit ()
 	}
 
 /* turn on region picking callback */
-RegionSetLive (live)
-int live;
+void RegionSetLive (int live)
 	{
 	extern REgion region;
 
@@ -48,8 +57,7 @@ int live;
 	}
 
 /* set bound */
-RegionSetBound (index,ibound)
-int index, ibound;
+void RegionSetBound (int index,int ibound)
 	{
 	extern REgion region;
 
@@ -59,8 +67,7 @@ int index, ibound;
 	}
 
 /* set region neighborhood mode callback */
-RegionSetNeighborhood (mode)
-int mode;
+void RegionSetNeighborhood (int mode)
 	{
 	extern REgion region;
 	
@@ -72,8 +79,7 @@ int mode;
 	}
 
 /* set region seed callback */
-RegionSetSeed (seed)
-int seed[4];
+void RegionSetSeed ( int seed[4])
 	{
 	int iaxis;
 	extern REgion region;
@@ -86,8 +92,7 @@ int seed[4];
 	}
 
 /* return bound */
-RegionBound (ibound)
-int ibound;
+int RegionBound (int ibound)
 	{
 	if (!region) return (NO_INDEX);
 	if (ibound < 0 || ibound > 1) return (NO_INDEX);
@@ -95,14 +100,14 @@ int ibound;
 	}
 
 /* return region size */
-RegionSize ()
+int RegionSize (void)
 	{
 	if (!region) return (NO_INDEX);
 	return (region->size);
 	}
 
 /* mark a region callback */
-RegionMark0 ()
+void RegionMark0 (void)
 	{
 	extern REgion region;
 	extern Data data;
@@ -132,8 +137,7 @@ RegionMark0 ()
 	}
 
 /* fill a region with a value callback */
-RegionFill (seed,bound1,bound2,value)
-int seed[4], bound1, bound2, value;
+void RegionFill ( int seed[4], int bound1, int bound2, int value)
 	{
 	int iaxis;
 	extern REgion region;
@@ -168,7 +172,7 @@ int seed[4], bound1, bound2, value;
 	}
 
 /* clear region marks in data */
-RegionClear ()
+void RegionClear (void)
 	{
 	extern Data data;
 	register Buffer datap, edata;
@@ -183,8 +187,7 @@ RegionClear ()
 	}
 
 /* set all marked cells to value */
-RegionSetValue (bound1,bound2)
-int bound1, bound2;
+void RegionSetValue (int bound1,int bound2)
 	{
 	extern Data data;
 	unsigned char _table[256];
@@ -224,7 +227,7 @@ int bound1, bound2;
 	}
 
 /* undo last region smoothing */
-RegionRestoreValue ()
+void RegionRestoreValue (void)
 	{
 	extern REgion region;
 	extern Data data;
@@ -249,7 +252,7 @@ RegionRestoreValue ()
 	}
 
 /* return message about geion callback */
-RegionInfo ()
+void RegionInfo (void)
 	{
 	Message message;
 
@@ -268,7 +271,7 @@ RegionInfo ()
 	}
 
 /* count neighbors */
-RegionNeighbors ()
+int RegionNeighbors (void)
 	{
 	return (
 		(region->neighborhood & MARK_FACE)/MARK_FACE * 6 +
@@ -278,7 +281,7 @@ RegionNeighbors ()
 	}
 
 /* save region parameters */
-RegionSavePar ()
+void RegionSavePar (void)
 	{
 	Message message;
 
@@ -295,12 +298,7 @@ RegionSavePar ()
    continginous defined by mode: MARK_FACE=6, MARK_EDGE=12, MARK_CORNER=8
    list returned; nlist is maximum size
  */
-RegionMark (data,size1,size2,size3,seed1,seed2,seed3,min,max,neighborhood,list,nlist)
-Buffer data;
-Shadow list;
-int nlist;
-int size1, size2, size3;
-int min, max, seed1, seed2, seed3, neighborhood;
+int RegionMark (Buffer data,int size1,int size2,int size3,int seed1,int seed2,int seed3,int min,int max,int neighborhood,Shadow list,int nlist)
 	{
 	int stride1, stride2, stride3, count=0;
 	Shadow endold;
@@ -417,9 +415,7 @@ int min, max, seed1, seed2, seed3, neighborhood;
 	}
 
 /* mark the borders of the data cube */
-RegionMarkBorder (data,size1,size2,size3)
-Buffer data;
-int size1, size2, size3;
+void RegionMarkBorder ( Buffer data, int size1, int size2, int size3)
 	{
 	Buffer d3, d2, e2;
 	register Buffer d1, e1;
@@ -479,9 +475,7 @@ int size1, size2, size3;
 	}
 
 /* unmark border of voxel cube */
-RegionUnMarkBorder (data,size1,size2,size3,Min,Max)
-Buffer data;
-int size1, size2, size3, Min, Max;
+void RegionUnMarkBorder ( Buffer data, int size1, int size2, int size3, int Min, int Max)
 	{
 	Buffer d3, d2, e2;
 	register Buffer d1, e1;
@@ -543,7 +537,7 @@ int size1, size2, size3, Min, Max;
 	}
 
 /* write region coordinates and values to a file */
-RegionDump ()
+void RegionDump (void)
 	{
 	extern REgion region;
 	extern Data data;

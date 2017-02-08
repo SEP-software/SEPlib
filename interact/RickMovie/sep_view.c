@@ -3,6 +3,7 @@
 /*
 view object code
 */
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "main.h"
@@ -12,7 +13,13 @@ view object code
 #include "movie.h"
 #include "render.h"
 #include "view.h"
+#include "draw.h"
+#include "plane.h"
+#include "pik.h"
 #include "pick.h"
+#include "color.h"
+#include "colorbar.h"
+#include "ui.h"
 
 /* set rendering attributes for a view */
 RenderAttr _attr_;
@@ -33,8 +40,7 @@ Message message;
 /* initialize view object */
 string viewnamelist[] = VIEW_NAMELIST;
 View
-ViewInit (data)
-Data data;
+ViewInit (Data data)
 	{
 	View view;
 	string option;
@@ -151,8 +157,7 @@ Data data;
 	}
 
 /* adjust view size: reallocate buffers,adjust map axes */
-ViewSize (view)
-View view;
+void ViewSize (View view)
 	{
 	int wide,hite, size, deep;
 	float fwide,fhite, scale;
@@ -250,8 +255,7 @@ View view;
 	}
 
 /* size for single panel */
-ViewSingleSize (hmap,vmap,zmap)
-Map hmap, vmap, zmap;
+void ViewSingleSize (Map hmap,Map vmap,Map zmap)
 	{
 	float fwide, fhite, scale;
 	int size;
@@ -299,7 +303,7 @@ Map hmap, vmap, zmap;
 	}
 
 /* callback for initial view size */
-ViewSize0 ()
+void ViewSize0 (void)
 	{
 	extern View view;
 
@@ -307,9 +311,7 @@ ViewSize0 ()
 	}
 
 /* extract view from data; depends upon movie and view mode */
-ViewDraw (view,mode)
-View view;
-int mode;
+void ViewDraw (View view, int mode)
 	{
 	extern Data data;
 	extern Render render;
@@ -420,8 +422,7 @@ int mode;
 	}
 
 /* set array */
-ViewArray (nacross,ndown,across0,dacross)
-int nacross, ndown, across0, dacross;
+void ViewArray (int nacross,int ndown,int across0,int dacross)
 	{
 	extern View view;
 
@@ -441,8 +442,7 @@ int nacross, ndown, across0, dacross;
 	}
 
 /* draw array */
-ViewDrawArray (view)
-View view;
+void ViewDrawArray (View view)
 	{
 	extern Data data;
 	extern Render render;
@@ -478,8 +478,7 @@ View view;
 	}
 
 /* draw array of picked renders */
-ViewDrawPicks (view)
-View view;
+void ViewDrawPicks (View view)
 	{
 	extern Data data;
 	extern Render render;
@@ -517,9 +516,7 @@ View view;
 	}
 
 /* cube extracts three panels */
-ViewDrawCube (view,mode)
-View view;
-int mode;
+void ViewDrawCube (View view, int mode)
 	{
 	extern Data data;
 	extern Render render;
@@ -549,9 +546,7 @@ int mode;
 	}
 
 /* fence extracts three panels */
-ViewDrawFence (view,mode)
-View view;
-int mode;
+void ViewDrawFence (View view, int mode)
 	{
 	extern Data data;
 	extern Render render;
@@ -612,9 +607,7 @@ int mode;
 	}
 
 /* plan view extracts three panels */
-ViewDrawPlan (view,mode)
-View view;
-int mode;
+void ViewDrawPlan (View view, int mode)
 	{
 	extern Data data;
 	extern Render render;
@@ -644,13 +637,11 @@ int mode;
 	}
 
 /* draw transparent cube */
-ViewDrawTransp (view)
-View view;
+void ViewDrawTransp (View view)
 	{
 	int iz,nz;
 	extern Data data;
 	extern Render render;
-	extern ViewDrawTranspCallback();
 
 	/* draw all axes */
 	RENDER_ATTR(0,0,DRAW_ALL,0,0,(AXIS_LEFT|AXIS_BASE),0,0,0,0);
@@ -717,12 +708,12 @@ View view;
 	}
 
 /* callback to animate transparent drawing */
-ViewDrawTranspCallback ()
+/* ARGSUSED */
+void ViewDrawTranspCallback (XtPointer client_data, XtIntervalId *id)
 	{
 	extern View view;
 	extern Render render;
 	extern Data data;
-	extern ViewDrawTranspCallback();
 	int block;
 
 	switch (view->rate) {
@@ -821,7 +812,7 @@ ViewDrawTranspCallback ()
 	}
 
 /* callback to draw entire view */
-ViewDrawAll ()
+void ViewDrawAll (void)
 	{
 	extern View view;
 	if (!view) return;
@@ -832,11 +823,11 @@ ViewDrawAll ()
 	}
 
 /* callback to draw only current movie frame panel plus crosslines */
-ViewDrawMovie ()
+/* ARGSUSED */
+void ViewDrawMovie (XtPointer client_data, XtIntervalId *id)
 	{
 	int h0, v0, nh, nv, mode=0;
 	extern View view;
-	extern ViewDrawMovie();
 	Map map;
 
 	if (!view) return;
@@ -865,8 +856,7 @@ ViewDrawMovie ()
 	}
 
 /* set movie option */
-ViewSetMovie (movie)
-int movie;
+void ViewSetMovie (int movie)
 	{
 	extern View view;
 	Map map;
@@ -880,7 +870,7 @@ int movie;
 	}
 
 /* initialize movie bounds */
-ViewMovieFullBounds ()
+void ViewMovieFullBounds (void)
 	{
 	int imap;
 	extern View view;
@@ -894,7 +884,7 @@ ViewMovieFullBounds ()
 	}
 
 /* one of 3d views? */
-View3D ()
+int View3D (void)
 	{
 	extern View view;
 
@@ -911,7 +901,7 @@ View3D ()
 	}
 
 /* OK to turn on movie */
-ViewMovieOK ()
+int ViewMovieOK (void)
 	{
 	extern View view;
 
@@ -930,8 +920,7 @@ ViewMovieOK ()
 	}
 
 /* set view option */
-ViewSetStyle (style)
-int style;
+void ViewSetStyle (int style)
 	{
 	extern View view;
 	int size;
@@ -965,8 +954,7 @@ int style;
 	}
 
 /* set fence mode */
-ViewSetFence (mode)
-int mode;
+void ViewSetFence (int mode)
 	{
 	extern View view;
 
@@ -979,8 +967,7 @@ int mode;
 	}
 
 /* set transparency draw rate */
-ViewSetTranspRate (mode)
-int mode;
+void ViewSetTranspRate (int mode)
 	{
 	extern View view;
 
@@ -990,8 +977,7 @@ int mode;
 	}
 
 /* set shape mode */
-ViewSetShape (shape)
-int shape;
+void ViewSetShape (int shape)
 	{
 	extern View view;
 
@@ -1005,8 +991,7 @@ int shape;
 	}
 
 /* set fence mode */
-ViewToggleFence (mode)
-int mode;
+void ViewToggleFence (int mode)
 	{
 	extern View view;
 
@@ -1019,8 +1004,7 @@ int mode;
 	}
 
 /* set two cross line frames */
-ViewSetFrames (x,y)
-int x,y;
+void ViewSetFrames (int x,int y)
 	{
 	extern View view;
 	Map map;
@@ -1051,8 +1035,7 @@ int x,y;
 	}
 
 /* set frame from slider */
-ViewSetFrame (index,mode)
-int index,mode;
+void ViewSetFrame (int index,int mode)
 	{
 	extern View view;
 	Map map;
@@ -1076,8 +1059,7 @@ int index,mode;
 	}
 
 /* set pick mode */
-ViewSetPick (pick)
-int pick;
+void ViewSetPick (int pick)
 	{
 	extern View view;
 
@@ -1090,7 +1072,7 @@ int pick;
 	}
 
 /* toggle pick mode */
-ViewTogglePick ()
+void ViewTogglePick (void)
 	{
 	extern View view;
 
@@ -1101,7 +1083,7 @@ ViewTogglePick ()
 	}
 
 /* return pick state */
-ViewPick ()
+int ViewPick (void)
 	{
 	extern View view;
 
@@ -1111,7 +1093,7 @@ ViewPick ()
 
 
 /* return view movie */
-ViewMovie ()
+int ViewMovie (void)
 	{
 	extern View view;
 
@@ -1121,14 +1103,13 @@ ViewMovie ()
 
 /* return map axis */
 Map
-ViewMovieMap (view)
-View view;
+ViewMovieMap (View view)
 	{
 	return (view->map[view->movie]);
 	}
 
 /* set frames to middle */
-ViewFramesMiddle ()
+void ViewFramesMiddle (void)
 	{
 	extern View view;
 	int imap;
@@ -1142,7 +1123,7 @@ ViewFramesMiddle ()
 	}
 
 /* set frames to origin */
-ViewFramesOrigin ()
+void ViewFramesOrigin (void)
 	{
 	extern View view;
 	int imap;
@@ -1155,8 +1136,7 @@ ViewFramesOrigin ()
 	}
 
 /* swap two map axes and draw */
-ViewSwapAxis (a,b)
-int a,b;
+void ViewSwapAxis (int a,int b)
 	{
 	extern View view;
 	Map map;
@@ -1178,8 +1158,7 @@ int a,b;
 	}
 
 /* flip an axes direction */
-ViewFlipAxis (imap)
-int imap;
+void ViewFlipAxis (int imap)
 	{
 	extern View view;
 
@@ -1191,8 +1170,7 @@ int imap;
 	}
 
 /* magnification window given corner coordinates */
-ViewWindow (x1,y1,x2,y2,hzoom,vzoom)
-int x1,y1,x2,y2,hzoom,vzoom;
+void ViewWindow (int x1,int y1,int x2,int y2,int hzoom,int vzoom)
 	{
 	extern View view;
 	extern Data data;
@@ -1289,7 +1267,7 @@ int x1,y1,x2,y2,hzoom,vzoom;
 	}
 
 /* restore initial map */
-ViewWindow0 ()
+void ViewWindow0 (void)
 	{
 	extern View view;
 	Map map;
@@ -1312,9 +1290,7 @@ ViewWindow0 ()
 
 /* return view map */
 Map
-ViewMap (view,index)
-View view;
-int index;
+ViewMap (View view,int index)
 	{
 	if (!view || index>=VIEW_NAXIS) return ((Map) 0);
 	return (view->map[index]);
@@ -1323,16 +1299,13 @@ int index;
 
 /* return view map data axis */
 Axis
-ViewDataAxis (view,imap)
-View view;
-int imap;
+ViewDataAxis (View view,int imap)
 	{
 	return (MapAxis(view->map[imap]));
 	}
 
 /* print view information */
-ViewInfo (view)
-View view;
+void ViewInfo (View view)
 	{
 
 	if (!view) return;
@@ -1352,8 +1325,7 @@ View view;
 	}
 
 /* save view parameters */
-ViewSavePar (view)
-View view;
+void ViewSavePar (View view)
 	{
 	int imap;
 
@@ -1377,7 +1349,7 @@ View view;
 	}
 
 /* initial axis orientation */
-ViewOrient0 ()
+void ViewOrient0 (void)
 	{
 	extern View view;
 	int imap;
@@ -1423,7 +1395,7 @@ ViewOrient0 ()
 
 #ifdef SGI
 #include <sys/time.h>
-double Tyme()
+double Tyme(void)
 	{
 	double tyme;
 	struct timeval tp;
@@ -1437,7 +1409,7 @@ double Tyme()
 #else
 #include <sys/types.h>
 #include <sys/timeb.h>
-double Tyme()
+double Tyme(void)
 	{
 	double tyme;
 	struct timeb tp;
@@ -1450,13 +1422,12 @@ double Tyme()
 #endif
 
 double tyme;
-TymeStart ()
+void TymeStart (void)
 	{
 	tyme = Tyme();
 	}
 
-TymeEnd (pixels)
-int pixels;
+void TymeEnd (int pixels)
 	{
 	if (pixels == 0 || tyme == 0.0) return;
 	tyme = Tyme() - tyme;

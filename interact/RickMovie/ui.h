@@ -1,3 +1,5 @@
+#ifndef RICKMOVIE_UI_H
+#define RICKMOVIE_UI_H
 /*
 user interface definitions
 
@@ -6,6 +8,11 @@ Mediates interactive commands
 Maintains consist state between panel controls
 Uses Motif
 */
+
+#include <X11/Xlib.h>
+#include <X11/Intrinsic.h>
+#include <Xm/Xm.h>
+#include "map.h"
 
 /* constants */
 #define UI_WIDE		600
@@ -119,9 +126,168 @@ typedef struct {
 	} *UI;
 
 /* typed returns */
-extern Display* UIDisplay();
-extern int UIScreen();
-extern XID UICanvasWindow();
+extern void UIMenuInit (Widget parent);
+extern void UIStyleChoice (Widget widget,int item);
+extern void UIColorChoice (Widget widget,int item);
+extern int UIScreen(void);
 extern XID UIBarWindow();
-extern XID UIMainWindow();
-extern XFontStruct* UIFont (/*size*/);
+extern XID UIMainWindow(void);
+extern void UIMessage (Message message);
+extern void UISaveMessage (Message message);
+extern XID UICanvasWindow (void);
+extern void UIColorbarSize (int *wide,int *hite);
+extern XID UIColorbarWindow (void);
+extern int UIFirst (void);
+extern XFontStruct* UIFont (int size);
+
+extern void UIMarkChoice ( Widget widget, int item);
+extern void UIBackgroundChoice ( Widget widget, int item);
+extern void UINeighborhoodChoice (Widget widget,int item);
+extern void UIStatusChoice (Widget widget,int item);
+extern void UIOverlayChoice ( Widget widget, int item);
+extern void UIHelpChoice (Widget widget,int item);
+extern void UIHelpPrint (char *start,char *finish);
+extern void UIMouseInfo (void);
+extern void UIDumpFloats (void);
+extern void UIDumpFloats2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs);
+extern void UIDumpBytes (void);
+extern void UIDumpBytes2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs);
+extern void UISavePar (void);
+extern void UISavePar2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs);
+extern void UIQuit (void);
+extern void UIOrient0 (void);
+extern void UIDownDump (void);
+extern void UIAcrossDump (void);
+extern void UIDeepDump (void);
+extern void UISwapFrontSide (void);
+extern void UISwapSideTop (void);
+extern void UISwapTopFront (void);
+extern void UISwapFrontExtra (void);
+extern void UISwapSideExtra (void);
+extern void UISwapTopExtra (void);
+extern void UIFlipDown (void);
+extern void UIFlipAcross (void);
+extern void UIFlipDeep (void);
+extern void UISizeChoice ( Widget widget, int item);
+extern void UIInterpolateToggle (Widget widget);
+extern void UISize0 (void);
+extern void UIScreen0 (void);
+extern void UISubvolumeSmooth (void);
+extern void UISmoothUndo (void);
+extern void UIPickClear ( Widget widget, XButtonEvent *event);
+extern void UIEditGrade (void);
+extern void UIStatistics (void);
+extern void UIStatistics (void);
+extern void UIWakeup (void);
+extern void UIPikWrite (void);
+extern void UIPikWrite2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs);
+extern void UIPikRead (void);
+extern void UIPikRead2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs);
+extern void UISaveFront (void);
+extern void UISaveFront2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs);
+extern void UISaveSide (void);
+extern void UISaveSide2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs);
+extern void UISaveTop (void);
+extern void UISaveTop2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs);
+extern void UISaveAcross (void);
+extern void UISaveAcross2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs);
+extern void UISaveDeep (void);
+extern void UISaveDeep2 (Widget widget,XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs);
+void UISaveDown (void);
+extern void UISaveDown2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs);
+
+extern int EditFrame ( Buffer data, Map map1, Map map2, Map map3, int frame, float dist[256]);
+extern int EditBox ( Buffer data, Map map1, Map map2, Map map3, float dist[256]);
+extern void EditStats (int n,float *dist,int *low,int *median,int *high);
+extern int EditCube ( Buffer data, Map map1, Map map2, Map map3, float dist[256]);
+extern void EditGrade (Buffer data,Map map1,Map map2,Map map3);
+extern void EditUndo (Buffer data);
+
+extern void UIPikQuery ( Widget widget, XButtonEvent *event);
+extern void UIPikDelete ( Widget widget, XButtonEvent *event);
+extern void UIPikMove (Widget widget, XButtonEvent *event);
+extern void UISubvolumeStart ( Widget widget, XButtonEvent *event);
+extern void UIPickInsert ( Widget widget, XButtonEvent *event);
+extern void UIPikAdd ( Widget widget, XButtonEvent *event);
+extern void UIFrameEnd ( Widget widget, XButtonEvent *event);
+extern void UIFrameStart ( Widget widget, XButtonEvent *event);
+extern void UIPick ( Widget widget, XButtonEvent *event);
+extern void UISubvolumeEnd ( Widget widget, XButtonEvent *event);
+extern void UIColorbarEnd ( Widget widget, XButtonEvent *event);
+extern void UIZoomEnd ( Widget widget, XButtonEvent *event);
+extern void UIFrameDrag ( Widget widget, XButtonEvent *event);
+extern void UISubvolumeDrag ( Widget widget, XButtonEvent *event);
+extern void UIColorbarDrag ( Widget widget, XButtonEvent *event);
+extern void UIZoomDrag ( Widget widget, XButtonEvent *event);
+extern void UIColorbarStart ( Widget widget, XButtonEvent *event);
+extern void UIVZoomStart ( Widget widget, XButtonEvent *event);
+extern void UIHZoomStart ( Widget widget, XButtonEvent *event);
+extern void UIZoomStart ( Widget widget, XButtonEvent *event);
+extern void UIDrawCanvas (Widget widget);
+extern void UIDrawColorbar (Widget widget);
+extern void UIControlInit1 (Widget parent);
+extern void UIMovie (Widget widget,int item);
+extern void UIDirection (Widget widget,int item);
+extern void UIControlInit2 (Widget parent);
+extern int UIGetToggle (Widget widget);
+extern void UIToggleSet (Widget widget,int state);
+extern void UISetSlider (Widget widget, float value);
+extern int UIGetSlider (Widget widget);
+extern void UISpeed ( Widget widget, XtPointer client, XmScaleCallbackStruct *data);
+extern void UIContrast ( Widget widget, XtPointer client, XmScaleCallbackStruct *data);
+extern void UIContrast0 ( Widget widget, XtPointer client, XmScaleCallbackStruct *data);
+extern void UIResetContrast (void);
+extern void UISizeRaise (void);
+extern void UISizeInit (void);
+extern void UISizeDraw (void);
+extern void UISizeReset (void);
+extern void UISizeInitial (void);
+extern void UISizeClose (void);
+extern void UISizeSlider (Widget widget);
+extern void UISizeText (Widget widget);
+extern void UIArrayInit (void);
+extern void UIArrayDir (Widget widget,int item);
+extern void UIArrayRaise (void);
+extern void UIArrayReset (int dir);
+extern void UIArrayDraw (void);
+extern void UIArrayClose (void);
+extern void UIArrayEndAdjust (void);
+extern void UIArrayDeltaAdjust (void);
+extern void UIArrayShape ( int n, int *across, int *down, int *delta);
+extern void UILabelInit (void);
+extern void UILabelRaise (void);
+extern void UILabelReset (void);
+extern void UILabelDraw (void);
+extern void UILabelClose (void);
+extern void UITranspInit (void);
+extern void UITranspRaise (void);
+extern void UITranspClose (void);
+extern void UITranspLow ( Widget widget, XtPointer client, XmScaleCallbackStruct *data);
+extern void UITranspHigh ( Widget widget, XtPointer client, XmScaleCallbackStruct *data);
+extern void UITranspGradient ( Widget widget, XtPointer client, XmScaleCallbackStruct *data);
+extern void UITranspRate (Widget widget, int item);
+extern void UIFenceInit (void);
+extern void UIFenceRaise (void);
+extern void UIFenceClose (void);
+extern void UIFenceFront (void);
+extern void UIFenceSide (void);
+extern void UIFenceTop (void);
+extern void UIFenceOpacity ( Widget widget, XtPointer client, XmScaleCallbackStruct *data);
+extern void UIInfoInit (void);
+extern void UIInfo (char *text);
+extern void UIInfoClose (void);
+extern void UISyzeRaise (void);
+extern void UISyzeInit (void);
+extern void UISyzeReset (void);
+extern void UISyzeClose (void);
+extern void UISyzeInitial (void);
+extern void UISyzeDraw (void);
+extern void UICanvasSize (int *wide,int *hite);
+extern void UIGradeUndo (void);
+extern void UIWindowInit (Widget parent);
+extern void UITimer ( int delay, XtTimerCallbackProc action);
+extern void UIMain (void);
+extern void UIInit (int argc, char **argv);
+extern Display* UIDisplay (void);
+
+#endif

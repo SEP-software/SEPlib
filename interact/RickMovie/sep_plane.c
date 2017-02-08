@@ -6,10 +6,12 @@ code for plane object
 The plane object records all planes drawn in an render
 */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include "main.h"
 #include "axis.h"
 #include "map.h"
+#include "data.h"
 #include "render.h"
 #include "plane.h"
 
@@ -17,7 +19,7 @@ Plane plane=0, lastplane=0, planelist=0;
 
 /* initialize planes */
 Plane
-PlaneInit ()
+PlaneInit (void)
 	{
 	int iplane;
 
@@ -30,8 +32,7 @@ PlaneInit ()
 
 /* find a plane given axis and frame */
 Plane
-PlaneFind (dir3,frame3,dir4,frame4,dir5,frame5)
-int dir3,frame3,dir4,frame4,dir5,frame5;
+PlaneFind (int dir3,int frame3,int dir4,int frame4,int dir5,int frame5)
 	{
 	Plane plane;
 
@@ -51,7 +52,7 @@ int dir3,frame3,dir4,frame4,dir5,frame5;
 	}
 
 /* empty the list */
-PlaneReset ()
+void PlaneReset (void)
 	{
 	for (plane=planelist; plane < planelist+NPLANE; plane++) { 
 		plane->attr->orient = NO_INDEX;
@@ -60,11 +61,7 @@ PlaneReset ()
 	}
 
 /* record a plane */
-PlaneSet (hmap,vmap,zmap,map4,map5,h0,v0,nh,nv,render,margins,attr)
-Map hmap, vmap, zmap, map4, map5;
-Render render;
-RenderAttr attr;
-int h0, v0, nh, nv, *margins;
+void PlaneSet (Map hmap,Map vmap,Map zmap,Map map4,Map map5,int h0,int v0,int nh,int nv,Render render,int *margins,RenderAttr attr)
 	{
 	plane->hmap = hmap;
 	plane->vmap = vmap;
@@ -85,16 +82,14 @@ int h0, v0, nh, nv, *margins;
 	}
 
 /* set frame */
-PlaneSetFrame (plane,frame3)
-Plane plane;
-int frame3;
+void PlaneSetFrame ( Plane plane, int frame3)
 	{
 	if (!plane) return;
 	plane->frame3 = frame3;
 	}
 
 /* print list of planes */
-PlaneListInfo ()
+void PlaneListInfo (void)
 	{
 	Plane plane;
 
@@ -113,24 +108,21 @@ PlaneListInfo ()
 	}
 
 /* return plane dir */
-PlaneDir (plane)
-Plane plane;
+int PlaneDir (Plane plane)
 	{
 	if (!plane) return (NO_INDEX);
 	return (AxisDir(MapAxis(plane->zmap)));
 	}
 
 /* return plane frame */
-PlaneFrame (plane)
-Plane plane;
+int PlaneFrame (Plane plane)
 	{
 	if (!plane) return (NO_INDEX);
 	return (plane->frame3);
 	}
 
 /* return plane rectangle */
-PlaneRect (h0,v0,nh,nv)
-int *h0, *v0, *nh, *nv;
+void PlaneRect (int *h0,int *v0,int *nh,int *nv)
 	{
 	*h0 = NO_INDEX;
 	*v0 = NO_INDEX;
@@ -144,48 +136,42 @@ int *h0, *v0, *nh, *nv;
 	}
 
 /* return plane skew */
-PlaneSkew (plane) 
-Plane plane;
+int PlaneSkew (Plane plane)
 	{
 	if (!plane) return (0);
 	return (plane->attr->skew);
 	}
 
 /* return plane type */
-PlaneType (plane) 
-Plane plane;
+int PlaneType (Plane plane)
 	{
 	if (!plane) return (0);
 	return (plane->attr->orient);
 	}
 
 /* return plane v0 */
-PlaneV0 (plane) 
-Plane plane;
+int PlaneV0 (Plane plane) 
 	{
 	if (!plane) return (0);
 	return (plane->v0);
 	}
 
 /* return plane h0 */
-PlaneH0 (plane) 
-Plane plane;
+int PlaneH0 (Plane plane) 
 	{
 	if (!plane) return (0);
 	return (plane->h0);
 	}
 
 /* return plane nv */
-PlaneNV (plane) 
-Plane plane;
+int PlaneNV (Plane plane)
 	{
 	if (!plane) return (0);
 	return (plane->nv);
 	}
 
 /* return plane nh */
-PlaneNH (plane) 
-Plane plane;
+int PlaneNH (Plane plane)
 	{
 	if (!plane) return (0);
 	return (plane->nh);
@@ -193,8 +179,7 @@ Plane plane;
 
 /* return plane hmap */
 Map
-PlaneHmap (plane) 
-Plane plane;
+PlaneHmap (Plane plane) 
 	{
 	if (!plane) return (0);
 	return (plane->hmap);
@@ -202,8 +187,7 @@ Plane plane;
 
 /* return plane vmap */
 Map
-PlaneVmap (plane) 
-Plane plane;
+PlaneVmap (Plane plane) 
 	{
 	if (!plane) return (0);
 	return (plane->vmap);
@@ -211,8 +195,7 @@ Plane plane;
 
 /* return plane vmap */
 Map
-PlaneZmap (plane) 
-Plane plane;
+PlaneZmap (Plane plane) 
 	{
 	if (!plane) return (0);
 	return (plane->zmap);

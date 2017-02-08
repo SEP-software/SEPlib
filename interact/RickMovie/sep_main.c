@@ -673,6 +673,9 @@ main program code
 */
 #include <sitedef.h>
 #if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <stdio.h>
 #include "main.h"
 #include "axis.h"
 #include "data.h"
@@ -680,15 +683,20 @@ main program code
 #include "render.h"
 #include "plane.h"
 #include "view.h"
+#include "pik.h"
 #include "pick.h"
-#include <sitedef.h>
+#include "color.h"
+#include "colorbar.h"
+#include "draw.h"
+#include "region.h"
 #if defined (HAVE_STDLIB_H)
 #include<stdlib.h>
 #else
 extern int atoi();
 #endif /* HAVE_STDLIB  */
+#include "movie.h"
+#include "ui.h"
 
-#include <stdio.h>
 #ifdef SEPLIB
 #define OUT "/dev/null"
 #include <sep.main>
@@ -708,7 +716,7 @@ int _alloc = 0;
 int memwatch = 0;
 
 #ifdef SEPLIB
-MAIN ()
+int MAIN (void)
 	{
 #else
 int	sepxargc;
@@ -720,8 +728,7 @@ FILE	*outstream = stdout;
 string	in = "stdin";
 string	out = "stdout";
 
-main (argc,argv)
-int argc; char **argv;
+int main (int argc, char **argv)
 	{
 	extern int sepxargc;
 	extern char **sepxargv, *help;
@@ -766,9 +773,10 @@ int argc; char **argv;
 #endif
 	/* interactive loop */
 	UIMain ();
+        return EXIT_SUCCESS;
 	}
 
-MainFirst ()
+void MainFirst (void)
 	{
 	DrawInit ();
 	ColorbarInit ();
@@ -797,7 +805,7 @@ char *name, *type, *var;
 	}
 #endif
 
-core ()
+static int core (void)
 	{
 	FILE *fd;
 	string line;
@@ -808,11 +816,11 @@ core ()
 	}
 #else
 #include<seplib.h>
-main (argc,argv)
-int argc; char **argv;
+int main (int argc, char **argv)
   {
 	fprintf(stderr,"Neaither motif or athena was speciefied \n");
 
-	}
+        return(EXIT_FAILURE);
+  }
 #endif
 

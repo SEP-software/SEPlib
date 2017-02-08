@@ -4,19 +4,23 @@
 User_interface: canvas controls
 */
 #include <Xm/MainW.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include "main.h"
-#include "ui.h"
 #include "axis.h"
 #include "data.h"
 #include "map.h"
 #include "render.h"
+#include "draw.h"
 #include "view.h"
 #include "region.h"
+#include "plane.h"
+#include "pik.h"
 #include "pick.h"
 #include "movie.h"
 #include "color.h"
 #include "colorbar.h"
+#include "ui.h"
 
 extern UI ui;
 extern Message message;
@@ -49,27 +53,7 @@ char colorbar_trans[] =
 	<BtnDown>:	UIColorbarStart()\n\
 	<BtnMotion>:	UIColorbarDrag()\n\
 	<BtnUp>:	UIColorbarEnd()";
-extern UIZoomStart();
-extern UIHZoomStart();
-extern UIVZoomStart();
-extern UIDraw();
-extern UIZoomDrag();
-extern UIZoomEnd();
-extern UIFrameStart();
-extern UIFrameDrag();
-extern UIFrameEnd();
-extern UISubvolumeStart();
-extern UISubvolumeDrag();
-extern UISubvolumeEnd();
-extern UIPick();
-extern UIPikAdd();
-extern UIPikMove();
-extern UIPikDelete();
-extern UIPikQuery();
-extern PikUndo();
-extern UIColorbarStart();
-extern UIColorbarDrag();
-extern UIColorbarEnd();
+
 XtActionsRec ui_actions[] = {
 	{"UIZoomStart", (XtActionProc)UIZoomStart},
 	{"UIHZoomStart", (XtActionProc)UIHZoomStart},
@@ -95,8 +79,7 @@ XtActionsRec ui_actions[] = {
 int ui_nactions = sizeof (ui_actions) / sizeof (ui_actions[0]);
 
 /* return canvas size */
-UICanvasSize (wide,hite)
-int *wide, *hite;
+void UICanvasSize (int *wide,int *hite)
 	{
 	if (!ui) return;
 	*wide = 0;
@@ -109,8 +92,7 @@ int *wide, *hite;
 	}
 
 /* return color bar size */
-UIColorbarSize (wide,hite)
-int *wide, *hite;
+void UIColorbarSize (int *wide,int *hite)
 	{
 	if (!ui) return;
 	*wide = 0;
@@ -130,8 +112,7 @@ if a callback does not fetch or set state and is only one routine,
 	the it is called directly from other objects
 */
 /* draw color bar after exposure or resize callback */
-UIDrawColorbar (widget)
-Widget widget;
+void UIDrawColorbar (Widget widget)
 	{
 	int wide, hite;
 
@@ -149,8 +130,7 @@ Widget widget;
 	}
 
 /* draw canvas after exposure or resize callback */
-UIDrawCanvas (widget)
-Widget widget;
+void UIDrawCanvas (Widget widget)
 	{
 	int wide, hite;
 
@@ -170,9 +150,7 @@ Widget widget;
 	}
 
 /* start zoom window callback */
-UIZoomStart (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UIZoomStart ( Widget widget, XButtonEvent *event)
 	{
 	if (!ui) return;
 	ui->hzoom = 1;
@@ -181,9 +159,7 @@ XButtonEvent *event;
 	ui->y1 = event->y;
 	}
 
-UIHZoomStart (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UIHZoomStart ( Widget widget, XButtonEvent *event)
 	{
 	if (!ui) return;
 	ui->hzoom = 1;
@@ -191,9 +167,7 @@ XButtonEvent *event;
 	ui->y1 = event->y;
 	}
 
-UIVZoomStart (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UIVZoomStart ( Widget widget, XButtonEvent *event)
 	{
 	if (!ui) return;
 	ui->vzoom = 1;
@@ -202,9 +176,7 @@ XButtonEvent *event;
 	}
 
 /* colorbar pick start callback */
-UIColorbarStart (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UIColorbarStart ( Widget widget, XButtonEvent *event)
 	{
 	if (!ui) return;
 	DrawWindow (UIColorbarWindow());
@@ -214,9 +186,7 @@ XButtonEvent *event;
 	}
 
 /* zoom window drag callback */
-UIZoomDrag (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UIZoomDrag ( Widget widget, XButtonEvent *event)
 	{
 	if (!ui) return;
 	DrawBox (ui->x1,ui->y1,ui->x2,ui->y2,ERASE);
@@ -224,9 +194,7 @@ XButtonEvent *event;
 	}
 
 /* colorbar pick drag callback */
-UIColorbarDrag (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UIColorbarDrag ( Widget widget, XButtonEvent *event)
 	{
 	extern View view;
 
@@ -236,9 +204,7 @@ XButtonEvent *event;
 	}
 
 /* smooth drag callback */
-UISubvolumeDrag (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UISubvolumeDrag ( Widget widget, XButtonEvent *event)
 	{
 	PickPoint_ pick;
 
@@ -252,9 +218,7 @@ XButtonEvent *event;
 	}
 
 /* frame drag callback */
-UIFrameDrag (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UIFrameDrag ( Widget widget, XButtonEvent *event)
 	{
 	PickPoint_ pick;
 
@@ -264,9 +228,7 @@ XButtonEvent *event;
 	}
 
 /* zoom window end callback */
-UIZoomEnd (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UIZoomEnd ( Widget widget, XButtonEvent *event)
 	{
 	DrawBox (ui->x1,ui->y1,ui->x2,ui->y2,ERASE);
 	if (ui->x1 == event->x && ui->y1 == event->y) {
@@ -285,9 +247,7 @@ XButtonEvent *event;
 	}
 
 /* colorbar pick end callback */
-UIColorbarEnd (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UIColorbarEnd ( Widget widget, XButtonEvent *event)
 	{
 	extern View view;
 	extern Data data;
@@ -307,9 +267,7 @@ XButtonEvent *event;
 	}
 
 /* smooth end callback */
-UISubvolumeEnd (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UISubvolumeEnd ( Widget widget, XButtonEvent *event)
 	{
 	PickPoint_ pick1, pick2;
 
@@ -330,9 +288,7 @@ XButtonEvent *event;
 	}
 
 /* report pick point values */
-UIPick (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UIPick ( Widget widget, XButtonEvent *event)
 	{
 	PickPoint_ pick;
 
@@ -340,18 +296,14 @@ XButtonEvent *event;
 	}
 
 /* movie callback */
-UIFrameStart (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UIFrameStart ( Widget widget, XButtonEvent *event)
 	{
 	if (!ui) return;
 	ui->x1 = event->x;
 	ui->y1 = event->y;
 	}
 
-UIFrameEnd (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UIFrameEnd ( Widget widget, XButtonEvent *event)
 	{
 	extern View view;
 	PickPoint_ pick1, pick2;
@@ -416,25 +368,19 @@ XButtonEvent *event;
 	}
 
 /* add point point callback */
-UIPikAdd (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UIPikAdd ( Widget widget, XButtonEvent *event)
 	{
 	PikAdd (event->x,event->y);
 	}
 
 /* insert a pick into the pick line */
-UIPickInsert (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UIPickInsert ( Widget widget, XButtonEvent *event)
 	{
 	PickInsert (event->x,event->y);
 	}
 
 /* start region picking */
-UISubvolumeStart (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UISubvolumeStart ( Widget widget, XButtonEvent *event)
 	{
 	PickPoint_ pick;
 
@@ -447,25 +393,19 @@ XButtonEvent *event;
 	}
 
 /* replace pick point callback */
-UIPikMove (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UIPikMove (Widget widget, XButtonEvent *event)
 	{
 	PikMove (event->x,event->y);
 	}
 
 /* delete pick point callback */
-UIPikDelete (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UIPikDelete ( Widget widget, XButtonEvent *event)
 	{
 	PikDelete (event->x,event->y);
 	}
 
 /* query pik point callback */
-UIPikQuery (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UIPikQuery ( Widget widget, XButtonEvent *event)
 	{
 	PikQuery (event->x,event->y);
 	}

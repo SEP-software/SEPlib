@@ -1,3 +1,5 @@
+#ifndef RICKMOVIE_VIEW_H
+#define RICKMOVIE_VIEW_H
 /*
 view object definition
 
@@ -109,8 +111,53 @@ typedef struct {
 	Map	map[DATA_NAXIS];	/* map axes */
 	} *View;
 
+#include <X11/Intrinsic.h>
+
 /* typed returns */
-extern View ViewInit (/*render*/);
-extern Axis ViewDataAxis (/*view,imap*/);
-extern Map ViewMap (/*view*/);
-extern Map ViewMovieMap (/*view*/);
+extern View ViewInit (Data data);
+extern void ViewSize (View view);
+extern void ViewSingleSize (Map hmap,Map vmap,Map zmap);
+extern void ViewSize0 (void);
+extern void ViewDraw (View view, int mode);
+extern void ViewArray (int nacross,int ndown,int across0,int dacross);
+extern void ViewDrawArray (View view);
+extern void ViewDrawPicks (View view);
+extern void ViewDrawCube (View view, int mode);
+extern void ViewDrawFence (View view, int mode);
+extern void ViewDrawPlan (View view, int mode);
+extern void ViewDrawTransp (View view);
+extern void ViewDrawTranspCallback (XtPointer , XtIntervalId *);
+extern void ViewDrawAll (void);
+extern void ViewDrawMovie (XtPointer, XtIntervalId *);
+extern void ViewSetMovie (int movie);
+extern void ViewMovieFullBounds (void);
+extern int View3D (void);
+extern int ViewMovieOK (void);
+extern void ViewSetStyle (int style);
+extern void ViewSetFence (int mode);
+extern void ViewSetTranspRate (int mode);
+extern void ViewSetShape (int shape);
+extern void ViewToggleFence (int mode);
+extern void ViewSetFrames (int x,int y);
+extern void ViewSetFrame (int index,int mode);
+extern void ViewSetPick (int pick);
+extern void ViewTogglePick (void);
+extern int ViewPick (void);
+extern int ViewMovie (void);
+extern Map ViewMovieMap (View view);
+extern void ViewFramesMiddle (void);
+extern void ViewFramesOrigin (void);
+extern void ViewSwapAxis (int a,int b);
+extern void ViewFlipAxis (int imap);
+extern void ViewWindow (int x1,int y1,int x2,int y2,int hzoom,int vzoom);
+extern void ViewWindow0 (void);
+extern Map ViewMap (View view, int index);
+extern Axis ViewDataAxis (View view,int imap);
+extern void ViewInfo (View view);
+extern void ViewSavePar (View view);
+extern void ViewOrient0 (void);
+extern double Tyme(void);
+extern void TymeStart (void);
+extern void TymeEnd (int pixels);
+
+#endif

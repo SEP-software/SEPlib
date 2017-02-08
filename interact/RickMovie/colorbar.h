@@ -1,3 +1,5 @@
+#ifndef RICKMOVIE_COLORBAR_H
+#define RICKMOVIE_COLORBAR_H
 /*
 Colorbar object
 */
@@ -11,3 +13,12 @@ typedef struct {
 	int	low[2];	/* low mark */
 	int	high[2];	/* high mark */
 	} *Colorbar;
+
+/* API */
+extern void ColorbarInit (void);
+extern void ColorbarDraw (void);
+extern void ColorbarOverlay (void);
+extern void ColorbarSetMark (int low,int high,int index);
+extern void ColorbarMark (int *low,int *high,int index);
+
+#endif

@@ -1,3 +1,5 @@
+#ifndef RICKMOVIE_AXIS_H
+#define RICKMOVIE_AXIS_H
 /*
 axis object definition
 
@@ -20,13 +22,27 @@ typedef struct {
 	} *Axis;
 
 /* typed returns */
-extern Axis AxisInit (/*iaxis,step*/);
-extern Axis AxisInit2 (/*iaxis,step*/);
-extern char* AxisLabel (/*axis*/);
-extern float AxisValue (/*axis,index*/);
-extern char* AxisScript (/*axis,index*/);
-extern float AxisFirst (/*axis*/);
-extern float AxisLast (/*axis*/);
-extern float AxisDelta (/*axis*/);
-extern float AxisZoom (/*axis*/);
-extern float* AxisValues (/*axis*/);
+extern Axis AxisInit (int iaxis, int step);
+extern Axis AxisInit2 (int dir,int stride,string label,int size,float first,float delta,float zoom);
+extern char* AxisLabel (Axis axis);
+extern float AxisValue (Axis axis,int index);
+extern char* AxisScript (Axis axis, int index);
+extern float AxisFirst (Axis axis);
+extern float AxisLast (Axis axis);
+extern float AxisDelta (Axis axis);
+extern float AxisZoom (Axis axis);
+extern float* AxisValues (Axis axis);
+extern void AxisSetScale (Axis axis);
+extern void AxisSetValues (Axis axis);
+extern int AxisPrec (Axis axis);
+extern int AxisScale (Axis axis);
+extern int AxisSize (Axis axis);
+extern int AxisIndex (Axis axis, float value);
+extern int AxisScaledIndex (Axis axis, int value);
+extern int AxisScaledValue (Axis axis,int index);
+extern void AxisInfo (Axis axis);
+extern void AxisSavePar (Axis axis);
+extern int AxisDir (Axis axis);
+extern int AxisStride (Axis axis);
+
+#endif

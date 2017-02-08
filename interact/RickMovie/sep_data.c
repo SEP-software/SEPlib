@@ -17,14 +17,33 @@ four input data formats recognized:
                    since data->value_size was being used in the 
                    subroutine GetDatapar without initialized
 */
+#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include <math.h>
+#if HAVE_SYS_TYPE_H
+#include <sys/types.h>
+#endif
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+#if defined(MACOS) || defined(LINUX)
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#endif
 #include "main.h"
 #include "axis.h"
+#include "map.h"
 #include "data.h"
+#include "render.h"
+#include "draw.h"
+#include "color.h"
+#include "ui.h"
 
 /* initialize dataset from getpar */
 Data
-DataInit ()
+DataInit (void)
 	{
 	Data data;
 	Axis axis;
@@ -95,8 +114,8 @@ DataInit ()
 			data->vfd = 0;
 			}
 		else	{
-			GETPARFLOAT ("vlow","f",data->vlow);
-			GETPARFLOAT ("vhigh","f",data->vhigh);
+			GETPARFLOAT ("vlow","f",&(data->vlow));
+			GETPARFLOAT ("vhigh","f",&(data->vhigh));
 			}
 		}
 	NEW(Buffer,data->buffer,data->size);
@@ -104,8 +123,7 @@ DataInit ()
 	}
 
 /* fetch grid parameters from getpar */
-DataGetpar (data)
-Data data;
+void DataGetpar (Data data)
 	{
 	int iaxis;
 	string label;
@@ -154,9 +172,7 @@ Data data;
 	}
 
 /* fetch grid parameters from tail of vgrid format */
-DataGridHeader (data,fd)
-Data data;
-int fd;
+int DataGridHeader (Data data,int fd)
 	{
 	int size, n1, n2, n3, n4, n5, size1;
 	string label;
@@ -212,7 +228,7 @@ int fd;
 	}
 	
 /* decide which data reading routine to use */
-DataLoad ()
+void DataLoad (void)
 	{
 	extern Data data;
 
@@ -224,8 +240,7 @@ DataLoad ()
 	}
 
 /* load byte data; compress to 7 bits- 0-128 */
-DataLoadByte (data)
-Data data;
+void DataLoadByte (Data data)
 	{
 	extern int infd;
 	byte table;
@@ -236,8 +251,8 @@ Data data;
 	/* read data */
 	UIMessage ("loading byte data ...");
 	lseek (infd,0,0);
-	if (data->hbytes) read (infd,data->buffer,data->hbytes);
-	read (infd,data->buffer,data->size);
+	if (data->hbytes) if( 0 > read (infd,data->buffer,data->hbytes)) return;
+	if(0 > read (infd,data->buffer,data->size)) return;
 
 	/* compute color compression table table */
 	NEW (byte,table,256);
@@ -258,15 +273,13 @@ Data data;
 
 
 /* load and convert float or segy data */
-DataLoadFloat (data)
-Data data;
+void DataLoadFloat (Data data)
 	{
 	int i1, i2, i3, n1, n2, n3, base, size, head;
-	float *buf1, *buf2, DataCent(), *trace, *tgain;
+	float *buf1, *buf2, *trace, *tgain;
 	register float scale, bias, *bp1, *bp2, *fp, *fe, *gp;
 	register int datum;
 	register byte dp;
-	double pow(), log();
 	extern int infd;
 
 	if (data->segy) UIMessage ("loading segy data ...");
@@ -296,14 +309,14 @@ Data data;
 	tgain[n1-1] = tgain[n1-2];
 	/* remember first panel in buf1; copy for percentile */
 	if (data->segy) {
-		read (infd,trace,DATA_HEAD0*sizeof(trace[0]));
-		read (infd,trace,DATA_HEAD1*sizeof(trace[0]));
+		if(0 > read (infd,trace,DATA_HEAD0*sizeof(trace[0]))) return;
+		if(0 > read (infd,trace,DATA_HEAD1*sizeof(trace[0]))) return;
 		}
 	else if (data->hbytes) {
-		read (infd,trace,data->hbytes);
+		if(0 > read (infd,trace,data->hbytes)) return;
 		}
 	for (i2=0; i2<n2; i2++) {
-		read (infd,trace,(n1+head)*sizeof(trace[0]));
+		if(0 > read (infd,trace,(n1+head)*sizeof(trace[0]))) return;
 		for (fp=trace+head, fe=fp+n1, gp=tgain; fp<fe; fp++, bp1++, bp2++, gp++) {
 			*bp1 = *fp * *gp;
 			*bp2 = *bp1;
@@ -365,10 +378,7 @@ Data data;
  *      n - vector length
  *	this routine changes data order, so sort a copy
  */
-float
-DataCent (x,n,p)
-float *x, p;
-int n;
+float DataCent (float *x,int n,float p)
         {
         int q;
         register float *i, *j, ak;
@@ -399,8 +409,7 @@ int n;
 
 /* return long data name */
 char*
-DataLabel (data)
-Data data;
+DataLabel (Data data)
 	{
 	static Message message;
 
@@ -418,8 +427,7 @@ Data data;
 
 /* return short data name */
 char*
-DataTitle (data)
-Data data;
+DataTitle (Data data)
 	{
 	if (!data) return (0);
 	return (data->title);
@@ -427,8 +435,7 @@ Data data;
 
 /* return data file */
 char*
-DataFile (data)
-Data data;
+DataFile (Data data)
 	{
 	if (!data) return (0);
 	return (data->file);
@@ -436,11 +443,10 @@ Data data;
 
 /* return short name of dataset from filename */
 char*
-DataShortName (data)
-Data data;
+DataShortName (Data data)
 	{
 	static string name;
-	char *c, *strrchr(), *strchr();
+	char *c;
 
 	/* truncate leading pathname */
 	if ((c = strrchr (data->file,'/')) != NULL) strcpy (name,c+1);
@@ -451,8 +457,7 @@ Data data;
 	}
 /* return data buffer */
 Buffer
-DataBuffer (data)
-Data data;
+DataBuffer (Data data)
 	{
 	if (!data) return (0);
 	return (data->buffer);
@@ -460,24 +465,20 @@ Data data;
 
 /* return axis reference */
 Axis
-DataAxis (data,iaxis)
-Data data;
-int iaxis;
+DataAxis (Data data,int iaxis)
 	{
 	if (!data || iaxis>DATA_NAXIS) return (0);
 	return (data->axis[iaxis]);
 	}
 
 /* return data size */
-DataSize (data)
-Data data;
+int DataSize (Data data)
 	{
 	return (data->size);
 	}
 
 /* return longest dimension */
-DataMaxDim (data)
-Data data;
+int DataMaxDim (Data data)
 	{
 	int n[DATA_NAXIS], max, iaxis;
 
@@ -490,24 +491,20 @@ Data data;
 
 /* return data amplitude */
 float
-DataValue (data,value)
-Data data;
-int value;
+DataValue (Data data,int value)
 	{
 	return (data->low+((data->high-data->low)*((value&0x7F)-data->value_base))/data->value_size);
 	}
 
 /* return data value size */
-DataValueSize (data)
-Data data;
+int DataValueSize (Data data)
 	{
 	if (!data) return (0);
 	else return (data->value_size);
 	}
 
 /* return base data value */
-DataValueBase (data)
-Data data;
+int DataValueBase (Data data)
 	{
 	if (!data) return (0);
 	else return (data->value_base);
@@ -516,7 +513,7 @@ Data data;
 
 /* return data high clip */
 float
-DataHigh ()
+DataHigh (void)
 	{
 	extern Data data;
 
@@ -526,7 +523,7 @@ DataHigh ()
 
 /* return data low clip */
 float
-DataLow ()
+DataLow (void)
 	{
 	extern Data data;
 
@@ -535,8 +532,7 @@ DataLow ()
 	}
 
 /* return integer percentage of histogram */
-DataHistogram (i)
-int i;
+int DataHistogram (int i)
 	{
 	extern Data data;
 
@@ -544,8 +540,7 @@ int i;
 	return ((int)(100*data->histogram[i]));
 	}
 
-DataComputeHistogram (data)
-Data data;
+void DataComputeHistogram (Data data)
 	{
 	register Buffer bp, be;
 	register float *hp;
@@ -571,8 +566,7 @@ Data data;
 	}
 
 /* print data information */
-DataInfo (data)
-Data data;
+void DataInfo (Data data)
 	{
 	Message message;
 
@@ -593,8 +587,7 @@ Data data;
 	}
 
 /* data value parameters */
-DataValueInfo (data)
-Data data;
+void DataValueInfo (Data data)
 	{
 	Message message;
 
@@ -611,8 +604,7 @@ Data data;
 	}
 
 /* save data parameters */
-DataSavePar (data)
-Data data;
+void DataSavePar (Data data)
 	{
 	int iaxis;
 	Message message;
@@ -632,7 +624,7 @@ Data data;
 		data->hbytes,
 		data->script);
 	UISaveMessage (message);
-	sprintf (message, "Value: min=%g low=%g high=%g max=%g tpow=%d gpow=%g base=%d size=%d",
+	sprintf (message, "Value: min=%g low=%g high=%g max=%g tpow=%g gpow=%g base=%d size=%d",
 		data->min,
 		data->low,
 		data->high,
@@ -648,10 +640,7 @@ Data data;
 	}
 
 /* dump data bytes */
-DataDumpBytes (data,file,fd)
-Data data;
-char *file;
-int fd;
+void DataDumpBytes (Data data,char *file, int fd)
 	{
 	string parfile, datafile;
 	register byte bp, be;
@@ -659,17 +648,17 @@ int fd;
 
 	DrawWatch(1);
 	for (bp=data->buffer, be=bp+data->size; bp<be;) *bp++ <<= 1;
-	write (fd,data->buffer,data->size);
+	if (data->size !=
+	write (fd,data->buffer,data->size)) {
+           perror("DataDumpBytes ");
+        }
 	for (bp=data->buffer, be=bp+data->size; bp<be;) *bp++ >>= 1;
 	DataDumpHeader (data,file,fd,1);
 	DrawWatch(0);
 	}
 
 /* dump data vgrid header */
-DataDumpHeader (data,file,datafd,esize)
-Data data;
-string file;
-int datafd, esize;
+void DataDumpHeader (Data data,string file,int datafd,int esize)
 	{
 	Message message;
 	char parfile[80];
@@ -700,7 +689,11 @@ int datafd, esize;
 		data->gh.gmax = data->high * data->gh.scale;
 		}
 	data->gh.dtype = esize * data->gh.scale;
-	write (datafd,&data->gh,sizeof(data->gh));
+	if (sizeof(data->gh) !=
+	write (datafd,&data->gh,sizeof(data->gh))) {
+           perror("DataDumpHeader ");
+           UIMessage("Cant write full Dump Header");
+        }
 	close (datafd);
 	sprintf (parfile,"%s.H",file);
 	if ((savefd = fopen (parfile,"w")) == NULL); UIMessage ("cant create vgrid parfile");
@@ -711,10 +704,7 @@ int datafd, esize;
 	}
 
 /* dump data floats */
-DataDumpFloats (data,file,fd)
-Data data;
-char *file;
-int fd;
+void DataDumpFloats (Data data,char *file,int fd)
 	{
 	string parfile, datafile;
 	int nn, n3, i;
@@ -731,7 +721,11 @@ int fd;
 	max = data->low;
 	for (i=0, dbuf=data->buffer; i<n3; i++, dbuf+=nn) {
 		Data2Float (dbuf,fbuf,nn,&min,&max);
-		write (fd,fbuf,nn*sizeof(fbuf[0]));
+		if ((nn*sizeof(fbuf[0])) !=
+		write (fd,fbuf,nn*sizeof(fbuf[0]))) {
+                    perror("DataDumpFloats ");
+                    break;
+                   }
 		}
 	data->gh.gmin = min * data->gh.scale;
 	data->gh.gmax = max * data->gh.scale;
@@ -740,10 +734,7 @@ int fd;
 	DrawWatch (0);
 	}
 
-Data2Float (dbuf,fbuf,n,min,max)
-Buffer dbuf;
-float *fbuf, *min, *max;
-int n;
+void Data2Float (Buffer dbuf,float *fbuf,int n,float *min,float *max)
 	{
 	register Buffer bp, be;
 	register float *fp, *mp, *fe, Min, Max;
@@ -761,8 +752,7 @@ int n;
 	}
 
 #ifdef SGI
-rint (x)
-float x;
+int rint (float x)
 	{
 	int i;
 

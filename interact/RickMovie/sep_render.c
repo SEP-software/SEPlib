@@ -6,7 +6,17 @@ draws raster images into various buffers
 draws axis and cross-line annotations
 contains optimized subroutines for rapid raster rendering
 */
+#include <stdlib.h>
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+#if defined(MACOS) || defined(LINUX)
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#endif
 #include <stdio.h>
+#include <string.h>
 #include "main.h"
 #include "axis.h"
 #include "data.h"
@@ -15,18 +25,37 @@ contains optimized subroutines for rapid raster rendering
 #include "plane.h"
 #include "view.h"
 #include "pick.h"
+#include "draw.h"
+#include "ui.h"
+#include "color.h"
+#include "movie.h"
 #include "rargs.h"
 
 /* C or FORTRAN renderers */
 #ifndef FORTRAN
+void RenderBasicHorz CALLARGSPROTO ;
 #define RENDER_BASIC_HORZ	RenderBasicHorz CALLARGS
+void RenderBasicVert CALLARGSPROTO ;
 #define RENDER_BASIC_VERT	RenderBasicVert CALLARGS
+void RenderShadowHorz CALLARGSPROTO ;
 #define RENDER_SHADOW_HORZ	RenderShadowHorz CALLARGS
+void RenderShadowVert CALLARGSPROTO ;
 #define RENDER_SHADOW_VERT	RenderShadowVert CALLARGS
+void RenderInterpHorz CALLARGSPROTO ;
 #define RENDER_INTERP_HORZ	RenderInterpHorz CALLARGS
+void RenderInterpVert CALLARGSPROTO ;
 #define RENDER_INTERP_VERT	RenderInterpVert CALLARGS
+void RenderTranspHorz CALLARGSPROTO ;
 #define RENDER_TRANSP_HORZ	RenderTranspHorz CALLARGS
+void RenderTranspVert CALLARGSPROTO ;
 #define RENDER_TRANSP_VERT	RenderTranspVert CALLARGS
+
+void RenderFrontFenceHorz CALLARGSPROTO ;
+void RenderFrontFenceInterpHorz CALLARGSPROTO ;
+void RenderTopFenceHorz CALLARGSPROTO ;
+void RenderTopFenceInterpHorz CALLARGSPROTO ;
+void RenderSideFenceVert CALLARGSPROTO ;
+void RenderSideFenceInterpVert CALLARGSPROTO ;
 #endif
 #ifdef FORTRAN
 #define RENDER_BASIC_HORZ	renderbasichorz_ FCALLARGS
@@ -47,7 +76,7 @@ contains optimized subroutines for rapid raster rendering
 
 /* initialize render object */
 Render
-RenderInit ()
+RenderInit (void)
 	{
 	Render render;
 
@@ -70,8 +99,7 @@ RenderInit ()
 	}
 
 /* adjust render size: reallocate buffers, adjust map axes */
-RenderSize (wide,hite)
-int wide, hite;
+void RenderSize (int wide,int hite)
 	{
 	extern Render render;
 
@@ -92,12 +120,7 @@ int wide, hite;
 
 /* extract plane in horizontal scan mode; given data, render buffers, three
    map attr->axes, origin, options to attr->image attr->skew, data, attr->axes, attr->shadow, and line */
-RenderHorz (data,hmap,vmap,zmap,map4,map5,h0,v0,render,margins,attr)
-Data data;
-Map hmap, vmap, zmap, map4, map5;
-Render render;
-RenderAttr attr;
-int h0, v0, margins[];
+void RenderHorz (Data data,Map hmap,Map vmap,Map zmap,Map map4,Map map5,int h0,int v0,Render render,int margins[],RenderAttr attr)
 	{
 	int x, y, transp;
 	float tic;
@@ -245,12 +268,7 @@ int h0, v0, margins[];
 
 /* extract panel in vertical scan line mode; permits vertical attr->skewing for side
 of cubes */
-RenderVert (data,hmap,vmap,zmap,map4,map5,h0,v0,render,margins,attr)
-Data data;
-Map hmap, vmap, zmap, map4, map5;
-Render render;
-RenderAttr attr;
-int h0, v0, margins[];
+void RenderVert (Data data,Map hmap,Map vmap,Map zmap,Map map4,Map map5,int h0,int v0,Render render,int margins[],RenderAttr attr)
 	{
 	int x, y, transp;
 	float tic;
@@ -397,12 +415,7 @@ int h0, v0, margins[];
 	}
 
 /* extract plane along pick line */
-RenderDeep (data,hmap,vmap,zmap,map4,map5,h0,v0,render,margins,attr)
-Data data;
-Map hmap, vmap, zmap, map4, map5;
-Render render;
-RenderAttr attr;
-int h0, v0, margins[];
+void RenderDeep (Data data,Map hmap,Map vmap,Map zmap,Map map4,Map map5,int h0,int v0,Render render,int margins[],RenderAttr attr)
 	{
 	Map_ hmap1, vmap1, zmap1;
 	extern PickLine lastpick;
@@ -466,9 +479,7 @@ int h0, v0, margins[];
 	}
 
 /* return buffer value */
-RenderBufferValue (render,x,y)
-Render render;
-int x, y;
+int RenderBufferValue ( Render render, int x, int y)
 	{
 	if (!render) return (0);
 
@@ -476,9 +487,7 @@ int x, y;
 	}
 
 /* return shadow value */
-RenderShadowValue (render,x,y)
-Render render;
-int x, y;
+int RenderShadowValue ( Render render, int x, int y)
 	{
 	if (!render) return (NO_INDEX);
 
@@ -488,8 +497,7 @@ int x, y;
 
 /* return buffer */
 Buffer
-RenderBuffer (render)
-Render render;
+RenderBuffer (Render render)
 	{
 
 	if (!render) return (0);
@@ -497,7 +505,7 @@ Render render;
 	}
 
 /* draw render */
-RenderDraw ()
+void RenderDraw (void)
 	{
 	extern Render render;
 
@@ -512,8 +520,7 @@ RenderDraw ()
 	}
 
 /* print render information */
-RenderInfo (render)
-Render render;
+void RenderInfo (Render render)
 	{
 	Message message;
 
@@ -530,7 +537,7 @@ Render render;
 	}
 
 /* save render parameters */
-RenderSavePar ()
+void RenderSavePar (void)
 	{
 	Message message;
 	extern Render render;
@@ -548,9 +555,7 @@ RenderSavePar ()
 	}
 
 /* rasterize overlay line; OBSELETE */
-RenderLine (render,x0,y0,x1,y1,color)
-Render render;
-int x0, x1, y0, y1, color;
+void RenderLine (Render render,int x0,int y0,int x1,int y1,int color)
 	{
 	register Buffer bp, be;
 	register int inc;
@@ -587,8 +592,7 @@ int x0, x1, y0, y1, color;
 		}
 	}
 
-RenderSetInterp (mode)
-int mode;
+void RenderSetInterp (int mode)
 	{
 	extern Render render;
 
@@ -597,7 +601,7 @@ int mode;
 	}
 
 /* set color mapping polarity */
-RenderTogglePolarity ()
+void RenderTogglePolarity (void)
 	{
 	extern Render render;
 
@@ -608,7 +612,7 @@ RenderTogglePolarity ()
 	}
 
 /* toggle interpolation state */
-RenderToggleInterp ()
+void RenderToggleInterp (void)
 	{
 	extern Render render;
 
@@ -617,8 +621,7 @@ RenderToggleInterp ()
 	}
 
 /* set fence transparency cutoff value */
-RenderSetFenceTransp (transparency)
-int transparency;
+void RenderSetFenceTransp (int transparency)
 	{
 	extern Render render;
 
@@ -627,8 +630,7 @@ int transparency;
 	}
 
 /* set volume transp low */
-RenderSetLow (low)
-int low;
+void RenderSetLow (int low)
 	{
 	extern Render render;
 
@@ -638,8 +640,7 @@ int low;
 	}
 
 /* set volume transp high */
-RenderSetHigh (high)
-int high;
+void RenderSetHigh (int high)
 	{
 	extern Render render;
 
@@ -649,8 +650,7 @@ int high;
 	}
 
 /* set volume transp vol_transp */
-RenderSetGradient (vol_transp)
-int vol_transp;
+void RenderSetGradient (int vol_transp)
 	{
 	extern Render render;
 
@@ -660,7 +660,7 @@ int vol_transp;
 	}
 
 /* clean render buffers */
-RenderClear ()
+void RenderClear (void)
 	{
 	extern Render render;
 	register Shadow sp, se;
@@ -678,8 +678,7 @@ RenderClear ()
 	}
 
 /* build lookup map for render compositing */
-RenderMap (render)
-Render render;
+void RenderMap (Render render)
 	{
 	int cbase, csize, cback, cmark, im, id, value, dbase, dsize, id1, im1;
 	double pow(), power;
@@ -743,22 +742,22 @@ Render render;
 	}
 
 /* write render maps to files for debug purposes */
-RenderMapDump ()
+void RenderMapDump (void)
 	{
 	extern Render render;
 	int fd;
 
 	fd = creat ("render.map.256x8",0664);
-	write (fd,render->cmap,256);
+	if(-1 == write (fd,render->cmap,256)) perror("RenderMapDUmp");
 	close (fd);
 	fd = creat ("render.map.256x256x8",0664);
-	write (fd,render->tmap,65536);
+	if(-1 == write (fd,render->tmap,65536)) perror("RenderMapDUmp");
 	close (fd);
 	UIMessage ("render maps dumped");
 	}
 
 /* write render images to files for debug purposes */
-RenderImageDump ()
+void RenderImageDump (void)
 	{
 	extern Render render;
 	string filename;
@@ -766,22 +765,21 @@ RenderImageDump ()
 
 	sprintf (filename,"render.image.%dx%dx8",render->wide,render->hite);
 	fd = creat (filename,0664);
-	write (fd,render->image,render->wide*render->hite*sizeof(render->image[0]));
+	if(-1 == write (fd,render->image,render->wide*render->hite*sizeof(render->image[0]))) perror("RenderImageDump");
 	close (fd);
 	sprintf (filename,"render.shadow.%dx%dx32",render->wide,render->hite);
 	fd = creat (filename,0664);
-	write (fd,render->shadow,render->wide*render->hite*sizeof(render->shadow[0]));
+	if(-1 == write (fd,render->shadow,render->wide*render->hite*sizeof(render->shadow[0]))) perror("RenderImageDump");
 	close (fd);
 	sprintf (filename,"render.zbuffer.%dx%dx16",render->wide,render->hite);
 	fd = creat (filename,0664);
-	write (fd,render->zbuffer,render->wide*render->hite*sizeof(render->zbuffer[0]));
+	if(-1 == write (fd,render->zbuffer,render->wide*render->hite*sizeof(render->zbuffer[0]))) perror("RenderImageDump");
 	close (fd);
 	UIMessage ("render images dumped");
 	}
 
 /* return last region rendered */
-RenderRect (h0,v0,nh,nv)
-int *h0, *v0, *nh, *nv;
+void RenderRect (int *h0,int *v0,int *nh,int *nv)
 	{
 	extern Render render;
 
@@ -797,7 +795,7 @@ int *h0, *v0, *nh, *nv;
 	}
 
 /* optimized rendering routines */
-RenderBasicHorz HARGS
+void RenderBasicHorz HARGS
 	for (iv=0; iv<vsize; iv++, vmap++) {
 		hdata = vdata + *vmap;
 		for (hmap0=hmap, himage=vimage; hmap0<emap && himage<eimage;) {
@@ -807,7 +805,7 @@ RenderBasicHorz HARGS
 		}
 	}
 
-RenderBasicVert VARGS
+void RenderBasicVert VARGS
 	for (ih=0, hmap+=hsize-1; ih<hsize; ih++, hmap--) {
 		vdata = hdata + *hmap;
 		for (vmap0=vmap, vimage=himage;
@@ -819,7 +817,7 @@ RenderBasicVert VARGS
 		}
 	}
 
-RenderShadowHorz HARGS
+void RenderShadowHorz HARGS
 	for (iv=0; iv<vsize; iv++, vmap++) {
 		hindex = vindex + *vmap;
 		for (hmap0=hmap, hshadow=vshadow;
@@ -830,7 +828,7 @@ RenderShadowHorz HARGS
 		}
 	}
 
-RenderShadowVert VARGS
+void RenderShadowVert VARGS
 	for (ih=0, hmap+=hsize-1; ih<hsize; ih++, hmap--) {
 		vindex = hindex + *hmap;
 		for (vmap0=vmap, vshadow=hshadow;
@@ -842,7 +840,7 @@ RenderShadowVert VARGS
 		}
 	}
 
-RenderInterpHorz HARGS
+void RenderInterpHorz HARGS
 	for (iv=0; iv<vsize; iv++, vmap++) {
 		hdata22 = vdata + *vmap;
 		hdata21 = hdata22 + hstride;
@@ -866,7 +864,7 @@ RenderInterpHorz HARGS
 		}
 	}
 
-RenderInterpVert VARGS
+void RenderInterpVert VARGS
 	for (ih=0, hmap+=hsize-1, hinterp+=hsize-1; ih<hsize; ih++, hmap--) {
 		vdata22 = hdata + *hmap;
 		vdata21 = vdata22 + vstride;
@@ -890,7 +888,7 @@ RenderInterpVert VARGS
 		}
 	}
 
-RenderTranspHorz HARGS
+void RenderTranspHorz HARGS
 	for (iv=0; iv<vsize; iv++, vmap++) {
 		hdata = vdata + *vmap;
 		hindex = vindex + *vmap;
@@ -907,7 +905,7 @@ RenderTranspHorz HARGS
 		}
 	}
 
-RenderTranspVert VARGS
+void RenderTranspVert VARGS
 	for (ih=0, hmap+=hsize-1; ih<hsize; ih++, hmap--) {
 		vdata = hdata + *hmap;
 		vindex = hindex + *hmap;
@@ -924,7 +922,7 @@ RenderTranspVert VARGS
 		}
 	}
 
-RenderFrontFenceHorz HARGS
+void RenderFrontFenceHorz HARGS
 	z = zinv;
 	for (iv=0; iv<vsize; iv++, vmap++) {
 		hdata = vdata + *vmap;
@@ -944,7 +942,7 @@ RenderFrontFenceHorz HARGS
 		}
 	}
 
-RenderTopFenceHorz HARGS
+void RenderTopFenceHorz HARGS
 	for (iv=0; iv<vsize; iv++, vmap++) {
 		hdata = vdata + *vmap;
 		hindex = vindex + *vmap;
@@ -964,7 +962,7 @@ RenderTopFenceHorz HARGS
 		}
 	}
 
-RenderSideFenceVert VARGS
+void RenderSideFenceVert VARGS
 	for (ih=0, hmap+=hsize-1; ih<hsize; ih++, hmap--) {
 		vdata = hdata + *hmap;
 		vindex = hindex + *hmap;
@@ -984,7 +982,7 @@ RenderSideFenceVert VARGS
 		}
 	}
 
-RenderFrontFenceInterpHorz HARGS
+void RenderFrontFenceInterpHorz HARGS
 	z = zinv;
 	for (iv=0; iv<vsize; iv++, vmap++) {
 		hdata22 = vdata + *vmap;
@@ -1016,7 +1014,7 @@ RenderFrontFenceInterpHorz HARGS
 		}
 	}
 
-RenderTopFenceInterpHorz HARGS
+void RenderTopFenceInterpHorz HARGS
 	for (iv=0; iv<vsize; iv++, vmap++) {
 		hdata22 = vdata + *vmap;
 		hdata21 = hdata22 + hstride;
@@ -1048,7 +1046,7 @@ RenderTopFenceInterpHorz HARGS
 		}
 	}
 
-RenderSideFenceInterpVert VARGS
+void RenderSideFenceInterpVert VARGS
 	for (ih=0, hmap+=hsize-1, hinterp+=hsize-1; ih<hsize; ih++, hmap--) {
 		vdata22 = hdata + *hmap;
 		vdata21 = vdata22 + vstride;

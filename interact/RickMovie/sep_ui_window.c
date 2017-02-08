@@ -27,8 +27,7 @@ Message message;
 #define	CS	XmStringCreateSimple
 
 /* initialize user interface */
-UIInit (argc,argv)
-int argc; char **argv;
+void UIInit (int argc, char **argv)
 	{
 
 	NEW (UI,ui,1);
@@ -70,16 +69,14 @@ int argc; char **argv;
 	}
 
 /* main loop */
-UIMain ()
+void UIMain (void)
 	{
 	if (!ui) return;
 	XtAppMainLoop (ui->context);
 	}
 
 /* animation timer */
-UITimer (delay,action)
-int delay;
-XtTimerCallbackProc action;
+void UITimer ( int delay, XtTimerCallbackProc action)
 	{
 	if (!ui) return;
 	if (delay <= 0 && ui->timer) {
@@ -91,12 +88,10 @@ XtTimerCallbackProc action;
 	}
 
 /* create array of windows */
-UIWindowInit (parent)
-Widget parent;
+void UIWindowInit (Widget parent)
 	{
 	Widget frame;
 	extern View view;
-	extern UIDrawColorbar(), UIDrawCanvas(), UICanvasPick();
 	extern char canvas_trans[], colorbar_trans[];
 	extern XtActionsRec ui_actions[];
 	extern int ui_nactions;
@@ -179,22 +174,21 @@ Widget parent;
 
 
 /* return display */
-Display*
-UIDisplay ()
+Display* UIDisplay (void)
 	{
 	if (!ui) return ((Display *) NULL);
 	return ((Display*)XtDisplay(ui->base));
 	}
 
 /* return screen */
-UIScreen ()
+int UIScreen (void)
 	{
 	return (0);
 	}
 
 /* return canvas */
 XID
-UICanvasWindow ()
+UICanvasWindow (void)
 	{
 	if (!ui) return ((XID) 0);
 	return ((XID)XtWindow(ui->canvas));
@@ -202,7 +196,7 @@ UICanvasWindow ()
 
 /* return color bar */
 XID
-UIColorbarWindow ()
+UIColorbarWindow (void)
 	{
 	if (!ui) return ((XID) 0);
 	return ((XID)XtWindow(ui->colorbar));
@@ -210,15 +204,14 @@ UIColorbarWindow ()
 
 /* return main window */
 XID
-UIMainWindow ()
+UIMainWindow (void)
 	{
 	if (!ui) return ((XID) 0);
 	return ((XID)XtWindow(ui->application));
 	}
 
 /* print message in UI window */
-UIMessage (message)
-Message message;
+void UIMessage (Message message)
 	{
 	if (!ui) return;
 	XtVaSetValues (ui->message,XmNlabelString,CS(message),NULL);
@@ -226,16 +219,15 @@ Message message;
 
 /* return font */
 XFontStruct*
-UIFont (size)
-int size;
+UIFont (int size)
 	{
 	return ((XFontStruct*)XLoadQueryFont(UIDisplay(),ui->font));
 	}
 
 /* return first state */
-UIFirst ()
+int UIFirst (void)
 	{
-	if (!ui) return;
+	if (!ui) return(0);
 	return (ui->first);
 	}
 

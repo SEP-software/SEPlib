@@ -15,6 +15,7 @@ colorbar object
 #include <xview/canvas.h>
 #include <xview/panel.h>
 #endif
+#include <stdlib.h>
 #include <stdio.h>
 #include "main.h"
 #include "axis.h"
@@ -30,12 +31,13 @@ colorbar object
 #endif
 #include "draw.h"
 #include "color.h"
+#include "ui.h"
 #include "colorbar.h"
 
 Colorbar colorbar;
 
 /* initialize colorbar */
-ColorbarInit ()
+void ColorbarInit (void)
 	{
 	NEW (Colorbar,colorbar,1);
 	colorbar->low[BOTTOM_MARK] = NO_INDEX;
@@ -47,7 +49,7 @@ ColorbarInit ()
 	}
 
 /* draw horizontal colorbar */
-ColorbarDraw ()
+void ColorbarDraw (void)
 	{
 	int i, wide, hite, color;
 	int x1, y1, x2, y2;
@@ -81,7 +83,7 @@ ColorbarDraw ()
 	}
 
 /* draw colorbar overlays: labels, hitogram and pick bars */
-ColorbarOverlay ()
+void ColorbarOverlay (void)
 	{
 	int wide, hite, i, x1, y1, x2, y2;
 	float tic;
@@ -146,8 +148,7 @@ ColorbarOverlay ()
 	}
 
 /* set colorbar mark */
-ColorbarSetMark (low,high,index)
-int low, high, index;
+void ColorbarSetMark (int low,int high,int index)
 	{
 	if (!colorbar) return;
 	colorbar->low[index] = low;
@@ -156,8 +157,7 @@ int low, high, index;
 	}
 
 /* return colorbar marks */
-ColorbarMark (low,high,index)
-int *low, *high, index;
+void ColorbarMark (int *low,int *high,int index)
 	{
 	*low = NO_INDEX;
 	*high = NO_INDEX;

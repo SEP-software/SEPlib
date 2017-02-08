@@ -3,11 +3,17 @@
 /*
 user interface: menu setup and callbacks
 */
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <Xm/FileSB.h>
 #include <Xm/XmAll.h>
 #include <stdio.h>
 #include "main.h"
-#include "ui.h"
 #include "axis.h"
 #include "data.h"
 #include "map.h"
@@ -15,15 +21,17 @@ user interface: menu setup and callbacks
 #include "view.h"
 #include "region.h"
 #include "pick.h"
+#include "plane.h"
 #include "pik.h"
 #include "movie.h"
+#include "section.h"
 #include "color.h"
 #include "colorbar.h"
+#include "draw.h"
+#include "ui.h"
 
 extern UI ui;
 extern Message message;
-
-extern ViewDrawAll();
 
 /* setup menus; install callbacks */
 
@@ -32,26 +40,15 @@ extern ViewDrawAll();
 #define LIST(menu)	XtVaGetValues (ui->menu,XmNchildren,&list,NULL)
 /* install callback in push button menu item */
 #define PBCALLBACK(item,callback)	{\
-	extern callback();\
 	XtAddCallback (list[item],XmNactivateCallback,(XtCallbackProc)callback,NULL);}
 /* install callback in toggle menu item */
 #define TGCALLBACK(item,callback)	{\
-	extern callback();\
 	XtAddCallback (list[item],XmNvalueChangedCallback,(XtCallbackProc)callback,NULL);}
-UIMenuInit (parent)
-Widget parent;
+
+void UIMenuInit (Widget parent)
 	{
 	int i, j, ibar=0;
 	WidgetList list;
-	extern UIStyleChoice();
-	extern UISizeChoice();
-	extern UIColorChoice();
-	extern UIOverlayChoice();
-	extern UIMarkChoice();
-	extern UIBackgroundChoice();
-	extern UIStatusChoice();
-	extern UINeighborhoodChoice();
-	extern UIHelpChoice();
 	int *cb[3];
 
 	/* menubar */
@@ -425,9 +422,7 @@ Widget parent;
 	}
 
 /* view choice callback */
-UIStyleChoice (widget,item)
-Widget widget;
-int item;
+void UIStyleChoice (Widget widget,int item)
 	{
 	extern View view;
 
@@ -471,9 +466,7 @@ int item;
 
 
 /* color choice callback */
-UIColorChoice (widget,item)
-Widget widget;
-int item;
+void UIColorChoice (Widget widget,int item)
 	{
 	if (item > 8) return;
 	ColorSetChoice (item);
@@ -481,36 +474,28 @@ int item;
 	}
 
 /* overlay choice callback */
-UIOverlayChoice (widget,item)
-Widget widget;
-int item;
+void UIOverlayChoice ( Widget widget, int item)
 	{
 	ColorSetOverlay (item);
 	ColorSwitch ();
 	}
 
 /* backround choice callback */
-UIMarkChoice (widget,item)
-Widget widget;
-int item;
+void UIMarkChoice ( Widget widget, int item)
 	{
 	if (item > 4) return;
 	ColorSetMark (item);
 	}
 
 /* background choice callback */
-UIBackgroundChoice (widget,item)
-Widget widget;
-int item;
+void UIBackgroundChoice ( Widget widget, int item)
 	{
 	if (item > 4) return;
 	ColorSetBackground (item);
 	}
 
 /* region neighborhood callback */
-UINeighborhoodChoice (widget,item)
-Widget widget;
-int item;
+void UINeighborhoodChoice (Widget widget,int item)
 	{
 	switch (item) {
 	case 0: RegionSetNeighborhood (MARK_FACE); break;
@@ -520,9 +505,7 @@ int item;
 	}
 
 /* status choice callback */
-UIStatusChoice (widget,item)
-Widget widget;
-int item;
+void UIStatusChoice (Widget widget,int item)
 	{
 	extern Data data;
 	extern View view;
@@ -546,7 +529,7 @@ int item;
 	case 13: MapInfo(ViewMap(view,AXIS_5D)); break;
 	case 14: MapInfo(ViewMap(view,AXIS_COLOR)); break;
 	case 15: ColorInfo(); break;
-	case 16: RenderInfo(view); break;
+	case 16: /*RenderInfo(view);*/ break;
 	case 17: DrawInfo(); break;
 	case 18: UIMouseInfo(); break;
 	case 19: MovieInfo(); break;
@@ -558,9 +541,7 @@ int item;
 		}
 	}
 
-UIHelpChoice (widget,item)
-Widget widget;
-int item;
+void UIHelpChoice (Widget widget,int item)
 	{
 	WidgetList list;
 
@@ -584,8 +565,7 @@ int item;
 	}
 
 /* print text on screen */
-UIHelpPrint (start,finish)
-char *start, *finish;
+void UIHelpPrint (char *start,char *finish)
 	{
 	char *startp=0, *finishp=0, save;
 	extern char *help;
@@ -597,17 +577,16 @@ char *start, *finish;
 	}
 
 /* mouse info */
-UIMouseInfo ()
+void UIMouseInfo (void)
 	{
 	UIMessage ("MOUSE LEFT: zoom; MIDDLE: navigate; RIGHT: pick");
 	}
 
 /* dump vgrid floats callback */
-UIDumpFloats ()
+void UIDumpFloats (void)
 	{
 	Widget widget;
 	extern Data data;
-	extern UIDumpFloats2();
 	string filename;
 
 	if (!data) return;
@@ -620,10 +599,7 @@ UIDumpFloats ()
 	XtManageChild (widget);
 	}
 
-UIDumpFloats2 (widget,stuff,cbs)
-Widget widget;
-XtPointer stuff;
-XmFileSelectionBoxCallbackStruct *cbs;
+void UIDumpFloats2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs)
 	{
 	extern Data data;
 	char *filename;
@@ -640,11 +616,10 @@ XmFileSelectionBoxCallbackStruct *cbs;
 	}
 
 /* dump vgrid bytess callback */
-UIDumpBytes ()
+void UIDumpBytes (void)
 	{
 	Widget widget;
 	extern Data data;
-	extern UIDumpBytes2();
 	string filename;
 
 	if (!data) return;
@@ -657,10 +632,7 @@ UIDumpBytes ()
 	XtManageChild (widget);
 	}
 
-UIDumpBytes2 (widget,stuff,cbs)
-Widget widget;
-XtPointer stuff;
-XmFileSelectionBoxCallbackStruct *cbs;
+void UIDumpBytes2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs)
 	{
 	extern Data data;
 	char *filename;
@@ -678,11 +650,10 @@ XmFileSelectionBoxCallbackStruct *cbs;
 
 /* save parameters callback */
 FILE *savefd = 0;
-UISavePar ()
+void UISavePar (void)
 	{
 	Widget widget;
 	extern Data data;
-	extern UISavePar2();
 	string filename;
 
 	if (!data) return;
@@ -695,10 +666,7 @@ UISavePar ()
 	XtManageChild (widget);
 	}
 
-UISavePar2 (widget,stuff,cbs)
-Widget widget;
-XtPointer stuff;
-XmFileSelectionBoxCallbackStruct *cbs;
+void UISavePar2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs)
 	{
 	extern Data data;
 	extern View view;
@@ -726,8 +694,7 @@ XmFileSelectionBoxCallbackStruct *cbs;
 	}
 
 /* write save message */
-UISaveMessage (message)
-Message message;
+void UISaveMessage (Message message)
 	{
 	extern FILE *savefd;
 
@@ -735,7 +702,7 @@ Message message;
 	}
 
 /* exit program callback */
-UIQuit ()
+void UIQuit (void)
 	{
 	extern PikList pik;
 
@@ -748,27 +715,27 @@ UIQuit ()
 
 
 /* default oreintation callback */
-UIOrient0 ()
+void UIOrient0 (void)
 	{
 	ViewOrient0 ();
 	}
 
 /* dump axis callbacks */
-UIDownDump ()
+void UIDownDump (void)
 	{
 	extern View view;
 
 	MapDump (ViewMap(view,AXIS_DOWN));
 	}
 
-UIAcrossDump ()
+void UIAcrossDump (void)
 	{
 	extern View view;
 
 	MapDump (ViewMap(view,AXIS_ACROSS));
 	}
 
-UIDeepDump ()
+void UIDeepDump (void)
 	{
 	extern View view;
 
@@ -777,7 +744,7 @@ UIDeepDump ()
 
 /* swap axis callbacks */
 
-UISwapFrontSide ()
+void UISwapFrontSide (void)
 	{
 	ViewSwapAxis (AXIS_ACROSS,AXIS_DEEP);
 	UISyzeReset ();
@@ -785,14 +752,14 @@ UISwapFrontSide ()
 	if (ui->style == VIEW_ARRAY) UIArrayDraw();
 	}
 
-UISwapSideTop ()
+void UISwapSideTop (void)
 	{
 	ViewSwapAxis (AXIS_DOWN,AXIS_ACROSS);
 	UISyzeReset ();
 	if (ui->style == VIEW_ARRAY) UIArrayDraw();
 	}
 
-UISwapTopFront ()
+void UISwapTopFront (void)
 	{
 	ViewSwapAxis (AXIS_DOWN,AXIS_DEEP);
 	UISyzeReset ();
@@ -800,7 +767,7 @@ UISwapTopFront ()
 	if (ui->style == VIEW_ARRAY) UIArrayDraw();
 	}
 
-UISwapFrontExtra ()
+void UISwapFrontExtra (void)
 	{
 	ViewSwapAxis (AXIS_DEEP,AXIS_4D);
 	UISyzeReset ();
@@ -808,7 +775,7 @@ UISwapFrontExtra ()
 	if (ui->style == VIEW_ARRAY) UIArrayDraw();
 	}
 
-UISwapSideExtra ()
+void UISwapSideExtra (void)
 	{
 	ViewSwapAxis (AXIS_ACROSS,AXIS_4D);
 	UISyzeReset ();
@@ -816,7 +783,7 @@ UISwapSideExtra ()
 	if (ui->style == VIEW_ARRAY) UIArrayDraw();
 	}
 
-UISwapTopExtra ()
+void UISwapTopExtra (void)
 	{
 	ViewSwapAxis (AXIS_DOWN,AXIS_4D);
 	UISyzeReset ();
@@ -825,28 +792,26 @@ UISwapTopExtra ()
 	}
 
 /* axis flip callbacks */
-UIFlipDown ()
+void UIFlipDown (void)
 	{
 	ViewFlipAxis (AXIS_DOWN);
 	UISyzeReset ();
 	}
 
-UIFlipAcross ()
+void UIFlipAcross (void)
 	{
 	ViewFlipAxis (AXIS_ACROSS);
 	UISyzeReset ();
 	}
 
-UIFlipDeep ()
+void UIFlipDeep (void)
 	{
 	ViewFlipAxis (AXIS_DEEP);
 	UISyzeReset ();
 	}
 
 /* set shape callback */
-UISizeChoice (widget,item)
-Widget widget;
-int item;
+void UISizeChoice ( Widget widget, int item)
 	{
 	WidgetList list;
 
@@ -858,15 +823,14 @@ int item;
 	}
 
 /* interpolation choice callback */
-UIInterpolateToggle (widget)
-Widget widget;
+void UIInterpolateToggle (Widget widget)
 	{
 	RenderToggleInterp ();
 	ViewDrawAll ();
 	}
 
 /* default zoom callback */
-UISize0 ()
+void UISize0 (void)
 	{
 	RenderSetInterp (0);
 	ViewWindow0 ();
@@ -874,14 +838,14 @@ UISize0 ()
 	}
 
 /* default screen size callback (doesn't work) */
-UIScreen0 ()
+void UIScreen0 (void)
 	{
 	if (!ui) return;
 	XtVaSetValues (ui->canvas,XmNwidth,ui->wide,XmNheight,ui->hite,NULL);
 	}
 
 /* region smooth callback */
-UISubvolumeSmooth ()
+void UISubvolumeSmooth (void)
 	{
 	extern Data data;
 
@@ -892,7 +856,7 @@ UISubvolumeSmooth ()
 	}
 
 /* region smooth undo */
-UISmoothUndo ()
+void UISmoothUndo (void)
 	{
 	extern Data data;
 	
@@ -903,15 +867,13 @@ UISmoothUndo ()
 	}
 
 /* clear picks callback */
-UIPickClear (widget,event)
-Widget widget;
-XButtonEvent *event;
+void UIPickClear ( Widget widget, XButtonEvent *event)
 	{
 	PickClear0 ();
 	RegionClear ();
 	}
 
-UIEditGrade ()
+void UIEditGrade (void)
 	{
 	extern Data data;
 	extern View view;
@@ -922,7 +884,7 @@ UIEditGrade ()
 	ViewDrawAll ();
 	}
 
-UIGradeUndo ()
+void UIGradeUndo (void)
 	{
 	extern Data data;
 
@@ -932,7 +894,7 @@ UIGradeUndo ()
 	ViewDrawAll ();
 	}
 
-UIStatistics ()
+void UIStatistics (void)
 	{
 	extern View view;
 	extern Data data;
@@ -950,16 +912,15 @@ UIStatistics ()
 	UIMessage (message);
 	}
 
-UIWakeup ()
+void UIWakeup (void)
 	{
 	XmProcessTraversal(ui->canvas, XmTRAVERSE_CURRENT);
 	}
 /* pik write callback */
-UIPikWrite ()
+void UIPikWrite (void)
 	{
 	Widget widget;
 	extern Data data;
-	extern UIPikWrite2();
 	extern PikList pik;
 
 	if (!data) return;
@@ -971,10 +932,7 @@ UIPikWrite ()
 	XtManageChild (widget);
 	}
 
-UIPikWrite2 (widget,stuff,cbs)
-Widget widget;
-XtPointer stuff;
-XmFileSelectionBoxCallbackStruct *cbs;
+void UIPikWrite2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs)
 	{
 	extern Data data;
 	char *filename;
@@ -991,11 +949,10 @@ XmFileSelectionBoxCallbackStruct *cbs;
 	}
 
 /* pik read callback */
-UIPikRead ()
+void UIPikRead (void)
 	{
 	Widget widget;
 	extern Data data;
-	extern UIPikRead2();
 	extern PikList pik;
 
 	if (!data) return;
@@ -1007,10 +964,7 @@ UIPikRead ()
 	XtManageChild (widget);
 	}
 
-UIPikRead2 (widget,stuff,cbs)
-Widget widget;
-XtPointer stuff;
-XmFileSelectionBoxCallbackStruct *cbs;
+void UIPikRead2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs)
 	{
 	extern Data data;
 	char *filename;
@@ -1030,10 +984,9 @@ XmFileSelectionBoxCallbackStruct *cbs;
 	}
 
 /* save front section callback */
-UISaveFront ()
+void UISaveFront (void)
 	{
 	Widget widget;
-	extern UISaveFront2();
 	string filename;
 	extern Data data;
 	extern View view;
@@ -1052,10 +1005,7 @@ UISaveFront ()
 	XtManageChild (widget);
 	}
 
-UISaveFront2 (widget,stuff,cbs)
-Widget widget;
-XtPointer stuff;
-XmFileSelectionBoxCallbackStruct *cbs;
+void UISaveFront2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs)
 	{
 	extern Data data;
 	char *filename;
@@ -1073,10 +1023,9 @@ XmFileSelectionBoxCallbackStruct *cbs;
 	}
 
 /* save side section callback */
-UISaveSide ()
+void UISaveSide (void)
 	{
 	Widget widget;
-	extern UISaveSide2();
 	string filename;
 	extern Data data;
 	extern View view;
@@ -1095,10 +1044,7 @@ UISaveSide ()
 	XtManageChild (widget);
 	}
 
-UISaveSide2 (widget,stuff,cbs)
-Widget widget;
-XtPointer stuff;
-XmFileSelectionBoxCallbackStruct *cbs;
+void UISaveSide2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs)
 	{
 	extern Data data;
 	char *filename;
@@ -1116,10 +1062,9 @@ XmFileSelectionBoxCallbackStruct *cbs;
 	}
 
 /* save top section callback */
-UISaveTop ()
+void UISaveTop (void)
 	{
 	Widget widget;
-	extern UISaveTop2();
 	string filename;
 	extern Data data;
 	extern View view;
@@ -1138,10 +1083,7 @@ UISaveTop ()
 	XtManageChild (widget);
 	}
 
-UISaveTop2 (widget,stuff,cbs)
-Widget widget;
-XtPointer stuff;
-XmFileSelectionBoxCallbackStruct *cbs;
+void UISaveTop2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs)
 	{
 	extern Data data;
 	char *filename;
@@ -1159,10 +1101,9 @@ XmFileSelectionBoxCallbackStruct *cbs;
 	}
 
 /* save down profile callback */
-UISaveDown ()
+void UISaveDown (void)
 	{
 	Widget widget;
-	extern UISaveDown2();
 	string filename;
 	extern Data data;
 	extern View view;
@@ -1181,10 +1122,7 @@ UISaveDown ()
 	XtManageChild (widget);
 	}
 
-UISaveDown2 (widget,stuff,cbs)
-Widget widget;
-XtPointer stuff;
-XmFileSelectionBoxCallbackStruct *cbs;
+void UISaveDown2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs)
 	{
 	extern Data data;
 	char *filename;
@@ -1202,10 +1140,9 @@ XmFileSelectionBoxCallbackStruct *cbs;
 	}
 
 /* save across profile callback */
-UISaveAcross ()
+void UISaveAcross (void)
 	{
 	Widget widget;
-	extern UISaveAcross2();
 	string filename;
 	extern Data data;
 	extern View view;
@@ -1224,10 +1161,7 @@ UISaveAcross ()
 	XtManageChild (widget);
 	}
 
-UISaveAcross2 (widget,stuff,cbs)
-Widget widget;
-XtPointer stuff;
-XmFileSelectionBoxCallbackStruct *cbs;
+void UISaveAcross2 ( Widget widget, XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs)
 	{
 	extern Data data;
 	char *filename;
@@ -1245,10 +1179,9 @@ XmFileSelectionBoxCallbackStruct *cbs;
 	}
 
 /* save deep profile callback */
-UISaveDeep ()
+void UISaveDeep (void)
 	{
 	Widget widget;
-	extern UISaveDeep2();
 	string filename;
 	extern Data data;
 	extern View view;
@@ -1267,10 +1200,7 @@ UISaveDeep ()
 	XtManageChild (widget);
 	}
 
-UISaveDeep2 (widget,stuff,cbs)
-Widget widget;
-XtPointer stuff;
-XmFileSelectionBoxCallbackStruct *cbs;
+void UISaveDeep2 (Widget widget,XtPointer stuff, XmFileSelectionBoxCallbackStruct *cbs)
 	{
 	extern Data data;
 	char *filename;

@@ -4,15 +4,28 @@
 movie object code
 one animator shared between all parts of a view
 */
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <stdlib.h>
+#ifdef MACOS
+#include <unistd.h>
+#include <fcntl.h>
+#endif
 #include <sys/time.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include "main.h"
+#include "axis.h"
+#include "data.h"
+#include "map.h"
+#include "view.h"
 #include "movie.h"
+#include "ui.h"
 
 Movie movie = 0;
 
 /* initialize movie object */
-MovieInit ()
+void MovieInit (void)
 	{
 	NEW (Movie,movie,1);
 	movie->dir = MOVIE_REVERSE;
@@ -26,22 +39,21 @@ MovieInit ()
 	}
 
 /* return movie direction */
-MovieDir ()
+int MovieDir (void)
 	{
 	if (!movie) return (0);
 	return (movie->dir);
 	}
 
 /* set movie direction */
-MovieSetDir (dir)
-int dir;
+void MovieSetDir (int dir)
 	{
 	if (!movie) return;
 	movie->dir = dir > 0 ? MOVIE_FORWARD : MOVIE_REVERSE;
 	}
 
 /* toggle movie direction */
-MovieToggleDir ()
+void MovieToggleDir (void)
 	{
 	if (!movie) return;
 	if (movie->dir == MOVIE_FORWARD) movie->dir = MOVIE_REVERSE;
@@ -49,44 +61,42 @@ MovieToggleDir ()
 	}
 
 /* set cache mode */
-MovieToggleCache ()
+void MovieToggleCache (void)
 	{
 	if (!movie) return;
 	movie->cache = 1 - movie->cache;
 	}
 
 /* return cache mode */
-MovieCache ()
+int MovieCache (void)
 	{
 	if (!movie) return (NO_INDEX);
 	return (movie->cache);
 	}
 
 /* return delay */
-MovieDelay ()
+int MovieDelay (void)
 	{
 	if (!movie) return (0);
 	return (movie->delay);
 	}
 
 /* set run mode */
-MovieSetRun (run)
-int run;
+void MovieSetRun (int run)
 	{
 	if (!movie) return;
 	movie->run = run;
 	}
 
 /* return run mode */
-MovieRun ()
+int MovieRun (void)
 	{
 	if (!movie) return (0);
 	return (movie->run);
 	}
 
 /* set movie speed 0-100 */
-MovieSetSpeed (speed)
-int speed;
+void MovieSetSpeed (int speed)
 	{
 	movie->delay = 100 - speed;
 	/* reset timer */
@@ -97,7 +107,7 @@ int speed;
 	}
 
 /* start animation oscillator */
-MovieOn ()
+void MovieOn (void)
 	{
 	if (ViewMovieOK() == 0) return;
 	movie->run = 1;
@@ -113,15 +123,15 @@ MovieOn ()
 	UITimer (&timer);
 #endif
 #if defined(HAVE_ATHENA)
-	ViewDrawMovie ();
+	ViewDrawMovie (NULL, NULL);
 #endif
 #if defined(HAVE_MOTIF)
-	ViewDrawMovie ();
+	ViewDrawMovie (NULL, NULL);
 #endif
 	}
 
 /* stop animation oscillator */
-MovieOff ()
+void MovieOff (void)
 	{
 	if (!movie->run) return;
 	UITimer (-1,0);
@@ -129,7 +139,7 @@ MovieOff ()
 	}
 
 /* return movie information */
-MovieInfo ()
+void MovieInfo (void)
 	{
 	Message message;
 	extern Movie movie;
@@ -144,7 +154,7 @@ MovieInfo ()
 	}
 
 /* save movie parameters */
-MovieSavePar ()
+void MovieSavePar (void)
 	{
 	Message message;
 	extern Movie movie;

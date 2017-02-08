@@ -4,6 +4,13 @@
 pick object code
 pick object contains screen pick, map axis, view configuration and picking
 */
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <stdlib.h>
+#ifdef MACOS
+#include <unistd.h>
+#include <fcntl.h>
+#endif
 #include <stdio.h>
 #include "main.h"
 #include "axis.h"
@@ -11,8 +18,10 @@ pick object contains screen pick, map axis, view configuration and picking
 #include "map.h"
 #include "render.h"
 #include "plane.h"
+#include "draw.h"
 #include "view.h"
 #include "pick.h"
+#include "ui.h"
 
 PickLine picklist[PICKNLIST], lastpick = 0;
 string pickfile = "stdio";
@@ -21,7 +30,7 @@ string pickfile = "stdio";
 #define	PICKFRAME(pick,axis)	pick index[PICKDIR(pick,axis)]
 
 /* initialize pick object */
-PickInit ()
+void PickInit (void)
 	{
 	int i;
 	static int first=1;
@@ -36,9 +45,7 @@ PickInit ()
 	}
 
 /* decode an x,y by shadow lookup */
-PickDecode (x,y,pick,print)
-int x, y, print;
-PickPoint pick;
+int PickDecode (int x,int y,PickPoint pick,int print)
 	{
 	extern Render render;
 	extern View view;
@@ -49,7 +56,7 @@ PickPoint pick;
 	Buffer buffer;
 
 	/* no pick made */
-	if (!render || !view || !data) return;
+	if (!render || !view || !data) return NO_INDEX;
 	/* no invalid pick */
 	for (iaxis=0; iaxis<DATA_NAXIS; iaxis++) {
 		pick->iaxis[iaxis] = NO_INDEX;
@@ -57,7 +64,7 @@ PickPoint pick;
 		}
 	/* decode directions; using neighboring horizontal & vertical pixels */
 	shadow = RenderShadowValue(render,x,y);
-	if ((int)shadow == NO_INDEX) return;
+	if ((int)shadow == NO_INDEX) return NO_INDEX;
 	PickDecodeShadow (shadow,pick->index);
 	for (i=1; ; i++) {
 		shadow1 = RenderShadowValue(render,x+i,y+i);
@@ -94,7 +101,7 @@ PickPoint pick;
 		for (i=0; i<DATA_NAXIS; i++) printf ("%8d ",pick->index[i]); printf ("\n");
 		for (i=0; i<DATA_NAXIS; i++) printf ("%8d ",index1[i]); printf ("\n");
 		printf ("\n");
-		return;
+		return 1;
 		}
 */
 	buffer = DataBuffer (data);
@@ -120,12 +127,10 @@ PickPoint pick;
 		AxisValue(DataAxis(data,DATA_VALUE),pick->index[DATA_VALUE]));
 		UIMessage (message);
 		}
-	return;
+	return 1;
 	}
 
-PickDecodeShadow (shadow,index)
-Shadow_ shadow;
-int index[];
+void PickDecodeShadow ( Shadow_ shadow, int index[])
 	{
 	extern Data data;
 	int iaxis;
@@ -138,8 +143,7 @@ int index[];
 
 /* find a pick list */
 PickLine
-PickFind (dir3,frame3,dir4,frame4,dir5,frame5)
-int dir3, frame3, dir4, frame4, dir5, frame5;
+PickFind (int dir3,int frame3,int dir4,int frame4,int dir5,int frame5)
 	{
 	int iset;
 
@@ -159,7 +163,7 @@ int dir3, frame3, dir4, frame4, dir5, frame5;
 	}
 
 /* return size of pick list */
-PickSize ()
+int PickSize (void)
 	{
 	int iset, nset;
 
@@ -170,7 +174,7 @@ PickSize ()
 	}
 
 /* return pick axis */
-PickAxis ()
+int PickAxis (void)
 	{
 	int iset;
 
@@ -181,25 +185,21 @@ PickAxis ()
 	}
 
 /* return pick direction */
-PickDir (pickline)
-PickLine pickline;
+int PickDir ( PickLine pickline)
 	{
 	if (!pickline) return (NO_INDEX);
 	else return (PICKDIR(pickline->,AXIS_DEEP));
 	}
 
 /* return pick count */
-PickCount (pickline)
-PickLine pickline;
+int PickCount ( PickLine pickline)
 	{
 	if (!pickline) return (NO_INDEX);
 	else return (pickline->npick);
 	}
 
 /* return pick sample ipick and idim */
-PickIndex (pickline,ipick,idim)
-PickLine pickline;
-int ipick, idim;
+int PickIndex ( PickLine pickline, int ipick, int idim)
 	{
 	if (!pickline) return (NO_INDEX);
 	if (ipick < 0 || ipick >= NPICK) return (NO_INDEX);
@@ -208,8 +208,7 @@ int ipick, idim;
 	}
 
 /* return pick list frame */
-PickFrame (ipick)
-int ipick;
+int PickFrame (int ipick)
 	{
 	int iset;
 
@@ -221,7 +220,7 @@ int ipick;
 	}
 
 /* print information about pick object */
-PickInfo ()
+void PickInfo (void)
 	{
 	Message message;
 	PickLine pickline = 0;
@@ -250,8 +249,7 @@ PickInfo ()
 	}
 
 /* add valid pick to current set */
-PickAdd (x,y)
-int x, y;
+void PickAdd (int x,int y)
 	{
 	int i, iset, iaxis;
 	PickPoint_ pick;
@@ -286,8 +284,7 @@ int x, y;
 	PickDraw (pickline,DRAW);
 	}
 /* add valid pick to current set */
-PickInsert (x,y)
-int x, y;
+void PickInsert (int x,int y)
 	{
 	int i, span, metric, near, inear, iset, iaxis, insert;
 	PickPoint_ pick;
@@ -386,8 +383,7 @@ int x, y;
 	}
 
 /* replace nearest pick */
-PickReplace (x,y)
-int x, y;
+void PickReplace (int x,int y)
 	{
 	PickLine pickline;
 	int i, j, span, metric, near, inear;
@@ -421,8 +417,7 @@ int x, y;
 	}
 
 /* delete nearest pick */
-PickDelete (x,y)
-int x, y;
+void PickDelete (int x,int y)
 	{
 	PickLine pickline;
 	int i, j, span, metric, near, inear;
@@ -462,9 +457,7 @@ int x, y;
 	}
 
 /* end pick enable */
-PickDraw (pickline,draw)
-PickLine pickline;
-int draw;
+void PickDraw ( PickLine pickline, int draw)
 	{
 	Plane plane;
 	int ipick, x, y, x0, y0, x1, y1, x2, y2, hskew=0, vskew=0;
@@ -500,8 +493,7 @@ int draw;
 	}
 
 /* draw all pick sets */
-PickDrawAll (draw)
-int draw;
+void PickDrawAll (int draw)
 	{
 	int iset;
 
@@ -511,7 +503,7 @@ int draw;
 	}
 
 /* read pick file */
-PickRead ()
+void PickRead (void)
 	{
 	FILE *fd, *fopen();
 	extern Data data;
@@ -526,7 +518,7 @@ PickRead ()
 		UIMessage ("cant open pick file");
 		return;
 		}
-	fgets (line,sizeof(line),fd);
+	if(NULL != fgets (line,sizeof(line),fd))
 /*
 	fgets (line,sizeof(line),fd);
 	sscanf (line,"%s %d %d %d %d %d",dummy,&n1,&n2,&n3,&n4,&n5);
@@ -539,7 +531,7 @@ PickRead ()
 		return;
 		}
 */
-	fgets (line,sizeof(line),fd);
+	if(NULL != fgets (line,sizeof(line),fd))
 	while (fgets (line,sizeof(line),fd) != NULL) {
 		if (!strncmp (line,"Pick#",5)) {
 			iset++;
@@ -577,7 +569,7 @@ PickRead ()
 	}
 
 /* write pick file */
-PickWrite ()
+void PickWrite (void)
 	{
 	int iset, ipick, isave;
 	extern FILE *outstream;
@@ -620,7 +612,7 @@ PickWrite ()
 				PICKDIR(picklist[iset]->,AXIS_4D),
 				PICKDIR(picklist[iset]->,AXIS_5D),
 				AxisScript(DataAxis(data,PICKDIR(picklist[iset]->,AXIS_DEEP)),
-				picklist[iset]->index[AXIS_DEEP]));
+				picklist[iset]->index[AXIS_DEEP][DATA_AXIS3]));
 			for (ipick=0; ipick<picklist[iset]->npick; ipick++) {
 				fprintf (fd,"%10g %10g %10g %10g %10g %10g\n",
 				AxisValue (DataAxis(data,DATA_AXIS1),
@@ -643,8 +635,7 @@ PickWrite ()
 	}
 
 /* remove set from pick list */
-PickClear (pickline)
-PickLine pickline;
+void PickClear ( PickLine pickline)
 	{
 	int iset;
 
@@ -661,14 +652,13 @@ PickLine pickline;
 	}
 
 /* clear current pick */
-PickClear0 ()
+void PickClear0 (void)
 	{
 	PickClear (lastpick);
 	}
 
 /* set pick frame */
-PickSetFrame (index)
-int index;
+void PickSetFrame (int index)
 	{
 	PickLine pickline;
 	int iset;
@@ -683,12 +673,12 @@ int index;
 		}
 	if (iset == PICKNLIST) return;
 	ViewSetMovie (PICKDIR(pickline->,AXIS_DEEP));
-	ViewSetFrame (pickline->index[AXIS_DEEP],FRAME_ACTUAL);
+	ViewSetFrame (pickline->index[AXIS_DEEP][DATA_AXIS3],FRAME_ACTUAL);
 	PickDraw (pickline, DRAW/*?*/);
 	}
 
 /* print a list of picks */
-PickListInfo ()
+void PickListInfo (void)
 	{
 	int iset;
 
@@ -700,7 +690,7 @@ PickListInfo ()
 	}
 
 /* save pick parameters */
-PickSavePar ()
+void PickSavePar (void)
 	{
 	Message message;
 	extern PickLine lastpick;
@@ -709,15 +699,14 @@ PickSavePar ()
 	sprintf (message,"Pick: nset=%d pickdir=%d pickframe=%d npick=%d pick=%s",
 		PickSize(),
 		PICKDIR(lastpick->,AXIS_DEEP),
-		lastpick->index[AXIS_DEEP],
+		lastpick->index[AXIS_DEEP][DATA_AXIS3],
 		lastpick->npick,
 		pickfile);
 	UISaveMessage (message);
 	}
 
 /* returns two picks are in same frame */
-PickSameFrame (pick1,pick2)
-PickPoint pick1, pick2;
+int PickSameFrame (PickPoint pick1,PickPoint pick2)
 	{
 	return ((pick1->iaxis[AXIS_DOWN] == pick2->iaxis[AXIS_DOWN]) &&
 		(pick1->iaxis[AXIS_ACROSS] == pick2->iaxis[AXIS_ACROSS]) &&
@@ -730,8 +719,7 @@ PickPoint pick1, pick2;
 	}
 
 /* returns two picks are same direction */
-PickSameDir (pick1,pick2)
-PickPoint pick1, pick2;
+int PickSameDir (PickPoint pick1,PickPoint pick2)
 	{
 	return ((pick1->iaxis[AXIS_DEEP] == pick2->iaxis[AXIS_DEEP]) &&
 		(pick1->iaxis[AXIS_4D] == pick2->iaxis[AXIS_4D]) &&
@@ -739,8 +727,7 @@ PickPoint pick1, pick2;
 	}
 
 /* returns direction of shared coordinate: 0, pick->iaxis[1] or pick->iaxis[2] */
-PickSharedDir (pick1,pick2)
-PickPoint pick1, pick2;
+int PickSharedDir (PickPoint pick1,PickPoint pick2)
 	{
 	return (PickSameFrame (pick1,pick2) *
 		(((pick1->index[pick1->iaxis[AXIS_DOWN]] == pick2->index[pick2->iaxis[AXIS_DOWN]])
@@ -750,8 +737,7 @@ PickPoint pick1, pick2;
 	}
 
 /* return non-zero if a is between b and c; angle a-b-c < 90; a is nearer to b */
-PickBetween (a,b,c)
-int *a, *b, *c;
+int PickBetween (int *a,int *b,int *c)
 	{
 	int i;
 	int ra=0, rb=0, rc=0;

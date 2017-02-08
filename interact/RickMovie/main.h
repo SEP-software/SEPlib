@@ -1,14 +1,16 @@
+#ifndef RICKMOVIE_MAIN_H
+#define RICKMOVIE_MAIN_H
 /*
 basic definitions
 */
-
+#include <stdlib.h>
 /* allocate memory for count objects of a class */
 #define NEW(class,var,count)	{\
 	extern int _alloc;\
 	var=(class)malloc((count)*sizeof(var[0]));\
 	_alloc += (count)*sizeof(var[0]);\
 	if (var == 0) err ("cant allocate %d bytes for var; %d already allocated",(count)*sizeof(var[0]),_alloc);\
-	if (memwatch) printf ("malloc %s=%d\n","var",(count)*sizeof(var[0]));\
+	if (memwatch) printf ("malloc %s=%lu\n","var",(unsigned long) ((count)*sizeof(var[0])));\
 	}\
 /* clear object memory */
 #define	FILL(var,size,val)		{register byte bp, be; for (bp=(byte)var, be=bp+(size)*sizeof(var[0]); bp<be;) *bp++ = val;}
@@ -35,6 +37,8 @@ typedef char Message[256];
 #define	GetparInit	initargs
 #endif
 #ifdef SEPLIB
+extern int fetch(char *, char *, void *);
+extern int seperr(char *, ... );
 #define GETPARSTRING    fetch
 #define GETPARFLOAT     fetch
 #define GETPARINT       fetch
@@ -42,3 +46,8 @@ typedef char Message[256];
 #endif
 
 extern int memwatch;
+
+/* API */
+void MainFirst (void);
+
+#endif

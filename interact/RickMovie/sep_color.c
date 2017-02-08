@@ -3,10 +3,20 @@
 /*
 color table object
 */
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <math.h>
 #include "main.h" 
+#include "axis.h"
+#include "data.h"
+#include "map.h"
+#include "render.h"
+#include "draw.h"
 #include "color.h"
+#include "ui.h"
 
 ColorTable ctable = 0;
 
@@ -128,7 +138,7 @@ string background_names[] = {
 "black"};
 
 /* initialize color */
-ColorInit ()
+void ColorInit (void)
 	{
 	int i, veldata=0;
 	string name;
@@ -178,7 +188,7 @@ ColorInit ()
 
 
 /* interpret color menu positions */
-ColorSwitch ()
+void ColorSwitch (void)
 	{
 	extern ColorTable ctable;
 
@@ -196,8 +206,7 @@ ColorSwitch ()
 	}
 
 /* set contrast-gpow value 0 - 100 */
-ColorSetContrast (contrast)
-int contrast;
+void ColorSetContrast (int contrast)
 	{
 	extern ColorTable ctable;
 
@@ -206,8 +215,7 @@ int contrast;
 	}
 
 /* set contrast-middle value 0-100 */
-ColorSetContrast0 (contrast0)
-int contrast0;
+void ColorSetContrast0 (int contrast0)
 	{
 	extern ColorTable ctable;
 
@@ -216,8 +224,7 @@ int contrast0;
 	}
 
 /* set color option */
-ColorSetChoice (color)
-int color;
+void ColorSetChoice (int color)
 	{
 	extern ColorTable ctable;
 
@@ -226,8 +233,7 @@ int color;
 	}
 
 /* set overlay color (see above constants) */
-ColorSetOverlay (index)
-int index;
+void ColorSetOverlay (int index)
 	{
 	extern ColorTable ctable;
 
@@ -236,8 +242,7 @@ int index;
 	}
 
 /* set color background */
-ColorSetBackground (index)
-int index;
+void ColorSetBackground (int index)
 	{
 	extern ColorTable ctable;
 
@@ -252,8 +257,7 @@ int index;
 	}
 
 /* set mark color */
-ColorSetMark (index)
-int index;
+void ColorSetMark (int index)
 	{
 	extern ColorTable ctable;
 
@@ -268,7 +272,7 @@ int index;
 	}
 
 /* return color table size */
-ColorSize ()
+int ColorSize (void)
 	{
 	int ncolor;
 
@@ -284,7 +288,7 @@ ColorSize ()
 	}
 
 /* print color table information */
-ColorInfo ()
+void ColorInfo (void)
 	{
 	Message message;
 	extern ColorTable ctable;
@@ -304,7 +308,7 @@ ColorInfo ()
 	}
 
 /* return background color */
-ColorBackground ()
+int ColorBackground (void)
 	{
 	extern ColorTable ctable;
 
@@ -313,7 +317,7 @@ ColorBackground ()
 	}
 
 /* return base color */
-ColorBase ()
+int ColorBase (void)
 	{
 	extern ColorTable ctable;
 
@@ -322,7 +326,7 @@ ColorBase ()
 	}
 
 /* return mark color */
-ColorMark ()
+int ColorMark (void)
 	{
 	extern ColorTable ctable;
 
@@ -331,8 +335,7 @@ ColorMark ()
 	}
 
 /* create color table given pivot colors; apply contrast */
-ColorLoad (cdata)
-Color cdata;
+void ColorLoad (Color cdata)
 	{
 	float frac, stretch[257], value;
 	int i, icolor, midpoint;
@@ -415,7 +418,7 @@ Color cdata;
 	DrawColors (ctable->red,ctable->green,ctable->blue,ctable->size+4);
 	}
 
-ColorLoadVeldata () {
+void ColorLoadVeldata (void) {
 	int i, j, k;
 	float frac, scale;
 	ctable->gpow = ctable->contrast > 50 ?
@@ -440,7 +443,7 @@ ColorLoadVeldata () {
 	}
 
 /* save color parameters */
-ColorSavePar ()
+void ColorSavePar (void)
 	{
 	Message message;
 	extern ColorTable ctable;
@@ -455,7 +458,7 @@ ColorSavePar ()
 	}
 
 /* write color table contents to a file */
-ColorTableDump ()
+void ColorTableDump (void)
 	{
 	extern ColorTable ctable;
 	string filename;

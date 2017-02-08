@@ -1,3 +1,5 @@
+#ifndef RICKMOVIE_COLOR_H
+#define RICKMOVIE_COLOR_H
 /*
 color object definition
 
@@ -66,3 +68,23 @@ typedef struct {
 	unsigned short	blue[NXCOLOR];	/* after contrast blue entries */
 	} *ColorTable;
 
+/* API */
+extern void ColorInit(void);
+extern void ColorSwitch (void);
+extern void ColorLoad (Color cdata);
+extern void ColorLoadVeldata (void);
+extern void ColorSavePar (void);
+extern void ColorTableDump (void);
+extern void ColorSetContrast (int contrast);
+extern void ColorSetContrast0 (int contrast0);
+extern void ColorSetChoice (int color);
+extern void ColorSetOverlay (int index);
+extern void ColorSetBackground (int index);
+extern void ColorSetMark (int index);
+extern int ColorSize (void);
+extern void ColorInfo (void);
+extern int ColorBackground (void);
+extern int ColorBase (void);
+extern int ColorMark (void);
+
+#endif

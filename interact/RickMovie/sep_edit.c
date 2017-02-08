@@ -1,5 +1,6 @@
 #include <sitedef.h>
 #if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
+#include <stdlib.h>
 #include <stdio.h>
 #include "main.h"
 #include "axis.h"
@@ -10,11 +11,7 @@ Vec edit_vec = 0;
 int edit_size = 0;
 
 /* extract frame of data, given frame */
-EditFrame (data,map1,map2,map3,frame,dist)
-Buffer data;
-Map map1, map2, map3;
-int frame;
-float dist[256];
+int EditFrame ( Buffer data, Map map1, Map map2, Map map3, int frame, float dist[256])
 	{
 	int inc2, i2, len1, len2;
 	register int inc1;
@@ -34,10 +31,7 @@ float dist[256];
 	}
 
 /* extract six frames of a box, given three map axes */
-EditBox (data,map1,map2,map3,dist)
-Buffer data;
-Map map1, map2, map3;
-float dist[256];
+int EditBox ( Buffer data, Map map1, Map map2, Map map3, float dist[256])
 	{
 	int n = 0, i;
 
@@ -52,9 +46,7 @@ float dist[256];
 	}
 
 /* return data distribution and stats given buffer */
-EditStats (n,dist,low,median,high)
-float *dist;
-int n, *low, *median, *high;
+void EditStats (int n,float *dist,int *low,int *median,int *high)
 	{
 	int i;
 
@@ -68,10 +60,7 @@ int n, *low, *median, *high;
 	}
 
 /* extract sub volume given three map axes */
-EditCube (data,map1,map2,map3,dist)
-Buffer data;
-Map map1, map2, map3;
-float dist[256];
+int EditCube ( Buffer data, Map map1, Map map2, Map map3, float dist[256])
 	{
 	int i2, i3, inc2, inc3, len1, len2, len3, i;
         register int inc1;
@@ -97,9 +86,7 @@ float dist[256];
 	}
 
 /* 3-D linear grade blemish repair; save backup */
-EditGrade (data,map1,map2,map3)
-Buffer data;
-Map map1, map2, map3;
+void EditGrade (Buffer data,Map map1,Map map2,Map map3)
 	{
 	Buffer bufferp;
 	Vec vecp;
@@ -146,8 +133,7 @@ Map map1, map2, map3;
 		}
 	}
 
-EditUndo (data)
-Buffer data;
+void EditUndo (Buffer data)
 	{
 	register Buffer bufferp, datap, endp;
 	register Vec vecp;
