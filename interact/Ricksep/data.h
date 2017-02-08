@@ -155,4 +155,9 @@ typedef struct{
   int pathVelChoice;                        /** which velocity buffer is being used as background **/
 } *Datalist;
 
+/* API */
+int DataGetpar (Data data,char *tag, char *extra);
+void PathViewInterpolate(int pathNum);
+int PathViewOn(void);
+
 #endif

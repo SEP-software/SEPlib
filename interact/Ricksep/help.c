@@ -451,7 +451,7 @@ int HelpPrint (char *start,char *finish)
 	}
 
 /* pipe text through more */
-HelpMore (char *start,char *finish)
+int HelpMore (char *start,char *finish)
 	{
 	FILE *pfile, *popen();
 	char *startp=NULL, *finishp=NULL;

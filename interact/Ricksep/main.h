@@ -10,7 +10,7 @@ basic definitions
 	var=(class)malloc((count)*sizeof(var[0]));\
 	_alloc += (count)*sizeof(var[0]);\
 	if (var == 0) err ("cant allocate %d bytes for var; %d already allocated",(count)*sizeof(var[0]),_alloc);\
-	if (memwatch) printf ("malloc %s=%d\n",var,(count)*(int)sizeof(var[0]));\
+	if (memwatch) printf ("malloc %p=%ld\n",var,(long) ((count)*(int)sizeof(var[0])));\
 	}\
 /* clear object memory */
 #define	FILL(var,size,val)		{register byte bp, be; for (bp=(byte)var, be=bp+(size)*sizeof(var[0]); bp<be;) *bp++ = val;}
@@ -57,7 +57,8 @@ extern int memwatch;
 #define DATA_NAXIS  6
 
 
-
+/* API */
+void MainFirst (void);
 
 
 

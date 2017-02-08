@@ -1,4 +1,7 @@
 #include <sitedef.h>
+#ifdef MACOS
+#include <unistd.h>
+#endif
 #if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
 /*
 pick list subroutines
@@ -394,7 +397,7 @@ int  PikNear (int x,int y)
 	return (inear);
 	}
 
-PikCoord (int ipik,Plane plane,int *x,int *y)
+int PikCoord (int ipik,Plane plane,int *x,int *y)
 	{
 	int hskew=0, vskew=0, x1, y1;
 	View myv;
@@ -1587,7 +1590,7 @@ free(buf2); free(buf1); free(myt);free(iline);
 
 }
 
-void PikGrow3D(){
+void PikGrow3D(void){
 View myv;
 PikList pik;
 Buffer myd;

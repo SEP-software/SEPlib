@@ -28,7 +28,7 @@ typedef struct {
 	} *REgion;
 /* Region used by X11/Intrinsic.h */
 
-extern void RegionInit ();
+extern void RegionInit (void);
 extern int RegionSetLive (int live);
 extern int RegionSetBound (int index,int ibound);
 extern int RegionSetNeighborhood (int mode);

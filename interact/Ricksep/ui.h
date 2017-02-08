@@ -223,5 +223,8 @@ typedef struct {
 	Widget	i_text;
 	} *UI;
 
+/* API */
+extern XID UIColorbarWindow (void);
+extern int UIPikMove (Widget widget,XButtonEvent *event);
 
 #endif

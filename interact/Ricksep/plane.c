@@ -83,7 +83,7 @@ void PlaneSetFrame (Plane plane,int frame3)
 	}
 
 /* print list of planes */
-int PlaneListInfo ()
+int PlaneListInfo (void)
 	{
 	Plane plane;
 

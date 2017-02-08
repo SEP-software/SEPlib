@@ -188,7 +188,10 @@ while($i1 < @lines){ #loop over the lines
 	
 	while($break==0){ #if we haven't finished parsing this line
 	
-		if($line =~ /"|'|!|\#/oi){
+                if($line =~ /^%\s*#/) {
+                        $line=~s/^%//;
+                        $break=1;
+		}elsif($line =~ /"|'|!|\#/oi){
 			#in this case we have a possible quote or comment
 			$break_it=0;
 			$single=index($line,"'",0);

@@ -29,5 +29,7 @@ typedef struct {
 	RenderAttr attr;	/* render attributes */
 	} *Plane;
 
+/* API */
+int PlaneListInfo (void);
 
 #endif

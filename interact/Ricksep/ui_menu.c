@@ -1,4 +1,12 @@
 #include <sitedef.h>
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+#if defined(MACOS) || defined(LINUX)
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#endif
 #if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
 /*
 user interface: menu setup and callbacks
@@ -996,7 +1004,7 @@ int UISizeChoice (Widget widget,int item)
 	}
 
 /* interpolation choice callback */
-UIInterpolateToggle (Widget widget)
+int UIInterpolateToggle (Widget widget)
 	{
 	RenderToggleInterp ();
 	ViewDrawAll ();

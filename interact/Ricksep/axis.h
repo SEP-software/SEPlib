@@ -22,4 +22,6 @@ typedef struct {
 	string	*script;	/* label for each element */
 	} *Axis;
 
+/* API */
+int AxisScaledValue (Axis axis,int index);
 #endif

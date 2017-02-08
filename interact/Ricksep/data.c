@@ -1,15 +1,20 @@
 #include <sitedef.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <math.h>
 #include "rick.h"
 #if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
 #ifdef SEPLIB
 #include<sepcube.h>
+#include <mpi_sep.h>
 #endif
 #ifdef SU_DATA
 #include <su.h>
 #include<segy.h>
 segy tr;
+#endif
+#ifdef MACOS
+#include <fcntl.h>
 #endif
 
 
@@ -41,15 +46,15 @@ void reed_buf ( char *tag, float *buf2, int n1, int nread,int jdata,int *in_mem)
 void reed_data(char *tag, void *buf, int n1);
 
 /** interal velocity view functions **/
-void VelViewInit();
-void VelViewCreateBuffer1();
-void VelViewCreateBuffer2();
-void VelViewUpdateBuffer1();
-void VelViewUpdateBuffer2();
+void VelViewInit(void);
+void VelViewCreateBuffer1(void);
+void VelViewCreateBuffer2(void);
+void VelViewUpdateBuffer1(void);
+void VelViewUpdateBuffer2(void);
 int VelViewCheckCache(int choice);
-int VelViewCacheEmpty();
-void VelViewCreateCache();
-int VelViewCacheLRU();
+int VelViewCacheEmpty(void);
+void VelViewCreateCache(void);
+int VelViewCacheLRU(void);
 
 /** internal path view functions **/
 void PathViewAddFilePick(float* pathX, float* pathY, float* pathZ, long pathInd);
@@ -271,7 +276,7 @@ Data InitData (char *tag, int data_num)
 
 
 /* fetch grid parameters from getpar */
-DataGetpar (Data data,char *tag, char *extra)
+int DataGetpar (Data data,char *tag, char *extra)
 	{
 	  int iaxis;
 	string label;
@@ -660,7 +665,7 @@ char* DataLabel (Data data)
 	static Message message;
 
 	if (!data) return (0);
-	sprintf (message,"%s: %dx%dx%dx%dx%d=%d %s samples",data->title,
+	sprintf (message,"%s: %dx%dx%dx%dx%d=%lld %s samples",data->title,
 		AxisSize(data->axis[DATA_AXIS1]),
 		AxisSize(data->axis[DATA_AXIS2]),
 		AxisSize(data->axis[DATA_AXIS3]),
@@ -719,7 +724,7 @@ int DataSize (Data data)
 	}
 
 /* return longest dimension */
-DataMaxDim (Data data)
+int DataMaxDim (Data data)
 	{
 	int n[DATA_NAXIS], max, iaxis;
 
@@ -817,7 +822,7 @@ int DataInfo (Data data)
 	{
 	Message message;
 
-	sprintf (message,"Data: %s: in=%s %dx%dx%dx%dx%d=%d esize=%d segy=%d hbytes=%d veldata=%s script=%s",
+	sprintf (message,"Data: %s: in=%s %dx%dx%dx%dx%d=%lld esize=%d segy=%d hbytes=%d veldata=%s script=%s",
 		data->title,data->file,
 		AxisSize(data->axis[DATA_AXIS1]),
 		AxisSize(data->axis[DATA_AXIS2]),
@@ -859,7 +864,7 @@ int DataSavePar (Data data)
 	Message message;
 
 	if (!data) return(-1);
-	sprintf (message,"Data: %s: in=%s %dx%dx%dx%dx%d=%d esize=%d segy=%d hbytes=%d script=%s",
+	sprintf (message,"Data: %s: in=%s %dx%dx%dx%dx%d=%lld esize=%d segy=%d hbytes=%d script=%s",
 		data->title,
 		data->file,
 		AxisSize (data->axis[DATA_AXIS1]),
@@ -898,7 +903,10 @@ int DataDumpBytes (Data data,char *file,int fd)
 
 	DrawWatch(1);
 	for (bp=data->buffer, be=bp+data->size; bp<be;) *bp++ <<= 1;
-	write (fd,data->buffer,data->size);
+	if(data->size != write (fd,data->buffer,data->size)) {
+            perror("DataDumpBytes ");
+            err("write error\n");
+        }
 	for (bp=data->buffer, be=bp+data->size; bp<be;) *bp++ >>= 1;
 	DataDumpHeader (data,file,fd,1);
 	DrawWatch(0);
@@ -937,7 +945,10 @@ int DataDumpHeader (Data data,string file,int datafd,int esize)
 		data->gh.gmax = data->high * data->gh.scale;
 		}
 	data->gh.dtype = esize * data->gh.scale;
-	write (datafd,&data->gh,sizeof(data->gh));
+	if(sizeof(data->gh) != write (datafd,&data->gh,sizeof(data->gh))) {
+             perror("DataDumpHeader: write ");
+             err("write error in DataDumpHeader\n");
+        }
 	close (datafd);
 	sprintf (parfile,"%s.H",file);
 	if ((savefd = fopen (parfile,"w")) == NULL); UIMessage ("cant create vgrid parfile");
@@ -966,8 +977,11 @@ int DataDumpFloats (Data data,char *file,int fd)
 	max = data->low;
 	for (i=0, dbuf=data->buffer; i<n3; i++, dbuf+=nn) {
 		Data2Float (dbuf,fbuf,nn,&min,&max);
-		write (fd,fbuf,nn*sizeof(fbuf[0]));
-		}
+		if(nn*sizeof(fbuf[0]) != write (fd,fbuf,nn*sizeof(fbuf[0]))) {
+                    perror("DataDumpFloats: write ");
+                    err("write error in DataDumpFloats\n");
+                }
+	}
 	data->gh.gmin = min * data->gh.scale;
 	data->gh.gmax = max * data->gh.scale;
 	DataDumpHeader (data,file,fd,4);
@@ -1054,7 +1068,7 @@ void compute_gain_pars(Data data,  float *buf2, int n, register float *scale, re
  **********************************************************/
 
 /** internal function **/
-void VelViewInit() {
+void VelViewInit(void) {
   int i, flag;
 
   if (0==rick_getch("velview","d",&flag)) {
@@ -1154,7 +1168,7 @@ void VelViewSetBuffer(int choice) {
 }
 
 /** internal function **/
-void VelViewCreateBuffer1() {
+void VelViewCreateBuffer1(void) {
   long long n, bufferSize;
   int sign;
   Buffer result, invData, velData;
@@ -1172,7 +1186,7 @@ void VelViewCreateBuffer1() {
 }
 
 /** internal function **/
-void VelViewCreateBuffer2() {
+void VelViewCreateBuffer2(void) {
   long long n, bufferSize;
   Buffer result, invData, velData, diffFromMode;
   float *histogram;
@@ -1197,7 +1211,7 @@ void VelViewCreateBuffer2() {
 }
 
 /** internal function **/
-void VelViewUpdateBuffer1() {
+void VelViewUpdateBuffer1(void) {
   long long n;
   double delta, gamma, alpha, temp;
   int sign, cached;
@@ -1242,7 +1256,7 @@ void VelViewUpdateBuffer1() {
 }
 
 /** internal function **/
-void VelViewUpdateBuffer2() {
+void VelViewUpdateBuffer2(void) {
   long long n;
   Buffer invData, velData, result;
   double beta, gamma;
@@ -1282,7 +1296,7 @@ void VelViewUpdateBuffer2() {
 }
 
 /** internal function **/
-void VelViewCreateCache() {
+void VelViewCreateCache(void) {
   int i;
   for (i=0; i<NUM_VEL_CACHE; i++) {
     NEW(Buffer, datalist->velocityCache[i], datalist->data[0]->size);
@@ -1290,7 +1304,7 @@ void VelViewCreateCache() {
 }
 
 /** internal function **/
-int VelViewCacheEmpty() {
+int VelViewCacheEmpty(void) {
   int cacheEmpty, i;
   cacheEmpty = 1;
   for (i=0; i<NUM_VEL_CACHE; i++) {
@@ -1329,7 +1343,7 @@ int VelViewCheckCache(int method) {
 }
 
 /** internal function **/
-int VelViewCacheLRU() {
+int VelViewCacheLRU(void) {
   int min, minInd, i;
   min = 1000000;
   for (i=0; i<NUM_VEL_CACHE; i++) {
@@ -1790,23 +1804,23 @@ void PathViewAddFilePick(float* pathX, float* pathY, float* pathZ, long pathInd)
 }
 
 /** internal function **/
-int PathViewEmpty() {
+int PathViewEmpty(void) {
   return(datalist->pathTotalFilled == 0);
 }
  
-int PathViewView() {
+int PathViewView(void) {
   return (datalist->pathView);
 }
 
-int PathViewOn() {
+int PathViewOn(void) {
   return (datalist->pathBufferViewed);
 }
 
-int PathViewClose() {
+int PathViewClose(void) {
   return (datalist->pathClose);
 }
 
-long PathViewLength() {
+long PathViewLength(void) {
   int found;
   if ((found = PathViewPathNum()) != NO_INDEX)
     return (datalist->pathLength[found]);
@@ -1814,12 +1828,12 @@ long PathViewLength() {
     return (0);
 }
 
-int PathViewPathNum() {
+int PathViewPathNum(void) {
   datalist->pathNum = PathViewFindPath(current_view()->data->pik->cur_symbol);
   return (datalist->pathNum);
 }
 
-int PathViewToggle() {
+int PathViewToggle(void) {
   if (PathViewOn())
     datalist->pathBufferViewed = 0;
   else
@@ -1843,7 +1857,7 @@ int PathViewMoveCoordinates(float* y, float* x, float* z) {
   return(found);
 }
 
-int PathViewMoveStart() {
+int PathViewMoveStart(void) {
   int m;
   m = PathViewPathNum();
   if (PathViewOn() == 0 || m == NO_INDEX) return(0);
@@ -1852,7 +1866,7 @@ int PathViewMoveStart() {
   return(0);
 }
 
-int PathViewMoveMiddle() {
+int PathViewMoveMiddle(void) {
   int m;
   m = PathViewPathNum();
   if (PathViewOn() == 0 || m == NO_INDEX) return(0);
@@ -1861,7 +1875,7 @@ int PathViewMoveMiddle() {
   return(0);
 }
 
-int PathViewMoveEnd() {
+int PathViewMoveEnd(void) {
   int m;
   m = PathViewPathNum();
   if (PathViewOn() == 0 || m == NO_INDEX) return(0);
@@ -1870,7 +1884,7 @@ int PathViewMoveEnd() {
   return(0);
 }
 
-int PathViewMoveIncrement() {
+int PathViewMoveIncrement(void) {
   int m;
   m = PathViewPathNum();
   if (PathViewOn() == 0 || m == NO_INDEX) return(0);
@@ -1882,7 +1896,7 @@ int PathViewMoveIncrement() {
   return(0);
 }
 
-int PathViewMoveDecrement() {
+int PathViewMoveDecrement(void) {
   int m;
   m = PathViewPathNum();
   if (PathViewOn() == 0 || m == NO_INDEX) return(0);
@@ -1925,7 +1939,7 @@ void PathViewUpdateBuffers(int mode, int pathNum) {
 }
 
 /** internal function **/
-float PathViewGapThreshold() {
+float PathViewGapThreshold(void) {
   float result, axisXRange, axisYRange, axisZRange, minRange;
   Axis axisX, axisY, axisZ;
 
@@ -2236,7 +2250,7 @@ void PathViewPaintDirectional(Axis axis1, Axis axis2, Axis axis3, float axisRang
 }
 
 /** internal function **/
-void PathViewEmptyBuffers() {
+void PathViewEmptyBuffers(void) {
   int i, j;
   long long n;
   Buffer dataBuffer;

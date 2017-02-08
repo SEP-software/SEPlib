@@ -1,4 +1,7 @@
 #include <sitedef.h>
+#ifdef MACOS
+#include <unistd.h>
+#endif
 #if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
 /*
 pick object code
@@ -516,7 +519,10 @@ void PickRead ()
 		UIMessage ("cant open pick file");
 		return;
 		}
-	fgets (line,sizeof(line),fd);
+	if(NULL == fgets (line,sizeof(line),fd)) {
+                UIMessage ("cant read pick file");
+                return;
+        }
 /*
 	fgets (line,sizeof(line),fd);
 	sscanf (line,"%s %d %d %d %d %d",dummy,&n1,&n2,&n3,&n4,&n5);
@@ -529,7 +535,7 @@ void PickRead ()
 		return;
 		}
 */
-	fgets (line,sizeof(line),fd);
+	if(NULL != fgets (line,sizeof(line),fd)) 
 	while (fgets (line,sizeof(line),fd) != NULL) {
 		if (!strncmp (line,"Pick#",5)) {
 			iset++;
@@ -585,7 +591,7 @@ void PickWrite ()
 	else	{
 		fd = fopen (pickfile,"w");
 		}
-	lseek (fd,0,0);
+	fseek (fd,0,0);
 	fprintf (fd,"Picks for dataset: %s\n",DataTitle(myv->data));
 /*
 	fprintf (fd,"Dimensions: %d %d %d %d %d\n",

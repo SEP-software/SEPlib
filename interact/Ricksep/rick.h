@@ -1,4 +1,5 @@
-
+#ifndef RICK_H_
+#define RICK_H_
 #include <sitedef.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -62,3 +63,4 @@
 #include "render.h"
 #include "region.h"
 #include "func.h"
+#endif

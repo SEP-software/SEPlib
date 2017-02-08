@@ -1,5 +1,13 @@
 #include <sitedef.h>
 #include <math.h>
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+#if defined(MACOS) || defined(LINUX)
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#endif
 #if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
 /*
 render object code
@@ -829,32 +837,44 @@ int RenderMapDump ()
 	int fd;
   
 	fd = creat ("render.map.256x8",0664);
-	write (fd,render->cmap,256);
+	if(256 != write (fd,render->cmap,256)) {
+           perror("RenderMapDump cmap ");
+        }
 	close (fd);
 	fd = creat ("render.map.256x256x8",0664);
-	write (fd,render->tmap,65536);
+	if(65536 != write (fd,render->tmap,65536)) {
+           perror("RenderMapDump tmap ");
+        }
 	close (fd);
 	UIMessage ("render maps dumped");
   return(0);
 	}
 
 /* write render images to files for debug purposes */
-int RenderImageDump ()
+int RenderImageDump (void)
 	{
 	string filename;
 	int fd;
 
 	sprintf (filename,"render.image.%dx%dx8",render->wide,render->hite);
 	fd = creat (filename,0664);
-	write (fd,render->image,render->wide*render->hite*sizeof(render->image[0]));
+	if(render->wide*render->hite*sizeof(render->image[0]) !=
+	write (fd,render->image,render->wide*render->hite*sizeof(render->image[0]))) {
+           perror("RenderImageDump image ");
+        }
 	close (fd);
 	sprintf (filename,"render.shadow.%dx%dx32",render->wide,render->hite);
 	fd = creat (filename,0664);
-	write (fd,render->shadow,render->wide*render->hite*sizeof(render->shadow[0]));
+	if(render->wide*render->hite*sizeof(render->shadow[0]) !=
+	write (fd,render->shadow,render->wide*render->hite*sizeof(render->shadow[0]))) {
+           perror("RenderImageDump shadow ");
+        }
 	close (fd);
 	sprintf (filename,"render.zbuffer.%dx%dx16",render->wide,render->hite);
 	fd = creat (filename,0664);
-	write (fd,render->zbuffer,render->wide*render->hite*sizeof(render->zbuffer[0]));
+	if(render->wide*render->hite*sizeof(render->zbuffer[0]) != write (fd,render->zbuffer,render->wide*render->hite*sizeof(render->zbuffer[0]))) {
+           perror("RenderImageDump zbuffer ");
+        }
 	close (fd);
 	UIMessage ("render images dumped");
   return(0);

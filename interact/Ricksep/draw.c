@@ -150,7 +150,7 @@ unsigned char  *rp2, mask,*tip;
 	}
 
 
-  void quick_redo(){
+  void quick_redo(void){
   View myv;
   int igetch;
   int i;

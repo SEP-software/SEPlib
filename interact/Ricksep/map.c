@@ -1,10 +1,19 @@
 #include <sitedef.h>
+#ifdef MACOS
+#include <fcntl.h>
+#endif
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 #if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
 /*
 data axis to image axis map object
 does window, zoom, frame tracking, and tic labels
 */
 #include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include "rick.h"
 
 /*
@@ -528,15 +537,24 @@ int MapDump (Map map)
 
 	sprintf (filename,"map.%s.map.%dx32",map->name,map->size);
 	fd = creat (filename,0664);
-	write (fd,map->map,sizeof(map->map[0])*map->size);
+	if(sizeof(map->map[0])*map->size != write (fd,map->map,sizeof(map->map[0])*map->size)) {
+            perror("MapDump: write(mpa) ");
+            err("MapDump write error\n");
+        }
 	close (fd);
 	sprintf (filename,"map.%s.inv.%dx32",map->name,map->size);
 	fd = creat (filename,0664);
-	write (fd,map->inv,sizeof(map->inv[0])*map->size);
+	if(sizeof(map->inv[0])*map->size != write (fd,map->inv,sizeof(map->inv[0])*map->size)) {
+            perror("MapDump: write(inv) ");
+            err("MapDump write error\n");
+        }
 	close (fd);
 	sprintf (filename,"map.%s.interp.%dx32",map->name,map->size);
 	fd = creat (filename,0664);
-	write (fd,map->interp,sizeof(map->interp[0])*map->size);
+	if(sizeof(map->interp[0])*map->size != write (fd,map->interp,sizeof(map->interp[0])*map->size)) {
+            perror("MapDump: write(interp) ");
+            err("MapDump write error\n");
+        }
 	close (fd);
 	UIMessage ("map dumped to file");
   return(0);

@@ -6,6 +6,7 @@ axis object code
 
 #include <stdio.h>
 #include "rick.h"
+extern int sep_get_data_axis_par(const char *, int *, int *, float *, float *, char *);
 
 /*
 axis init from mandatory getpar
@@ -178,7 +179,7 @@ void SetAxisLabel (Axis axis, string label)
 }
 
 /* return stride of axis */
-AxisStride_s (Axis axis)
+int AxisStride_s (Axis axis)
   {
   if (!axis) return (0);
   return (axis->stride_s);
@@ -205,7 +206,7 @@ int AxisPrec (Axis axis)
 	}
 
 /* return axis scale */
-AxisScale (Axis axis)
+int AxisScale (Axis axis)
 	{
 	if (!axis) return (0);
 	else return (axis->scale);
@@ -266,7 +267,7 @@ char* AxisLabel (Axis axis)
 	}
 
 /* return stride of axis */
-AxisStride (Axis axis)
+int AxisStride (Axis axis)
 	{
 	if (!axis) return (0);
 	return (axis->stride);
@@ -280,7 +281,7 @@ float AxisValue (Axis axis,int index)
 	}
 
 /* return scaled value */
-AxisScaledValue (Axis axis,int index)
+int AxisScaledValue (Axis axis,int index)
 	{
 	if (!axis) return (0);
 	if (index < 0 || index >= axis->size) return (0);

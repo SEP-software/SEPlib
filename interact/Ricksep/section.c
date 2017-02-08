@@ -1,5 +1,6 @@
 #include <sitedef.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <math.h>
 #include "rick.h"
 #if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
@@ -7,9 +8,9 @@
 /*
 plot sections and profiles
 */
-#include<sep3d.h>
 #include <stdio.h>
 #include "rick.h"
+extern int sep_put_data_axis_par(const char *tag_history,int *i_axis,int *n,float *o,float *d,const char *label);
 
 #if defined (HAVE_STDLIB_H)
 #include<stdlib.h>
@@ -346,15 +347,15 @@ for(iview=0; iview<num_views(); iview++){
   /*scale the vplot file */
   sprintf(com1,"Vppen xscale=%f yscale=%f < %s.V >c.V vpstyle=n; Cp c.V %s.V", 
     (float)views->view_dim[1],(float)views->view_dim[0],file,file);
-  if(out_coms!=1) system(com1);
+  if(out_coms!=1) { if(-1 == system(com1)) perror(com1); }
   else fprintf(stderr,"%s\n",com1);
 }
  sprintf(com1,"Vppen gridnum=%d,%d %s >all.V",
      views->view_dim[0],views->view_dim[1],file_list);
  SetActiveView(iold); 
  if(out_coms!=1) { 
-   system(com1);
-   system("Tube < all.V");
+   if(-1 == system(com1)) perror(com1);
+   if(-1 == system("Stube < all.V")) perror("Stube < all.V");
  }
  else{
    fprintf(stderr,"%s\n",com1);
@@ -394,7 +395,9 @@ int OverlayFinish(int cube)
     sprintf(com2,"Vppen erase=o < %s.V b1.V >c1.V vpstyle=n;Cp c1.V %s.V;",file_name,file_name);
     strcat(com1,com2);
  	  strcat(com1,sep);
-		if(out_coms!=1) system(com1);
+		if(out_coms!=1) {
+                   if(-1 == system(com1)) perror(com1);
+                }
 		else fprintf(stderr,"%s\n",com1);
 	return(0);
 }
@@ -505,7 +508,7 @@ int PlotPlane (int across,int down,int deep,char *program,char *pipeto,char *fil
 	if(0!=strcmp(program,"save")){
 			sprintf(command,"%s < %s %s &",program,filename,pipeto);
 	}
-	system (command);
+	if(-1 == system (command)) perror(command);
 	FREE (buffer);
 	}
 	else{
@@ -651,7 +654,7 @@ int PlotmyCube (int across,int down,int deep,char *program,char *pipeto,char *fi
 	if(0!=strcmp(program,"save")){
 			sprintf(command,"<%s  %s  frame1=%d frame2=%d frame3=%d flat=%d point1=%f point2=%f %s &",filename,program,frame1,frame2,frame3,flat,point1,point2,pipeto);
 	}
-	system (command);
+	if(-1 == system (command)) perror(command);
 	FREE (buffer);
 	}
 	else{
@@ -844,7 +847,7 @@ void grab_cube_display(char *command){
       strcat(command,temp_ch);
     }
     else if(MapSize(myv->map[i]) >1){
-      sprintf(temp_ch,"f%d=%f n%d=1 ",idir,MapFrame(myv->map[i])-1,idir);
+      sprintf(temp_ch,"f%d=%d n%d=1 ",idir,MapFrame(myv->map[i])-1,idir);
       strcat(command,temp_ch);
 		}
 	}

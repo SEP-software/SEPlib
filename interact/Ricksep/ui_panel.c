@@ -600,7 +600,7 @@ int UISizeClose ()
 	}
 
 /* synchronize size slider with slider text */
-UISizeSlider (Widget widget)
+int UISizeSlider (Widget widget)
 	{
 	int value;
 	string svalue;
@@ -1830,7 +1830,7 @@ int UIInfoInit ()
 		XmNorientation, XmVERTICAL,
 		NULL);
 	XtVaCreateManagedWidget ("HELP INFORMATION:",xmLabelWidgetClass,ui->i_base,NULL);
-	ui->i_text = XmCreateScrolledText (ui->i_base, "textw", NULL,(Cardinal) NULL);
+	ui->i_text = XmCreateScrolledText (ui->i_base, "textw", NULL,(Cardinal) 0);
 	XtVaSetValues (ui->i_text,
 		XmNvalue, help2,
 		XmNcolumns, 100,

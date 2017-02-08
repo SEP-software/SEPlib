@@ -25,6 +25,7 @@ void calc_int_vel();
 
 #include <rick.h> 
 #include <math.h>
+extern int sep_put_data_axis_par(const char *tag_history,int *i_axis,int *n,float *o,float *d,const char *label);
 int oversample;
 float *data_buf,*nmo_buf;
 float *semb_buf;

@@ -51,5 +51,8 @@ typedef struct {
 	unsigned long	clear_mask;	/* plane mask */
 	} *Draw;
 
+/* API */
+void DrawSheet (int x1,int y1,int x2,int y2,int mode);
+void quick_redo(void);
 
 #endif

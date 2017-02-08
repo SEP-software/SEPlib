@@ -1101,7 +1101,7 @@ int ViewStyleChoice(View myv, int item) {
   return(0);
 }
 
-int ViewDrawPart(int mode){
+void ViewDrawPart(int mode){
   View view;
   int i,iold;
   char* ViewValueScript(View);
@@ -1314,7 +1314,7 @@ int View3D ()
 	}
 
 /* OK to turn on movie */
-ViewMovieOK () {
+int ViewMovieOK (void) {
   View myv;
   int i;
   
@@ -1482,7 +1482,7 @@ int ViewSetFrames (int x,int y)
   
   iview_axes[0]=pick.iaxis[1];
   iview_axes[1]=pick.iaxis[2];
-  if(pick.iaxis[1]==-1 || pick.iaxis[2]==-1) return;
+  if(pick.iaxis[1]==-1 || pick.iaxis[2]==-1) return(0);
 
   /* reset frames */
   for (iaxis=0; iaxis<2; iaxis++) {
@@ -1975,11 +1975,11 @@ void SetActiveView(int iview){
   ViewInfo(current_view());
 }
 
-View current_view() {
+View current_view(void) {
   return(views->view[current_view_num()]);
 }
 
-int current_view_num() {
+int current_view_num(void) {
   return(views->cur_view);
 }
 
@@ -2060,7 +2060,7 @@ double Tyme()
 #endif
 
 double tyme;
-TymeStart ()
+int TymeStart (void)
 {
   tyme = Tyme();
   return(0);
@@ -2070,7 +2070,7 @@ int TymeEnd (int pixels)
 {
   View view;
   view = current_view();
-  if (!view || view->currentSaved == NULL) return;
+  if (!view || view->currentSaved == NULL) return(0);
   if (pixels == 0 || tyme == 0.0) return(0);
   tyme = Tyme() - tyme;
   string roundRobin, path, velocity, values;
@@ -2191,60 +2191,188 @@ int ViewHistoryLoadFile() {
   char buffer[1024];
   
   UIMotionOff(NULL);
-  fscanf(savefd, "%s", buffer); // number-of-views
-  fscanf(savefd, "%d", &i);      // n views
+  if(1 > fscanf(savefd, "%s", buffer)) { // number-of-views
+     perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+  }
+  if(1 > fscanf(savefd, "%d", &i)) {      // n views
+     perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+  }
   if (i != num_views()) {
     UIDelayMessage("History List: number of views and history file incompatible.");
     return(0);
   }
 
-  fscanf(savefd, "%s", buffer); // begin-view-info
+  if(1 > fscanf(savefd, "%s", buffer)) { // begin-view-info
+           perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+        }
   for (i=0; i<num_views(); i++) {
     view = views->view[i];
     prevCreate = NULL;
 
-    fscanf(savefd, "%d", &size); // volume size
+    if(1 > fscanf(savefd, "%d", &size)) { // volume size
+           perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+        }
     if (size != view->data->size) {
       UIDelayMessage("History List: data size and history file incompatible.");
       return(0);
     }
 
     while(1) {
-      fscanf(savefd, "%s", buffer); // ViewSave:
+      if(1 > fscanf(savefd, "%s", buffer)) { // ViewSave:
+           perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+        }
       NEW(ViewSaver*, create, 1);
-      fscanf(savefd, "%d", &create->idNum);
+      if(1 > fscanf(savefd, "%d", &create->idNum)) {
+           perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+        }
       for (j=AXIS_DOWN; j<=AXIS_5D; j++) {
-	fscanf(savefd, "%d", &create->frame[j]);
-	fscanf(savefd, "%d", &create->framePrev[j]);
-	fscanf(savefd, "%d", &create->frameFirst[j]);
-	fscanf(savefd, "%d", &create->frameLast[j]);
-	fscanf(savefd, "%d", &create->frameMFirst[j]);
-	fscanf(savefd, "%d", &create->frameMLast[j]);
-	fscanf(savefd, "%d", &create->frameMDelta[j]);
+	if(1 > fscanf(savefd, "%d", &create->frame[j])) {
+           perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+        }
+	if(1 > fscanf(savefd, "%d", &create->framePrev[j])) {
+           perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+        }
+	if(1 > fscanf(savefd, "%d", &create->frameFirst[j])) {
+           perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+        }
+	if(1 > fscanf(savefd, "%d", &create->frameLast[j])) {
+           perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+        }
+	if(1 > fscanf(savefd, "%d", &create->frameMFirst[j])) {
+           perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+        }
+	if(1 > fscanf(savefd, "%d", &create->frameMLast[j])) {
+           perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+        }
+	if(1 > fscanf(savefd, "%d", &create->frameMDelta[j])) {
+           perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+        }
       }
-      fscanf(savefd, "%d", &create->movie);
-      fscanf(savefd, "%d", &create->style);
-      fscanf(savefd, "%d", &create->shape);
-      fscanf(savefd, "%d", &create->fence);
-      fscanf(savefd, "%d", &create->velocityBuffer);
-      fscanf(savefd, "%d", &create->velocityBufferParam);
-      fscanf(savefd, "%d", &create->pathBuffer);
-      fscanf(savefd, "%d", &create->roundRobin);
-      fscanf(savefd, "%d", &create->roundRobinView);
+      if(1 > fscanf(savefd, "%d", &create->movie)) {
+         perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+       }
+      if(1 > fscanf(savefd, "%d", &create->style)) {
+         perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+       }
+      if(1 > fscanf(savefd, "%d", &create->shape)) {
+         perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+       }
+      if(1 > fscanf(savefd, "%d", &create->fence)) {
+         perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+       }
+      if(1 > fscanf(savefd, "%d", &create->velocityBuffer)) {
+         perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+       }
+      if(1 > fscanf(savefd, "%d", &create->velocityBufferParam)) {
+         perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+       }
+      if(1 > fscanf(savefd, "%d", &create->pathBuffer)) {
+         perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+       }
+      if(1 > fscanf(savefd, "%d", &create->roundRobin)) {
+         perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+       }
+      if(1 > fscanf(savefd, "%d", &create->roundRobinView)) {
+         perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+       }
       for (j=0; j<DATA_NAXIS; j++) {
-	fscanf(savefd, "%d", &k);
+	if(1 > fscanf(savefd, "%d", &k)) {
+           perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+        }
 	create->map[j] = view->map0[k];
       }
-      fscanf(savefd, "%d", &create->base);
-      fscanf(savefd, "%d", &create->color);
-      fscanf(savefd, "%d", &create->overlay);
-      fscanf(savefd, "%d", &create->background);
-      fscanf(savefd, "%d", &create->mark);
-      fscanf(savefd, "%d", &create->contrast);
-      fscanf(savefd, "%d", &create->contrast0);
-      fscanf(savefd, "%d", &create->polarity);
+      if(1 > fscanf(savefd, "%d", &create->base)) {
+         perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+       }
+      if(1 > fscanf(savefd, "%d", &create->color)) {
+         perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+       }
+      if(1 > fscanf(savefd, "%d", &create->overlay)) {
+         perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+       }
+      if(1 > fscanf(savefd, "%d", &create->background)) {
+         perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+       }
+      if(1 > fscanf(savefd, "%d", &create->mark)) {
+         perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+       }
+      if(1 > fscanf(savefd, "%d", &create->contrast)) {
+         perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+       }
+      if(1 > fscanf(savefd, "%d", &create->contrast0)) {
+         perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+       }
+      if(1 > fscanf(savefd, "%d", &create->polarity)) {
+         perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+       }
 
-      fscanf(savefd, "%s", &buffer);
+      if(1 > fscanf(savefd, "%s", &(buffer[0]))) {
+         perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+      }
 
       // update pointers
       if (0 == strcmp(buffer,"(c)") || 0 == strcmp(buffer,"(cl)"))
@@ -2267,10 +2395,18 @@ int ViewHistoryLoadFile() {
       }
     }
 
-    fscanf(savefd, "%s", &buffer); // end-view-info
+    if(1 > fscanf(savefd, "%s", &(buffer[0]))) { // end-view-info
+      perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+    }
 
     // check if end of file
-    fscanf(savefd, "%s", &buffer); // end-view-info again?
+    if(1 > fscanf(savefd, "%s", &(buffer[0]))) { // end-view-info again?
+      perror("ViewHistoryLoadFile ");
+     UIDelayMessage("Unable to load History List.");
+     return(0);
+    }
     if (0 == strcmp(buffer,"end-view-info")) {
       break;
     }
@@ -2322,7 +2458,7 @@ void ViewHistorySaveFile() {
     view = views->view[i];
     
     fprintf(savefd, "begin-view-info\n");
-    fprintf(savefd, "%ld\n", view->data->size);
+    fprintf(savefd, "%lld\n", view->data->size);
     
     for (current = view->firstSaved; current != NULL; current = current->next) {
       fprintf(savefd, "ViewSave ");

@@ -195,7 +195,11 @@ View view[NUM_VIEWS];
   int roundRobinView;          /** position within round robin loop **/
 } *Views;
 
-
-
+/* API */
+int current_view_num(void);
+int ViewMovieOK(void);
+int FindView(int x, int y);
+int TymeStart (void);
+int TymeEnd (int pixels);
 
 #endif

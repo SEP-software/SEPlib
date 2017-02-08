@@ -88,7 +88,7 @@ void UIInit (int argc,char **argv)
 	}
 
 /* main loop */
-void UIMain ()
+void UIMain (void)
 	{
 	if (!ui) return;
 	XtAppMainLoop (ui->context);
@@ -200,34 +200,34 @@ int UIWindowInit (Widget parent)
 
 
 /* return display */
-Display* UIDisplay ()
+Display* UIDisplay (void)
 	{
 	if (!ui) return(0);
 	return ((Display*)XtDisplay(ui->base));
 	}
 
 /* return screen */
-int UIScreen ()
+int UIScreen (void)
 	{
 	return (0);
 	}
 
 /* return canvas */
-XID UICanvasWindow ()
+XID UICanvasWindow (void)
 	{
 	if (!ui) return(0);
 	return ((XID)XtWindow(ui->canvas));
 	}
 
 /* return color bar */
-XID UIColorbarWindow ()
+XID UIColorbarWindow (void)
 	{
 	if (!ui) return(0);
 	return ((XID)XtWindow(ui->colorbar));
 	}
 
 /* return main window */
-XID UIMainWindow ()
+XID UIMainWindow (void)
 	{
 	if (!ui) return(0);
 	return ((XID)XtWindow(ui->application));

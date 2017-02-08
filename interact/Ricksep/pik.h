@@ -69,8 +69,10 @@ typedef struct {
 PikList pik[NUM_VIEWS];
 } *Pikers;
 
-
-
+/* API */
+void realloc_pik(PikList pik);
+void PikGrow3D(void);
+void PikMove (int x,int y);
 
 
 #endif
