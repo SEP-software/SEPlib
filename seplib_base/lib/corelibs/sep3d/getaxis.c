@@ -78,6 +78,8 @@ B<sep3d>
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <sep_pars_external.h>
+#include <sep3d.h>
 
 int sep_get_header_axis_par(const char *tag_history, int *i_axis, 
                              int *n, float *o, float *d, char *label)

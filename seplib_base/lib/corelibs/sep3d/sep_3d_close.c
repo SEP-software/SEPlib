@@ -39,11 +39,21 @@ Purpose:
 
 */	 
 
+#include <sepConfig.h>
+#if HAVE_STRING_H
 #include <string.h>
+#endif
 #include<stdio.h>
 #include <sep3d.h>
+#if defined(MACOS) || defined(LINUX)
+#define USE_SOCKETS
+#endif
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 #include "streamlist.h"
 #include "sep_main_internal.h"
+#include <sep3d.h>
 #define EOL 014
 
 

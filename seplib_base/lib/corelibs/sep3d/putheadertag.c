@@ -32,7 +32,10 @@ AUTHOR
    Hector Urdaneta , July ... 1995
 
 */
+#include <sepConfig.h>
+#if HAVE_STRING_H
 #include <string.h>
+#endif
 #include <sep3d.h>
 #include <unistd.h>
 #include "streamlist.h"

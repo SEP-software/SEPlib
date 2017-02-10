@@ -67,6 +67,7 @@ that easy to transfer accross platforms.
 
 
 */
+#include <string.h>
 #include "sep3d.h"
 #include "streamlist.h"
 

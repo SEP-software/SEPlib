@@ -59,7 +59,7 @@ streaminf *info,*info_hff,*info_gff;
 OVERRIDE FOR HFF VALUE*/
 memset(hff_input,'\0',sizeof(hff_input));
 hff_in=getch("hff_in","s",hff_input);
-memset(hff_input,'\0',sizeof(gff_input));
+memset(gff_input,'\0',sizeof(gff_input));
 gff_in=getch("gff_in","s",gff_input);
 
 

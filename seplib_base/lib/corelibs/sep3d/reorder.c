@@ -5,7 +5,7 @@
 
 =head1 NAME
 
-sep_reorder_data - reoder SEPlib dataset
+sep_reorder_data - reorder SEPlib dataset
 
 =head1 SYNOPSIS
 

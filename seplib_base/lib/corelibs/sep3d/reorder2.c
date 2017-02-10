@@ -1,4 +1,7 @@
+#include <sepConfig.h>
+#if HAVE_STRING_H
 #include <string.h>
+#endif
 #include <sep3d.h>
 int partition(int  **A, int first, int last) ;
 void quicksort(int  **A, int first, int last) ;

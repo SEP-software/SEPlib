@@ -51,7 +51,10 @@ AUTHORS
 *
 */
 
+#include <sepConfig.h>
+#if HAVE_STRING_H
 #include <string.h>
+#endif
 #include<time.h>
 #include "sep3d.h"
 #include "streamlist.h"

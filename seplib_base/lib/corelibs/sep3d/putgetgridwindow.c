@@ -187,6 +187,7 @@ AUTHOR
     Biondo Biondi , September 1995
 
 */
+#include <string.h>
 #include "sep3d.h"
 #include "streamlist.h"
 

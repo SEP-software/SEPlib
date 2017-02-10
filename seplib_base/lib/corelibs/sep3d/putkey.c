@@ -82,7 +82,10 @@ Bob-(Dec'97)Removed check for key duplication (auxpar on output not allowed
     number of bytes in the key in the sepstream structure for the same reason.
 
 */
+#include <sepConfig.h>
+#if HAVE_STRING_H
 #include <string.h>
+#endif
 #include "sep3d.h"
 #include "streamlist.h"
 #define KEY_STR_LEN 15

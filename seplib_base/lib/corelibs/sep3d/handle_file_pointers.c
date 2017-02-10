@@ -222,7 +222,7 @@ PARAMETER
 RETURN VALUE
     0 if successful
    -1 if it fails for other reasons
-   +1 if tag_history is nither a Sep77 nor a Sep3d History File
+   +1 if tag_history is neither a Sep77 nor a Sep3d History File
    +2 if tag_history is a Sep77 History File but not Sep3d
    +3 if tag_history is a Sep3d Hisory File but 
                    has no Grid Format File associated.

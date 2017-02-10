@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sep_pars_external.h>
+#include <sep3d.h>
+
 int sep_get_number_header_axes (const char *tag_history, int *n_axis)
 {
     char *tag_header[1];
