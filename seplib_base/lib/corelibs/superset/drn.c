@@ -96,11 +96,11 @@ Find the data record number of the dataset
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-int sep3d_grab_inorder(char *sep3dname,int *inorder)
+int sep3d_grab_inorder(const char *sep3dname,int *inorder)
 _XFUNCPROTOEND
 #else
 int sep3d_grab_inorder(sep3dname, inorder)
-char *sep3dname;
+const char *sep3dname;
 int *inorder;
 #endif 
 {
@@ -220,11 +220,11 @@ Sets that the dataset is in order
 */
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-int sep3d_set_inorder(char *sep3dname)
+static int sep3d_set_inorder_flag(const char *sep3dname, int flag)
 _XFUNCPROTOEND
 #else
 int sep3d_set_inorder(sep3dname)
-char *sep3dname;
+const char *sep3dname;
 #endif 
 {
 int i1,ierr;
@@ -235,13 +235,19 @@ info = tag_info_sep3d(sep3dname, INQUIRE);
 if(info == SEPNULL)
   return (sepwarn(INVALID_STRUC,"tag:%s  invalid struc\n",sep3dname));
 
-info->in_order=1;
-if(info->drn != SEPNULL){
+info->in_order=flag;
+if(flag != 0 && info->drn != SEPNULL){
 	 free(info->drn);
 	 info->drn=SEPNULL;
 }
 
 return(SUCCESS);
+}
+int sep3d_set_inorder(const char *sepname) {
+    sep3d_set_inorder_flag(sepname, 1);
+}
+int sep3d_unset_inorder(const char *sepname) {
+    sep3d_set_inorder_flag(sepname, 0);
 }
 
 _XFUNCPROTOBEGIN

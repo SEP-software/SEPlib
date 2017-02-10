@@ -1,36 +1,60 @@
 !<
 !ftu
-!
 ! usage
 ! ftu (signi,nx,cx)
-!
 ! Description
-!   complex fourier transform with unitary scaling
-!
 ! Input Parameters
-! signi  - integer  sign for fourier transform
+! signi  - integer  sign for Fourier transform
 ! nx     - integer  number of elements
 ! cx     - complex* complex vector to transform
 !
 ! Comments
-!               1         nx          signi*2*pi*i*(j-1)*(k-1)/nx
-!   cx(k)  =  -------- * sum cx(j) * e
-!             sqrt(nx)   j=1             for k=1,2,...,nx=2**integer
 ! Category
 ! Lib:Fft
-!
 ! COMPILE LEVEL
 ! DISTR
 !>
 subroutine ftu( signi, nx, cx )
-use sep_mod
-integer	nx, i, j, k, m, istep, pad2,a
-real	signi, scale, arg
-complex	cx(nx), cmplx, cw, cdel, ct
-if ( nx .ne. pad2(nx) ) then
-  call erexit('ftu: nx not a power of 2')
-end if
+!
+ use, intrinsic :: iso_c_binding
+!
+use sep_func_mod
+!   complex fourier transform with unitary scaling
+!
+!               1         nx          signi*2*pi*i*(j-1)*(k-1)/nx
+!   cx(k)  =  -------- * sum cx(j) * e
+!             sqrt(nx)   j=1             for k=1,2,...,nx=2**integer
+!
+integer nx, i, j, k, m, istep, pad2
+real    signi, scale, arg
+complex cx(nx), cmplx, cw, cdel, ct
+#ifdef USE_FFTW
+!
+ include 'fftw3.f03'
+!
+type(C_PTR) :: plan
+!
+if (signi > 0.0) then
+  j=1
+else
+  j=-1
+end if 
+plan=fftwf_plan_dft_1d(nx,cx,cx,j, FFTW_ESTIMATE)
+!
+call fftwf_execute_dft(plan,cx,cx)
 scale = 1. / sqrt( 1.*nx)
+do i= 1, nx
+  cx(i) = cx(i) * scale
+end do 
+!
+call fftwf_destroy_plan(plan)
+!
+return
+#endif
+#ifndef USE_FFTW
+if ( nx .ne. pad2(nx) ) then
+  call erexit('ftu: nx not a power of 2') 
+end if
 do i= 1, nx
   cx(i) = cx(i) * scale
 end do 
@@ -47,11 +71,10 @@ do i= 1, nx
     j = j-m
     m = m/2
   end do 
-! "&" means .AND.
+! "&&" means .AND.
   j = j+m
 end do 
-a=0
-do while (a.eq.0)
+do   
   istep = 2*k
   cw = 1.
   arg = signi*3.14159265/k
@@ -70,13 +93,5 @@ do while (a.eq.0)
   end if
 end do 
 return
-end
-integer function pad2(nx)
-integer nx,n
-n=1
-do while (n < nx)
-  n=n*2
-end do 
-pad2=n
-return
+#endif
 end  

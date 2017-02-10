@@ -1,4 +1,5 @@
 #define SET_SDOC 1
+#include<sepConfig.h>
 #if HAVE_STRING_H
 #include <string.h>
 #endif
@@ -14,7 +15,7 @@
 #define MIN(a,b) ( ((a)<(b)) ? (a):(b) )
 #endif
 
-
+extern int sep_thread_num(void);
 
 
 #if NeedFunctionPrototypes
@@ -277,7 +278,7 @@ if(sep_thread_num()==ifrom) nlen=(int)(strlen(string)+1);
 return(SUCCESS);
 }
 
-void sep_mpi_stop(){
+void sep_mpi_stop(void){
 
 #ifdef SEP_MPI
 MPI_Barrier(MPI_COMM_WORLD);
@@ -285,7 +286,7 @@ MPI_Barrier(MPI_COMM_WORLD);
 
 
 }
-int sep_num_thread(){
+int sep_num_thread(void){
 int i;
 #ifdef SEP_MPI
 MPI_Comm_size(MPI_COMM_WORLD, &i);
@@ -296,7 +297,7 @@ return(1);
 }
 
 
-int sep_thread_num(){
+int sep_thread_num(void){
 int i;
 #ifdef SEP_MPI
     MPI_Comm_rank(MPI_COMM_WORLD, &i);

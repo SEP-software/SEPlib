@@ -2,9 +2,11 @@
 /* All rights reserved.                       */
 
 
+#include<sepConfig.h>
 #include<sepmath.h>
 #include<stdlib.h>
 #include <sulib.h>
+extern void seperr(const char *, ... );
 
 /*********************** self documentation **********************/
 /*****************************************************************************

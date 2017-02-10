@@ -118,7 +118,9 @@ static float etime (void)
 static float timer;
 #endif
 
+#ifndef INFINITY
 #define INFINITY 1.e+20
+#endif
 #define FMM_OUT '\0'
 #define FMM_IN 'i'
 #define FMM_FRONT 'f'

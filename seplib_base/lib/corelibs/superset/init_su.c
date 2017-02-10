@@ -2,7 +2,6 @@
 #define SEP3d_AUX_I 1
 #include <seplib.h>
 #include <superset.h>
-#include<sepConfig.h>
 #ifdef SU_SUPPORT
 #include "superset_internal.h"
 #ifndef YES
@@ -82,7 +81,7 @@ if(info->file_format!=HEADER){
 /* ALLOCATE THE TEMPORARY STORAGE BLOCKS */
 
 /*see if user has specified the ammount */
-sprintf(temp_ch,sep3dname,".nmem");
+sprintf(temp_ch,"%s.nmem",sep3dname);
 if(0==getch(temp_ch,"d",&(info->nmem)))
   if(0==getch("nmem","d",&(info->nmem))) info->nmem=100;
 
@@ -235,7 +234,7 @@ sep3d_set_axis(sep3dname,2,info->n[1],info->o[1],info->d[1],"none","none");
       sep3d_set_ntraces(sep3dname,info->n[1]);
 
 /* ALLOCATE THE TEMPORARY STORAGE BLOCKS */
-sprintf(temp_ch,sep3dname,".nmem");
+sprintf(temp_ch,"%s.nmem",sep3dname);
 
 if(0==getch(temp_ch,"d",&(info->nmem)))
   if(0==getch("nmem","d",&(info->nmem))) info->nmem=100;

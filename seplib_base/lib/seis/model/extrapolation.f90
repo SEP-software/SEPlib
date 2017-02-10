@@ -184,6 +184,7 @@ integer :: node_nsx,i_processor,node_isx,ierr,iown,ic,nsteps
 real,pointer :: shot_block(:,:),wave_x_min_max(:,:),tmp_shot_block(:,:)
 type(sep3d) :: wave_s
 integer,allocatable :: ndone(:)
+integer,external :: sep_thread_num
 
 
 img_jt=nint(extrapolation%img_dt/extrapolation%dt)

@@ -70,6 +70,7 @@ subroutine wave_seek(extrapolation,n_node)
 type(extrapolation_type)::extrapolation
 integer :: n_node
 integer :: n_block, ret_seek
+integer, external :: sseek_block
 if (extrapolation%shot_or_rec(1:4)=='shot') then
   n_block=(extrapolation%isx/n_node-1)*shot_wave%n(4)
   ret_seek=sseek_block("ShotWave",n_block,block_size,0)
@@ -85,6 +86,7 @@ end subroutine wave_seek
 subroutine wave_output(extrapolation,wave_block)
 type(extrapolation_type):: extrapolation
 real :: wave_block(:,:)
+integer, external :: srite
 
 if (extrapolation%shot_or_rec(1:4)=='shot') then
   if ( srite("ShotWave",wave_block(:,:),block_size) /= block_size ) then

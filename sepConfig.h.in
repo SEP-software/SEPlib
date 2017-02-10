@@ -28,3 +28,4 @@
 #cmakedefine HAVE_RPC_RPC_H
 #cmakedefine HAVE_RPC_TYPES_H
 #cmakedefine HAVE_CTYPE_H
+#cmakedefine HAVE_UTIME_H

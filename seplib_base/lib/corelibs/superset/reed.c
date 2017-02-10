@@ -9,6 +9,7 @@
 #include <superset.h> 
 int wind_to_helix(int ndim,int *ngrid,int *nwind, int *fwind, int *jwind, long long *index);
 
+extern int sep_thread_num(void);
 
 
 /*

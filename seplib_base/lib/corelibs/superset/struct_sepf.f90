@@ -903,7 +903,7 @@ end interface
     else if (.not. present(sep3dc)) then
       call seperr("must specify a tag when first reading a structure")
     else
-      tag=sep3dc
+      tag=sep3dc(1:MIN(LEN(sep3dc),LEN(tag)))
     end if 
     ierr= sep3d_grab_ndims(tag,sep3df%ndims)
     if (ierr.ne.0) then
@@ -2789,17 +2789,17 @@ end interface
     n=sep3d_ndims(struct)
     allocate(nt(n),ft(n),jt(n))
     if (present(nwind)) then
-      nt=nwind
+      nt=nwind(1:n)
     else
       nt=-1
     end if 
     if (present(fwind)) then
-      ft=fwind
+      ft=fwind(1:n)
     else
       ft=-1
     end if 
     if (present(jwind)) then
-      jt=jwind
+      jt=jwind(1:n)
     else
       jt=-1
     end if 

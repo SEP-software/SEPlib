@@ -43,6 +43,7 @@ Author:  Dave Hale, Colorado School of Mines, 06/02/89
 *****************************************************************************/
 /**************** end self doc ********************************/
 
+#include<sepConfig.h>
 #include<sepmath.h>
 #include<stdlib.h>
 #include <sulib.h>

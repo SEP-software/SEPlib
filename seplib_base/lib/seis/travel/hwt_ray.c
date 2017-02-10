@@ -4,6 +4,7 @@
 #include <hwt.h>
 #include<seplib.h>
 
+extern int sjacob(point3D *C,point3D *T,point3D *P, point3D *Q);
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN

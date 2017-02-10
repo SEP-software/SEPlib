@@ -14,6 +14,15 @@ Purpose: To handle axis information in the superset data
 #include "superset_internal.h"
 #include <superset.h> 
 
+#include <ctype.h>
+static int fstrlen(const char *s, int maxlen)
+{
+  int i;
+  for(i=(maxlen-1); i>=0; i--) {
+     if((!isspace(s[i])) && s[i] != '\0') break;
+  }
+  return i+1;
+}
 /*--------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------*/
 /*<
@@ -240,17 +249,21 @@ if(axis <1 || axis > info->ndims)
 
 if((int)strlen(unit)>(int)strlen(info->unit[axis-1])){
 	free(info->unit[axis-1]);
-	info->unit[axis-1]=(char*) malloc((strlen(unit)+1)*sizeof(char));
-	strcpy(info->unit[axis-1],unit);
+/*	info->unit[axis-1]=(char*) malloc((strlen(unit)+1)*sizeof(char)); */
+	info->unit[axis-1]=(char*) malloc((SEP_3D_STRING_LEN+1)*sizeof(char));
+	strncpy(info->unit[axis-1],unit,SEP_3D_STRING_LEN);
+        info->unit[axis-1][SEP_3D_STRING_LEN] = '\0';
 }
-else strcpy(info->unit[axis-1],unit);
+else strncpy(info->unit[axis-1],unit,SEP_3D_STRING_LEN);
 if(NULL!=label){
 if((int)strlen(label)>(int)strlen(info->label[axis-1])){
 	free(info->label[axis-1]);
-	info->label[axis-1]=(char*) alloc((strlen(label)+1)*sizeof(char));
-	strcpy(info->label[axis-1],label);
+/*	info->label[axis-1]=(char*) malloc((strlen(label)+1)*sizeof(char)); */
+	info->label[axis-1]=(char*) malloc((SEP_3D_STRING_LEN+1)*sizeof(char));
+	strncpy(info->label[axis-1],label,SEP_3D_STRING_LEN);
+        info->label[axis-1][SEP_3D_STRING_LEN] = '\0';
 }
-else strcpy(info->label[axis-1],label);
+else strncpy(info->label[axis-1],label,SEP_3D_STRING_LEN);
 }
 
 
@@ -330,9 +343,9 @@ if(axis <1 || axis > info->ndims) return(sepwarn(NOT_MET,
 	"%s: Axis is out of range 1 < index < %d:%d \n",info->name,info->ndims,axis));
 
 if(info->unit[axis-1]==SEPNULL) strcpy(unit,"Unspecified");
-else strcpy(unit,info->unit[axis-1]);
+else strncpy(unit,info->unit[axis-1],SEP_3D_STRING_LEN);
 if(info->label[axis-1]==SEPNULL) strcpy(label,"Unspecified");
-else strcpy(label,info->label[axis-1]);
+else strncpy(label,info->label[axis-1],SEP_3D_STRING_LEN);
 
 
 *n=info->n[axis-1];
@@ -595,10 +608,10 @@ char temp_ch[2048],temp2_ch[1024];
 
 sprintf(temp_ch,"\tn%d=%d  o%d=%f  d%d=%f",
 axis,n,axis,o,axis,d);
-if((int)strlen(label)>0){ sprintf(temp2_ch,"%s   label%d=\"%s\"",temp_ch,
-  axis,label);  strcpy(temp_ch,temp2_ch);}
-if((int)strlen(unit)>0){ sprintf(temp2_ch,"%s   unit%d=\"%s\"",temp_ch,
-  axis,unit);  strcpy(temp_ch,temp2_ch);}
+if((int)strlen(label)>0){ sprintf(temp2_ch,"%s   label%d=\"%.*s\"",temp_ch,
+  axis, fstrlen(label,SEP_3D_STRING_LEN), label);  strcpy(temp_ch,temp2_ch);}
+if((int)strlen(unit)>0){ sprintf(temp2_ch,"%s   unit%d=\"%.*s\"",temp_ch,
+  axis, fstrlen(unit,SEP_3D_STRING_LEN),unit);  strcpy(temp_ch,temp2_ch);}
 if(0!=auxputhead(tag,temp_ch))
   return(sepwarn(FAIL_OTHER,"could not puthead to tag %s \n",tag));
 return(SUCCESS);

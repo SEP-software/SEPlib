@@ -14,6 +14,8 @@ Purpose:
 #include<string.h>
 #include <superset.h> 
 
+extern int sep_thread_num(void);
+extern int SEP3D_grab_file_type(sep_3d *info,char *file_type);
 
 /*--------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------*/

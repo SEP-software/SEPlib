@@ -8,7 +8,9 @@ Date Created:Mon Aug 17 14:19:08 PDT 1998
 Purpose: 
 
 */	 
-
+#ifdef MACOS
+#include <string.h>
+#endif
 #define SET_SDOC 3
 #include <superset.h> 
 #include <superset_internal.h> 
@@ -228,6 +230,7 @@ sep_3d *info;
 int i1;
 int n;
 float *fval;
+fprintf(stderr,"In set header \n");
 
 info = tag_info_sep3d(sep3dname, INQUIRE);  /* get info on this tag */
 if(info == SEPNULL) /* Not a valid */

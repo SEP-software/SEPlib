@@ -53,6 +53,7 @@ B<sepmath>
 >*/
 #include<sitedef.h>
 #include <sepmath.h>
+float scabs(complex);
 
 #ifdef _POSIX_SOURCE
 #include <float.h>

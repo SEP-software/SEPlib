@@ -1,3 +1,4 @@
+#include <sepConfig.h>
 #if HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
@@ -5,6 +6,7 @@
 #include <sepmath.h>
 #include <septravel.h>
 #include <hwt.h>
+extern int sepwarn(int, const char *, ... );
 
 /*$
 

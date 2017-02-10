@@ -8,7 +8,6 @@ Purpose:
 
 */	 
 
-#include<sepConfig.h>
 #include <seplib.h> 
 #include<string.h>
 #include <superset.h>
@@ -27,6 +26,9 @@ int quick_d_int_array(sep_3d *info,int,int *array,double *value);
 int quick_d_float_array(sep_3d *info,int,float *array,double *value);
 int quick_int_d_array(sep_3d *info,int *array,double *value);
 int quick_float_d_array(sep_3d *info,float *array,double *value);
+
+int sep3d_add_key(char *sep3dname,char *keyname, char *keytype);
+
 _XFUNCPROTOEND
 #else
 int search_key_string();
@@ -35,6 +37,8 @@ int quick_d_float_array();
 int quick_d_int_array();
 int quick_float_d_array();
 int quick_int_d_array();
+
+int sep3d_add_key();
 #endif
 
 int *ipt_math,*nd_math,ndim_math;

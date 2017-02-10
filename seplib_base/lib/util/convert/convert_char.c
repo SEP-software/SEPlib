@@ -22,6 +22,9 @@ COMPILE LEVEL
 DISTR
 >*/
 #include <sepconvert.h>
+extern int sreed(const char *, void *, int);
+extern int srite(const char *, void *, int);
+extern void seperr(const char *, ... );
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
 int reed_char_real(char *tag, int n1,float *out)

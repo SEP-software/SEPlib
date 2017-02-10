@@ -9,7 +9,10 @@ Date Created:Sun Aug 16 13:52:22 PDT 1998
 Purpose: 
 
 */	 
-
+#include <sepConfig.h>
+#if HAVE_STRING_H
+#include <string.h>
+#endif
 #include<superset.h> 
 #include"superset_internal.h" 
 
@@ -36,7 +39,7 @@ Finds and initializes a tag
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-sep_3d* tag_info_sep3d(char *name, enum usage_type type)
+sep_3d* tag_info_sep3d(const char *name, enum usage_type type)
 _XFUNCPROTOEND
 #else
 sep_3d* tag_info_sep3d(name,type) 

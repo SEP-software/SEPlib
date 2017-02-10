@@ -2,7 +2,6 @@
 #define NO_DRN -100
 #define NBUF 100000
 #define YES 1
-#include<sepConfig.h>
 #define NO 0
 
 #include "superset_internal.h"

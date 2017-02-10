@@ -198,14 +198,21 @@ if(keyindex <1 || keyindex > info->nkeys)
 if(info->keyname[keyindex-1]!=SEPNULL) free(info->keyname[keyindex-1]);
 if(info->keytype[keyindex-1]!=SEPNULL) free(info->keytype[keyindex-1]);
 if(info->keyfmt[keyindex-1]!=SEPNULL) free(info->keyfmt[keyindex-1]);
-
+/*
 info->keyname[keyindex-1]=(char*) malloc((strlen(keyname)+1)*sizeof(char));
 info->keytype[keyindex-1]=(char*) malloc((strlen(keytype)+1)*sizeof(char));
 info->keyfmt[keyindex-1]=(char*) malloc((strlen(keyfmt)+1)*sizeof(char));
+*/
+info->keyname[keyindex-1]=(char*) malloc((SEP_3D_STRING_LEN+1)*sizeof(char));
+info->keytype[keyindex-1]=(char*) malloc((SEP_3D_STRING_LEN+1)*sizeof(char));
+info->keyfmt[keyindex-1]=(char*) malloc((SEP_3D_STRING_LEN+1)*sizeof(char));
 
-strcpy(info->keyname[keyindex-1],keyname);
-strcpy(info->keyfmt[keyindex-1],keyfmt);
-strcpy(info->keytype[keyindex-1],keytype);
+strncpy(info->keyname[keyindex-1],keyname,SEP_3D_STRING_LEN);
+info->keyname[keyindex-1][SEP_3D_STRING_LEN] = '\0';
+strncpy(info->keyfmt[keyindex-1],keyfmt,SEP_3D_STRING_LEN);
+info->keyfmt[keyindex-1][SEP_3D_STRING_LEN] = '\0';
+strncpy(info->keytype[keyindex-1],keytype,SEP_3D_STRING_LEN);
+info->keytype[keyindex-1][SEP_3D_STRING_LEN] = '\0';
 
 	
 
@@ -275,9 +282,9 @@ if(info->keyname[keyindex-1]==SEPNULL || info->keytype[keyindex-1]==SEPNULL ||
   "key %d has not been set in %s \n",keyindex,sep3dname));
 
 
-strcpy(keyname,info->keyname[keyindex-1]);
-strcpy(keytype,info->keytype[keyindex-1]);
-strcpy(keyfmt,info->keyfmt[keyindex-1]);
+strncpy(keyname,info->keyname[keyindex-1],SEP_3D_STRING_LEN);
+strncpy(keytype,info->keytype[keyindex-1],SEP_3D_STRING_LEN);
+strncpy(keyfmt,info->keyfmt[keyindex-1],SEP_3D_STRING_LEN);
 
 return(SUCCESS);
 }

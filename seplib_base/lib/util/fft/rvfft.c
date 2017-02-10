@@ -94,15 +94,15 @@ B<sepfft>
  */
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-int rvfft (register complex float *x,int lx,int nx,int isign,float scale,int mode)
+int rvfft (register complex *x,int lx,int nx,int isign,float scale,int mode)
 _XFUNCPROTOEND
 #else
 int rvfft (x,lx,nx,isign,scale,mode)
-register complex float  *x;
+register complex *x;
 int lx,nx,isign,mode; float scale;
 #endif
   {
-  register complex float *xp,*xn,*xpplx;
+  register complex *xp,*xn,*xpplx;
   int i,j,k,ix,lx2m1;
   float real,imag,xsumre,xsumim,xdifre,xdifim,*xf,*xfplx;
   double aa,cn,sn,cd,sd,arg;
@@ -121,14 +121,14 @@ int lx,nx,isign,mode; float scale;
     cvfft (x,lx,nx/2,isign,scale);
     for (xp=x, xpplx=xp+lx, xn=x+nx/2*lx; xp<xpplx; xp++, xn++)
       {
-      real = __real__(*xp)+__imag__(*xp); imag = __real__(*xp)-__imag__(*xp);
-      __real__(*xp) = real;
+      real = xp->re+xp->im; imag = xp->re-xp->im;
+      xp->re = real;
       if (mode == 1)    /* pack Nyquist */
-        __imag__(*xp) = imag;
+        xp->im = imag;
       else      /* unpack Nyquist */
         {
-        __real__(*xn) = imag;
-        __imag__(*xn) = __imag__(*xp) = 0.;
+        xn->re = imag;
+        xn->im = xp->im = 0.;
         }
       }
     }
@@ -144,16 +144,16 @@ int lx,nx,isign,mode; float scale;
     cn -= aa;
     for (xn=x+(nx/2-ix)*lx, xpplx=xp+lx; xp<xpplx; xp++, xn++)
       {
-      xsumre = 0.5*(__real__(*xp)+__real__(*xn));
-      xsumim = 0.5*(__imag__(*xp)-__imag__(*xn));
-      xdifre  = 0.5*(__real__(*xp)-__real__(*xn));
-      xdifim = 0.5*(__imag__(*xp)+__imag__(*xn));
+      xsumre = 0.5*(xp->re+xn->re);
+      xsumim = 0.5*(xp->im-xn->im);
+      xdifre  = 0.5*(xp->re-xn->re);
+      xdifim = 0.5*(xp->im+xn->im);
       real = sn*xdifre+cn*xdifim;
       imag = sn*xdifim-cn*xdifre;
-      __real__(*xp) = xsumre+real;
-      __imag__(*xp) = imag+xsumim;
-      __real__(*xn) = xsumre-real;
-      __imag__(*xn) = imag-xsumim;
+      xp->re = xsumre+real;
+      xp->im = imag+xsumim;
+      xn->re = xsumre-real;
+      xn->im = imag-xsumim;
         }
     }
   if(mode < 0)         /* complex to real */
@@ -162,15 +162,15 @@ int lx,nx,isign,mode; float scale;
       {        /* so pack it */
       for (xp=x, xn=x+nx/2*lx, xpplx=xp+lx; xp<xpplx; xp++, xn++)
         {
-        __imag__(*xp) = __real__(*xn);  
-        __real__(*xn) = 0.;
+        xp->im = xn->re;  
+        xn->re = 0.;
         }
       }
     for (xp=x, xpplx=xp+lx; xp<xpplx; xp++)
       {
-      real = 0.5*(__real__(*xp)+__imag__(*xp));
-      __imag__(*xp) = 0.5*(__imag__(*xp)-__real__(*xp));
-      __real__(*xp) = real;
+      real = 0.5*(xp->re+xp->im);
+      xp->im = 0.5*(xp->im-xp->re);
+      xp->re = real;
       }
     cvfft (x,lx,nx/2,isign,scale);
     for (ix=0; ix<nx; ix+=2)  /* unweave adjacent */

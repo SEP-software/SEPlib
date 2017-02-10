@@ -13,11 +13,12 @@ Purpose: To handle axis information in the superset data
 
 int sep3d_tag_num=0;
 #include<string.h>
-
+#include <superset_internal.h>
 #include <sep3dc.h> 
 void my_axes_clean(sep3d *sep3dc);
 void my_keys_clean(sep3d *sep3dc);
 void my_char_dealloc(char **str_array, int nlen);
+extern int sep_thread_num(void);
 
 /*
 =head1 NAME
@@ -118,7 +119,7 @@ if(0!=sep3d_grab_usage(sep3dt,sep3dc->usage) ||
 if(0!= sep3d_grab_long_ntraces(sep3dt,&sep3dc->ntraces))
   return(sepwarn(NOT_MET,"trouble grabing into C the number of traces\n"));
 
-if(strcmp(sep3dc->tag,sep3dt)!=0) strcpy(sep3dc->tag,sep3dt);
+if(strcmp(sep3dc->tag,sep3dt)!=0) strncpy(sep3dc->tag,sep3dt,sizeof(sep3dc->tag));
 
 
 
@@ -168,7 +169,7 @@ int i1;
 if(1==valid_structure(sep3dc))
  return(sepwarn(NOT_MET,"structure not valid can't sync it \n"));
 
-strcpy(tag,sep3dc->tag);
+strncpy(tag,sep3dc->tag,sizeof(tag));
 
 
 if(0!= sep3d_par_init(tag,sep3dc->usage))
@@ -257,6 +258,7 @@ B<superset>
 */
 
 int init_sep3d_tag(char *tag,sep3d *sep3dc,char *usage){
+/*
 char  temp_ch[1024];
 int local_tag,i;
 
@@ -264,6 +266,7 @@ int local_tag,i;
 sprintf(temp_ch,"%s.local_tag",tag);
 local_tag=0;
 getch(temp_ch,"d",&local_tag);
+*/
 
 sep3d_initialize(sep3dc);
 
@@ -419,7 +422,7 @@ if(0!=sep3d_set_file_type(sep3dc->tag,file_type))
 if(0!=sep3d_set_data_type(sep3dc->tag,data_type))
   return(sepwarn(NOT_MET,"Trouble setting data type \n"));
 
-strcpy(temp_ch,sep3dc->tag);
+strncpy(temp_ch,sep3dc->tag,sizeof(sep3dc->tag));
 if(0!=sep3d_grab_sep3d(temp_ch,sep3dc))
   return(sepwarn(NOT_MET,"trouble grabbing structure \n"));
 
@@ -879,7 +882,7 @@ if(1==valid_structure(input))
 ierr=sep3d_copy_struct(input->tag,output->tag);
 
                                                                                 
-strcpy(temp_ch,output->tag);
+strncpy(temp_ch,output->tag,sizeof(output->tag));
  if(0!=sep3d_grab_sep3d(temp_ch,output))
    return(sepwarn(NOT_MET,"Trouble grabbing structure \n"));
 
@@ -2204,7 +2207,7 @@ if(0!=sep3d_change_dims(sep3dc->tag,ndim,n)){
   return(sepwarn(NOT_MET,
   "trouble changing dimensions for tag  %s \n",sep3dc->tag));
 }
-strcpy(temp_ch,sep3dc->tag);
+strncpy(temp_ch,sep3dc->tag,sizeof(sep3dc->tag));
 if(0!=sep3d_grab_sep3d(temp_ch,sep3dc))
    return(sepwarn(NOT_MET,"Trouble grabbing structure \n"));
 return(0);
@@ -2304,7 +2307,7 @@ if(0!= sep3d_pass_string(sep3dc->tag,ifrom,ito))
 if(0!=sep3d_pass_headers(sep_thread_num(),sep3dc->tag,ifrom,ito))
       seperr("trouble distributing  headers\n");
 
-strcpy(string,sep3dc->tag);
+strncpy(string,sep3dc->tag,sizeof(sep3dc->tag));
 if(0!=sep3d_grab_sep3d(string,sep3dc))
   return(sepwarn(NOT_MET,"trouble grabbing sep3d \n"));
                                                                                 
@@ -2319,9 +2322,9 @@ if(ifrom==sep_thread_num()){
 }
 if(0!= sep3d_broadcast_string(sep3dc->tag,ifrom))
   return(sepwarn(NOT_MET,"trouble broadcasting string"));
-if(0!=sep3d_broadcast_headers(sep3dc->tag,0,0))
+if(0!=sep3d_broadcast_headers(sep3dc->tag,0))
       seperr("trouble distributing  headers\n");
-strcpy(string,sep3dc->tag);
+strncpy(string,sep3dc->tag,sizeof(sep3dc->tag));
 sep3d_grab_sep3d(string,sep3dc);
 
                                                                                 

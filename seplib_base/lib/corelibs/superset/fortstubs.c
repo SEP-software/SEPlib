@@ -1,5 +1,5 @@
 #define SET_SDOC 1 
-#include <sitedef.h>
+#include <sepConfig.h>
 #include "cfortran.h"
 #include <unistd.h>
 #include "superset_internal.h"

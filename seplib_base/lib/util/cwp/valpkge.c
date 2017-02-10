@@ -58,9 +58,11 @@ Authors: CWP: Jack K. Cohen, Shuki Ronen
 /**************** end self doc ********************************/
 /*Robert G. Clapp	12/9/95			*/
 /* Revised to make it independent of SU types (except val) */
+#include <sepConfig.h>
 #if HAVE_STRING_H
 #include <string.h>
 #endif
+extern void seperr(const char *, ... );
 #include <sulib.h> 
 
 #if NeedFunctionPrototypes
@@ -271,38 +273,44 @@ char *type;
 Value *valp;
 #endif
 {
+    int rc;
 	switch(*type) {
 	case 's':
-		(void) scanf("%s", valp->s);
+		rc = scanf("%s", valp->s);
 	break;
 	case 'h':
-		(void) scanf("%hd", &(valp->h));
+		rc = scanf("%hd", &(valp->h));
 	break;
 	case 'u':
-		(void) scanf("%hu", &(valp->u));
+		rc = scanf("%hu", &(valp->u));
 	break;
 	case 'i':
-		(void) scanf("%d", &(valp->i));
+		rc = scanf("%d", &(valp->i));
 	break;
 	case 'p':
 	case 'P':
-		(void) scanf("%u", &(valp->p));
+		rc = scanf("%u", &(valp->p));
 	break;
 	case 'l':
-		(void) scanf("%ld", &(valp->l));
+		rc = scanf("%ld", &(valp->l));
 	break;
 	case 'v':
-		(void) scanf("%ld", &(valp->v));
+		rc = scanf("%ld", &(valp->v));
 	break;
 	case 'f':
-		(void) scanf("%f", &(valp->f));
+		rc = scanf("%f", &(valp->f));
 	break;
 	case 'd':
-		(void) scanf("%lf", &(valp->d));
+		rc = scanf("%lf", &(valp->d));
 	break;
 	default:
 		fprintf(stderr,"scanfval: unknown type %s", type);
 	}
+
+        if(rc < 1)
+        {
+           perror("scanfval()");
+        }
 
 	return;
 }

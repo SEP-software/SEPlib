@@ -1,5 +1,4 @@
 #define SET_SDOC 1
-#include<sepConfig.h>
 /*
 
 Author: Robert Clapp, ESMB 463, 7230253
@@ -195,11 +194,11 @@ Add entry to sep_3d list
  
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-sep_3d *sep3d_new( char *tag, enum usage_type usage )
+sep_3d *sep3d_new( const char *tag, enum usage_type usage )
 _XFUNCPROTOEND
 #else
 sep_3d * sep3d_new( tag, usage )
-     char *tag; 
+const  char *tag; 
 enum usage_type usage;
 #endif
 {

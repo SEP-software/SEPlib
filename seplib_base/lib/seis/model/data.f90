@@ -69,6 +69,7 @@ subroutine data_write(isx,shot_block)
 real::shot_block(:,:)
 integer :: isx
 integer :: n_block
+integer, external :: srite,sseek_block
 n_block=isx-1
 if (sseek_block("Data",n_block,block_size,0)/=n_block) call seperr("Error seeking")
 if (srite("Data",shot_block,block_size) /= block_size ) call seperr("Error writing data")
@@ -82,6 +83,7 @@ subroutine data_read(isx,shot_block)
 real:: shot_block(:,:)
 integer ::isx
 integer ::n_block,ret_seek,ix0_rec
+integer, external :: sreed, sseek_block
 n_block=isx-1 
 if (sseek_block("Data",n_block,block_size,0)/= n_block) call seperr("Error block seeking data")
 if (sreed("Data",shot_block, block_size)/=block_size)call seperr("problems with reading data file")

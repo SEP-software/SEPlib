@@ -12,6 +12,7 @@ Purpose:
 #include <superset.h>
 #include "superset_internal.h"
 #include "sepstream.h"
+#include "sep_main_external.h"
 #include<string.h>
 
 #ifndef YES
@@ -19,8 +20,14 @@ Purpose:
 #define NO 0
 #endif
 
-int have_header_format_tag(char *tag, char *tag_temp);
-int have_grid_format_tag(char *tag, char *tag_temp);
+extern int have_header_format_tag(char *tag, char *tag_temp);
+extern int have_grid_format_tag(char *tag, char *tag_temp);
+extern int sep3d_tag_init_thread(char  *tag,char *sep3dout,char *usage,int ithread);
+extern int sep_thread_num(void);
+extern int sep_num_thread(void);
+extern int sep3d_set_inorder(const char *tag);
+extern int sep3d_unset_inorder(const char *tag);
+extern int tag_exists(const char *tag);
 
 /*<
 sep3d_struct_init
@@ -501,10 +508,10 @@ if(has_headers==YES){
         if(SUCCESS==sep3d_grab_inorder(tag,&inorder)){;
           if(inorder==-1){/*We haven't determined if the dataset is inorder yet*/
           auxpar("same_record_number","s",&inorder,tag);
-          if(inorder==1 || drn <1) sep3d_set_inorder(tag,&inorder);
+          if(inorder==1 || drn <1) sep3d_set_inorder(tag);
           else{
              inorder=0;
-        sep3d_set_inorder(tag,&inorder);;
+           sep3d_unset_inorder(tag);
             } 
            }
         }

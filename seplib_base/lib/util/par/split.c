@@ -10,6 +10,8 @@ Purpose:
 
 #include<sep_par.h>
 #include<mpi.h>
+extern int sep_thread_num(void);
+extern int sep_num_thread(void);
 int read_local_datasets(sep3d *sects,sep3d *data, distrib *spread, int *nwind, int *fwind,
     float *buf1, float *buf2,float *buf3)
 {

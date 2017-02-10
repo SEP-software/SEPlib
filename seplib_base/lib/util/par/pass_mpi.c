@@ -49,14 +49,21 @@ int mpi_sep_ngroup;
 
 #define DEFAULT_JOB_NUM 1001
 
+#include <sepConfig.h>
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+#if HAVE_STDLIB_H
+#include <stdlib.h>
+#endif
+#include <fcntl.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include<mpi.h>
 #include<sep_par.h>
 extern char **sepxargv;
 extern int sepxargc;
-#include<mpi.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 
 MPI_Comm sep_mpi_comm[MAX_SEP_COM]; 
 MPI_Group sep_mpi_group[MAX_SEP_COM];
@@ -497,15 +504,15 @@ mpi_job_num=DEFAULT_JOB_NUM;
 int mpi_sep_open_lock(char *fname){
 int fd;
 
-   fd= open(fname,O_EXCL|O_CREAT);
+   fd= open(fname,O_EXCL|O_CREAT|O_RDONLY,00400);
    while(fd==-1){
       sleep(1);
-      fd= open(fname,O_EXCL|O_CREAT);
+      fd= open(fname,O_EXCL|O_CREAT|O_RDONLY,00400);
    }
    return(fd);
 }
 int mpi_sep_check_lock(char *fname){
-return(open(fname,O_EXCL|O_CREAT));
+return(open(fname,O_EXCL|O_CREAT|O_RDONLY,00400));
 }
 
 

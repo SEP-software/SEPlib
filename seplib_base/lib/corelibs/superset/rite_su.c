@@ -1,7 +1,6 @@
 #define SET_SDOC 1
 #include <seplib.h>
 #include <superset.h>
-#include "sepConfig.h"
 #include "superset_internal.h"
 #ifdef SU_SUPPORT
 /*************************/
@@ -280,7 +279,7 @@ for(i1=1; i1 <= nk; i1++){
 for(i1=0; i1 < SU_NKEYS; i1++){
   if(info->key_index[i1] >nk){
     /*a new key not copied from the input */
-    sprintf(temp3_ch,hdr[i1].key);
+    strcpy(temp3_ch,hdr[i1].key);
     getch(hdr[i1].key,"s",temp3_ch);
     if(hdr[i1].type[0]=='f'||hdr[i1].type[0]=='d'|| info->float_fract[i1]!=0.){
      strcpy(temp_ch,"scalar_float");

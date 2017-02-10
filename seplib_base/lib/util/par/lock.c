@@ -1,10 +1,11 @@
 #define SET_SDOC 1
+#include <sepConfig.h>
 #include<sep_par.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <sys/types.h>
-#if HAVE_SYS_PARAM_H
+#if HAVE_SYS_PARAM_H || defined(MACOS)
 #include <sys/param.h>
 #endif
 #include <sys/stat.h>
@@ -14,11 +15,13 @@
 #include <signal.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#if HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #include <time.h>
 #include <errno.h>
 
-#ifdef HAVE_UTIME
+#if defined(HAVE_UTIME_H) || defined(MACOS)
 #include <utime.h>
 #endif
 
@@ -121,7 +124,7 @@ int check_sleep(int sleeptime);
 int lockfile_create(const char *lockfile, int nsec, int flags)
 {
 	struct stat	st, st1;
-	char		tmplock[9999];
+	char		tmplock[MAXPATHLEN];
 	char		sysname[256];
 	char		buf[8];
 	char		*p;
@@ -138,7 +141,7 @@ int lockfile_create(const char *lockfile, int nsec, int flags)
 	/*
 	 *	Safety measure.
 	 */
-	if (strlen(lockfile) + 32 > 9999) {
+	if (strlen(lockfile) + 32 > MAXPATHLEN) {
 		errno = ENAMETOOLONG;
 		return L_ERROR;
 	}
@@ -200,7 +203,10 @@ int lockfile_create(const char *lockfile, int nsec, int flags)
 		 *	EXTRA FIX: the value of the nlink field
 		 *	can't be trusted (may be cached).
 		 */
-		(void)link(tmplock, lockfile);
+		if(-1 == link(tmplock, lockfile))
+                {
+                   perror("lockfile_create: link() ");
+                }
 
 		if (lstat(tmplock, &st1) < 0)
 			return L_ERROR; /* Can't happen */
