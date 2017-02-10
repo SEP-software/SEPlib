@@ -25,6 +25,7 @@
  * Revised: Bob          8-97     Added different prototypes
  * Revised: Bob         12-97     Added STREAMSOCKOUT
  */
+#include <sepConfig.h>
 #include <stdio.h>
 
 #ifdef RS6000

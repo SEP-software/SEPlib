@@ -9,21 +9,14 @@ extern int noieeeinterupt(void);
 extern int fortalloc( char*,int);
 extern int fortfree( char*);
 extern char* fsbrk(unsigned int);
-int sep3d_grab_header_vals_sf(const char *tag,char *tag2, void *vals);
-int sep3d_grab_header_vals_si(const char *tag,char *tag2, void *vals);
-int sep3d_grab_header_vals_if(const char *tag,int tag2, void *vals);
-int sep3d_grab_header_vals_ii(const char *tag,int tag2, void *vals);
+_XFUNCPROTOEND
+#else /*END OF NO PROTO */
+extern int noieeeinterupt();
+extern void finitpar();
+extern int fortalloc();
+extern int fortfree();
+extern char*fsbrk();
+#endif /*END OF NO PROTO */
 
-int sep3d_set_header_vals_if(const char *tag,int tag2, void *vals);
-int sep3d_set_header_vals_ii(const char *tag,int tag2, void *vals);
-int sep3d_set_header_vals_sf(const char *tag,char *tag2, void *vals);
-int sep3d_set_header_vals_si(const char *tag,char *tag2, void *vals);
-
-
-int sep3d_writeif(const char *tag, char *t2, int *n, int *f,int *j, void *v, int i1, int i2, int i3,int i4); 
-int sep3d_writeff(const char *tag, char *t2, int *n, int *f,int *j, void *v, int i1, int i2, int i3,int i4); 
-int sep3d_writecf(const char *tag, char *t2, int *n, int *f,int *j, void *v, int i1, int i2, int i3,int i4); 
-int sep3d_readcf(const char *tag, char *t2, int i1, int i2, int i3, void *v);
-int sep3d_readif(const char *tag, char *t2, int i1, int i2, int i3, void *v);
-int sep3d_readff(const char *tag, char *t2, int i1, int i2, int i3, void *v);
-#endif
+/*  $Id: sep_fortran_internal.h,v 1.1.1.1 2004/03/25 06:37:24 cvs Exp $ */
+/*  $Id: sep_fortran_internal.h,v 1.1.1.1 2004/03/25 06:37:24 cvs Exp $ */

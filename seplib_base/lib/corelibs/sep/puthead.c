@@ -70,6 +70,7 @@ B<sep>
  * Revised  9/16/90 D. Nichols Standardize on vfprintf
  * Revised: dave 9/17/90  Use stdarg for ANSI-C compilers
  */
+#include <sepConfig.h>
 #include <stdio.h>
 #include <sep_pars_external.h>
 #include <sep_main_external.h>

@@ -89,11 +89,18 @@
  */
 
 
+#include <sepConfig.h>
 
 #include <sys/types.h>
 
+#if defined(HAVE_ERRNO_H) || defined(MACOS)
 #include <errno.h>
+#else
 
+#ifndef STDC_HEADERS
+extern int errno;
+#endif
+#endif
 
 #include <sys/time.h>
 #include <sys/ioctl.h>
@@ -110,7 +117,11 @@
 #include <netdb.h>
 #include <string.h>
 #include <unistd.h>
+#if defined (HAVE_STDLIB_H) || defined(MACOS)
 #include<stdlib.h>
+#else
+extern int atoi();
+#endif /* HAVE_STDLIB  */
 
 #include "sep_main_internal.h"
 
@@ -284,7 +295,9 @@ int opensock2( remhost, portstr )
 #include <signal.h>
 static int ringring;
 
+#if defined(MACOS)
 #define RETSIGTYPE void
+#endif
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
 static RETSIGTYPE catchem( int signo ) { ringring = 0; }
@@ -434,8 +447,13 @@ void strput( fdes , buf)
      char *buf;
 #endif
 {
+  ssize_t rc;
     do { 
-	write(  fdes, buf++, 1 );
+	rc = write(  fdes, buf++, 1 );
+        if(rc < 1) {
+           perror("strput: problem writing string");
+           break;
+        }
     } while ( *(buf-1) != '\0' );
     return;
 }

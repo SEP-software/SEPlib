@@ -1,3 +1,4 @@
+#include <sepConfig.h>
  
 #ifdef RS6000
 #undef __STR__
@@ -6,8 +7,18 @@
 #include <stdio.h>
 #include <string.h>
 
+#if defined(HAVE_ERRNO_H) || defined(MACOS)
 #include <errno.h>
+#else
 
+#ifndef STDC_HEADERS
+extern int errno;
+#endif
+#endif
+
+#if defined(MACOS) || defined(LINUX)
+#define USE_SOCKETS
+#endif
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <assert.h>   
@@ -137,7 +148,6 @@ void sepstr_out_head( info )
 	infin = tag_info( "in", TAG_IN );
 	sepstr_copyh( infin, info );
     }
-return;
     
 }
 
@@ -160,18 +170,15 @@ void write_title( info )
    sprintf(temp1_ch,"%s.write_title",info->tagname);
    if(0==getch(temp1_ch,"s",&doit)) doit=1;
    if(doit==1){
-
+    
     fputs(maketitle(outline),info->headfile);
     fflush(info->headfile);
-
     if(ferror(info->headfile)) {
 	perror("write_title");
 	seperr("write_title: unable to write to output header %s for tag %s",
 	       info->headfile, info->tagname );
     }
-    
     }
-
     info->header_title = 1;
 }
 
@@ -257,6 +264,7 @@ void sepstr_hclose( info )
 #endif
 {      
 
+    
     if( info->headfile != (FILE*)0 ){
 
 	
@@ -268,7 +276,7 @@ void sepstr_hclose( info )
 	    fputc( '\n', info->headfile );
 	    fclose( info->headfile );
 	    info->headfile = (FILE*)0;
- 	}
+	}
 	
 /*	info->headfile = 0;*/
 	

@@ -94,6 +94,7 @@ B<sep>
    
  */
 
+#include <sepConfig.h>
 #include <stdio.h>
 #include <string.h>
 #include<math.h>

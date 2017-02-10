@@ -27,6 +27,7 @@
  * Revised: Robert Clapp 7-18-97 Moved stdlib include to sepcube
  */
 
+#include <sepConfig.h>
 #include "sep_fortran_internal.h"
 #include <cfortran.h>
 

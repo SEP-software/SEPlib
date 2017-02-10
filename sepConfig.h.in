@@ -25,3 +25,5 @@
 #cmakedefine HAVE_LIMITS_H
 #cmakedefine HAVE_ERRNO_H
 #cmakedefine HAVE_SYS_SOCKET_H
+#cmakedefine HAVE_RPC_RPC_H
+#cmakedefine HAVE_RPC_TYPES_H

@@ -46,15 +46,29 @@ KEYWORDS: filename find
  * Revised: martin  9-1-95  Linux mods
  * Revised: Bob     6-1-99  Switched to GNU ifdef
  */
+#include <sepConfig.h>
 #include "sep_main_internal.h"
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
 
+#if HAVE_DIRENT_H || defined(MACOS)
 # include <dirent.h>
 #define NAMLEN(dirent) strlen((dirent)->d_name)
+#else
+# define dirent direct
+#define NAMLEN(dirent) (dirent)->d_namlen
+# if HAVE_SYS_NDIR_H
+#  include <sys/ndir.h>
+# endif
+# if HAVE_SYS_DIR_H
 #  include <sys/dir.h>
+# endif
+# if HAVE_NDIR_H
+#  include <ndir.h>
+# endif
+#endif
 
 /*#define DIRCAST (struct direct *)*/
 #define DIRCAST (struct dirent *)

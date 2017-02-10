@@ -1,5 +1,6 @@
+#include <sepConfig.h>
 #include <stdio.h>
-#if defined(HAVE_SOCKET)
+#if defined(HAVE_SYS_SOCKET_H)
 #include <sys/socket.h>
 #endif
                                                                                  

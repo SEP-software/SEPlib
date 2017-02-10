@@ -44,13 +44,14 @@ B<sep>
 /*
  * Author: Stewart A. Levin   MRDC  4/14/89   
  */
+#include <sepConfig.h>
 
 #if HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
-
+#if HAVE_STRING_H
 #include <string.h>
-
+#endif
 #include <sep_pars_external.h>
 int sepxargc;
 char **sepxargv;

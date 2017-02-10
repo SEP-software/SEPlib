@@ -76,6 +76,7 @@ B<sep>
  *                                
  */
 
+#include <sepConfig.h>
 #include <stdio.h>
 #include "sep_main_internal.h"
 #include <sep_main_external.h>
@@ -96,6 +97,7 @@ int hclose()
 {
 
 static streaminf *outinfo;
+
 if( outinfo == 0 )  outinfo = tag_info( "out", TAG_OUT );
 if( outinfo == 0 ) return 0;
 
@@ -107,11 +109,11 @@ return 0;
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-int auxhclose(char *tag)
+int auxhclose(const char *tag)
 _XFUNCPROTOEND
 #else
 int auxhclose(tag)
-char * tag;
+const char * tag;
 #endif
 {
 

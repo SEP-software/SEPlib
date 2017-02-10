@@ -4,6 +4,7 @@
  *
  * Author S. Levin  3/26/83
  */
+#include <sepConfig.h>
 #include <sepcube.h>
 #include "sep_main_internal.h"
 #if NeedFunctionPrototypes

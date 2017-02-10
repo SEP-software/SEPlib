@@ -104,6 +104,7 @@ Modified 9/16/90  Dave Nichols make ansi-c and posix compatible.
 Modified 8-94  Dave Nichols rewrote using new seplib internals
 
 */
+#include <sepConfig.h>
 #include <stdio.h>
 #include "streamlist.h"
 #include "sep_main_internal.h"

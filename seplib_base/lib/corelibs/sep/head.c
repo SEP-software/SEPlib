@@ -18,7 +18,9 @@ clumsy interface of putch.
  * Revised   5/15/84 S. Levin -- Reopen if header closed
  * Revised   6/25/86 S. Levin -- Added option for head=stderr for segy use.
  */
+#include <sepConfig.h>
 #include <stdio.h>
+#include <sep_main_internal.h>
 #include <sep_main_external.h>
 #include "streamlist.h"
 

@@ -92,6 +92,8 @@ module sep
      module procedure from_history_dim_array
      module procedure from_conj_int
      module procedure from_conj_real
+     module procedure from_history_double
+     module procedure from_history_double_array
   end interface
 
 !!$
@@ -176,6 +178,8 @@ module sep
      module procedure from_aux_int_array
      module procedure from_aux_real
      module procedure from_aux_real_array
+     module procedure from_aux_double
+     module procedure from_aux_double_array
      module procedure from_aux_char
      module procedure from_aux_dim
      module procedure from_aux_dim_array
@@ -378,6 +382,8 @@ module sep
      module procedure to_history_int_array
      module procedure to_history_real
      module procedure to_history_real_array
+     module procedure to_history_double
+     module procedure to_history_double_array
      module procedure to_history_bool
      module procedure to_history_char
   end interface
@@ -535,6 +541,7 @@ module sep
   end interface
 
   private :: strip_blanks
+  private :: num_digits
 
 contains
 
@@ -574,14 +581,15 @@ contains
 !!$=cut
   subroutine sep_init (source)
     character (len=*), intent (in), optional :: source
-    character(len=9998) :: tmp
-     integer :: nargs,i
-    call get_command_argument(0, tmp)
-    call init_args (trim(tmp))
-    nargs= command_argument_count()
-    do  i=1,nargs
-      call get_command_argument(i,tmp)
-      call getch_add_string(trim(tmp)//C_NULL_CHAR) 
+    ! call initpar ()
+    character (len=9998) :: tmp
+    integer :: nargs, i
+    call get_command_argument(0,tmp)
+    call init_args(trim(tmp))
+    nargs = command_argument_count()
+    do i=1,nargs
+       call get_command_argument(i,tmp)
+       call getch_add_string(trim(tmp)//C_NULL_CHAR)
     end do
     if (present (source)) call doc (source)
   end subroutine sep_init
@@ -800,22 +808,18 @@ contains
     integer, intent (out), dimension (:)           :: value
     integer, intent (in),  dimension (:), optional :: default
 
-    integer                                        :: i
-    character (len = len(name) + 4)                :: varname
-
+    integer                                        :: i,j
+    character (len = len(name) + 10)               :: varname
+    character (len=15)                             :: varfmt
 
 
     if(hetch(name,'i',value) == 0) then
+       varfmt = ' '
+       varname = ' '
        do i=1, size (value)
-          if (i < 10) then
-             write (varname,"(a,i1)") name,i
-          else if (i < 100) then
-             write (varname,"(a,i2)") name,i
-          else if (i < 1000) then
-             write (varname,"(a,i3)") name,i
-          else
-             write (varname,"(a,i4)") name,i
-          end if
+          call num_digits(i,j)
+          write(varfmt,'(a,i10,a)')'(a,i',j,')'
+          write(varname,varfmt) name,i
           if (present (default)) then
              call from_history_int (varname, value (i), default (i))
           else
@@ -845,18 +849,17 @@ contains
     real, intent (out), dimension (:)           :: value
     real, intent (in),  dimension (:), optional :: default
 
-    integer                                        :: i
-    character (len = len(name) + 2)                :: varname
-
-
+    integer                                        :: i,j
+    character (len = len(name) + 10)               :: varname
+    character (len=15)                             :: varfmt
 
     if(hetch(name,'r',value) == 0) then
+       varfmt = ' '
+       varname = ' '
        do i=1, size (value)
-          if (i < 10) then
-             write (varname,"(a,i1)") name,i
-          else
-             write (varname,"(a,i2)") name,i
-          end if
+          call num_digits(i,j)
+          write(varfmt,'(a,i10,a)')'(a,i',j,')'
+          write(varname,varfmt) name,i
           if (present (default)) then
              call from_history_real (varname, value (i), default (i))
           else
@@ -865,6 +868,47 @@ contains
        end do
     end if
   end  subroutine from_history_real_array
+
+  subroutine from_history_double (name, value, default)
+    character (len = *), intent (in)  :: name
+    double precision, intent (out)                :: value
+    double precision, intent (in), optional       :: default
+
+
+    if(hetch(name,'g',value) == 0) then
+       if (present (default)) then
+          value = default
+       else
+          call erexit("missing history value: " // name)
+       end if
+    end if
+  end  subroutine from_history_double
+
+  subroutine from_history_double_array (name, value, default)
+    character (len = *), intent (in)               :: name
+    double precision, intent (out), dimension (:)           :: value
+    double precision, intent (in),  dimension (:), optional :: default
+
+    integer                                        :: i,j
+    character (len = len(name) + 10)               :: varname
+    character (len=15)                             :: varfmt
+
+
+    if(hetch(name,'g',value) == 0) then
+       varfmt = ' '
+       varname = ' '
+       do i=1, size (value)
+          call num_digits(i,j)
+          write(varfmt,'(a,i10,a)')'(a,i',j,')'
+          write(varname,varfmt) name,i
+          if (present (default)) then
+             call from_history_double (varname, value (i), default (i))
+          else
+             call from_history_double (varname, value (i))
+          end if
+       end do
+    end if
+  end  subroutine from_history_double_array
 
   subroutine from_conj_int (flag, name, value1, def1, value2, def2)
     logical, intent (in)              :: flag
@@ -1094,19 +1138,18 @@ contains
     integer, dimension (:), intent (out)          :: value
     integer, dimension (:), intent (in), optional :: default
 
-    integer                                       :: i
-    character (len= len(name) + 4)                :: varname
+    integer                                        :: i,j
+    character (len = len(name) + 10)               :: varname
+    character (len=15)                             :: varfmt
 
    
     if(getch(name,'i',value) == 0) then
+       varfmt = ' '
+       varname = ' '
        do i=1, size (value)
-          if (i < 10) then
-             write (varname,"(a,i1)") name,i
-          else if (i < 100) then
-             write (varname,"(a,i2)") name,i
-          else
-             write (varname,"(a,i3)") name,i
-          end if
+          call num_digits(i,j)
+          write(varfmt,'(a,i10,a)')'(a,i',j,')'
+          write(varname,varfmt) name,i
           if (present (default)) then
              call from_param_int (varname, value (i), default (i))
           else
@@ -1169,19 +1212,17 @@ contains
     real, dimension (:), intent (out)          :: value
     real, dimension (:), intent (in), optional :: default
 
-    integer                                    :: i
-    character (len= len(name) + 4)             :: varname
-
+    integer                                        :: i,j
+    character (len = len(name) + 10)               :: varname
+    character (len=15)                             :: varfmt
 
     if(getch(name,'r',value) == 0) then
+       varfmt = ' '
+       varname = ' '
        do i=1, size (value)
-          if (i < 10) then
-             write (varname,"(a,i1)") name,i
-          else if (i < 100) then
-             write (varname,"(a,i2)") name,i
-          else
-             write (varname,"(a,i3)") name,i
-          end if
+          call num_digits(i,j)
+          write(varfmt,'(a,i10,a)')'(a,i',j,')'
+          write(varname,varfmt) name,i
           if (present (default)) then
              call from_param_real (varname, value (i), default (i))
           else
@@ -1276,21 +1317,18 @@ contains
     integer, dimension (:), intent (out)          :: value
     integer, dimension (:), intent (in), optional :: default
 
-    integer                                       :: i
-    character (len= len(name) + 4)                :: varname
+    integer                                        :: i,j
+    character (len = len(name) + 10)               :: varname
+    character (len=15)                             :: varfmt
 
 
     if(getch(name,'i',value) == 0) then
+       varfmt = ' '
+       varname = ' '
        do i=1, size (value)
-          if (i < 10) then
-             write (varname,"(a,i1)") name,i
-          else if (i < 100) then
-             write (varname,"(a,i2)") name,i
-          else if(i < 1000) then
-             write (varname,"(a,i3)") name,i
-          else
-             write (varname,"(a,i4)") name,i
-          end if
+          call num_digits(i,j)
+          write(varfmt,'(a,i10,a)')'(a,i',j,')'
+          write(varname,varfmt) name,i
           if (present (default)) then
              call from_par_int (varname, value (i), default (i))
           else
@@ -1330,21 +1368,17 @@ contains
     real, dimension (:), intent (out)          :: value
     real, dimension (:), intent (in), optional :: default
 
-    integer                                    :: i
-    character (len= len(name) + 4)             :: varname
-
+    integer                                        :: i,j
+    character (len = len(name) + 10)               :: varname
+    character (len=15)                             :: varfmt
 
     if(getch(name,'r',value) == 0) then
+       varfmt = ' '
+       varname = ' '
        do i=1, size (value)
-          if (i < 10) then
-             write (varname,"(a,i1)") name,i
-          else if (i < 100) then
-             write (varname,"(a,i2)") name,i
-          else if (i < 1000) then
-             write (varname,"(a,i3)") name,i
-          else
-             write (varname,"(a,i4)") name,i
-          end if
+          call num_digits(i,j)
+          write(varfmt,'(a,i10,a)')'(a,i',j,')'
+          write(varname,varfmt) name,i
           if (present (default)) then
              call from_par_real (varname, value (i), default (i))
           else
@@ -1436,11 +1470,9 @@ contains
     character(len=*) , optional :: tag
 
     character (len=128)                 :: tag_out
-    character (len = 2)                 :: fmt
-    character (len = 2000)              :: buffer
-    character (len = len(name) + 4)     :: varname
-    integer                             :: i, n
-
+    integer                                        :: i,j
+    character (len = len(name) + 10)               :: varname
+    character (len=15)                             :: varfmt
 
     if(present(tag)) then
       tag_out=tag
@@ -1448,26 +1480,14 @@ contains
       tag_out="out"
     end if
 
-    n = size (value)
-    if (n <= 20) then
-       write (fmt, "(i2)") n
-       write (buffer, "(" // fmt // '(i9:",")' // ")") value
-       call strip_blanks (buffer)
-       call auxputlin (trim(tag_out), "        " // name // "=" // trim (buffer))
-    else
-       do i=1, n
-          if (i < 10) then
-             write (varname,"(a,i1)") name,i
-          else if (i < 100) then
-             write (varname,"(a,i2)") name,i
-          else if (i < 1000) then
-             write (varname,"(a,i3)") name,i
-          else
-             write (varname,"(a,i4)") name,i
-          end if
-          call to_history_int (varname, value (i),tag_out)
-       end do
-    end if
+    varfmt = ' '
+    varname = ' '
+    do i=1, size(value)
+       call num_digits(i,j)
+       write(varfmt,'(a,i10,a)')'(a,i',j,')'
+       write(varname,varfmt) name,i
+       call to_history_int (varname, value (i),tag_out)
+    end do
 
    end subroutine to_history_int_array
 
@@ -1488,6 +1508,20 @@ contains
     string = new
   end subroutine strip_blanks
 
+  subroutine num_digits(num,ndig)
+    integer, intent(in) :: num
+    integer, intent(out) :: ndig
+    integer j
+
+    ndig=1
+    j=10
+    do while(ndig < 10)
+      if(num < j) return
+      ndig = ndig+1
+      j = j*10
+    enddo
+  end subroutine num_digits
+
   subroutine to_history_real (name, value, file)
     character (len = *), intent (in)  :: file, name
     real, intent (in)                 :: value
@@ -1504,20 +1538,64 @@ contains
  subroutine to_history_real_array (name, value,tag)
     character (len = *), intent (in) :: name
     real, dimension (:), intent (in) :: value
-    character (len=*), optional                :: tag
-    character (len = 1024)           :: buffer,tag_out
-    character (len = 4)              :: fmt
+    character (len=*), optional      :: tag
+    character (len = 1024)           :: tag_out
+    integer                                        :: i,j
+    character (len = len(name) + 10)               :: varname
+    character (len=15)                             :: varfmt
 
     if(present(tag)) then
        tag_out=tag
     else
       tag_out="out"
     end if
-    write (fmt, "(i4)") size (value)
-    write (buffer, "(a," // fmt // '(e14.6:",")' // ")") name // '=', value
-    call strip_blanks (buffer)
-    call auxputlin (tag_out,buffer)
+
+    varfmt = ' '
+    varname = ' '
+    do i=1, size(value)
+       call num_digits(i,j)
+       write(varfmt,'(a,i10,a)')'(a,i',j,')'
+       write(varname,varfmt) name,i
+       call to_history_real (varname, value (i),tag_out)
+    end do
   end  subroutine to_history_real_array
+
+  subroutine to_history_double (name, value, file)
+    character (len = *), intent (in)  :: file, name
+    double precision, intent (in)     :: value
+    optional                          :: file
+
+    if (present (file)) then
+       ierr= auxputch(name,'g',value,file)
+    else
+    if(putch_no .ne. "no putch") &
+       ierr= putch (name,'g',value)
+    end if
+  end  subroutine to_history_double
+
+ subroutine to_history_double_array (name, value,tag)
+    character (len = *), intent (in) :: name
+    double precision, dimension (:), intent (in) :: value
+    character (len=*), optional     :: tag
+    character (len = 130)           :: tag_out
+    integer                                        :: i,j
+    character (len = len(name) + 10)               :: varname
+    character (len=15)                             :: varfmt
+
+    if(present(tag)) then
+       tag_out=tag
+    else
+      tag_out="out"
+    end if
+    varfmt = ' '
+    varname = ' '
+    do i=1,size(value)
+       call num_digits(i,j)
+       write(varfmt,'(a,i10,a)')'(a,i',j,')'
+       write(varname,varfmt) name,i
+       call to_history_double (varname, value (i),tag_out)
+    enddo
+  end  subroutine to_history_double_array
 
   subroutine to_history_bool (name, value, file)
     character (len = *), intent (in)  :: file, name
@@ -1630,20 +1708,17 @@ contains
     integer, intent (out), dimension (:)           :: value
     integer, intent (in),  dimension (:), optional :: default
 
-    integer                                        :: i
-    character (len = len(name) + 4)                :: varname
+    integer                                        :: i,j
+    character (len = len(name) + 10)               :: varname
+    character (len=15)                             :: varfmt
 
     if(auxpar(name,'i',value,file) == 0) then
-       do i=1, size (value)
-          if (i < 10) then
-             write (varname,"(a,i1)") name,i
-          else if (i < 100) then
-             write (varname,"(a,i2)") name,i
-          else if (i < 1000) then
-             write (varname,"(a,i3)") name,i
-          else
-             write (varname,"(a,i4)") name,i
-          end if
+       varfmt = ' '
+       varname = ' '
+       do i=1,size(value)
+          call num_digits(i,j)
+          write(varfmt,'(a,i10,a)')'(a,i',j,')'
+          write(varname,varfmt) name,i
           if (present (default)) then
              call from_aux_int (file, varname, value (i), default (i))
           else
@@ -1680,21 +1755,18 @@ contains
     real, intent (out), dimension (:)           :: value
     real, intent (in),  dimension (:), optional :: default
 
-    integer                                        :: i
-    character (len = len(name) + 4)                :: varname
+    integer                                        :: i,j
+    character (len = len(name) + 10)               :: varname
+    character (len=15)                             :: varfmt
 
 
     if(auxpar(name,'r',value,file) == 0) then
-       do i=1, size (value)
-          if (i < 10) then
-             write (varname,"(a,i1)") name,i
-          else if (i < 100) then
-             write (varname,"(a,i2)") name,i
-          else if (i < 1000) then
-             write (varname,"(a,i3)") name,i
-          else
-             write (varname,"(a,i4)") name,i
-          end if
+       varfmt = ' '
+       varname = ' '
+       do i=1,size(value)
+          call num_digits(i,j)
+          write(varfmt,'(a,i10,a)')'(a,i',j,')'
+          write(varname,varfmt) name,i
           if (present (default)) then
              call from_aux_real (file, varname, value (i), default (i))
           else
@@ -1706,6 +1778,54 @@ contains
        !        "From aux(" // file // "): " // file // "_" // name,value)
     end if
   end  subroutine from_aux_real_array
+
+  subroutine from_aux_double (file, name, value, default)
+    character (len = *), intent (in)  :: file, name
+    double precision, intent (out)                :: value
+    double precision, intent (in), optional       :: default
+
+
+
+    if(auxpar(name,'g',value,file) == 0) then
+       if (present (default)) then
+          value = default
+       else
+          call erexit ("missing history value: " // name // &
+          " from file: " // file )
+       end if
+    end if
+    !    ierr= putch ("From aux(" // file // "): " // file // "_" // name, &
+    !         'g',value)
+  end  subroutine from_aux_double
+
+  subroutine from_aux_double_array (file, name, value, default)
+    character (len = *), intent (in)               :: file, name
+    double precision, intent (out), dimension (:)           :: value
+    double precision, intent (in),  dimension (:), optional :: default
+
+    integer                                        :: i,j
+    character (len = len(name) + 10)               :: varname
+    character (len=15)                             :: varfmt
+
+
+    if(auxpar(name,'g',value,file) == 0) then
+       varfmt = ' '
+       varname = ' '
+       do i=1,size(value)
+          call num_digits(i,j)
+          write(varfmt,'(a,i10,a)')'(a,i',j,')'
+          write(varname,varfmt) name,i
+          if (present (default)) then
+             call from_aux_double (file, varname, value (i), default (i))
+          else
+             call from_aux_double (file, varname, value (i))
+          end if
+       end do
+    else
+       !    	call to_history_double_array (&
+       !        "From aux(" // file // "): " // file // "_" // name,value)
+    end if
+  end  subroutine from_aux_double_array
 
   subroutine sep_read_1d (array, file, dim, esize)
     real, dimension (:), intent (inout)         :: array 

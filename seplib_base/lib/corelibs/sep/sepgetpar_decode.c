@@ -17,6 +17,7 @@
    for saw compatibility
    Revised  6-2-99   Bob Begun translation to GNU standards
  */
+#include <sepConfig.h>
 #include<string.h>
 #include<strings.h>
 #include <stdio.h>

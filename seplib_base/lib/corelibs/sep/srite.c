@@ -104,6 +104,7 @@ Modified: Robert CLapp 06/01/97
 				Changed to  GNU prototyping style
  */
 
+#include <sepConfig.h>
 
 #include <stdio.h>
 
@@ -114,12 +115,20 @@ Modified: Robert CLapp 06/01/97
 #include <assert.h>
 
 
+#if defined(HAVE_SYS_TYPES_H) || defined(MACOS)
 #include <sys/types.h>
+#endif
+#if defined(HAVE_SYS_SOCKET_H) || defined(MACOS)
 #include <sys/socket.h>
+#endif
 
+#if defined(HAVE_RPC_RPC_H) || defined(MACOS)
 #include <rpc/rpc.h>
+#endif
 
+#if defined(HAVE_RPC_TYPES_H) || defined(MACOS)
 #include <rpc/types.h>
+#endif
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN 
@@ -138,54 +147,6 @@ int srite(tag,buf,nbytes)
 char *tag;
 char *buf;
 int nbytes;
-#endif
-{
-
-streaminf *info;
-
-assert( tag != 0 );
-assert( buf != 0 );
-
-if( nbytes== 0 ) return 0;
-
-info = tag_info( tag, TAG_OUT );
-
-assert( info != 0 );
-
-/* open the dataset if it isn't already open */
-if( info->ioinf == 0 ){
-	(*info->open_func)(info, &(info->ioinf) );
-	if( !info->valid ){seperr("srite(): invalid output tag %s\n",tag);}
-
-}
-
-if( ! info->ready_out ) sepstr_ready_out(info);
-
-
-#ifdef WORDS_BIGENDIAN
-
-    return( (*info->write_func)(info,info->ioinf,buf,nbytes));
-
-#else /* we may have to convert the data to xdr_formats */
-
-if( IS_XDR_FMT( info->format_num ) ){
-	return( srite_xdr(info,buf,nbytes,info->format_num));
-}else{
-     	return((int) (*info->write_func)(info,info->ioinf,buf,nbytes));
-}
-
-#endif
-
-}
-#if NeedFunctionPrototypes
-_XFUNCPROTOBEGIN 
-long long sritell(const char *tag, void *buf, const long long nbytes)
-_XFUNCPROTOEND 
-#else
-long long sritell(tag,buf,nbytes)
-const char *tag;
-char *buf;
-const long long nbytes;
 #endif
 {
 
@@ -229,12 +190,13 @@ if( IS_TMC_FMT(info->format_num) && info->iotype != CM_SDA_IO ){
 if( IS_XDR_FMT( info->format_num ) ){
 	return( srite_xdr(info,buf,nbytes,info->format_num));
 }else{
-     	return((long long) (*info->write_func)(info,info->ioinf,buf,nbytes));
+     	return((int) (*info->write_func)(info,info->ioinf,buf,nbytes));
 }
 
 #endif
 
 }
+
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN 
 int srite_raw( char *tag, void *buf, int nbytes )
@@ -270,7 +232,7 @@ return((int)(*info->write_func)(info,info->ioinf,buf,nbytes));
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN 
-int srite2(const char *tag, void *buf, int nbytes, const char* format)
+int srite2(char *tag, void *buf, int nbytes, char* format)
 _XFUNCPROTOEND 
 #else
 int srite2(tag,buf,nbytes,format)

@@ -131,11 +131,16 @@ B<sep>
 	New routine using new seplib IO architecture
  */
 
+#include <sepConfig.h>
 #include <stdio.h>
 #include <string.h>
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 #include "streamlist.h"
 #include "sep_main_internal.h"
 #include <sep_main_external.h>
+#include <sep_pars_external.h>
 
 
 /*< 

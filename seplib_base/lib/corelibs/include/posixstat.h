@@ -21,6 +21,36 @@
 
 /* This file should be included instead of <sys/stat.h>.
    It relies on the local sys/stat.h to work though. */
+#if !defined (_POSIXSTAT_H)
+#define _POSIXSTAT_H
+
+#include <sys/stat.h>
+
+#if defined (isc386)
+#  if !defined (S_IFDIR)
+#    define S_IFDIR 0040000
+#  endif /* !S_IFDIR */
+#  if !defined (S_IFMT)
+#    define S_IFMT  0170000
+#  endif /* !S_IFMT */
+#endif /* isc386 */
+
+/* This text is taken directly from the Cadmus I was trying to
+   compile on:
+    the following MACROs are defined for X/OPEN compatibility
+    however, is the param correct ??
+   #define S_ISBLK(s) ((s.st_mode & S_IFMT) == S_IFBLK)
+
+  Well, the answer is no.  Thus... */
+#if defined (BrainDeath)
+#  undef S_ISBLK
+#  undef S_ISCHR
+#  undef S_ISDIR
+#  undef S_ISFIFO
+#  undef S_ISREG
+#endif /* BrainDeath */
+
+/* Posix 1003.1 5.6.1.1 <sys/stat.h> file types */
 
 /* Some Posix-wannabe systems define _S_IF* macros instead of S_IF*, but
    do not provide the S_IS* macros that Posix requires. */
@@ -116,4 +146,5 @@
 #define S_IWUGO		(S_IWUSR | S_IWGRP | S_IWOTH)
 #define S_IXUGO		(S_IXUSR | S_IXGRP | S_IXOTH)
 
+#endif /* _POSIXSTAT_H */
 /*  $Id: posixstat.h,v 1.1.1.1 2004/03/25 06:37:24 cvs Exp $ */

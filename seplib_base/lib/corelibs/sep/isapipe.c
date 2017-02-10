@@ -67,13 +67,16 @@ DISTR
  *                                 so lseek explicitly defined
  *
  */
+#include <sepConfig.h>
 #include <stdio.h>
 
 #include <sep_main_external.h>
 #include <sys/types.h>
 #include <sys/file.h>
 
+#if defined (HAVE_ERRNO_H) || defined(MACOS)
 #include <errno.h>
+#endif
 
 #include <unistd.h>
 

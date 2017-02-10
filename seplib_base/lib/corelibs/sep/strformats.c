@@ -1,4 +1,5 @@
 
+#include <sepConfig.h>
 #if HAVE_STRING_H
 #include <string.h>
 #endif
@@ -52,7 +53,7 @@ char *str_format_name;
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-int get_format_num( const char *str)
+int get_format_num( char *str)
 _XFUNCPROTOEND
 #else
 int get_format_num( str)
@@ -68,7 +69,7 @@ char *str;
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-char* get_format_name(const int num)
+char* get_format_name( int num)
 _XFUNCPROTOEND
 #else
 char* get_format_name( num)
@@ -124,7 +125,7 @@ set_format("out",format);
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-char* get_format(const char *tag )
+char* get_format( char *tag )
 _XFUNCPROTOEND
 #else
 char* get_format( tag )

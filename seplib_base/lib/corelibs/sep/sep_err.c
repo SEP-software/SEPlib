@@ -73,6 +73,7 @@ B<sep>
  * Revised: dave 9/17/90  Use stdarg for ANSI-C compilers		
  * Revised: dave 10/9/91  renamed seperr
  */
+#include <sepConfig.h>
 #include <stdio.h>
 #include <sep_main_external.h>
 #if NeedFunctionPrototypes
@@ -87,7 +88,7 @@ _XFUNCPROTOEND
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
 /*VARARGS1*/
-int seperr( const char *format, ... )
+int seperr( char *format, ... )
 _XFUNCPROTOEND
 #else
 /*VARARGS0*/

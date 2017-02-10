@@ -171,6 +171,7 @@ AUTHOR
          Modified: Adam Halpert : Changed "Illegal window axis" calculation (Feb 10)
 
 */
+#include <sepConfig.h>
 #if HAVE_STRING_H
 #include <string.h>
 #endif
@@ -218,16 +219,16 @@ void sep_comp_index_grid();
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN 
-int sreed_window( const char *tag_history, const int *n_dim_cube, const int *n_cube, 
-		const int *n_wind,const int *f_wind,const int *j_wind, const int esize, void *values)
+int sreed_window( const char *tag_history, int *n_dim_cube, int *n_cube, 
+		int *n_wind,int *f_wind,int *j_wind, int esize, void *values)
 _XFUNCPROTOEND 
 #else 
 int sreed_window(tag_history, n_dim_cube, n_cube, n_wind, f_wind, j_wind, esize, values)
 char *tag_history;
-const int  *n_dim_cube;
-const int  *n_cube;
-const int  *n_wind, *f_wind, *j_wind;
-const int  esize;
+int  *n_dim_cube;
+int  *n_cube;
+int  *n_wind, *f_wind, *j_wind;
+int  esize;
 char *values;
 #endif
 
@@ -240,16 +241,16 @@ char *values;
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN 
-int srite_window(const char *tag_history, const int *n_dim_cube, const int *n_cube, 
-		const int *n_wind,const int *f_wind,const int *j_wind, const int esize, void *values)
+int srite_window(const char *tag_history, int *n_dim_cube, int *n_cube, 
+		int *n_wind,int *f_wind,int *j_wind, int esize, void *values)
 _XFUNCPROTOEND 
 #else 
 int srite_window(tag_history, n_dim_cube, n_cube, n_wind, f_wind, j_wind, esize, values)
 char *tag_history;
-const int  *n_dim_cube;
-const int  *n_cube;
-const int  *n_wind, *f_wind, *j_wind;
-const int  esize;
+int  *n_dim_cube;
+int  *n_cube;
+int  *n_wind, *f_wind, *j_wind;
+int  esize;
 char *values;
 #endif
 
@@ -262,17 +263,17 @@ char *values;
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN 
 int sep_window(int mode,const char *tag_history,
-                const int *n_dim_cube, const int *n_cube, 
-		const int *n_wind,const int *f_wind,const int *j_wind, const int esize, void *values)
+                int *n_dim_cube, int *n_cube, 
+		int *n_wind,int *f_wind,int *j_wind, int esize, void *values)
 _XFUNCPROTOEND 
 #else 
 int sep_window(mode,tag_history, n_dim_cube, n_cube, n_wind, f_wind, j_wind, esize, values)
-const int mode;
-const char *tag_history;
-const int  *n_dim_cube;
-const int  *n_cube;
-const int  *n_wind, *f_wind, *j_wind;
-const int  esize;
+int mode;
+char *tag_history;
+int  *n_dim_cube;
+int  *n_cube;
+int  *n_wind, *f_wind, *j_wind;
+int  esize;
 char *values;
 #endif
 {
@@ -588,15 +589,15 @@ void compress_it(int ndim, int *ncube, int *nwind, int *fwind, int *jwind, int e
    wind *comp, int type);
 int window_it(const char *tag, wind *pars, int write, char *buffer);
 
-int sreed_window_new(const char *tag_history, const int ndim, const int *n_cube, 
-		const int *n_wind,const int *f_wind,const int *j_wind, const int esize, void *values){
+int sreed_window_new(const char *tag_history, int ndim, int *n_cube, 
+		int *n_wind,int *f_wind,int *j_wind, int esize, void *values){
 		
  wind compress;
   compress_it(ndim,n_cube,n_wind,f_wind,j_wind,esize,&compress,0);
    return(window_it(tag_history,&compress,0,values));
 }
-int srite_window_new(const char *tag_history, const int ndim, const int *n_cube, 
-		const int *n_wind,const int *f_wind,const int *j_wind, const int esize, void *values){
+int srite_window_new(const char *tag_history, int ndim, int *n_cube, 
+		int *n_wind,int *f_wind,int *j_wind, int esize, void *values){
 		
  wind compress;
   compress_it(ndim,n_cube,n_wind,f_wind,j_wind,esize,&compress,1);

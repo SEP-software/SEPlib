@@ -61,6 +61,7 @@ B<sep>
                              sep_off_t and sep_file_size_t
 */
 
+#include <sepConfig.h>
 #include <assert.h>
 #include "streamlist.h"
 #include <sep_main_external.h>

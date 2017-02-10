@@ -27,6 +27,7 @@
  * Revised: Bob    7/18/97 prototypes
  */
 
+#include <sepConfig.h>
 #include <string.h>
 #include <assert.h>
 

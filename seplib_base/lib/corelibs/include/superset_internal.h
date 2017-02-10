@@ -6,12 +6,12 @@
 #define SEPNULL ((void *) 0)
 #if NeedFunctionPrototypes  /*begin proto*/
 _XFUNCPROTOBEGIN
-sep_3d* tag_info_sep3d(char *name, enum usage_type type);
+sep_3d* tag_info_sep3d(const char *name, enum usage_type type);
 void sep3d_print( sep_3d *info );
 sep_3d* sep3d_head(void);
 void sep3d_addstart( sep_3d *curr );
 void sep3d_addend( sep_3d *curr );
-sep_3d *sep3d_new( char *tag, enum usage_type usage );
+sep_3d *sep3d_new( const char *tag, enum usage_type usage );
 #ifdef SU_SUPPORT /*begin SU_SUPPORT*/
 #include <su.h>
 #include <segy.h>
@@ -20,8 +20,8 @@ sep_3d *sep3d_new( char *tag, enum usage_type usage );
 extern int finish_susep(void);
 void both_initargs(int, char **);
 extern int tgettr(char *, segy *);
-extern susep_read_trace_block(char*,int,int);
-extern susep_rite_trace_block(char*);
+extern int susep_read_trace_block(char*,int,int);
+extern int susep_rite_trace_block(char*);
 extern int tgettra(char *, segy *, int);
 extern int tputttra(char *, segy *);
 extern int susep_input_init(char *);
@@ -123,7 +123,9 @@ extern int SEP3D_wind_coords(sep_3d *info,int *nsz);
 extern int SEP3D_rite(char *tag, sep_3d *info, void *data, int write_data,int write_headers, int write_grid);
 extern long long SEP3D_count_ntraces(sep_3d *info);
 extern int sep3d_count_ntraces(char *tag);
-extern int sep3d_grab_inorder(char *sep3dname,int *inorder);
+extern int sep3d_set_inorder(const char *sep3dname);
+extern int sep3d_unset_inorder(const char *sep3dname);
+extern int sep3d_grab_inorder(const char *sep3dname,int *inorder);
 extern int sep3d_fileexist(char *tag ,int ilocal);
 extern int SEP3D_change_dims(sep_3d *info,int naxes, int *axisindex);
 extern int sep3d_rite_format_ith(char  *tagout,char *sep3dname, int ith);

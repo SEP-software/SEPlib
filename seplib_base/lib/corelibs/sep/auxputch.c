@@ -102,6 +102,7 @@ B<sep>
  * Revised: 9/17/90  dave      Use stdarg for ANSI-C compilers
  *
  */
+#include <sepConfig.h>
 #include    <stdio.h>
 #include    "streamlist.h"
 #include <sep_pars_external.h>

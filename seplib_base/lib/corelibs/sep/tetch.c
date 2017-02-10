@@ -13,6 +13,7 @@
  * dave			9/16/90		made ansi-c and posix compatible.
  * dave 		9/17/90  	Use stdarg for ANSI-C compilers
  */
+#include <sepConfig.h>
 #include <stdlib.h>
 #include "fastpar.h"
 #include <string.h>

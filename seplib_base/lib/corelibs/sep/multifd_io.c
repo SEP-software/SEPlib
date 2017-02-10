@@ -22,14 +22,19 @@
  * Revised:  6/2/98 Bob:  Added GNU ifedfdefs
  */
 
+#include <sepConfig.h>
+#if defined(HAVE_FCNTL_H) || defined(MACOS)
 #include <fcntl.h>
+#endif
 
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
 
 
+#if defined(HAVE_ERRNO_H) || defined(MACOS)
 #include <errno.h>
+#endif
 
 #ifndef STDC_HEADERS
 extern int errno;
@@ -549,7 +554,10 @@ ssize_t multifd_write( info, ioinfo,  buffer, nbytes )
 
 	       /* if we ran out of space, treat it like an EOF 
                 * after truncating the file to where it was before this write */
-		ftruncate(  one_inf->fd, one_inf->curpos );
+		if (-1 == ftruncate(  one_inf->fd, one_inf->curpos )) {
+                    perror("multifd write()");
+                    seperr("multifd write(): Unable to truncate tag \"%s\" file number %d.\n",info->tagname, inf->active);
+                }
 		nwrite=0;
 
 	   }else{

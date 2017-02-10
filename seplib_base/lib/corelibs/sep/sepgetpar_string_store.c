@@ -18,6 +18,7 @@
  *			what to do.
  *     7-18-97 bob prototypes, declare voids, etc
  */
+#include <sepConfig.h>
 #include "fastpar.h"
 #include <stdio.h>
 

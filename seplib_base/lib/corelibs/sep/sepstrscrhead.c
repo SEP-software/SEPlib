@@ -1,3 +1,4 @@
+#include <sepConfig.h>
 #ifdef RS6000
 #undef __STR__
 #endif

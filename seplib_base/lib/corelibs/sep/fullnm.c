@@ -72,9 +72,9 @@ B<sep>
 #include <limits.h>
 #endif /* !MAXPATHLEN && HAVE_LIMITS_H */
 
-#if !defined (MAXPATHLEN) && defined (HAVE_SYS_PARAM)
+#if !defined (MAXPATHLEN) && defined (HAVE_SYS_PARAM_H)
 #include <sys/param.h>
-#endif /* !MAXPATHLEN && HAVE_SYS_PARAM */
+#endif /* !MAXPATHLEN && HAVE_SYS_PARAM_H */
 
 #if !defined (MAXPATHLEN) && defined (PATH_MAX)
 #define MAXPATHLEN PATH_MAX

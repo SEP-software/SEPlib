@@ -46,10 +46,16 @@
  *         supporting Unix domain sockets.
  * Revised: Robert Clapp 7/19/97 Prototypes
  */
+#include <sepConfig.h>
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
+#if HAVE_UNISTD_H
 #include <unistd.h>
+#endif
+#if defined(MACOS) || defined(LINUX)
+#define USE_SOCKETS
+#endif
 #include <sepcube.h>
 #include "sep_main_internal.h"
 #include "streamlist.h"
@@ -73,6 +79,7 @@ streaminf *info;
     int i,flen,prevpid;
     char remhost[255],msgbuf[10];
     char portstr[256];
+    ssize_t rc1, rc2;
     flen= info->hdrlen;
 
     /* First check for previous two characters ctrl-L */
@@ -113,10 +120,11 @@ streaminf *info;
 			/* connect to the sender */
 			info->sockfd =  opensock2( remhost,portstr);
 			if( info->sockfd != -1 ){
-			    write(info->sockfd,"GOTIT",6);
-			    read(info->sockfd,msgbuf,4);
-			    if(strcmp(msgbuf,"ACK"))
+			    rc1 = write(info->sockfd,"GOTIT",6);
+			    rc2 = read(info->sockfd,msgbuf,4);
+			    if(strcmp(msgbuf,"ACK") || rc1 != 6 || rc2 != 4) {
 			      seperr("syncin() sync err\n" );
+                            }
 			}
 		    }
 		    
@@ -143,6 +151,7 @@ streaminf *info;
     char hostnm[255];
     char portstr[256];
     int isoutstream,timeout;
+    ssize_t rc1, rc2;
 
     /* If data and header are going down the same route but it is
      * an ordinary file we will just separate them with a ctrl-L ctrl-L ctrl-D
@@ -174,10 +183,15 @@ streaminf *info;
 
    
     if( (info->sockfd=socklisten(sock, timeout )) != -1 ){
-	read( info->sockfd, mesgbuf, 6 );
+	rc1 = read( info->sockfd, mesgbuf, 6 );
+        if(rc1 != 6) perror("syncout()");
 	if( strcmp( mesgbuf, "GOTIT" ) )
 	  seperr("syncout(): pipe synch failed!\n");
-	write( info->sockfd, "ACK", 4);
+	rc2 = write( info->sockfd, "ACK", 4);
+        if(rc2 != 4) {
+          perror("syncout()");
+	  seperr("syncout(): pipe synch write failed!\n");
+        }
     }
     }
     

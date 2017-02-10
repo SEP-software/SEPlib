@@ -119,6 +119,7 @@ Revised: W. Bauske 03-26-91 added comments to the program for the next person
 Modified 8-94  Dave Nichols rewrote using new seplib internals
 
 */
+#include <sepConfig.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>

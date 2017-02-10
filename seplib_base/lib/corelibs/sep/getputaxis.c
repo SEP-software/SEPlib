@@ -76,6 +76,7 @@ B<sep3d>
 
 >*/
 
+#include <sepConfig.h>
 #include <stdio.h>
 #include <sep_main_external.h>
 #include "sep3d.h"

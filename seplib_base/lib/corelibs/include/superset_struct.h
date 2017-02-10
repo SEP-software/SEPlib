@@ -9,6 +9,8 @@
 #ifndef SU_NKEYS
 #define SU_NKEYS 80
 #endif
+#define SEP_3D_STRING_LEN 128 /* all string entries in _sep_3d struct are
+                                 Fortran CHARACTER*128 */
 
 
 /* types of stream , the way a file is opened */

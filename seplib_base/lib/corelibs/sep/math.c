@@ -78,6 +78,7 @@ Author:Robert G. Clapp
 #define NOT_SET -1
 
 
+#include<sepConfig.h>
 #if HAVE_STRING_H
 #include <string.h>
 #endif

@@ -115,9 +115,12 @@ B<sep>
  *  
  */
 
-#include <sitedef.h>
+#include <sepConfig.h>
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef MACOS
+#include <unistd.h>
+#endif
 
 /* FROM GNU Bash */
 #if !defined (MAXPATHLEN) && defined (HAVE_LIMITS_H)

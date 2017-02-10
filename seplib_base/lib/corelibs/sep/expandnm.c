@@ -27,10 +27,12 @@
  *
  */
 
+#include <sepConfig.h>
 #include <stdio.h>
 #include <string.h>
 #include "streamlist.h"
 #include <sep_main_external.h>
+#include <sep_pars_external.h>
 
 
 /* FROM GNU Bash */
@@ -38,9 +40,9 @@
 #include <limits.h>
 #endif /* !MAXPATHLEN && HAVE_LIMITS_H */
 
-#if !defined (MAXPATHLEN) && defined (HAVE_SYS_PARAM)
+#if !defined (MAXPATHLEN) && defined (HAVE_SYS_PARAM_H)
 #include <sys/param.h>
-#endif /* !MAXPATHLEN && HAVE_SYS_PARAM */
+#endif /* !MAXPATHLEN && HAVE_SYS_PARAM_H */
 
 #if !defined (MAXPATHLEN) && defined (PATH_MAX)
 #define MAXPATHLEN PATH_MAX

@@ -12,6 +12,7 @@ of bytes. filedes is the file descriptor that is returned by a open()
 command or a creat() command. 
 
 */
+#include <sepConfig.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "streamlist.h"

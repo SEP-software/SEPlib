@@ -24,7 +24,11 @@ KEYWORDS: stdin redirect
  * modified  1/26/83  S. Levin   rewrite
  * modified  3/2/83   S. Levin   converted to generic fileno(xxx) rather than 0,1...
  */
+#include <sepConfig.h>
 #include <stdio.h>
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 #include "sep_main_internal.h"
 
 

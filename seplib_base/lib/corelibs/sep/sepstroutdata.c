@@ -16,9 +16,13 @@
  * Recised: R.G. Clapp  7-19-97 Bob Prototype=good
  *
  */
+#include <sepConfig.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <limits.h>
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #include <assert.h>
 #include<time.h>
@@ -131,6 +135,9 @@ char * sep_tail(name)
     if(result == (char *) NULL) return(name);
     else return(result+1);
 }
+#if !defined (HAVE_STDLIB_H)
+extern char *putenv ();
+#endif /* HAVE_STDLIB_H  */
 /* datapath may be a semi-colon separated list of paths */
 /* we must construct a semi-colon seprated list of filenames from it */
 #if NeedFunctionPrototypes
@@ -203,9 +210,7 @@ int randit
                 if(randit==1){
                      mkrandom_string(exp_name,my_name);
                  }
-                else{
-                  strcpy(my_name,exp_name);
-                }
+                else strcpy(my_name,exp_name);
         	if( file_count == 0 ){
 	   			strcpy( all_names,my_name);
         }else{
@@ -363,8 +368,10 @@ _XFUNCPROTOEND
 /*        sprintf(string_out,"%s%d",string_in,put_end);*/
 /*        sprintf(string_out,"%s",string_in);*/
         sprintf(string_out,"%sXXXXXX",string_in);
-        mkstemp(string_out);
-        unlink(string_out);;
+        if(-1 == mkstemp(string_out)) {
+           perror("mkrandom_string(): mkstemp()");
+        }
+        unlink(string_out);
 
             
 /*         mkstemp(string_out);*/

@@ -7,6 +7,7 @@
 Edited Bob 6/1/99 Removed chech sbrk
 */
 
+#include <sepConfig.h>
 #include <sys/types.h>
 #include <stdlib.h>
 #include <sepcube.h>

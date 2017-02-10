@@ -14,6 +14,7 @@ Opens up dataset of type STREAMSOCKOUT
  * Author: Bob 12-17-97
  *
  */
+#include <sepConfig.h>
 #include <stdio.h>
 #include <fcntl.h>
 

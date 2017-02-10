@@ -36,13 +36,24 @@ KEYWORDS: tape seek
  * Revised - Bob Clapp          6/1/99 GNU ifdef
  *
  */
+#include <sepConfig.h>
 
+#if defined(HAVE_SYS_TYPES_H)
 #include <sys/types.h>
+#endif
+#ifdef MACOS
+#include <unistd.h>
+#endif
 
 #include "sep_main_internal.h"
+#include "sep_main_external.h"
 
 
+#ifdef HAVE_ERRNO_H
 #include <errno.h>
+#else
+extern int errno;
+#endif
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
@@ -62,6 +73,30 @@ int fd;
  *
  */
 
+#if defined(HAVE_SYS_IOCTL_H) &&  !defined(SGI) && !defined(MACOS)
+#include <sys/ioctl.h>
+
+
+#if defined(HAVE_SYS_TAPE_H)
+#include <sys/tape.h>
+#else
+
+#include <sys/mtio.h>
+#if defined(HAVE_ERRNO_H)
+#include <errno.h>
+#endif
+
+ struct mtget buf;
+ if(-1 == ioctl(fd,(int) MTIOCGET,(char *) &buf))
+	if(errno == EBADF)
+		seperr("isatape: %d is not a valid file descriptor\n",fd);
+	else return(0);
+ if(buf.mt_type == ((short) 0)) return(0);
+ return(1);
+
+#endif
+
+#else
 
  /* 
   * attempt to use only posix calls
@@ -70,6 +105,7 @@ int fd;
   * isn't a tty, a directory, a pipe or a regular file is a tape 
   */
 
+#include <sys/stat.h>
 
 struct stat buf;
 
@@ -80,5 +116,6 @@ if( fstat(fd,&buf) != 0 ) return 0;
 
  if( S_ISCHR(buf.st_mode) || S_ISBLK(buf.st_mode) ) return(1);
  return(0);
+#endif
 
 }

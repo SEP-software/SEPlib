@@ -23,6 +23,7 @@ CATEGORY
 Lib:Sep:Fortran
 
 >*/
+#include <sepConfig.h>
 
 #include <sep_main_external.h>
 

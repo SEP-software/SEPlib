@@ -121,6 +121,7 @@ B<sep>
  * Revised: dave 9/17/90  Use stdarg for ANSI-C compilers
  * Revised: dave 8/94  Use new seplib internals
  */
+#include <sepConfig.h>
 #include    <stdio.h>
 #include <sep_pars_external.h>
 #include "streamlist.h"

@@ -34,6 +34,7 @@ check if file descriptor is attached to an ordinary file
 
 */
 
+#include <sepConfig.h>
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN

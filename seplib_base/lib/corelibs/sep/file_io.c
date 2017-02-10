@@ -19,9 +19,11 @@
    Modified Robert G. Clapp 12/18/97 Added STREAMSOCKOUT
   
  */
+#include <sepConfig.h>
 #include <fcntl.h>
 #include <assert.h>
 #include <stdio.h>
+#include <string.h>
 
 #include <sepcube.h>
 #include "sep_main_internal.h"

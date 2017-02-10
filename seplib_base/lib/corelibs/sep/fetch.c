@@ -141,6 +141,7 @@ dave 		9/17/90  Use stdarg for ANSI-C compilers
 
 */
 
+#include <sepConfig.h>
 
 #include <sep_pars_external.h>
 

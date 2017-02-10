@@ -9,8 +9,8 @@
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-extern int get_format_num( const char* format_nam );
-extern char* get_format_nam( const int format_num );
+extern int get_format_num( char* format_nam );
+extern char* get_format_nam( int format_num );
 extern int get_format_byte_length(const char* format_nam);
 _XFUNCPROTOEND
 #else

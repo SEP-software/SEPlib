@@ -1,3 +1,4 @@
+#include <sepConfig.h>
 #ifdef RS6000
 #undef __STR__
 #endif
@@ -13,6 +14,12 @@
 extern int errno;
 #endif
 
+#if defined(MACOS) || defined(LINUX)
+#define USE_SOCKETS
+#endif
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #include <sys/types.h>
 #include <sys/stat.h>

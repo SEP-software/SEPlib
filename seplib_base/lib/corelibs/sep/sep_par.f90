@@ -48,6 +48,11 @@ interface
     character(C_CHAR),dimension(*) ::arg,typ
     real(C_FLOAT) :: val
   end function
+    integer function getch_g_f(arg,typ,val) bind(c,name="getch_g_f")
+    import
+    character(C_CHAR),dimension(*) ::arg,typ
+    real(C_DOUBLE) :: val
+  end function
    integer function getch_i_f(arg,typ,val) bind(c,name="getch_i_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
@@ -82,10 +87,15 @@ interface
     character(C_CHAR),dimension(*) ::arg,typ
     real(C_FLOAT) :: val
   end function
-      integer function putch_l_f(arg,typ,val) bind(c,name="putch_l_f")
+    integer function putch_l_f(arg,typ,val) bind(c,name="putch_l_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     logical(C_BOOL) :: val
+  end function
+    integer function putch_g_f(arg,typ,val) bind(c,name="putch_g_f")
+    import
+    character(C_CHAR),dimension(*) ::arg,typ
+    real(C_DOUBLE) :: val
   end function
   
     !FETCH
@@ -105,10 +115,15 @@ interface
     character(C_CHAR),dimension(*) ::arg,typ
     real(C_FLOAT) :: val
   end function
-      integer function fetch_l_f(arg,typ,val) bind(c,name="fetch_l_f")
+    integer function fetch_l_f(arg,typ,val) bind(c,name="fetch_l_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     logical(C_BOOL) :: val
+  end function
+    integer function fetch_g_f(arg,typ,val) bind(c,name="fetch_g_f")
+    import
+    character(C_CHAR),dimension(*) ::arg,typ
+    real(C_DOUBLE) :: val
   end function
   
       !TETCH
@@ -128,10 +143,15 @@ interface
     character(C_CHAR),dimension(*) ::arg,typ
     real(C_FLOAT) :: val
   end function
-      integer function tetch_l_f(arg,typ,val) bind(c,name="tetch_l_f")
+    integer function tetch_l_f(arg,typ,val) bind(c,name="tetch_l_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ
     logical(C_BOOL) :: val
+  end function
+    integer function tetch_g_f(arg,typ,val) bind(c,name="tetch_g_f")
+    import
+    character(C_CHAR),dimension(*) ::arg,typ
+    real(C_DOUBLE) :: val
   end function
   
   !HETCH
@@ -151,6 +171,16 @@ interface
     character(C_CHAR),dimension(*) ::arg,typ
     real(C_FLOAT) :: val
   end function
+    integer function hetch_l_f(arg,typ,val) bind(c,name="hetch_l_f")
+    import
+    character(C_CHAR),dimension(*) ::arg,typ
+    logical(C_BOOL) :: val
+  end function
+    integer function hetch_g_f(arg,typ,val) bind(c,name="hetch_g_f")
+    import
+    character(C_CHAR),dimension(*) ::arg,typ
+    real(C_DOUBLE) :: val
+  end function
       integer function hetch_f_f_a(arg,typ,val) bind(c,name="hetch_f_f_a")
     import
     character(C_CHAR),dimension(*) ::arg,typ
@@ -160,6 +190,16 @@ interface
     import
     character(C_CHAR),dimension(*) ::arg,typ
     integer(C_INT),dimension(*) :: val
+  end function
+      integer function hetch_l_f_a(arg,typ,val) bind(c,name="hetch_l_f_a")
+    import
+    character(C_CHAR),dimension(*) ::arg,typ
+    logical(C_BOOL),dimension(*) :: val
+  end function
+      integer function hetch_g_f_a(arg,typ,val) bind(c,name="hetch_g_f_a")
+    import
+    character(C_CHAR),dimension(*) ::arg,typ
+    real(C_DOUBLE),dimension(*) :: val
   end function
   
   !AUXP
@@ -178,17 +218,27 @@ interface
     character(C_CHAR),dimension(*) ::arg,typ,tag
     real(C_FLOAT) :: val
   end function
-      integer function auxpar_i_f(arg,typ,val,tag) bind(c,name="auxpar_i_f")
+    integer function auxpar_i_f(arg,typ,val,tag) bind(c,name="auxpar_i_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ,tag
     integer(C_INT) :: val
   end function
-     integer function auxpar_f_f_a(arg,typ,val,tag) bind(c,name="auxpar_f_f_a")
+    integer function auxpar_g_f(arg,typ,val,tag) bind(c,name="auxpar_g_f")
+    import
+    character(C_CHAR),dimension(*) ::arg,typ,tag
+    real(C_DOUBLE) :: val
+  end function
+    integer function auxpar_f_f_a(arg,typ,val,tag) bind(c,name="auxpar_f_f_a")
     import
     character(C_CHAR),dimension(*) ::arg,typ,tag
     real(C_FLOAT),dimension(*) :: val
   end function
-      integer function auxpar_i_f_a(arg,typ,val,tag) bind(c,name="auxpar")
+    integer function auxpar_g_f_a(arg,typ,val,tag) bind(c,name="auxpar_g_f_a")
+    import
+    character(C_CHAR),dimension(*) ::arg,typ,tag
+    real(C_DOUBLE),dimension(*) :: val
+  end function
+    integer function auxpar_i_f_a(arg,typ,val,tag) bind(c,name="auxpar_i_f_a")
     import
     character(C_CHAR),dimension(*) ::arg,typ,tag
     integer(C_INT),dimension(*) :: val
@@ -206,6 +256,11 @@ interface
     import
     character(C_CHAR),dimension(*) ::arg,typ,tag
     real(C_FLOAT),dimension(*) :: val
+  end function
+  integer function auxputch_g_f_a(arg,typ,val,tag) bind(c,name="auxputch_g_f_a")
+    import
+    character(C_CHAR),dimension(*) ::arg,typ,tag
+    real(C_DOUBLE),dimension(*) :: val
   end function
 
 
@@ -225,10 +280,15 @@ interface
     character(C_CHAR),dimension(*) ::arg,typ,tag
     real(C_FLOAT) :: val
   end function
-      integer function auxputch_l_f(arg,typ,val,tag) bind(c,name="auxputch_l_f")
+    integer function auxputch_l_f(arg,typ,val,tag) bind(c,name="auxputch_l_f")
     import
     character(C_CHAR),dimension(*) ::arg,typ,tag
     logical(C_BOOL) :: val
+  end function
+    integer function auxputch_g_f(arg,typ,val,tag) bind(c,name="auxputch_g_f")
+    import
+    character(C_CHAR),dimension(*) ::arg,typ,tag
+    real(C_DOUBLE) :: val
   end function
   
   subroutine init_args(prog_name) bind(c,name="initpar_f")
@@ -270,28 +330,29 @@ interface
   end  function
  
 end interface
+
 interface tetch
-  module procedure tet_i_f,tet_s_f,tet_f_f
+  module procedure tet_i_f,tet_s_f,tet_f_f,tet_l_f,tet_g_f
 end interface
 interface fetch
-  module procedure fet_i_f,fet_s_f,fet_f_f,fet_l_f
+  module procedure fet_i_f,fet_s_f,fet_f_f,fet_l_f,fet_g_f
 end interface
 interface getch
-  module procedure get_i_f,get_s_f,get_f_f,get_l_f,get_f_f_a,get_i_f_a
+  module procedure get_i_f,get_s_f,get_f_f,get_l_f,get_g_f,get_f_f_a,get_i_f_a,get_g_f_a
 end interface
 interface putch
-  module procedure put_i_f,put_s_f,put_f_f,put_l_f
+  module procedure put_i_f,put_s_f,put_f_f,put_l_f,put_g_f
 end interface
 interface hetch
-  module procedure het_i_f,het_s_f,het_f_f,het_i_f_a,het_f_f_a
+  module procedure het_i_f,het_s_f,het_f_f,het_l_f,het_g_f,het_i_f_a,het_f_f_a,het_l_f_a,het_g_f_a
 end interface
 interface auxpar
-  module procedure auxp_i_f,auxp_s_f,auxp_f_f,auxp_l_f,auxp_i_f_a,auxp_f_f_a
+  module procedure auxp_i_f,auxp_s_f,auxp_f_f,auxp_l_f,auxp_g_f,auxp_i_f_a,auxp_f_f_a,auxp_g_f_a
 end interface
 
 interface auxputch
-  module procedure auxpu_i_f,auxpu_s_f,auxpu_f_f,auxpu_l_f,&
-    auxpu_i_f_a,auxpu_f_f_a
+  module procedure auxpu_i_f,auxpu_s_f,auxpu_f_f,auxpu_l_f,auxpu_g_f,&
+    auxpu_i_f_a,auxpu_f_f_a,auxpu_g_f_a
 end interface
 
 interface doc
@@ -325,6 +386,11 @@ integer function get_f_f(arg,typ,val)
   real :: val
   get_f_f= getch_f_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
 end function
+integer function get_g_f(arg,typ,val)
+  character(len=*) arg,typ
+  real (KIND=KIND(1.0D0)) :: val
+  get_g_f= getch_g_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
+end function
 integer function get_i_f_a(arg,typ,val)
   character(len=*) arg,typ
   integer,dimension(:) :: val
@@ -334,6 +400,11 @@ integer function get_f_f_a(arg,typ,val)
   character(len=*) arg,typ
   real,dimension(:) :: val
   get_f_f_a= getch_f_f_a(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
+end function
+integer function get_g_f_a(arg,typ,val)
+  character(len=*) arg,typ
+  real (KIND=KIND(1.0D0)),dimension(:) :: val
+  get_g_f_a= getch_g_f_a(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
 end function
 integer function get_l_f(arg,typ,val)
   character(len=*) arg,typ
@@ -351,6 +422,12 @@ integer function tet_i_f(arg,typ,val)
   tet_i_f= tetch_i_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
 end function
 
+integer function tet_l_f(arg,typ,val)
+  character(len=*) arg,typ
+  logical :: val
+  tet_l_f= tetch_l_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
+end function
+
 integer function tet_s_f(arg,typ,val)
   character(len=*) arg,typ,val
   tet_s_f= tetch_s_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
@@ -361,6 +438,12 @@ integer function tet_f_f(arg,typ,val)
   character(len=*) arg,typ
   real :: val
   tet_f_f= tetch_f_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
+end function
+
+integer function tet_g_f(arg,typ,val)
+  character(len=*) arg,typ
+  real (KIND=KIND(1.0D0)) :: val
+  tet_g_f= tetch_g_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
 end function
 
 !FETCH
@@ -381,6 +464,11 @@ integer function fet_f_f(arg,typ,val)
   character(len=*) arg,typ
   real :: val
   fet_f_f= fetch_f_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
+end function
+integer function fet_g_f(arg,typ,val)
+  character(len=*) arg,typ
+  real (KIND=KIND(1.0D0)) :: val
+  fet_g_f= fetch_g_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
 end function
 integer function fet_l_f(arg,typ,val)
   character(len=*) arg,typ
@@ -406,6 +494,11 @@ integer function put_f_f(arg,typ,val)
   real :: val
   put_f_f= putch_f_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
 end function
+integer function put_g_f(arg,typ,val)
+  character(len=*) arg,typ
+  real (KIND=KIND(1.0D0)) :: val
+  put_g_f= putch_g_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
+end function
 integer function put_l_f(arg,typ,val)
   character(len=*) arg,typ
   logical :: val
@@ -428,20 +521,40 @@ integer function het_f_f(arg,typ,val)
   real :: val
   het_f_f= hetch_f_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
 end function
+integer function het_g_f(arg,typ,val)
+  character(len=*) arg,typ
+  real (KIND=KIND(1.0D0)) :: val
+  het_g_f= hetch_g_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
+end function
 integer function het_i_f(arg,typ,val)
   character(len=*) arg,typ
   integer :: val
   het_i_f= hetch_i_f(trim(arg)//C_NULL_CHAR,typ,val)
+end function
+integer function het_l_f(arg,typ,val)
+  character(len=*) arg,typ
+  logical :: val
+  het_l_f= hetch_l_f(trim(arg)//C_NULL_CHAR,typ,val)
 end function
 integer function het_f_f_a(arg,typ,val)
   character(len=*) arg,typ
   real,dimension(:) :: val
   het_f_f_a= hetch_f_f_a(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
 end function
+integer function het_g_f_a(arg,typ,val)
+  character(len=*) arg,typ
+  real (KIND=KIND(1.0D0)),dimension(:) :: val
+  het_g_f_a= hetch_g_f_a(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
+end function
 integer function het_i_f_a(arg,typ,val)
   character(len=*) arg,typ
   integer,dimension(:) :: val
   het_i_f_a= hetch_i_f_a(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
+end function
+integer function het_l_f_a(arg,typ,val)
+  character(len=*) arg,typ
+  logical,dimension(:) :: val
+  het_l_f_a= hetch_l_f_a(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
 end function
 
 
@@ -470,6 +583,11 @@ integer function auxp_f_f(arg,typ,val,tag)
   real :: val
   auxp_f_f= auxpar_f_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val,trim(tag)//C_NULL_CHAR)
 end function
+integer function auxp_g_f(arg,typ,val,tag)
+  character(len=*) arg,typ,tag
+  real (KIND=KIND(1.0D0)) :: val
+  auxp_g_f= auxpar_g_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val,trim(tag)//C_NULL_CHAR)
+end function
 
   
 integer function auxp_i_f_a(arg,typ,val,tag)
@@ -481,6 +599,11 @@ integer function auxp_f_f_a(arg,typ,val,tag)
   character(len=*) arg,typ,tag
   real,dimension(:) :: val
   auxp_f_f_a= auxpar_f_f_a(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val,trim(tag)//C_NULL_CHAR)
+end function
+integer function auxp_g_f_a(arg,typ,val,tag)
+  character(len=*) arg,typ,tag
+  real (KIND=KIND(1.0D0)),dimension(:) :: val
+  auxp_g_f_a= auxpar_g_f_a(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val,trim(tag)//C_NULL_CHAR)
 end function
 
 !AUXPUTCH
@@ -508,6 +631,12 @@ integer function auxpu_f_f(arg,typ,val,tag)
   auxpu_f_f= auxputch_f_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val,trim(tag)//C_NULL_CHAR)
 end function
 
+integer function auxpu_g_f(arg,typ,val,tag)
+  character(len=*) arg,typ,tag
+  real (KIND=KIND(1.0D0)) :: val
+  auxpu_g_f= auxputch_g_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val,trim(tag)//C_NULL_CHAR)
+end function
+
 integer function auxpu_i_f_a(arg,typ,val,tag)
   character(len=*) arg,typ,tag
   integer :: val(:)
@@ -521,6 +650,11 @@ integer function auxpu_f_f_a(arg,typ,val,tag)
   auxpu_f_f_a= auxputch_f_f_a(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val,trim(tag)//C_NULL_CHAR)
 end function
 
+integer function auxpu_g_f_a(arg,typ,val,tag)
+  character(len=*) arg,typ,tag
+  real (KIND=KIND(1.0D0)) :: val(:)
+  auxpu_g_f_a= auxputch_g_f_a(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val,trim(tag)//C_NULL_CHAR)
+end function
 
 
 subroutine initpar()

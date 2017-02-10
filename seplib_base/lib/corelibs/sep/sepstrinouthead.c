@@ -1,3 +1,4 @@
+#include <sepConfig.h>
 #ifdef RS6000
 #undef __STR__
 #endif
@@ -5,8 +6,14 @@
 #include <stdio.h>
 #include <string.h>
 
+#if defined(HAVE_ERRNO_H) || defined(MACOS)
 #include <errno.h>
+#else
 
+#ifndef STDC_HEADERS
+extern int errno;
+#endif
+#endif
 
 
 #include <sys/types.h>

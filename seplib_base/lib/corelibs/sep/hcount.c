@@ -17,6 +17,7 @@ RETURN VALUES
  * return value is number of previous hclose calls.
  * 
  */
+#include <sepConfig.h>
 #include <stdio.h>
 
 #include <sep_main_external.h>

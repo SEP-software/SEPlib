@@ -44,6 +44,7 @@ B<sep>
  * Modified  5/8/96  Stew Levin, expanded strdup() to malloc + strcpy
  *                   so LINUX gcc would shut up.
 */
+#include <sepConfig.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -82,7 +83,9 @@ int num;
     if( !info->valid ){seperr("make_unpipe(): invalid input tag %s\n",tag);}
 
     /* make up a temporary dataset name */
-    mkstemp(strcat(strtok(datapath(scratch_file),";"),"Unpipe_XXXXXX"));
+    if(-1 == mkstemp(strcat(strtok(datapath(scratch_file),";"),"Unpipe_XXXXXX"))) {
+      perror("make_unpipe(): mkstemp");
+    }
 
     /* scratch_file now points to a null terminated scratch file name 
        guaranteed to be unique and identify whom it was made for */ 

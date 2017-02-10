@@ -29,6 +29,11 @@
  modified Stew Levin   6/2/99  Replace ifdef to to GNU standard
  */
 
+#include <sepConfig.h>
+#ifdef RS6000
+#undef __STR__
+#endif
+
 #if defined(CRAY) && defined(__STDC__)
 #undef __STDC__
 #include <stdio.h>
@@ -38,8 +43,14 @@
 #endif
 #include <string.h>
 
+#if defined(HAVE_ERRNO_H) || defined(MACOS)
 #include <errno.h>
+#else
 
+#ifndef STDC_HEADERS
+extern int errno;
+#endif
+#endif
 
 
 #include <sys/types.h>
@@ -48,6 +59,9 @@
 #include <assert.h>
 #include <unistd.h>
 
+#if defined(MACOS) || defined(LINUX)
+#define USE_SOCKETS
+#endif
 #include "streamlist.h"
 #include "sep_main_internal.h"
 #include <sepcube.h>
