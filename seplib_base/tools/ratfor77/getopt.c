@@ -11,10 +11,7 @@ int	optind77 = 0;	/* Global argv index. */
 static char	*scan = NULL;	/* Private scan pointer. */
 
 int
-our_getopt(argc, argv, optstring)
-int argc;
-char *argv[];
-char *optstring;
+our_getopt(int argc, char *argv[], const char *optstring)
 {
 	register char c;
 	register char *place;

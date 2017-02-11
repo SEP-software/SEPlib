@@ -42,10 +42,20 @@ setenv LD_LIBRARY_PATH ${myld}${SEP}/lib:${SEP}/lib/syslibs
 else
 setenv LD_LIBRARY_PATH ${myld}${LD_LIBRARY_PATH}:${SEP}/lib:${SEP}/lib/syslibs
 endif
-if ( ! ${?MANPATH} ) then
-setenv MANPATH ${SEP}/man
+if ( ! ${?DYLD_FALLBACK_LIBRARY_PATH} ) then
+setenv DYLD_FALLBACK_LIBRARY_PATH ${myld}${SEP}/lib:${SEP}/lib/syslibs
 else
-setenv MANPATH ${SEP}/man:${MANPATH}
+setenv DYLD_FALLBACK_LIBRARY_PATH ${myld}${DYLD_FALLBACK_LIBRARY_PATH}:${SEP}/lib:${SEP}/lib/syslibs
+endif
+if ( ! ${?MANPATH} ) then
+setenv MANPATH ${SEP}/share/man
+else
+setenv MANPATH ${SEP}/share/man:${MANPATH}
+endif
+if ( ! ${?PYTHONPATH} ) then
+setenv PYTHONPATH ${SEP}/lib/python
+else
+setenv PYTHONPATH ${SEP}/lib/python:${PYTHONPATH}
 endif
 if ( ! ${?LANG} ) then
 setenv LANG 'C'

@@ -6,7 +6,7 @@
 #
 #    .  $SEP/bin/SEPsetup.sh
 #
-if [ `basename $0` = SEPsetup.sh ] ; then
+if [ `basename ./$0` = SEPsetup.sh ] ; then
 echo "Do not execute SEPsetup.sh!  Use   \". SEPsetup.sh\"   instead."
 else
 newPATH87=${SEP:?'required environment variable SEP missing'}/bin:${PATH}
@@ -26,8 +26,12 @@ rm -f ${mytmp}
 fi
 LD_LIBRARY_PATH=${myld}${LD_LIBRARY_PATH}:${SEP}/lib:${SEP}/lib/syslibs
 export LD_LIBRARY_PATH
-MANPATH=${SEP}/man:${MANPATH}
+DYLD_FALLBACK_LIBRARY_PATH=${myld}${DYLD_FALLBACK_LIBRARY_PATH}:${SEP}/lib:${SEP}/lib/syslibs
+export LD_LIBRARY_PATH DYLD_FALLBACK_LIBRARY_PATH
+MANPATH=${SEP}/share/man:${MANPATH}
 export MANPATH
+PYTHONPATH=${SEP}/lib/python:${PYTHONPATH}
+export PYTHONPATH
 LANG=${LANG:-'C'}
 export LANG
 fi

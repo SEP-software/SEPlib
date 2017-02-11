@@ -171,7 +171,71 @@ char *rgoto  = "goto ";
 char *dat    = "data ";
 char *eoss   = "EOS/";
 
-extern S_CHAR ngetch();
+#include "lookup.h"
+
+extern S_CHAR ngetch(S_CHAR *, FILE *);
+extern int our_getopt(int, char **, const char *);
+extern void error(char *, S_CHAR *);
+extern void initvars(void);
+S_CHAR ngetch(S_CHAR *, FILE *);
+int deftok(S_CHAR[], int, FILE *);
+int alldig(S_CHAR[]);
+extern void swvar(int);
+extern int caslab(int *, int *);
+extern void untils(int, int);
+extern void whiles(int);
+extern void ifgo(int);
+extern void ifthen(void);
+extern void ifend(void);
+extern void fors(int);
+extern void outch(S_CHAR);
+extern void outcon(int);
+extern void dostat(int);
+extern void outdon(void);
+extern void outnum(int);
+extern int labgen(int);
+extern void outtab(void);
+extern void outgo(int);
+extern int ctoi(S_CHAR[], int *);
+extern int relate(S_CHAR[], FILE *);
+extern int itoc(int, S_CHAR[], int);
+extern void outcmnt(FILE *);
+extern void outasis(FILE *);
+extern void scopy( S_CHAR[], int, S_CHAR[], int);
+extern int equal(S_CHAR[], S_CHAR[]);
+extern void putbak(S_CHAR);
+extern void skpblk(FILE *);
+extern void eatup(void);
+extern void fold(S_CHAR[]);
+extern void getdef(S_CHAR[], int, S_CHAR[], int, FILE *);
+extern int look(S_CHAR[], S_CHAR[]);
+extern int gtok(S_CHAR[], int, FILE *);
+extern int gettok(S_CHAR[], int);
+extern void outstr(S_CHAR[]);
+extern int gnbtok(S_CHAR[], int);
+extern void balpar(void);
+extern int type(S_CHAR);
+extern void unstak(int *, int[], int[], S_CHAR);
+extern void pbstr(S_CHAR[]);
+extern void strdcl(void);
+extern void retcod(void);
+extern void brknxt(int, int[], int[], int);
+extern void otherc(S_CHAR[]);
+extern void swend(int);
+extern void baderr(S_CHAR[]);
+extern void elseif(int);
+extern void labelc(S_CHAR[]);
+extern void cascod (int, int);
+extern void synerr(S_CHAR *);
+extern void swcode (int *);
+extern void repcod(int *);
+extern void forcod(int *);
+extern void whilec(int *);
+extern void docode(int *);
+extern void ifcode(int *);
+extern void parse(void);
+extern int lex(S_CHAR[]);
+
 char *progname;
 int startlab = 23000;		/* default start label */
 int leaveC = NO;		/* Flag for handling comments */
@@ -180,9 +244,7 @@ int leaveC = NO;		/* Flag for handling comments */
  * M A I N   L I N E  &  I N I T
  */
 
-main(argc,argv)
-int argc;
-char *argv[];
+int main(int argc,char *argv[])
 {
 	int c, errflg = 0;
 	extern int optind77;
@@ -231,12 +293,13 @@ char *argv[];
 	parse();		/* call parser.. */
 
 	exit(0);
+        return 0;
 }
 
 /*
  * initialise
  */
-initvars()
+void initvars(void)
 {
 	int i;
 
@@ -262,7 +325,7 @@ initvars()
  * P A R S E R
  */
 
-parse()
+void parse(void)
 {
 	S_CHAR lexstr[MAXTOK];
 	int lab, labval[MAXSTACK], lextyp[MAXSTACK], sp, i, token;
@@ -348,9 +411,7 @@ parse()
  *  alldig - return YES if str is all digits
  *
  */
-int
-alldig(str)
-S_CHAR str[];
+int alldig(S_CHAR str[])
 {
 	int i,j;
 
@@ -369,7 +430,7 @@ S_CHAR str[];
  * balpar - copy balanced paren string
  *
  */
-balpar()
+void balpar(void)
 {
 	S_CHAR token[MAXTOK];
 	int t,nlpar;
@@ -404,11 +465,7 @@ balpar()
  * deftok - get token; process macro calls and invocations
  *
  */
-int
-deftok(token, toksiz, fd)
-S_CHAR token[];
-int toksiz;
-FILE *fd;
+int deftok(S_CHAR token[], int toksiz, FILE *fd)
 {
 	S_CHAR defn[MAXDEF];
 	int t;
@@ -435,7 +492,7 @@ FILE *fd;
  * eatup - process rest of statement; interpret continuations
  *
  */
-eatup()
+void eatup(void)
 {
 
 	S_CHAR ptoken[MAXTOK], token[MAXTOK];
@@ -481,12 +538,7 @@ eatup()
  * getdef (for no arguments) - get name and definition
  *
  */
-getdef(token, toksiz, defn, defsiz, fd)
-S_CHAR token[];
-int toksiz;
-S_CHAR defn[];
-int defsiz;
-FILE *fd;
+void getdef(S_CHAR token[], int toksiz, S_CHAR defn[], int defsiz, FILE *fd)
 {
 	int i, nlpar, t;
 	S_CHAR c, ptoken[MAXTOK];
@@ -544,10 +596,7 @@ FILE *fd;
  * gettok - get token. handles file inclusion and line numbers
  *
  */
-int
-gettok(token, toksiz)
-S_CHAR token[];
-int toksiz;
+int gettok(S_CHAR token[], int toksiz)
 {
 	int t, i;
 	int tok;
@@ -623,10 +672,7 @@ int toksiz;
  * gnbtok - get nonblank token
  *
  */
-int
-gnbtok(token, toksiz)
-S_CHAR token[];
-int toksiz;
+int gnbtok(S_CHAR token[], int toksiz)
 {
 	int tok;
 
@@ -639,11 +685,7 @@ int toksiz;
  * gtok - get token for Ratfor
  *
  */
-int
-gtok(lexstr, toksiz, fd)
-S_CHAR lexstr[];
-int toksiz;
-FILE *fd;
+int gtok( S_CHAR lexstr[], int toksiz, FILE *fd)
 { int i, b, n, tok;
 	S_CHAR c;
 	c = ngetch(&lexstr[0], fd);
@@ -785,9 +827,7 @@ FILE *fd;
  * lex - return lexical type of token
  *
  */
-int
-lex(lexstr)
-S_CHAR lexstr[];
+int lex(S_CHAR lexstr[])
 {
 
 	int tok;
@@ -836,10 +876,7 @@ S_CHAR lexstr[];
  * ngetch - get a (possibly pushed back) character
  *
  */
-S_CHAR
-ngetch(c, fd)
-S_CHAR *c;
-FILE *fd;
+S_CHAR ngetch(S_CHAR *c, FILE *fd)
 {
 
 	if (bp >= 0) {
@@ -889,8 +926,7 @@ FILE *fd;
  * pbstr - push string back onto input
  *
  */
-pbstr(in)
-S_CHAR in[];
+void pbstr(S_CHAR in[])
 {
 	int i;
 
@@ -902,8 +938,7 @@ S_CHAR in[];
  * putbak - push char back onto input
  *
  */
-putbak(c)
-S_CHAR c;
+void putbak(S_CHAR c)
 {
 
 	bp++;
@@ -917,10 +952,7 @@ S_CHAR c;
  * relate - convert relational shorthands into long form
  *
  */
-int
-relate(token, fd)
-S_CHAR token[];
-FILE *fd;
+int relate(S_CHAR token[], FILE *fd)
 {
 
 	if (ngetch(&token[1], fd) != EQUALS) {
@@ -976,8 +1008,7 @@ FILE *fd;
  * skpblk - skip blanks and tabs in file  fd
  *
  */
-skpblk(fd)
-FILE *fd;
+void skpblk(FILE *fd)
 {
 	S_CHAR c;
 
@@ -991,9 +1022,7 @@ FILE *fd;
  * type - return LETTER, DIGIT or char; works with ascii alphabet
  *
  */
-int
-type(c)
-S_CHAR c;
+int type(S_CHAR c)
 {
 	int t;
 
@@ -1015,11 +1044,7 @@ S_CHAR c;
 /*
  * brknxt - generate code for break n and next n; n = 1 is default
  */
-brknxt(sp, lextyp, labval, token)
-int sp;
-int lextyp[];
-int labval[];
-int token;
+void brknxt(int sp, int lextyp[], int labval[], int token)
 {
 	int i, n;
 	S_CHAR t, ptoken[MAXTOK];
@@ -1060,8 +1085,7 @@ int token;
  * docode - generate code for beginning of do
  *
  */
-docode(lab)
-int *lab;
+void docode(int *lab)
 {
 	xfer = NO;
 	outtab();
@@ -1076,8 +1100,7 @@ int *lab;
  * dostat - generate code for end of do statement
  *
  */
-dostat(lab)
-int lab;
+void dostat(int lab)
 {
 	outcon(lab);
 	outcon(lab+1);
@@ -1087,8 +1110,7 @@ int lab;
  * elseif - generate code for end of if before else
  *
  */
-elseif(lab)
-int lab;
+void elseif(int lab)
 {
 
 #ifdef F77
@@ -1105,8 +1127,7 @@ int lab;
  * forcod - beginning of for statement
  *
  */
-forcod(lab)
-int *lab;
+void forcod(int *lab)
 {
 	S_CHAR t, token[MAXTOK];
 	int i, j, nlpar,tlab;
@@ -1188,8 +1209,7 @@ int *lab;
  * fors - process end of for statement
  *
  */
-fors(lab)
-int lab;
+void fors(int lab)
 {
 	int i, j;
 
@@ -1212,8 +1232,7 @@ int lab;
  * ifcode - generate initial code for if
  *
  */
-ifcode(lab)
-int *lab;
+void ifcode(int *lab)
 {
 
 	xfer = NO;
@@ -1230,7 +1249,7 @@ int *lab;
  * ifend - generate code for end of if
  *
  */
-ifend()
+void ifend(void)
 {
 	outtab();
 	outstr(sendif);
@@ -1242,8 +1261,7 @@ ifend()
  * ifgo - generate "if(.not.(...))goto lab"
  *
  */
-ifgo(lab)
-int lab;
+void ifgo(int lab)
 {
 
 	outtab();      /* get to column 7 */
@@ -1258,7 +1276,7 @@ int lab;
  * ifthen - generate "if((...))then"
  *
  */
-ifthen()
+void ifthen(void)
 {
 	outtab();
 	outstr(sif);
@@ -1272,8 +1290,7 @@ ifthen()
  * labelc - output statement number
  *
  */
-labelc(lexstr)
-S_CHAR lexstr[];
+void labelc(S_CHAR lexstr[])
 {
 
 	xfer = NO;   /* can't suppress goto's now */
@@ -1288,9 +1305,7 @@ S_CHAR lexstr[];
  * labgen - generate  n  consecutive labels, return first one
  *
  */
-int
-labgen(n)
-int n;
+int labgen(int n)
 {
 	int i;
 
@@ -1303,8 +1318,7 @@ int n;
  * otherc - output ordinary Fortran statement
  *
  */
-otherc(lexstr)
-S_CHAR lexstr[];
+void otherc(S_CHAR lexstr[])
 {
 	xfer = NO;
 	outtab();
@@ -1317,8 +1331,7 @@ S_CHAR lexstr[];
  * outch - put one char into output buffer
  *
  */
-outch(c)
-S_CHAR c;
+void outch(S_CHAR c)
 {
 	int i;
 
@@ -1337,8 +1350,7 @@ S_CHAR c;
  * outcon - output "n   continue"
  *
  */
-outcon(n)
-int n;
+void outcon(int n)
 {
 	xfer = NO;
 	if (n <= 0 && outp == 0)
@@ -1354,7 +1366,7 @@ int n;
  * outdon - finish off an output line
  *
  */
-outdon()
+void outdon(void)
 {
 
 	outbuf[outp] = NEWLINE;
@@ -1367,8 +1379,7 @@ outdon()
  * outcmnt - copy comment to output
  *
  */
-outcmnt(fd)
-FILE * fd;
+void outcmnt(FILE *fd)
 {
         S_CHAR c;
         S_CHAR comout[82];
@@ -1397,8 +1408,7 @@ FILE * fd;
  * outasis - copy directly out
  *
  */
-outasis(fd)
-FILE * fd;
+void outasis(FILE * fd)
 {
 	S_CHAR c;
 	while((c=ngetch(&c,fd)) != NEWLINE)
@@ -1410,8 +1420,7 @@ FILE * fd;
  * outgo - output "goto  n"
  *
  */
-outgo(n)
-int n;
+void outgo(int n)
 {
 	if (xfer == YES)
 		return;
@@ -1425,8 +1434,7 @@ int n;
  * outnum - output decimal number
  *
  */
-outnum(n)
-int n;
+void outnum(int n)
 {
 
 	S_CHAR chars[MAXCHARS];
@@ -1452,8 +1460,7 @@ int n;
  * outstr - output string
  *
  */
-outstr(str)
-S_CHAR str[];
+void outstr(S_CHAR str[])
 {
 	int i;
 
@@ -1465,7 +1472,7 @@ S_CHAR str[];
  * outtab - get past column 6
  *
  */
-outtab()
+void outtab(void)
 {
 	while (outp < 6)
 		outch(BLANK);
@@ -1476,8 +1483,7 @@ outtab()
  * repcod - generate code for beginning of repeat
  *
  */
-repcod(lab)
-int *lab;
+void repcod(int *lab)
 {
 
 	int tlab;
@@ -1493,7 +1499,7 @@ int *lab;
  * retcod - generate code for return
  *
  */
-retcod()
+void retcod(void)
 {
 	S_CHAR token[MAXTOK], t;
 
@@ -1516,7 +1522,7 @@ retcod()
 
 
 /* strdcl - generate code for string declaration */
-strdcl()
+void strdcl(void)
 {
 	S_CHAR t, name[MAXNAME], init[MAXTOK];
 	int i, len;
@@ -1580,11 +1586,7 @@ strdcl()
  * unstak - unstack at end of statement
  *
  */
-unstak(sp, lextyp, labval, token)
-int *sp;
-int lextyp[];
-int labval[];
-S_CHAR token;
+void unstak( int *sp, int lextyp[], int labval[], S_CHAR token)
 {
 	int tp;
 
@@ -1627,9 +1629,7 @@ S_CHAR token;
  * untils - generate code for until or end of repeat
  *
  */
-untils(lab, token)
-int lab;
-int token;
+void untils(int lab, int token)
 {
 	S_CHAR ptoken[MAXTOK];
 
@@ -1648,8 +1648,7 @@ int token;
  * whilec - generate code for beginning of while
  *
  */
-whilec(lab)
-int *lab;
+void whilec(int *lab)
 {
 	int tlab;
 
@@ -1669,8 +1668,7 @@ int *lab;
  * whiles - generate code for end of while
  *
  */
-whiles(lab)
-int lab;
+void whiles(int lab)
 {
 
 	outgo(lab);
@@ -1687,8 +1685,7 @@ int lab;
 /*
  *  baderr - print error message, then die
  */
-baderr(msg)
-S_CHAR msg[];
+void baderr(S_CHAR msg[])
 {
 	synerr(msg);
 	exit(1);
@@ -1697,9 +1694,7 @@ S_CHAR msg[];
 /*
  * error - print error message with one parameter, then die
  */
-error(msg, s)
-char *msg;
-S_CHAR *s;
+void error(char *msg, S_CHAR *s)
 {
 	fprintf(stderr, msg,s);
 	exit(1);
@@ -1708,23 +1703,22 @@ S_CHAR *s;
 /*
  * synerr - report Ratfor syntax error
  */
-synerr(msg)
-S_CHAR *msg;
+void synerr(S_CHAR *msg)
 {
 	S_CHAR lc[MAXCHARS];
 	int i;
 
-	fprintf(stderr,errmsg);
+	fprintf(stderr,"%s",errmsg);
 	if (level >= 0)
 		i = level;
 	else
 		i = 0;   /* for EOF errors */
 	itoc(linect[i], lc, MAXCHARS);
-	fprintf(stderr,(char*)lc);
+	fprintf(stderr,"%s",(char*)lc);
 	for (i = fnamp - 1; i > 1; i = i - 1)
 		if (fnames[i-1] == EOS) {   /* print file name */
-			fprintf(stderr,in);
-			fprintf(stderr,(char*)&fnames[i]);
+			fprintf(stderr,"%s",in);
+			fprintf(stderr,"%s",(char*)&fnames[i]);
 			break;
 		}
 	fprintf(stderr,": \n      %s\n",msg);
@@ -1738,10 +1732,7 @@ S_CHAR *msg;
 /*
  * ctoi - convert string at in[i] to int, increment i
  */
-int
-ctoi(in, i)
-S_CHAR in[];
-int *i;
+int ctoi(S_CHAR in[], int *i)
 {
 	int k, j;
 
@@ -1761,8 +1752,7 @@ int *i;
  * fold - convert alphabetic token to single case
  *
  */
-fold(token)
-S_CHAR token[];
+void fold(S_CHAR token[])
 {
 
 	int i;
@@ -1781,10 +1771,7 @@ S_CHAR token[];
  * equal - compare str1 to str2; return YES if equal, NO if not
  *
  */
-int
-equal(str1, str2)
-S_CHAR str1[];
-S_CHAR str2[];
+int equal(S_CHAR str1[], S_CHAR str2[])
 {
 	int i;
 
@@ -1798,11 +1785,7 @@ S_CHAR str2[];
  * scopy - copy string at from[i] to to[j]
  *
  */
-scopy(from, i, to, j)
-S_CHAR from[];
-int i;
-S_CHAR to[];
-int j;
+void scopy( S_CHAR from[], int i, S_CHAR to[], int j)
 {
 	int k1, k2;
 
@@ -1814,15 +1797,11 @@ int j;
 	to[k2] = EOS;
 }
 
-#include "lookup.h"
 /*
  * look - look-up a definition
  *
  */
-int
-look(name,defn)
-S_CHAR name[];
-S_CHAR defn[];
+int look(S_CHAR name[], S_CHAR defn[])
 {
 	extern struct hashlist *lookup();
 	struct hashlist *p;
@@ -1836,11 +1815,7 @@ S_CHAR defn[];
 /*
  * itoc - special version of itoa
  */
-int
-itoc(n,str,size)
-int n;
-S_CHAR str[];
-int size;
+int itoc(int n, S_CHAR str[], int size)
 {
 	int i,j,k,sign;
 	S_CHAR c;
@@ -1870,9 +1845,7 @@ int size;
  * cascod - generate code for case or default label
  *
  */
-cascod (lab, token)
-int lab;
-int token;
+void cascod (int lab, int token)
 {
 	int t, l, lb, ub, i, j, junk;
 	S_CHAR scrtok[MAXTOK];
@@ -1936,10 +1909,7 @@ int token;
  * caslab - get one case label
  *
  */
-int
-caslab (n, t)
-int *n;
-int *t;
+int caslab(int *n, int *t)
 {
 	S_CHAR tok[MAXTOK];
 	int i, s;
@@ -1974,8 +1944,7 @@ int *t;
  * swcode - generate code for switch stmt.
  *
  */
-swcode (lab)
-int *lab;
+void swcode (int *lab)
 {
 	S_CHAR scrtok[MAXTOK];
 
@@ -2007,15 +1976,14 @@ int *lab;
  * swend  - finish off switch statement; generate dispatch code
  *
  */
-swend(lab)
-int lab;
+void swend(int lab)
 {
 	int lb, ub, n, i, j;
 
-static	char *sif   	= "if (";
+static	char *sif   	= "if (";  /*)*/
 static	char *slt   	= ".lt.1.or.";
 static	char *sgt   	= ".gt.";
-static	char *sgoto 	= "goto (";
+static	char *sgoto 	= "goto (";  /*)*/
 static	char *seq   	= ".eq.";
 static	char *sge   	= ".ge.";
 static	char *sle   	= ".le.";
@@ -2099,13 +2067,13 @@ static	char *sand  	= ".and.";
 	outcon (lab + 1);   			/* # L+1  continue */
 	swlast = swtop;				/* # pop switch stack */
 	swtop = swstak[swtop];
+    /* } */
 }
 
 /*
  * swvar  - output switch variable Innn, where nnn = lab
  */
-swvar  (lab)
-int lab;
+void swvar(int lab)
 {
 
 	outch ('I');

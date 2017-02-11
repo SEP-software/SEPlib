@@ -71,7 +71,7 @@ char window[];
 		  break;
 	case 't':
 		  for( i1=0 ; i1< n1 ; i1++ )
-		  weight[i1] = 1. - 2*abs( tarray[i1] );
+		  weight[i1] = 1. - 2*fabs( tarray[i1] );
 		  break;
 	case 's':
 		  for( i1=0 ; i1< n1 ; i1++ )
@@ -104,10 +104,10 @@ char window[];
  * we really want 
  * FCALLSCSUB4(time_window,TIME_WINDOW,time_window,INT,PFLOAT,PFLOAT,STRING)
  */
-static ftwind( n, tarray, weight, window )
+static int ftwind( n, tarray, weight, window )
 int n;
 float *tarray, *weight;
 char window[];
 {
-time_window( n, tarray, weight, window );
+return time_window( n, tarray, weight, window );
 }

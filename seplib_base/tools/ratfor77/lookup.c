@@ -24,7 +24,7 @@ struct	hashlist *hashtab[HASHMAX];
  * hash - for a hash value for string s
  *
  */
-hash(s)
+int hash(s)
 S_CHAR *s;
 {
 	int	hashval;

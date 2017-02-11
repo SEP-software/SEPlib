@@ -16,3 +16,5 @@ struct hashlist {
 #define HASHMAX	100			/* size of hashtable */
 
 					/* hash table itself */
+extern int hash(S_CHAR *);
+extern struct hashlist *install(S_CHAR *,S_CHAR *);

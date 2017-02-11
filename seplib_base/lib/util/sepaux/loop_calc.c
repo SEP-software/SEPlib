@@ -1,7 +1,10 @@
+#include<sepConfig.h>
 #include<stdio.h>
 #include<string.h>
 #include <stdlib.h>
 #include <sepaux.h>
+
+extern int sepwarn(int, const char *, ...);
 
 struct _sep_loop;  /* declare it as a type that can be pointed at */
                                                                                                                      

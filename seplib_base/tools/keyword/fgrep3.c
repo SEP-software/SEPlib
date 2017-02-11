@@ -11,12 +11,25 @@ static char *sccsid = "@(#)fgrep.c	4.2 (Berkeley) 10/20/82";
  *		2 - some error
  */
 
-#include <sitedef.h>
+#include <sepConfig.h>
 #if HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
 #include <stdio.h>
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 #include <ctype.h>
+#if defined(MACOS) || defined(LINUX)
+#include <sys/types.h>
+#ifdef MACOS
+#include <sys/uio.h>
+#endif
+#ifdef LINUX
+#include <sys/stat.h>
+#endif
+#include <fcntl.h>
+#endif
 
 #define	MAXSIZ 6000
 #define QSIZE 400
