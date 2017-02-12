@@ -82,6 +82,22 @@ char derailed[10];
 
 initpar(argc,argv);
 xenvp=envp;
+#ifdef MY_SEP_DOC
+MY_SEP_DOC
+#endif
+  if((int) pi ) {  /* used to shut off complaint that pi was unused! */
+#ifndef NODOC
+/* Check to see if the program is one that has noheader=y,
+ * So we shouldn't expect standard input to be redirected.
+ * Then, if standard out is redirected, this must mean that
+ * we shouldn't self-document.
+ */
+  if( !( noheader() && redout() ) )
+#if !(defined(NOHEADER) && defined(OUT))
+	  doc(SOURCE);
+#endif
+#endif
+  }
 #ifdef DERAIL
 derailed[0] = 'y';
 #else
@@ -116,19 +132,7 @@ if(!getch("head","s",newhead))
 	getch_add_string(strcat(newhead,HEAD));
 #endif
 
-/* Check to see if the program is one that has noheader=y,
- * So we shouldn't expect standard input to be redirected.
- * Then, if standard out is redirected, this must mean that
- * we shouldn't self-document.
- */
-#ifdef MY_SEP_DOC
-MY_SEP_DOC
-#endif
-#ifndef NODOC
-  if( !( noheader() && redout() ) )
-	  doc("SOURCE");
-#endif
-;
+
   headstream = sep_head();
   headfd = fileno(headstream);
   instream = input();
