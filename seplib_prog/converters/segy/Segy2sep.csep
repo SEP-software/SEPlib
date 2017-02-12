@@ -163,7 +163,6 @@ B<converters>
 
 /* SEGYREAD: $Revision: 1.2 $ ; $Date: 2004/07/08 18:15:32 $     */
 
-#include<assert.h>
 #include<superset.h>
 #ifdef SU_SUPPORT
 #include "su.h"
@@ -328,12 +327,11 @@ main(int argc, char **argv)
 
 	/* Initialize */
 	initargs(argc, argv);
-   getch_add_string("noheader=y");
    ADD_SEP_DOC
    doc(SOURCE);
-	requestdoc(1); /* stdin not used */
-  
+	/* requestdoc(1); */ /* stdin not used */
 
+   getch_add_string("noheader=y");
   handle_additional();
   
 /*
@@ -381,6 +379,7 @@ main(int argc, char **argv)
 	if (((over!=0) && (format_set))) {
 		bh.format = format;
 		if ( !((format==1) || (format==2) || (format==3) || (format==5)) ) {
+ 	          fprintf(stderr,"Specified format=%d not supported\n", format);
 		  fprintf(stderr,"Assuming IBM floating point format, instead\n");
 		}
 	}
@@ -628,39 +627,141 @@ main(int argc, char **argv)
 	return (0);
 }
 
-#ifdef _HPUX_SOURCE
-static void ibm_to_float(int from[], int to[], int n, int myendian)
+#if defined(_HPUX_SOURCE) || defined(LINUX) || defined(MACOS)
+#include <string.h>
+#include <inttypes.h>
+#include <arpa/inet.h> /* for byte swap macro */
+/*ARGSUSED3*/
+static void ibm_to_float(int in[], float out[], int nwds, int myendian)
 {
-	/* HP version of ibm_to_float */
 
-    register int fconv, fmant, i, t, dummy;
+*********************************************************************
+Author: Stew Levin (translated from fortran by f2c)
+********************************************************************/
+/**************** end self doc ********************************/
+/* See if this fits the bill for your needs - Stew */
+/* ibmflt.f -- translated by f2c (version 1995/10/25).
+*/
 
-	dummy = myendian;
+typedef		uint32_t integer;
+typedef		float	real;
+typedef		int	logical;
 
-    for (i=0;i<n;++i) {
-        fconv = from[i];
+/* idirec=1  IBM-->IEEE */
 
-        /* next lines modified (M.J.Rutty 20/9/92) */
-        /* if (fconv) { */
-        /* fmant = 0x00ffffff & fconv; */
+/* Author:  Stewart A. Levin    MTC/SRC     salevin@dal.mobil.com */
 
-        fmant = 0x00ffffff & fconv;
-        if (!fmant)
-          fconv=0;
-        else {
-          /* end modifications */
-            t = (int) ((0x7f000000 & fconv) >> 22) - 130;
-            while (!(fmant & 0x00800000)) { --t; fmant <<= 1; }
-            if (t > 254) fconv = (0x80000000 & fconv) | 0x7f7fffff;
-            else if (t <= 0) fconv = 0;
-            else fconv = (0x80000000 & fconv) |(t << 23)|(0x007fffff & fmant);
-        }
-        to[i] = fconv;
+/* Subroutine */
+{
+    /* Initialized data */
+
+    static logical first = 1;
+
+    /* System generated locals */
+    integer i__1;
+    real equiv_0[1];
+
+    /* Local variables */
+    integer eibm, itab, emod, i__, mhibm;
+    static integer m1[1024]     /* was [512][2] */;
+    static real r1[1024]	/* was [512][2] */; 
+
+#define ii ((integer *)equiv_0)
+    integer jj;
+#define rr ((real *)equiv_0) 
+    union {
+      real rrf;
+      integer iif;
+    } cvtmp;
+	
+    real r_infinity__;
+    integer et3e;
+
+    /* Parameter adjustments */
+    --out;
+    --in;
+    /* Function Body */
+
+    if (first) {
+	first = ! first;
+	*ii = 2139095039;
+	r_infinity__ = *rr;
+	for (i__ = 0; i__ <= 511; ++i__) {
+	    i__1 = i__ & 255;
+	    eibm = i__1 >> 1;
+	    mhibm = i__ & 1;
+	    et3e = (eibm << 2) - 130;
+	    if (et3e > 0 && et3e <= 255) {
+		i__1 = et3e ^ i__ & 255;
+		m1[i__] = i__1 << 23;
+		if (mhibm == 1) {
+		    r1[i__] = 0.f;
+		} else {
+		    i__1 = et3e | i__ & 256;
+		    *ii = i__1 << 23;
+		    r1[i__] = -(*rr);
+		}
+	    } else if (et3e <= 0) {
+		m1[i__] = i__ << 23;
+		r1[i__] = 0.f;
+	    } else {
+		m1[i__] = i__ << 23;
+		if (i__ < 256) {
+		    r1[i__] = r_infinity__;
+		} else {
+		    r1[i__] = -r_infinity__;
+		}
+	    }
+	    if (i__ == 0) {
+		m1[i__ + 512] = 0;
+		r1[i__ + 512] = 0.f;
+	    } else {
+		et3e = i__ & 255;
+		i__1 = et3e + 133;
+		eibm = i__1>>2;
+		emod = (eibm << 2) - et3e - 130;
+		if (emod == 0) {
+		    i__1 = et3e ^ (eibm << 1) + 1;
+		    m1[i__ + 512] = i__1 << 23;
+		    r1[i__ + 512] = 0.f;
+		} else {
+		    i__1 = et3e ^ (eibm << 1) - emod;
+		    m1[i__ + 512] = i__1 << 23;
+		    i__1 = (256 & i__) + (eibm << 1);
+		    *ii = i__1 << 23;
+		    r1[i__ + 512] = *rr;
+		}
+	    }
+/* L10: */
+	}
     }
-    return;
+
+ /*   if (idirec >= 0) { */
+	itab = 0;
+ /* } else {
+  *	itab = 512;
+  * } 
+  */
+    i__1 = nwds;
+    for (i__ = 1; i__ <= i__1; ++i__) {
+	cvtmp.iif = ntohl(in[i__]);
+/* use 9 high bits for table lookup */
+	jj = (511 & (cvtmp.iif>>23))+itab;
+/* fix up exponent */
+	cvtmp.iif = m1[jj] ^ cvtmp.iif;
+/* fix up mantissa */
+	out[i__] = cvtmp.rrf + r1[jj];
+/* L20: */
+    }
+
+    return 1;//EXIT_SUCCESS;
+} /* ibmieee */
+
+#undef rr
+#undef ii
 }
 
-#else /* use the regular ibm_to_float routine */
+#else /* use the regular (slower) ibm_to_float routine */
 
 static void ibm_to_float(int from[], int to[], int n, int myendian)
 /***********************************************************************
@@ -696,26 +797,19 @@ Credits: CWP: Brian Sumner,  c.1985
 		((fconv&0xff00)<<8) | ((fconv&0xff0000)>>8);
 
 	if (fconv) {
-  fprintf(stderr,"%d %d %d \n",i,fconv,to[i]);
-fprintf(stderr,"in the fconv \n");
 	    fmant = 0x00ffffff & fconv;
-	    fprintf(stderr,"after fman %d \n",fmant);
 	    /* The next two lines were added by Toralf Foerster */
 	    /* to trap non-IBM format data i.e. conv=0 data  */
 	    if (fmant == 0)
 		seperr(" data are not in IBM FLOAT Format !");	
 	    t = (int) ((0x7f000000 & fconv) >> 22) - 130;
-	    fprintf(stderr,"before while %d \n",t);
 	    while (!(fmant & 0x00800000)) { --t; fmant <<= 1; }
-	    fprintf(stderr,"after while %d \n",t);
 	    if (t > 254) fconv = (0x80000000 & fconv) | 0x7f7fffff;
 	    else if (t <= 0) fconv = 0;
 	    else fconv = (0x80000000 & fconv) |(t << 23)|(0x007fffff & fmant);
 	}
-  fprintf(stderr,"%d %d %d \n",i,fconv,to[i]);
 	to[i] = fconv;
     }
-assert(1==2);
     return;
 }
 #endif
