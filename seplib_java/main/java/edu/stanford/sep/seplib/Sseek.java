@@ -46,7 +46,7 @@ public class Sseek {
  * @param blocks    Number of full blocks to current file position
  * @param remainder Number of bytes past last full block to current file position
  *
- * @return	ierr 0 on success, 1 if block_size > MAX_INT, -1 on I/O failure
+ * @return	ierr 0 on success, 1 if block_size &gt; MAX_INT, -1 on I/O failure
  */
     public static native int file_position(String tag, int blocksize, int[] blocks, int[] remainder);
 /**

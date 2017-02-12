@@ -3,6 +3,7 @@
 #include "../include/sitedef.h"
 #include "edu_stanford_sep_seplib_corelibs_sep_GetPutAxis.h"
 #include <seplib.h>
+#include <sep3d.h>
 #if HAVE_STRING_H
 #include <string.h>
 #endif

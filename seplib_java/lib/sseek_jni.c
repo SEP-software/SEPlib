@@ -2,6 +2,7 @@
 #include "../include/sitedef.h"
 #include "edu_stanford_sep_seplib_corelibs_sep_Sseek.h"
 #include <seplib.h>
+#include <sep_main_external.h>
 #if HAVE_STRING_H
 #include <string.h>
 #endif

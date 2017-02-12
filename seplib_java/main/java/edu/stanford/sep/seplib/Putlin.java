@@ -7,6 +7,7 @@ package edu.stanford.sep.seplib.corelibs.sep;
 public class Putlin {
     /**
      * @param textline  String containing the text to add to the history file
+     * @return SEP status
      */
     public static native int putlin(String textline);
 

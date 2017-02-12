@@ -14,6 +14,8 @@ public class Datapath {
 
     /**
      * Return the current datapath.
+     * 
+     * @return current datapath.
      */
     public static String datapath() {
        byte[] tmpbuf = new byte[4096];

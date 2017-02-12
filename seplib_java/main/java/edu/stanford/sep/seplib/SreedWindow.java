@@ -11,8 +11,8 @@ public class SreedWindow {
  * @param n_dim The number of dimensions in input seplib dataset.
  * @param n_cube Vector[n_dim] of input axis lengths.
  * @param n_wind Vector[n_dim] of cube axis lengths after windowing.
- * @param f_wind Vector[n_dim] of first element for windowing (0 <= f < n)
- * @param j_wind Vector[n_dim] of subsample rate for windowing (1 <= j < n)
+ * @param f_wind Vector[n_dim] of first element for windowing (0 &lt;= f &lt; n)
+ * @param j_wind Vector[n_dim] of subsample rate for windowing (1 &lt;= j &lt; n)
  * @param esize Number of bytes per element.
  * @param vals	Array to contain data to be read from input.
  *
@@ -29,8 +29,8 @@ public class SreedWindow {
  * @param n_dim The number of dimensions in input seplib dataset.
  * @param n_cube Vector[n_dim] of input axis lengths.
  * @param n_wind Vector[n_dim] of cube axis lengths after windowing.
- * @param f_wind Vector[n_dim] of first element for windowing (0 <= f < n)
- * @param j_wind Vector[n_dim] of subsample rate for windowing (1 <= j < n)
+ * @param f_wind Vector[n_dim] of first element for windowing (0 &lt;= f &lt; n)
+ * @param j_wind Vector[n_dim] of subsample rate for windowing (1 &lt;= j &lt; n)
  * @param esize Number of bytes per element.
  * @param vals	Array to contain data to be read from input.
  *
@@ -47,8 +47,8 @@ public class SreedWindow {
  * @param n_dim The number of dimensions in input seplib dataset.
  * @param n_cube Vector[n_dim] of input axis lengths.
  * @param n_wind Vector[n_dim] of cube axis lengths after windowing.
- * @param f_wind Vector[n_dim] of first element for windowing (0 <= f < n)
- * @param j_wind Vector[n_dim] of subsample rate for windowing (1 <= j < n)
+ * @param f_wind Vector[n_dim] of first element for windowing (0 &lt;= f &lt; n)
+ * @param j_wind Vector[n_dim] of subsample rate for windowing (1 &lt;= j &lt; n)
  * @param esize Number of bytes per element.
  * @param vals	Array to contain data to be read from input.
  *
@@ -65,8 +65,8 @@ public class SreedWindow {
  * @param n_dim The number of dimensions in input seplib dataset.
  * @param n_cube Vector[n_dim] of input axis lengths.
  * @param n_wind Vector[n_dim] of cube axis lengths after windowing.
- * @param f_wind Vector[n_dim] of first element for windowing (0 <= f < n)
- * @param j_wind Vector[n_dim] of subsample rate for windowing (1 <= j < n)
+ * @param f_wind Vector[n_dim] of first element for windowing (0 &lt;= f &lt; n)
+ * @param j_wind Vector[n_dim] of subsample rate for windowing (1 &lt;= j &lt; n)
  * @param esize Number of bytes per element.
  * @param vals	Array to contain data to be read from input.
  *

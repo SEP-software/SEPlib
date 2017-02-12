@@ -11,8 +11,8 @@ public class SriteWindow {
  * @param n_dim The number of dimensions in seplib dataset.
  * @param n_cube Vector[n_dim] of seplib axis lengths.
  * @param n_wind Vector[n_dim] of window axis lengths.
- * @param f_wind Vector[n_dim] of first element for window (0 <= f < n)
- * @param j_wind Vector[n_dim] of subsample rate for window (1 <= j < n)
+ * @param f_wind Vector[n_dim] of first element for window (0 &lt;= f &lt; n)
+ * @param j_wind Vector[n_dim] of subsample rate for window (1 &lt;= j &lt; n)
  * @param esize Number of bytes per element.
  * @param vals	Array containing data to be written.
  *
@@ -29,8 +29,8 @@ public class SriteWindow {
  * @param n_dim The number of dimensions in seplib dataset.
  * @param n_cube Vector[n_dim] of seplib axis lengths.
  * @param n_wind Vector[n_dim] of window axis lengths.
- * @param f_wind Vector[n_dim] of first element for window (0 <= f < n)
- * @param j_wind Vector[n_dim] of subsample rate for window (1 <= j < n)
+ * @param f_wind Vector[n_dim] of first element for window (0 &lt;= f &lt; n)
+ * @param j_wind Vector[n_dim] of subsample rate for window (1 &lt;= j &lt; n)
  * @param esize Number of bytes per element.
  * @param vals	Array containing data to be written.
  *
@@ -47,8 +47,8 @@ public class SriteWindow {
  * @param n_dim The number of dimensions in seplib dataset.
  * @param n_cube Vector[n_dim] of seplib axis lengths.
  * @param n_wind Vector[n_dim] of window axis lengths.
- * @param f_wind Vector[n_dim] of first element for window (0 <= f < n)
- * @param j_wind Vector[n_dim] of subsample rate for window (1 <= j < n)
+ * @param f_wind Vector[n_dim] of first element for window (0 &lt;= f &lt; n)
+ * @param j_wind Vector[n_dim] of subsample rate for window (1 &lt;= j &lt; n)
  * @param esize Number of bytes per element.
  * @param vals	Array containing data to be written.
  *
@@ -65,8 +65,8 @@ public class SriteWindow {
  * @param n_dim The number of dimensions in seplib dataset.
  * @param n_cube Vector[n_dim] of seplib axis lengths.
  * @param n_wind Vector[n_dim] of window axis lengths.
- * @param f_wind Vector[n_dim] of first element for window (0 <= f < n)
- * @param j_wind Vector[n_dim] of subsample rate for window (1 <= j < n)
+ * @param f_wind Vector[n_dim] of first element for window (0 &lt;= f &lt; n)
+ * @param j_wind Vector[n_dim] of subsample rate for window (1 &lt;= j &lt; n)
  * @param esize Number of bytes per element.
  * @param vals	Array containing data to be written.
  *
