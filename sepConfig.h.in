@@ -9,6 +9,7 @@
 #cmakedefine HAVE_STRINGS_H
 #cmakedefine HAVE_SYS_IOCTL_H
 #cmakedefine HAVE_SYS_STAT
+#cmakedefine HAVE_SYS_FILE_H
 #cmakedefine HAVE_SYS_STAT_H
 #cmakedefine HAVE_SYS_TAPE_H
 #cmakedefine HAVE_SGTTY_H
