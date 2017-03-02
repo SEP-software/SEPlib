@@ -236,7 +236,7 @@ interface
     character(C_CHAR) , dimension(*) :: prog_name
   end subroutine
 
-  subroutine getch_add_string(string) bind(c,name="getch_add_string")
+  subroutine getch_add_string2(string) bind(c,name="getch_add_string")
     import
     character(C_CHAR), dimension(*) :: string
   end subroutine
@@ -309,6 +309,10 @@ subroutine doc_1(str)
   call doc1(str)
 end subroutine
 
+subroutine getch_add_string(str)
+  character(len=*) :: str
+  call getch_add_string2(str//C_NULL_CHAR)
+end subroutine
 
 integer function get_s_f(arg,typ,val)
   character(len=*) arg,typ,val

@@ -40,7 +40,7 @@ end interface
 contains
   subroutine erexit(string) 
     character(len=*) :: string
-    call seperr(string)
+    call seperr(string//C_NULL_CHAR)
   end subroutine
 
 subroutine c2forstr(str)
