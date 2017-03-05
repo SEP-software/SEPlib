@@ -58,6 +58,7 @@ streaminf *info,*info_hff,*info_gff;
 /*FIRST DO A GETCH TO GET EVERYTHING STARTED AND SEE IF WE HAVE A USER
 OVERRIDE FOR HFF VALUE*/
 memset(hff_input,'\0',sizeof(hff_input));
+hff_in=hetch("hff_in","s",hff_input);
 hff_in=getch("hff_in","s",hff_input);
 memset(hff_input,'\0',sizeof(gff_input));
 gff_in=getch("gff_in","s",gff_input);
