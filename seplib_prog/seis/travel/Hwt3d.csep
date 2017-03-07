@@ -138,8 +138,10 @@ void rite_ray_out();
 float *shots;
 ADD_DEF_SEP_DOC
 
+#include <stdlib.h>
+#include <sep3d.h>
 #include<sep.main>
-MAIN()
+int MAIN(void)
 {
   int  n[3];
   float o[3];
@@ -217,7 +219,7 @@ MAIN()
   free(rays_out); 
   free(vel);
   if(interp==1) free(travel);
-  return(0);
+  return(EXIT_SUCCESS);
 }
 
 

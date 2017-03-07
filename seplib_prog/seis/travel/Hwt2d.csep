@@ -26,6 +26,8 @@ Produces a ray database.
 
 =head2 RAY PARAMETERS
 
+=over 4
+
 =item oT    - float
 
       [0.]
@@ -50,9 +52,12 @@ Produces a ray database.
 
       [1.0] shooting-angle sampling
 
+=back
+
 =head1 SEE ALSO
 
 L<Hwt3d>, L<FMeikonal>, L<hwt_travel_cube>, L<hwt_trace_rays> <Hwt3d>
+
 
 =head1 CATEGORY
 B<seis/travel>
@@ -128,8 +133,9 @@ void compute(void);
 void init_wf(void);
 
 ADD_DEF_SEP_DOC
+#include <stdlib.h>
 #include<sep.main>
-MAIN()
+int MAIN(void)
 {
                 fprintf(stderr,"read velocity");
   read_cube();	fprintf(stderr," OK \n");
@@ -142,7 +148,7 @@ MAIN()
                 fprintf(stderr,"write rays");
   write_cube(); fprintf(stderr," OK \n");
   
-  return 1;
+  return EXIT_SUCCESS;
 }
 
 void compute(void)
@@ -183,7 +189,7 @@ void init_wf(void)
   /* set (x,z) for iT=0 to (xsou,zsou) */
   iT=0;
   for(iG=0;iG<nG;iG++) {
-    fprintf(stderr,"");
+    /*fprintf(stderr,"");*/
     p[iT][iG].x=xsou;
     p[iT][iG].z=zsou;
     p[iT][iG].v=get_xz_velocity(p[iT][iG]);

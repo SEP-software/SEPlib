@@ -86,7 +86,7 @@ second-order accuracy added by James Rickett (April 1999)
 #include <septravel.h>
 #include<sep.main>
 ADD_DEF_SEP_DOC
-MAIN(){
+int MAIN(void){
   int b1, b2, b3, n1, n2, n3, esize, vel, i, nshot, ndim, is,order;
   float s1, s2, s3, o1, o2, o3, d1, d2, d3, vel0, br1, br2, br3;
   float *t, *v, *s;
@@ -186,7 +186,5 @@ MAIN(){
     srite ("out", t, n1*n2*n3*esize);
   }
 
-  exit (0);
-  return 1;
+  return EXIT_SUCCESS;
 }
-
