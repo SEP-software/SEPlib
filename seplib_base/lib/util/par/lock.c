@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <sys/types.h>
-#if HAVE_SYS_PARAM_H || defined(MACOS)
+#if defined(HAVE_SYS_PARAM_H) || defined(MACOS)
 #include <sys/param.h>
 #endif
 #include <sys/stat.h>
@@ -15,7 +15,7 @@
 #include <signal.h>
 #include <fcntl.h>
 #include <stdlib.h>
-#if HAVE_UNISTD_H
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 #include <time.h>
