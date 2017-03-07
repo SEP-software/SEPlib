@@ -54,7 +54,9 @@
 #include<sepConfig.h>
 #define SEP 1
 #include	<stdio.h>
+#ifdef HAVE_STDLIB_H
 #include	<stdlib.h>
+#endif
 #include	<math.h>
 #if defined(HAVE_TERMIO_H)
 #include	<termio.h>
@@ -68,11 +70,18 @@
 #if  defined(HAVE_SYS_TYPES_H)
 #include	<sys/types.h>
 #endif
-
+#ifdef HAVE_SYS_STAT_H
 #include	<sys/stat.h>
+#endif
+#ifdef HAVE_FCNTL_H
 #include	<fcntl.h>
+#endif
+#ifdef HAVE_CTYPE_H
 #include	<ctype.h>
+#endif
+#ifdef HAVE_STRING_H
 #include	<string.h>
+#endif
 
 #include	"../include/vplot.h"
 
@@ -90,6 +99,9 @@
 #include	"./include/extern.h"
 
 #define		OPEN_ERROR	-1
+
+extern int getch(const char *, const char *, MIXED);
+extern int fetch(const char *, const char *, MIXED);
 
 #ifdef SEP
 #define		GETPAR	fetch
@@ -850,6 +862,10 @@ int             ix, iy;
 
     xorigin = 0;
     yorigin = 0;
+    uxorigin = 0.0;
+    uyorigin = 0.0;
+    uxscale = 1.0;
+    uyscale = 1.0;
 
     rotate = default_rotate;
     rotate += user_rotate;

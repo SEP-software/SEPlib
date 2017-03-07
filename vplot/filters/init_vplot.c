@@ -89,6 +89,9 @@
 
 #define		OPEN_ERROR	-1
 
+extern int getch(const char *, const char *, MIXED);
+extern int fetch(const char *, const char *, MIXED);
+
 #ifdef SEP
 #define		GETPAR	fetch
 #else
@@ -327,7 +330,13 @@ struct stat     pltoutstat;
 FILE           *pltout, *pltin;
 FILE           *controltty;
 char            outbuf[BUFSIZ];
+#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
+#else
+extern char *malloc(size_t);
+extern char *realloc(char *, size_t);
+extern char *getenv(const char *);
+#endif
 char            group_name[MAXFLEN + 1];
 int             group_number = 0;
 FILE           *pltinarray[MAXIN];
@@ -808,6 +817,10 @@ int             ix, iy;
 
     xorigin = 0;
     yorigin = 0;
+    uxorigin = 0.0;
+    uyorigin = 0.0;
+    uxscale = 1.0;
+    uyscale = 1.0;
 
     rotate = default_rotate;
     rotate += user_rotate;
