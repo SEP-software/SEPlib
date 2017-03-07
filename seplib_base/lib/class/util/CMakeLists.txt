@@ -4,6 +4,8 @@ project(SEPLIB-base-lib-class-util)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/../../corelibs/sep)
+include_directories(/usr/include)
+include_directories(/usr/local/include)
 
 
 set (SOURCES 
