@@ -40,7 +40,7 @@ Purpose:
 */	 
 
 #include <sepConfig.h>
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 #include <string.h>
 #endif
 #include<stdio.h>
@@ -48,7 +48,7 @@ Purpose:
 #if defined(MACOS) || defined(LINUX)
 #define USE_SOCKETS
 #endif
-#if HAVE_UNISTD_H
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 #include "streamlist.h"

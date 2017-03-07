@@ -83,7 +83,7 @@ Bob-(Dec'97)Removed check for key duplication (auxpar on output not allowed
 
 */
 #include <sepConfig.h>
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 #include <string.h>
 #endif
 #include "sep3d.h"

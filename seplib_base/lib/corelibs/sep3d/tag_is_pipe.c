@@ -43,12 +43,12 @@ Purpose:
 */	 
 
 #include <sep3d.h> 
-#if HAVE_UNISTD_H
+#ifdef HAVE_UNISTD_H
 #include<unistd.h>
 #endif
-#if HAVE_STRING_H
-#endif
+#ifdef HAVE_STRING_H
 #include<string.h>
+#endif
 #include "streamlist.h"
 #include "sep_main_internal.h"
 
