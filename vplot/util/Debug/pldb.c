@@ -112,15 +112,38 @@ int             doclength =
  *  Anybody want to clean this mess up?
  */
 
+#include        <sepConfig.h>
 #include	<stdio.h>
+#ifdef HAVE_STDLIB_H
 #include        <stdlib.h>
+#endif
+#ifdef HAVE_SYS_IOCTL_H
 #include	<sys/ioctl.h>
+#endif
+#if defined(HAVE_TERMIOS_H)
 #include        <termios.h>
+#else
+#if defined(HAVE_SYS_TERMIOS_H)
+#include	<sys/termios.h>
+#else
+#if defined(CRAY)
+#include        <sys/ttold.h>
+#else
+#ifdef HAVE_SGTTY_H
+#include        <sgtty.h>
+#endif
+#endif
+#endif
+#endif
 #include	<ctype.h>
 #include	"../../include/vplot.h"
 #include	"../../filters/include/params.h"
 
+#if defined(HAVE_TERMIOS_H) || defined(HAVE_SYS_TERMIOS_H)
 struct termios  ttystat;
+#else
+struct sgttyb   ttystat;
+#endif
 
 #if !(defined(__stdc__) || defined(__STDC__))
 FILE           *
@@ -162,17 +185,22 @@ int             retstat = 0;
     /*
      * If no arguments, and not in a pipeline, self document 
      */
-/*
     piped_in = ioctl ((fileno (stdin)),
+#if defined(HAVE_TERMIOS_H) || defined(HAVE_SYS_TERMIOS_H)
 	TCGETA,
+#else
+	TIOCGETP,
+#endif
 	&ttystat);
-*/
-piped_in=0;
     if (argc == 1 && !piped_in)
     {
 	for (i = 0; i < doclength; i++)
 	    printf ("%s\n", documentation[i]);
+#if defined(__stdc__) || defined(__STDC__)
         return (0);
+#else
+	exit (0);
+#endif
     }
 
 /*

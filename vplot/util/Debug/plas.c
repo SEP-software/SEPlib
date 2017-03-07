@@ -105,12 +105,35 @@ int             doclength =
  sizeof documentation / sizeof documentation[0]
 };
 
+#include        <sepConfig.h>
 #include	<stdio.h>
+#ifdef HAVE_STRING_H
 #include 	<string.h>
+#endif
+#ifdef HAVE_SYS_IOCTL_H
 #include	<sys/ioctl.h>
+#endif
+#ifdef HAVE_TERMIOS_H
 #include	<termios.h>
+#else
+#ifdef HAVE_SYS_TERMIOS_H
+#include 	<sys/termios.h>
+#else
+#ifdef HAVE_SYS_TTOLD_H
+#include        <sys/ttold.h>
+#else
+#ifdef HAVE_SGTTY_H
+#include	<sgtty.h>
+#endif
+#endif
+#endif
+#endif
+#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
+#endif
+#ifdef HAVE_CTYPE_H
 #include	<ctype.h>
+#endif
 #include	"../../include/vplot.h"
 #include	"../../filters/include/params.h"
 #include	"../../filters/include/round.h"
@@ -118,7 +141,11 @@ int             doclength =
 #define MAXLINE 24*84
 #define NL  '\n'
 
+#if defined(HAVE_TERMIOS_H) || defined(HAVE_SYS_TERMIOS_H)
 struct termios  ttystat;
+#else
+struct sgttyb   ttystat;
+#endif
 #if !(defined(__stdc__) || defined(__STDC__))
 FILE           *
 fopen (), *fdopen ();
@@ -160,17 +187,22 @@ int             line_count;
     /*
      * If no arguments, and not in a pipeline, self document 
      */
-/*
     piped_in = ioctl ((fileno (stdin)),
+#if defined(HAVE_TERMIOS_H) || defined(HAVE_SYS_TERMIOS_H)
 	TCGETA,
+#else
+	TIOCGETP,
+#endif
 	&ttystat);
-*/
- piped_in=0;
     if (argc == 1 && !piped_in)
     {
 	for (i = 0; i < doclength; i++)
 	    printf ("%s\n", documentation[i]);
+#if defined(__stdc__) || defined(__STDC__)
 	return (0);
+#else
+	exit (0);
+#endif
     }
 
 /*
@@ -332,7 +364,11 @@ int             line_count;
 	    puth (npts, stdout);
 	    while (npts--)
 	    {
-		fgets (line, MAXLINE, stdin);
+		if(NULL == fgets (line, MAXLINE, stdin))
+                {
+                   perror("VP_PLINE|VP_SETDASH");
+                   exit(-1);
+                }
 		sscanf (line, "%f %f", &x, &y);
 		puth (ROUND (x * scale), stdout);
 		puth (ROUND (y * scale), stdout);
@@ -346,7 +382,11 @@ int             line_count;
 	    puth (ROUND (msize * txscale), stdout);
 	    while (npts--)
 	    {
-		fgets (line, MAXLINE, stdin);
+		if(NULL == fgets (line, MAXLINE, stdin))
+                {
+                   perror("VP_PMARK");
+                   exit(-1);
+                }
 		sscanf (line, "%f %f", &x, &y);
 		puth (ROUND (x * scale), stdout);
 		puth (ROUND (y * scale), stdout);
@@ -409,7 +449,11 @@ int             line_count;
 	case VP_OLDAREA:
 	    putc (c, stdout);
 	    sscanf (line, "%*c %d", &npts);
-	    fgets (line, MAXLINE, stdin);
+	    if(NULL == fgets (line, MAXLINE, stdin)) 
+            {
+               perror("VP_OLDAREA (1)");
+               exit(-1);
+            }
 	    sscanf (line, "%f %d %d", &fat, &maskx, &masky);
 	    puth (npts, stdout);
 	    puth (ROUND (fat * fatscale), stdout);
@@ -417,7 +461,11 @@ int             line_count;
 	    puth (masky, stdout);
 	    for (i = 0; i < npts; i++)
 	    {
-		fgets (line, MAXLINE, stdin);
+	        if(NULL == fgets (line, MAXLINE, stdin)) 
+                {
+                   perror("VP_OLDAREA (2)");
+                   exit(-1);
+                }
 		sscanf (line, "%f %f", &x, &y);
 		puth (ROUND (x * scale), stdout);
 		puth (ROUND (y * scale), stdout);
@@ -429,7 +477,11 @@ int             line_count;
 	    puth (npts, stdout);
 	    for (i = 0; i < npts; i++)
 	    {
-		fgets (line, MAXLINE, stdin);
+	        if(NULL == fgets (line, MAXLINE, stdin)) 
+                {
+                   perror("VP_AREA");
+                   exit(-1);
+                }
 		sscanf (line, "%f %f", &x, &y);
 		puth (ROUND (scale * x), stdout);
 		puth (ROUND (scale * y), stdout);
@@ -454,7 +506,11 @@ int             line_count;
 		for (i = 0; i < nx; i++)
 		{
 char           *ptr;
-		    fgets (line, MAXLINE, stdin);
+	            if(NULL == fgets (line, MAXLINE, stdin)) 
+                    {
+                       perror("VP_PATLOAD (1)");
+                       exit(-1);
+                    }
 
 		    for (j = 0, ptr = line; j < ny; j++, *ptr++)
 		    {
@@ -476,7 +532,11 @@ char           *ptr;
 	    {
 		for (i = 0; i < ny * 2; i++)
 		{
-		    fgets (line, MAXLINE, stdin);
+	            if(NULL == fgets (line, MAXLINE, stdin)) 
+                    {
+                       perror("VP_PATLOAD (2)");
+                       exit(-1);
+                    }
 		    sscanf (line, "%f %d %f %f", &fat, &col, &off, &rep);
 		    puth (ROUND (fat * fatscale), stdout);
 		    puth (col, stdout);
@@ -494,15 +554,27 @@ char           *ptr;
 		putc (c, stdout);
 		puth (ras_orient, stdout);
 		puth (ras_offset, stdout);
-		fgets (line, MAXLINE, stdin);
+	        if(NULL == fgets (line, MAXLINE, stdin)) 
+                {
+                   perror("VP_*_RASTER (1)");
+                   exit(-1);
+                }
 		sscanf (line, "%f %f", &xcor, &ycor);
 		puth (ROUND (xcor * scale), stdout);
 		puth (ROUND (ycor * scale), stdout);
-		fgets (line, MAXLINE, stdin);
+	        if(NULL == fgets (line, MAXLINE, stdin)) 
+                {
+                   perror("VP_*_RASTER (2)");
+                   exit(-1);
+                }
 		sscanf (line, "%f %f", &xvplot, &yvplot);
 		puth (ROUND (scale * xvplot), stdout);
 		puth (ROUND (scale * yvplot), stdout);
-		fgets (line, MAXLINE, stdin);
+	        if(NULL == fgets (line, MAXLINE, stdin)) 
+                {
+                   perror("VP_*_RASTER (3)");
+                   exit(-1);
+                }
 		sscanf (line, "%d %d", &xpix, &ypix);
 		puth (xpix, stdout);
 		puth (ypix, stdout);
@@ -510,19 +582,31 @@ char           *ptr;
 		for (j = 0; j < ypix;)
 		{
 		    count = 0;
-		    fgets (line, MAXLINE, stdin);
+	            if(NULL == fgets (line, MAXLINE, stdin)) 
+                    {
+                       perror("VP_*_RASTER (4)");
+                       exit(-1);
+                    }
 		    count = 0;
 		    sscanf (line, "%d", &num_rep);
 		    if (num_rep < 1)
 			fprintf (stderr, "Bad Raster repetition factor\n");
 		    puth (num_rep, stdout);
-	    more_line:fgets (line, MAXLINE, stdin);
+	    more_line:   if(NULL == fgets (line, MAXLINE, stdin) )
+                    {
+                           perror("VP_*_RASTER (5)");
+                           exit(-1);
+                    }
 		    sscanf (line, "%d %d", &num_pat, &num_byte);
 		    puth (num_pat, stdout);
 		    puth (num_byte, stdout);
 		    for (i = 0; i < num_byte; i++)
 		    {
-			fgets (line, MAXLINE, stdin);
+	                if(NULL == fgets (line, MAXLINE, stdin)) 
+                        {
+                           perror("VP_*_RASTER (6)");
+                           exit(-1);
+                        }
 			sscanf (line, "%d", &byte);
 			if (c == VP_BYTE_RASTER)
 			{
