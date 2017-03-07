@@ -132,7 +132,6 @@ copyright (c) 1991 Stanford University
 /*
 Author: Shuki Ronen, July 1982.
 */
-#define pi 3.1415926436
 /*
  * Keyword: hidden line plotting :      
  */
@@ -163,8 +162,10 @@ int     nx, di;
 float  *maxmask, *minmask, oldmask, *ff;
 ADD_DEF_SEP_DOC
 
+#include <stdlib.h>
 #include <sep.main>
 
+extern void set_output_data_format(const char *);
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
@@ -197,7 +198,7 @@ void plotdown ();
 _XFUNCPROTOEND
 #endif
 
-MAIN()
+int MAIN(void)
 {
     int     zero, one;
     int     fastplt;
@@ -498,7 +499,7 @@ a new macro O_X. Good luck.
   if (i3 < n3 - 1)
       vp_erase ();
     }
-  return(0);
+  return(EXIT_SUCCESS);
 }
 
 

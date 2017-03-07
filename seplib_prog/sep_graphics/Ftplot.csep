@@ -100,13 +100,14 @@ B<sep_graphics>
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-static getscl (float xmin,float xmax,int n,float *xminp,float *xmaxp,float *dist);
+extern void set_output_data_format(const char *);
+static int getscl (float xmin,float xmax,int n,float *xminp,float *xmaxp,float *dist);
 void minmax (float *f,int n,float *pmin,float *pmax);
 int cntchr (char *strg);
 int cntnum (char *strg, float ticval);
 _XFUNCPROTOEND
 #else
-static getscl ();
+static int getscl ();
 void minmax ();
 int cntchr ();
 int cntnum ();
@@ -120,10 +121,10 @@ static float sqr[3] = { 1.414214, 3.162278, 7.071068 };
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-static getscl (float xmin,float xmax,int n,float *xminp,float *xmaxp,float *dist)
+static int getscl (float xmin,float xmax,int n,float *xminp,float *xmaxp,float *dist)
 _XFUNCPROTOEND
 #else
-static getscl (xmin,xmax,n,xminp,xmaxp,dist)
+static int getscl (xmin,xmax,n,xminp,xmaxp,dist)
 int n;
 float xmin,xmax,*xminp,*xmaxp,*dist;
 #endif
@@ -181,9 +182,11 @@ float xmin,xmax,*xminp,*xmaxp,*dist;
 
 ADD_DEF_SEP_DOC
 
+#include <stdlib.h>
 #include<complex.h>
+#include <sepfft.h>
 #include <sep.main>
-MAIN()
+int MAIN(void)
 {
   int nt,offset,lfft,it,jf,jfmin,jfmax,nf,charsz,nchr;
   int f2,i2,n2,nread;
@@ -273,7 +276,7 @@ MAIN()
   else
     for (it=0; it<nt; it++)
       y[it] = x[it];
-  refft (y,lfft,1,1.,2);
+  refft ((float complex *) y,lfft,1,1.,2);
   df = fnyq/(nf-1);
   jfmin = fmin/df;  jfmin = (jfmin<0)?0:jfmin;
   jfmax = fmax/df;  jfmax = (jfmax>nf-1)?nf-1:jfmax;
@@ -377,7 +380,7 @@ MAIN()
     vp_udraw (x[jf],f);
   }       
      /* end loop over n2 */
-  return(0);
+  return(EXIT_SUCCESS);
 }
 
 
@@ -393,7 +396,7 @@ float ticval;
 char *strg;
 #endif
   {
-  sprintf (strg,"%1.5g\0",ticval);
+  sprintf (strg,"%1.5g",ticval);
   return(cntchr(strg));
   }
 

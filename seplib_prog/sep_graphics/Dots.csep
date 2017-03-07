@@ -175,9 +175,13 @@ WHERE
 ADD_DEF_SEP_DOC
 
 #include <sep.main>
+#include <stdlib.h>
 #include <vplot.h>
 #include <math.h>
 #include "glplot.h"
+
+extern void set_output_data_format(  char *format );
+
 static  char  labels[10000];
 static  int  i1,n1, i2,n2,nn2;
 static  int  dots, seemean, strings, connected, gaineach, labelsz;
@@ -213,7 +217,7 @@ void my_text();
 #endif
 
 
-MAIN ()
+int MAIN(void)
 {
  int wantaxis;
  vp_filep(outstream); /* tell plotting routines where to stick it */
@@ -383,7 +387,7 @@ if( !EMPTY( title)) {
       vp_tjust(TH_NORMAL,TV_NORMAL);
   }
 vp_endplot ();
-return(0);
+return(EXIT_SUCCESS);
 }
 
 #if NeedFunctionPrototypes

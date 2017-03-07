@@ -160,6 +160,7 @@ WHERE
 #define NOHEADER	Y
 ADD_DEF_SEP_DOC
 
+#include <stdlib.h>
 #include <sep.main>
 #include <vplot.h>
 #define OVAL_PTS 400
@@ -171,7 +172,7 @@ ADD_DEF_SEP_DOC
 #define TEXT 4
 
 
-MAIN ()
+int MAIN (void)
 {
 float           xarray[3], yarray[3];
 char            type[500];
@@ -364,5 +365,5 @@ int             ii,boxit,pointer,npts,my_type,angle;
  }
      
     vp_endplot ();
-	return(0);
+	return(EXIT_SUCCESS);
 }

@@ -306,6 +306,9 @@ ADD_DEF_SEP_DOC
 #include <sep.main>
 #include <stdio.h>
 #include "glplot.h"
+
+extern void set_output_data_format(const char *);
+
 #define SQUARE(A) ((A)*(A))
 
 struct datainfo datap;
@@ -367,7 +370,7 @@ void initial ();
 void initialcolor ();
 void graphinitial ();
 #endif
-MAIN ()
+int MAIN (void)
 {
 
    vp_filep(outstream); /* tell plotting routines where to stick it */
@@ -658,7 +661,7 @@ MAIN ()
  */
     }
     vp_purge();
-return(0);
+return(EXIT_SUCCESS);
 }
 
 

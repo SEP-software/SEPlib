@@ -357,10 +357,13 @@ int legendsz,legendfat;
 int do_plot_amp;
 int nreserve=8;
 
+#include <stdlib.h>
 #include <string.h>
 ADD_DEF_SEP_DOC
 
 #include <sep.main>
+
+extern void set_output_data_format(const char *);
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
@@ -387,7 +390,7 @@ void create_legend ();
 int search_title ();
 #endif
 
-MAIN ()
+int MAIN (void)
 {			/* Begin of main */
     int sti2 = 0;
    int js;
@@ -558,7 +561,7 @@ to use actual font size instead of trying to make symbols look the same size */
 
     }				/* end of Movie loop */
 
-	return(0);
+	return(EXIT_SUCCESS);
 }			/* end of MAIN */
 
 #if NeedFunctionPrototypes

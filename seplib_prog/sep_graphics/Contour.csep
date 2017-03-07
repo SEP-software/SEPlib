@@ -388,7 +388,7 @@ float          *curve, *pick, *pickw;
 float           wmax, wmin, w, dpicksize, wmean, iwdelta;
 float           x1, yy1, x2, y2;
 extern char    *alloc (size_t);
-extern  vp_filep ();
+/*extern  vp_filep ();*/
 #ifdef CONVEX
 extern float smin_ (), smax_ ();
 #endif
@@ -470,9 +470,9 @@ int rotate ();
 #endif
 
 
+#include <stdlib.h>
 
-
-MAIN ()
+int MAIN (void)
 {
 int ix;
     /*
@@ -575,7 +575,7 @@ close output header before putting out contours */
   pickplot ();
   gl_stdplot (&data, &coordinate, &axis1, &axis2, &grid, &title, n3_loop, 0, wantframe,wantframenum);
     }        /* end of movie loop */
-  return(0);
+  return(EXIT_SUCCESS);
 }
 
 #if NeedFunctionPrototypes

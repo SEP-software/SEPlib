@@ -246,15 +246,22 @@ B<sep_graphics>
    Bob Sep2000
    -Added scalebar
  */
+#include <sepConfig.h>
+#include <stdlib.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 #include <stdio.h>
+#ifdef HAVE_STRING_H
 #include <string.h>
+#endif
 ADD_DEF_SEP_DOC
 
 #include <sep.main>
 #include "glplot.h"
 #define SQUARE(A) ((A)*(A))
 
-
+extern void set_output_data_format(const char *);
 
 
 
@@ -400,7 +407,7 @@ int popup_check();
 int popup_peek();
 FILE* popup_start();
 #endif
-MAIN ()
+int MAIN (void)
 {
 char pop_file[1024];
 char pop_com[1024];
@@ -509,13 +516,18 @@ float onum1,onum2,onum3;
     if( popup ){
         char pop_file[1024]; char pop_com[1024];
         FILE* tmp=0;
-        int i;
+        int i, rc;
 
         if( !getch( "popup_file", "s", pop_file ) ) {
           /* make a temporary popup file */
-          sprintf( pop_file, "/tmp/popXXXXXX" ); mktemp(pop_file);
+          sprintf( pop_file, "/tmp/popXXXXXX" ); rc = mkstemp(pop_file);
+          if(rc == -1) {
+              perror("Cubeplot: temporary popup file create failed");
+              seperr("unable to create temp file %s\n",pop_file);
+          }
           if( (tmp = fopen( pop_file, "w" ) ) == 0 )
               seperr("unable to create temp file %s\n",pop_file);
+          close(rc);
           for( i=0; i<scriptlen; i++ ){ fprintf( tmp,"%s\n",pop_script[i]); }
           fclose( tmp );
         }
@@ -1216,9 +1228,9 @@ else		plotnum(x1,yy1,datap.o3+jframe3*datap.d3,8,0,-1);
     }
 
     /* interact */
-/*    } while( (popup && ((!popup_peek(popfile) && movie) || popup_check(popfile))));*/
+/*    }{ while( (popup && ((!popup_peek(popfile) && movie) || popup_check(popfile))));*/
     } while( (popup && popup_check(popfile)));
-	return(0);
+	return(EXIT_SUCCESS);
 }
 
 #if NeedFunctionPrototypes
@@ -1603,6 +1615,9 @@ typedef struct hash_dummy {
 
 extern hash_item *getch_queue[GETCH_QUEUE_SIZE];
 
+extern void getpar_push_input(char *, int);
+extern void getpar_scan(hash_item **, int);
+
 #define READLEN 2048
 
 
@@ -1641,7 +1656,10 @@ char readbuf[READLEN+1];
    if( feof( popfile ) ) return 0;
 
    do{
-	fgets( readbuf, READLEN, popfile );
+	if(NULL == fgets( readbuf, READLEN, popfile )) {
+           perror("popup_check: fgets failed ");
+           return 0;
+        }
 
          if( !strcmp( readbuf, "QUIT" ) ) return 0;
 

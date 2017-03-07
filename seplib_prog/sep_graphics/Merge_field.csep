@@ -28,11 +28,12 @@ Merge velocity and data file.
 
 ADD_DEF_SEP_DOC
 
+#include <stdlib.h>
 #include<sepmath.h>
 #include<seplib.h>
 #include<sep.main>
 
-MAIN()
+int MAIN(void)
 {
 int n[5];
 int nv[5];
@@ -102,11 +103,8 @@ fprintf(stderr,"ASDS  %f %f  \n",mn, mx);
 
 srite("out",out,ntot);
 
+return(EXIT_SUCCESS);
 
 }
-
-
-
-
 
 

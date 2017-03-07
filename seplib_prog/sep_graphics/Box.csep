@@ -120,7 +120,6 @@ B<sep_graphics>
 =cut
 
 */
-#define pi 3.1415926536
 
 /*
 
@@ -156,8 +155,8 @@ int rot ();
 static float    view_lati, view_longi;
 static float    stereo;
 
-
-MAIN ()
+#include <stdlib.h>
+int MAIN (void)
 {
 float           xarray[3], yarray[3];
 char            string[500];
@@ -392,7 +391,7 @@ if(ilong==0 && ilat==0 && iang==0){
     vp_fat (0);
 
     vp_endplot ();
-	return(0);
+	return(EXIT_SUCCESS);
 }
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN

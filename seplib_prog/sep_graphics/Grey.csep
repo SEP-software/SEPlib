@@ -1,4 +1,4 @@
-      /*$
+/*$
 
 =head1 NAME
 
@@ -266,7 +266,6 @@ PLOT =  clip{ [ (DATA - bias)*(it*d1+o1)**tpow ]**gpow }
 
 =back
 
- 
 
 =head1 OUTPUT PARAMETERS
 
@@ -460,7 +459,7 @@ Grey
 */
 
 
-
+#include <stdlib.h>
 #include <string.h>
 #include<limits.h>
 ADD_DEF_SEP_DOC
@@ -469,6 +468,17 @@ ADD_DEF_SEP_DOC
 #include <stdio.h>
 #include<sepaux.h>
 #include "glplot.h"
+
+extern void set_output_data_format(const char *);
+
+int finish_vplot_plot(void);
+int finish_byte_plot(void);
+int init_vplot_out(void);
+int rite_vplot_head(void);
+int rite_eout_1_2_head (void);
+int get_to_vplot_params(void);
+int get_base_params(void);
+int get_e_4_params(void);
 
 #if defined (HAVE_STDLIB_H)
 #include<stdlib.h>
@@ -555,7 +565,7 @@ int read_in_short(unsigned short *datas,int i3);
 #endif
 
 
-MAIN()
+int MAIN(void)
 {
     int it,i3,ierr,geo;
     float *tgain,*data;
@@ -644,7 +654,7 @@ MAIN()
     }  
     if(dataout.esize==1 || dataout.esize==2) ierr=finish_byte_plot();
     else ierr=finish_vplot_plot();
-	return(0);
+	return(EXIT_SUCCESS);
 }
 
 
@@ -669,6 +679,7 @@ MAIN()
 /*  Function initializes the conversion table, the gain vector,
   and sets fastinc and slowinc.
 */
+int
 #if defined(__STDC__) || defined(__stdc__)
 tbinit (float gpow,float tpow,float clp,register char *tbl,float *tgain,
 float t0,int nt,int *fastinc,int *slowinc,int nfast,float dt)
@@ -755,7 +766,7 @@ else
   *fastinc = 1;
   *slowinc = nfast;
   }
-		return(0);
+		return(EXIT_SUCCESS);
 }
 
 
@@ -841,7 +852,7 @@ else
 }
 
 #if defined(__STDC__) || defined(__stdc__)
-int rite_eout_1_2_head ()
+int rite_eout_1_2_head (void)
 #else
 int rite_eout_1_2_head ()
 #endif
@@ -856,7 +867,7 @@ int rite_eout_1_2_head ()
     } dm[4],*p0,*p1,*p2,*p3;
   for(i=0; i<=3; i++) {
     dm[i].ni = 1; dm[i].oi = 0.; dm[i].di = 1.;
-    sprintf(dm[i].labeli,"");
+    dm[i].labeli[0] = '\0';
     }
 
   dm[1].ni= datain.n1[0]; dm[2].ni= datain.n2; dm[3].ni= datain.n3;
@@ -903,7 +914,7 @@ int rite_eout_1_2_head ()
 
 
 #if defined(__STDC__) || defined(__stdc__)
-int get_base_params()
+int get_base_params(void)
 #else
 int get_base_params()
 #endif
@@ -953,7 +964,7 @@ return(0);
 
 
 #if defined(__STDC__) || defined(__stdc__)
-int get_e_4_params()
+int get_e_4_params(void)
 #else
 int get_e_4_params()
 #endif
@@ -1051,7 +1062,7 @@ int it;
       index=0; n1=datain.n1[0]; n2=datain.n2; 
     }
     else{
-      index=atoi(gainpanel)-1; n1=datain.n1[0]; n2=datain.n2; 
+      index=atoi(gainpanel); n1=datain.n1[0]; n2=datain.n2; 
     }
     new_clip("in",index,n1,n2,bpclip,epclip,&datamin,&datamax);
     minval[1] = datamin;
@@ -1158,7 +1169,7 @@ int convert_4_to_1(float *data,float *tgain,register char *tbl,char *buf,unsigne
 
 
 #if defined(__STDC__) || defined(__stdc__)
-int get_to_vplot_params()
+int get_to_vplot_params(void)
 #else
 int get_to_vplot_params()
 #endif
@@ -1246,7 +1257,7 @@ int get_to_vplot_params()
         coordinate.max2 = tempminmax;
 
     }
-     gl_axisint (&axis1, &axis2, &coordinate, &position);
+    gl_axisint (&axis1, &axis2, &coordinate, &position);
     gl_gridint (&grid, &coordinate, &axis1, &axis2);
     gl_titleint (&title);
     gl_colorint (&colorin);
@@ -1282,7 +1293,7 @@ int get_to_vplot_params()
 }
 
 #if defined(__STDC__) || defined(__stdc__)
-int rite_vplot_head()
+int rite_vplot_head(void)
 #else
 int rite_vplot_head()
 #endif
@@ -1389,7 +1400,7 @@ void setorient (orient, invert, coordinate)
 }
 
 #if defined(__STDC__) || defined(__stdc__)
-int init_vplot_out()
+int init_vplot_out(void)
 #else
 int init_vplot_out()
 #endif
@@ -1771,7 +1782,7 @@ return(0);
 
 
 #if defined(__STDC__) || defined(__stdc__)
-int finish_vplot_plot()
+int finish_vplot_plot(void)
 #else
 int finish_vplot_plot()
 #endif
@@ -1781,7 +1792,7 @@ return(0);
 }
 
 #if defined(__STDC__) || defined(__stdc__)
-int finish_byte_plot()
+int finish_byte_plot(void)
 #else
 int finish_byte_plot()
 #endif
@@ -1848,9 +1859,8 @@ void new_clip(char *tag,  int iblock, int nb1, int nb2, float bpclip,float epcli
   nc=0;
   while(iread < big){
     nblock=MIN((int)(big-iread),1000000);
-    int ierr=sreed("in",temp,4*nblock);
-    if(ierr!=4*nblock)
-      seperr("trouble reading in data block %d \n",ierr);
+    if(4*nblock!=sreed("in",temp,4*nblock))
+      seperr("trouble raeding in data block \n");
     for(i=ilast; i < nblock ; i+=ij,nc++) tempb[nc]=temp[i];
     ilast=i-nblock;
     iread+=nblock;

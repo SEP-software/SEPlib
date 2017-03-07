@@ -231,7 +231,10 @@ Bob Clapp 7/4/96 Changed fsize to ssize
 #include "glplot.h"
 ADD_DEF_SEP_DOC
 
+#include <stdlib.h>
 #include <sep.main>
+extern void set_output_data_format(const char *);
+
 struct datainfo_g data;
 struct coordinfo_g coordinate;
 struct plotposition_g position;
@@ -254,7 +257,7 @@ int             minusone, one, npreder, seemean, counts;
 int             it, *ip, it0, itmax, itile;
 double          ntile, zdata, zplot;
 float	        *p, *pdata;
-float           *px, *py;
+double          *px, *py;
 float           *ptile, *q, *qe;
 double          scale, value;
 int             overplot;
@@ -305,7 +308,7 @@ void plotint ();
 float franuni ();
 #endif
 
-MAIN ()
+int MAIN (void)
 {
    vp_filep_g(outstream); /* tell plotting routines where to stick it */
 
@@ -324,7 +327,7 @@ MAIN ()
   plotwiggle ();
     }
 
-  return(0);
+  return(EXIT_SUCCESS);
 }
 
 /* initial1 initializes and fetches n1, n2, n3 o1, d1
@@ -564,8 +567,8 @@ void memoryallocation ()
     position2 = (double *) calloc (data.n1[0], sizeof(position2[0]));
     p = (float *) calloc (data.n1[0], sizeof(p[0]));
     ip = (int *) (ptile + data.n2);
-    px = (float *) calloc (2 + data.n1[0], sizeof (px[0]));
-    py = (float *) calloc (2 + data.n1[0], sizeof (py[0]));
+    px = (double *) calloc (2 + data.n1[0], sizeof (px[0]));
+    py = (double *) calloc (2 + data.n1[0], sizeof (py[0]));
 }
 
 

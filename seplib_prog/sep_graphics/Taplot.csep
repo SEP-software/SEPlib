@@ -224,7 +224,14 @@ LAST REVISED: Nov. 26, 1981
 */
 /*#include <stdio.h>*/
 
+#ifndef f2cFortran
+#define f2cFortran
+#endif
+#include <cfortran.h>
 
+#define FCNVRTF(IP,QCLP,NP,NX,NT,DATA,BUF,TB1,BIAS,OUTFD,NH,NV,VINC,HINC,TEI,TGAIN,PBIAS,TPOW) \
+  CCALLSFSUB18(CNVRTF,cnvrtf,INT,FLOAT,INT,INT,INT,FLOATV,PVOID,PVOID,FLOAT,INT,INT,INT,INT,INT,INT,FLOATV,FLOAT,FLOAT, \
+IP,QCLP,NP,NX,NT,DATA,BUF,TB1,BIAS,OUTFD,NH,NV,VINC,HINC,TEI,TGAIN,PBIAS,TPOW)
 
 #define TSIZE 4096
 #define YES 1
@@ -236,8 +243,15 @@ static int  allpos;
 
 ADD_DEF_SEP_DOC
 
+
+extern int tbinit (float gpow,float tpow,float clp,char *tbl,float *tgain,float t0,int nt,int *hinc,int *vinc,int nh,float dt);
+extern int prntr (int nx,int nt,int np,float tpow,float pbias,float clp,float qclp,float gpow,float phalf,char gainpanel[10],int gainstep);
+extern int cnvrt(int ip,float qclp,int np,int nx,int nt,float *data,char *buf,char *tbl,float bias,int sfil,int nh,int nv,int vinc,int hinc,char *te, float *tgain,float pbias,float tpow);
+
+#include <stdlib.h>
+#include <sepaux.h>
 #include <sep.main>
-MAIN()
+int MAIN(void)
 {
     int n4=1,i4;
     int nt,nx,np=1,n3=1,it,ip,nh,nv,h0=0,hinc,vinc,garg,nbytes,gainstep=0,gainip=1;
@@ -453,16 +467,13 @@ MAIN()
 
 
 
-return(0);
+return(EXIT_SUCCESS);
 }
 
 /*  Function initializes the conversion table, the gain vector,
   and sets hinc and vinc.
 */
-tbinit (gpow,tpow,clp,tbl,tgain,t0,nt,hinc,vinc,nh,dt)
-register char *tbl;
-float gpow,tpow,clp,*tgain,t0,dt;
-int nt,*hinc,*vinc,nh;
+int tbinit (float gpow,float tpow,float clp,char *tbl,float *tgain,float t0,int nt,int *hinc,int *vinc,int nh,float dt)
 {
 int it;
 double t;
@@ -541,11 +552,7 @@ return(0);
    vectorizable fortran routine.  I am retaining it here in case someone needs
    it who doesn't have a vectorizing fortran compiler.  Chuck Sword 1/6/87.
  */
-int cnvrt(ip,qclp,np,nx,nt,data,buf,tbl,bias,sfil,nh,nv,vinc,hinc,te,
-tgain,pbias,tpow)
-int ip,np,nx,nt,nh,nv,sfil,vinc,hinc; 
-float qclp,*data,*tgain,pbias,tpow; /*register*/ float bias;
-char *te,*buf; register char *tbl;
+int cnvrt(int ip,float qclp,int np,int nx,int nt,float *data,char *buf,char *tbl,float bias,int sfil,int nh,int nv,int vinc,int hinc,char *te, float *tgain,float pbias,float tpow)
 {
 int ix,it; float *dp,*de; register float *sp,ierr;
 register char *bp,*tp; char *bs;
@@ -595,11 +602,7 @@ if (sfil)
   return(0);
 }
 
-int prntr (nx,nt,np,tpow,pbias,clp,qclp,gpow,phalf,gainpanel,gainstep)
-int nx,nt,np;
-float tpow,pbias,clp,qclp,gpow,phalf;
-int gainstep;
-char gainpanel[10];
+int prntr (int nx,int nt,int np,float tpow,float pbias,float clp,float qclp,float gpow,float phalf,char gainpanel[10],int gainstep)
 {
   float r; int i;
   struct dimensions {
@@ -612,7 +615,7 @@ char gainpanel[10];
 
   for(i=0; i<=3; i++) {
     dm[i].ni = 1; dm[i].oi = 0.; dm[i].di = 1.;
-    sprintf(dm[i].labeli,"");
+    dm[i].labeli[0] = '\0';
     }
     
   if(!fetch("n1","d",&i)) i = nt; dm[1].ni = i;

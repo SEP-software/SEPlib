@@ -108,6 +108,7 @@ WHERE
 
 ADD_DEF_SEP_DOC
 
+#include <stdlib.h>
 #include <sep.main>
 #include <vplot.h>
 #include <math.h>
@@ -142,7 +143,7 @@ void my_text();
 #endif
 
 
-MAIN ()
+int MAIN (void)
 {
  vp_filep(outstream); /* tell plotting routines where to stick it */
 
@@ -255,7 +256,7 @@ if( !EMPTY( title)) {
       vp_tjust(TH_NORMAL,TV_NORMAL);
   }
 vp_endplot ();
-return(0);
+return(EXIT_SUCCESS);
 }
 
 

@@ -114,7 +114,7 @@ void update ();
 int maximum_n1();
 #endif
 
-MAIN ()
+int MAIN (void)
 {
     int ii, jj, kk;
     int *nd, esize, ntemp;
@@ -245,7 +245,7 @@ MAIN ()
     free(data);
     free(hist);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*---------------------------------------------------------------------------*/
