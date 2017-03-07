@@ -30,6 +30,7 @@
  *	the vplot filter subroutine for error messages that takes special
  *	care not to try to print messages in the middle of plotting.
  */
+#include <sepConfig.h>
 #include <stdio.h>
 #include "../include/err.h"
 #include "../include/extern.h"
