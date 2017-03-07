@@ -109,9 +109,13 @@
  *  Bob Clapp 10-98  Switched to POSIX (ala Sloaris) for LINUX signals
  */
 
-#include<sepConfig.h>
+#include <sepConfig.h>
+#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
+#endif
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #include <stdio.h>
 
 #ifdef SEP
@@ -143,13 +147,20 @@ extern char     sepheadwhere[];
 #include	<sgtty.h>
 #else
 #include	<sys/ioctl.h>
-#include	<sgtty.h>
 #endif
 #endif /* USG */
+#ifdef HAVE_SYS_TYPES_H
 #include	<sys/types.h>
+#endif
+#ifdef HAVE_SYS_STAT_H
 #include	<sys/stat.h>
+#endif
+#ifdef HAVE_CTYPE_H
 #include	<ctype.h>
+#endif
+#ifdef HAVE_SIGNAL_H
 #include	<signal.h>
+#endif
 
 #include	"../include/vplot.h"
 
@@ -167,6 +178,64 @@ extern char     sepheadwhere[];
 #include	"./include/extern.h"
 
 
+#if defined(HAVE_TERMIO_H)
+#else /* USG */
+/*
+ * signal catching
+ */
+#if defined(MACOS)
+void            cleanup (int);
+#else
+#if defined(SIGFNC_RTN_VOID)
+void            cleanup (void);
+#else
+int             cleanup (void);
+#endif
+#endif
+int             signum[] =
+{
+#if defined(LINUX) || defined(MACOS)
+ SIGHUP, SIGINT, SIGQUIT, SIGIOT, SIGBUS, SIGPIPE, SIGTERM, SIGXCPU, SIGXFSZ
+#else
+ SIGHUP, SIGINT, SIGQUIT, SIGIOT, SIGEMT, SIGPIPE, SIGTERM, SIGXCPU, SIGXFSZ
+#endif
+};
+#define NOSIG (sizeof (signum)/sizeof (int))	/* number of signals caught */
+#if defined(SOLARIS ) || defined(LINUX) || defined(MACOS)
+struct sigaction   errhandler =
+{
+#if defined(LINUX) || defined(MACOS)
+#if defined(LINUX)
+ cleanup, 0, 0
+#else
+ (union __sigaction_u) cleanup, 0, 0
+#endif
+#else
+ 0, cleanup, 0
+#endif
+};
+struct sigaction   ignored =
+{
+#if defined(LINUX) || defined(MACOS)
+ SIG_IGN, 0, 0
+#else
+ 0, SIG_IGN, 0
+#endif
+};
+struct sigaction   oldvec;
+#else /*SOLARIS*/
+int             sigvec ();
+struct sigvec   errhandler =
+{
+ cleanup, 0, 0
+};
+struct sigvec   ignored =
+{
+ SIG_IGN, 0, 0
+};
+struct sigvec   oldvec;
+#endif /*SOLARIS*/
+#endif /* USG */
 
 /* the name of the temporary file */
 static char *tspoolnam=(char*)NULL;
@@ -191,7 +260,7 @@ MAIN ()
 int             sepxargc;
 char          **sepxargv;	/* for getpar */
 
-void MAIN_(void){} /* dummy for shared linkage */
+int MAIN_(void){ return (EXIT_SUCCESS); } /* dummy for shared linkage */
 int main (int argc, char *argv[])
 #endif /* SEP */
 {
@@ -304,6 +373,44 @@ MIXED		vartemp;
 
     nulldev ();			/* Just to make sure it gets loaded */
 
+#if defined(HAVE_TERMIO_H)
+
+#else /* USG */
+    /*
+     * This getpar for signal is only included for debugging purposes. By
+     * using a signal option, one can stop any signals from being caught. 
+     */
+    vartemp.s = &(string[0]);
+    if (getpar ("signal", "s", vartemp) == 0)
+    {
+/*#ifdef SOLARIS*/
+#if defined(SOLARIS) || defined(LINUX) || defined(MACOS)
+        sigfillset(&(errhandler.sa_mask));
+#endif
+	for (ii = 0; ii < NOSIG; ++ii)
+	{
+#if defined(SOLARIS) || defined(LINUX) || defined(MACOS)
+	    if (-1 == sigaction (signum[ii], &ignored, &oldvec))
+	    {
+		ERR (FATAL, name, "Bad sigvec call!");
+	    }
+	    if (oldvec.sa_handler == ignored.sa_handler)
+		(void) sigaction (signum[ii], &oldvec, (struct sigaction *) NULL);
+	    else
+		(void) sigaction (signum[ii], &errhandler, (struct sigaction *) NULL);
+#else
+	    if (-1 == sigvec (signum[ii], &ignored, &oldvec))
+	    {
+		ERR (FATAL, name, "Bad sigvec call!");
+	    }
+	    if (oldvec.sv_handler == ignored.sv_handler)
+		(void) sigvec (signum[ii], &oldvec, (struct sigvec *) NULL);
+	    else
+		(void) sigvec (signum[ii], &errhandler, (struct sigvec *) NULL);
+#endif
+	}
+    }
+#endif /* USG */
 
 /*
  ****************************************************************************
@@ -542,6 +649,52 @@ MIXED		vartemp;
     return 0;
 }
 
+#if defined(HAVE_TERMIO_H)
+#else /* USG */
+#ifdef MACOS
+/*ARGSUSED*/
+void cleanup (int signum)
+#else
+#ifdef SIGFNC_RTN_VOID
+void cleanup (void)
+#else
+int cleanup (void)
+#endif
+#endif
+{
+#ifndef SOLARIS
+#if defined(LINUX) || defined(MACOS)
+#else
+    sigblock (~(SIGKILL | SIGSTOP | SIGCONT));
+#endif
+#endif
+    char            dummystr[] = " "; 
+    dev.close (CLOSE_INTERRUPT);
+    message (MESG_ON,dummystr);
+    ERR (COMMENT, name, "Interrupted out.");
+    dev.close (CLOSE_DONE);
+    /*  delete the temporary copy of piped input if there is one*/
+    removtemp();
+    /*
+     * Let them see what they are doing again 
+     */
+    if (!allowecho)
+    {
+/*#ifdef SOLARIS*/
+#if defined(SOLARIS) || defined(LINUX)
+	ioctl (pltoutfd, TCSETAW, (char *) (&tty_clean_state));
+#else
+	ioctl (pltoutfd, TIOCLSET, (char *) (&tty_clean_local_mode));
+	ioctl (pltoutfd, TIOCSETN, (char *) (&tty_clean_state));
+#endif
+    }
+    exit (0);
+#if !defined(SIGFNC_RTN_VOID) && !defined(MACOS)
+/*NOTREACHED*/
+    return 0;
+#endif
+}
+#endif /* USG */
 
 /* routine to copy a file to a temporary file, used to copy stdin so that
  * it can be reread as required
@@ -580,7 +733,10 @@ FILE* tempcopy( FILE *infile, char *filename )
         strcpy( tspoolnm, PEN_SPOOL );
     }
     tspoolnm = strcat( tspoolnm, "/vplotXXXXXX" );
-    (void) mkstemp( tspoolnm );
+    if(-1 == mkstemp( tspoolnm ))
+    {
+	ERR (WARN, name, "mkstemp() for temporary vplot file");
+    }
 
     if ( (temp = fopen(tspoolnm, "w")) == NULL) {
 	ERR (WARN, name, "unable to create temporary file");
