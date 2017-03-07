@@ -106,9 +106,10 @@ _XFUNCPROTOEND
 #endif
 
 ADD_DEF_SEP_DOC
+#include <stdlib.h>
 #include <sep.main> 
-MAIN()
-{ 
+int MAIN(void)
+{
 int maxs_ize,synch,edit,n_keys;
 int nkeys,ndim,nlimits,i;
 int *int_header,*int_min,*int_max,*key_num,*key_type,*drn_in,*drn_out;
@@ -291,7 +292,7 @@ hclose();
 
 
 sep_end_prog();
-return(SUCCESS);
+return(EXIT_SUCCESS);
 }
 
 int init_basics(sep3d *in, sep3d *out, int *synch, int *nkeys,

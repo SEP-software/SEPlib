@@ -126,8 +126,9 @@ double *headers;
 int num_keys;
 int reciprocity_x;
 ADD_DEF_SEP_DOC
+#include <stdlib.h>
 #include<sep.main>
-MAIN()
+int MAIN(void)
 {
  int output_num_keys,logic,ierr,i1,i2,type[MAX_KEYS],*key_type,*tempia;
  int *key_out_index,*eqn_pointer,n2,ndim;
@@ -437,7 +438,7 @@ ncc+=1;
 free (equation); free(headers); free(fheaders);
 free(head_out);
 sep_end_prog();
-return 0;
+return EXIT_SUCCESS;
 }
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN

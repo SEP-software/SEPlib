@@ -75,9 +75,10 @@ Purpose:
 #define NO_HEAD 0
 ADD_DEF_SEP_DOC
 
+#include <stdlib.h>
 #include <sep.main> 
-MAIN() 
-{ 
+int MAIN(void) 
+{
 
   int *n,i,ndim;
 	float *d,*o;
@@ -200,7 +201,7 @@ fprintf(stderr,"nhead=%d, ntr=%d\n",nhead,ntr);
  
  
  
-return(0);
+return(EXIT_SUCCESS);
  } 
 
 

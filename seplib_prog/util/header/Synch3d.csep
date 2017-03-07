@@ -54,9 +54,9 @@ Purpose:
 ADD_DEF_SEP_DOC
 #include <sep.main> 
 #include<sep3d.h>
-
-MAIN()
-{ 
+#include<stdlib.h>
+int MAIN(void)
+{
 
   int n1,nkey,n2,read,npass,i1,i2,maxsize,ndim,drn,n,esize;
 	int max_block,this_block,verb,mem; 
@@ -139,6 +139,6 @@ MAIN()
 			seperr("trouble reordering dataset \n");
 		read+=this_block;
 	}
-	return(0);
+	return(EXIT_SUCCESS);
  
  } 
