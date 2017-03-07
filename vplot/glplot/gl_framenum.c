@@ -24,7 +24,7 @@ int gl_framenum ## SUF (n3_loop, d3, o3, xmin, ymin, labelsz) \
 { \
  \
 FTYP           ch, vs, x, y, xpath, ypath, xup, yup, temp; \
-float          xc, yc; \
+FTYP          xc, yc; \
 char            string[80]; \
 int fat; \
  \

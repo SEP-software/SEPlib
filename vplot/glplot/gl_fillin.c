@@ -17,7 +17,7 @@ int gl_fillin ## SUF (coordinate, color) \
 #endif
 #define A2(FTYP,FMT,SUF) \
 { \
-float           xp[4], yp[4]; \
+FTYP           xp[4], yp[4]; \
 int             lp, fat, xmask, ymask; \
     vp_coltab ## SUF  (8, color->fillcol[0], color->fillcol[1], color->fillcol[2]); \
     vp_color ## SUF  (8); \

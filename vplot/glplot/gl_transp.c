@@ -1,16 +1,16 @@
 #include "glplot.h"
 #ifdef USE_PROTO
 #define A1(FTYP,SUF) \
-int gl_transp ## SUF (float *x, float* y, struct datainfo ## SUF *data)
+int gl_transp ## SUF (FTYP *x, FTYP* y, struct datainfo ## SUF *data)
 #else
 #define A1(FTYP,SUF) \
 int gl_transp ## SUF (x, y, data) \
-    float          *x, *y; \
+    FTYP          *x, *y; \
     struct datainfo ## SUF *data;
 #endif
 #define A2(FTYP,FMT,SUF) \
 { \
-float          *xyexch; \
+FTYP          *xyexch; \
 int             i, tempalloc, tempval; \
  \
     tempalloc = 0; \
@@ -18,7 +18,7 @@ int             i, tempalloc, tempval; \
     { \
 	tempalloc = tempalloc + data->n1[i]; \
     } \
-    xyexch = (float *) calloc ((data->esize / 2) * (tempalloc), sizeof (float)); \
+    xyexch = (FTYP *) calloc ((data->esize / 2) * (tempalloc), sizeof (FTYP)); \
 	tempval = 0; \
     for (i = 0; i < data->n2; i++) \
     { \

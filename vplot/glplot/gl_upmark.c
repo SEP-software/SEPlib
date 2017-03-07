@@ -1,12 +1,12 @@
 #include "glplot.h"
 #ifdef USE_PROTO
 #define A1(FTYP,SUF) \
-int gl_upmark ## SUF (int npts, int mtype, int msize, float *xp,  float *yp)
+int gl_upmark ## SUF (int npts, int mtype, int msize, FTYP *xp,  FTYP *yp)
 #else
 #define A1(FTYP,SUF) \
 int gl_upmark ## SUF (npts, mtype, msize,xp, yp) \
 int npts, mtype, msize; \
- float *xp, *yp;
+ FTYP *xp, *yp;
 #endif
 #define A2(FTYP,FMT,SUF) \
 { \
