@@ -41,7 +41,7 @@ real, pointer    :: dz(:),omega(:)
 real, allocatable:: slow(:,:,:)
 logical          :: adj
 integer          :: i,i1,ido,i2,ndone,fdone,nslows
-integer, external :: auxin
+! integer, external :: fauxin
 
 path_z_begin=.true.
 call grab_current_wave_space_pad(wsep)
@@ -63,7 +63,7 @@ end if
 !FIRST CALL WITHIN MIGRATION
   allocate(dzstep(wsep%n(5)))
   dzstep=wsep%d(5)
-  if(-1/=auxin("dzstep")) then
+  if(-1/=auxinf("dzstep")) then
     call init_sep3d("dzstep",dz_sep,"INPUT")
     if(dz_sep%n(1)/=wsep%n(5))&
       call seperr("expecting dzstep to be the same as az__n")
