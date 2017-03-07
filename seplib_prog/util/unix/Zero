@@ -36,5 +36,5 @@ fi
 
 
 for f in $* ; do
-	   cat /dev/null > ${f}
+	   cat /dev/null > 
 done
