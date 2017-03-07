@@ -52,7 +52,7 @@ TARGET_LINK_LIBRARIES(Hypmovie  sepvelan sepfilter sep3d sep)
 TARGET_LINK_LIBRARIES(MCvfit  sepvelan sepaux sep3d sep)
 TARGET_LINK_LIBRARIES(Stretch  sepvelan sepaux sep3d sep)
 TARGET_LINK_LIBRARIES(Velan3d  sepvelan   sepgeef90 sepaux sepmath superset  sep3d sep)
-TARGET_LINK_LIBRARIES(Vslan  sepvelan sepfft sepmath sepaux sep3d sep)
+TARGET_LINK_LIBRARIES(Vslan  sepvelan sepfft sepmath sepaux sep3d sep ${FFTW_LIBRARIES})
 
 install(PROGRAMS  Unmo Radnmo Radial NMO LMO ${progs} DESTINATION bin)
 
