@@ -11,8 +11,7 @@
  *
  */
 
-#include <sitedef.h>
-#include <stdlib.h>
+#include <sepConfig.h>
 #include <stdio.h>
 #include <prototypes.h>
 

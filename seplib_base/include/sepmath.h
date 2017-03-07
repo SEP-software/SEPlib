@@ -21,10 +21,9 @@ static double snftEkd=3.14159265358979323846264338327950288419716939937510;
 
 
 /*typedef struct { float re, im;} complex; */
-#ifndef complex
-#define SEP_COMPLEX
+#ifndef OLDcomplex
 typedef struct { float re, im;} d0u1m2m3y4cmplx;
-#define complex d0u1m2m3y4cmplx
+#define OLDcomplex d0u1m2m3y4cmplx
 #endif
 
 /* !__cplusplus */

@@ -15,9 +15,9 @@ static double snftEkd=3.14159265358979323846264338327950288419716939937510;
 #endif
 
 #ifndef __cplusplus  /* C++ has its own complex arithmetic class */
-#ifndef complex
+#ifndef OLDcomplex
 typedef struct { float re, im;} d0u1m2m3y4cmplx;
-#define complex d0u1m2m3y4cmplx
+#define OLDcomplex d0u1m2m3y4cmplx
 #endif
 #endif
 
@@ -46,13 +46,13 @@ extern int npfao (int , int );
 */
 extern int npfar (int );
 extern int npfaro (int , int );
-extern void pfacc(int , int, complex*);
-extern void pfacr (int, int, complex*,float*);
+extern void pfacc(int , int, OLDcomplex*);
+extern void pfacr (int, int, OLDcomplex*,float*);
 extern void pfarc (int, int, float*, float*);
-extern void pfamcc (int, int, int, int, int kt, complex*);
-extern void pfa2cc (int, int, int, int, complex*);
-extern void pfa2cr (int, int, int, int, complex*, float*);
-extern void pfa2rc (int, int, int, int, float*, complex*);
+extern void pfamcc (int, int, int, int, int kt, OLDcomplex*);
+extern void pfa2cc (int, int, int, int, OLDcomplex*);
+extern void pfa2cr (int, int, int, int, OLDcomplex*, float*);
+extern void pfa2rc (int, int, int, int, float*, OLDcomplex*);
 _XFUNCPROTOEND
 #else
 extern int npfa ();
@@ -771,10 +771,10 @@ double *alloc1double (size_t n1);
 double *realloc1double (double *v, size_t n1);
 double **alloc2double (size_t n1, size_t n2);
 double ***alloc3double (size_t n1, size_t n2, size_t n3);
-complex *alloc1complex (size_t n1);
-complex *realloc1complex (complex *v, size_t n1);
-complex **alloc2complex (size_t n1, size_t n2);
-complex ***alloc3complex (size_t n1, size_t n2, size_t n3);
+OLDcomplex *alloc1complex (size_t n1);
+OLDcomplex *realloc1complex (OLDcomplex *v, size_t n1);
+OLDcomplex **alloc2complex (size_t n1, size_t n2);
+OLDcomplex ***alloc3complex (size_t n1, size_t n2, size_t n3);
 
 dcomplex *alloc1dcomplex (size_t n1);
 dcomplex *realloc1dcomplex (dcomplex *v, size_t n1);
@@ -791,9 +791,9 @@ void free3float (float ***p);
 void free1double (double *p);
 void free2double (double **p);
 void free3double (double ***p);
-void free1complex (complex *p);
-void free2complex (complex **p);
-void free3complex (complex ***p);
+void free1complex (OLDcomplex *p);
+void free2complex (OLDcomplex **p);
+void free3complex (OLDcomplex ***p);
 
 void free1dcomplex (dcomplex *p);
 void free2dcomplex (dcomplex **p);
@@ -835,10 +835,10 @@ double *ealloc1double(size_t n1);
 double *erealloc1double(double *v, size_t n1);
 double **ealloc2double(size_t n1, size_t n2);
 double ***ealloc3double(size_t n1, size_t n2, size_t n3);
-complex *ealloc1complex(size_t n1);
-complex *erealloc1complex(complex *v, size_t n1);
-complex **ealloc2complex(size_t n1, size_t n2);
-complex ***ealloc3complex(size_t n1, size_t n2, size_t n3);
+OLDcomplex *ealloc1complex(size_t n1);
+OLDcomplex *erealloc1complex(OLDcomplex *v, size_t n1);
+OLDcomplex **ealloc2complex(size_t n1, size_t n2);
+OLDcomplex ***ealloc3complex(size_t n1, size_t n2, size_t n3);
 void intcub (int ideriv, int nin, float xin[], float ydin[][4],
   int nout, float xout[], float yout[]);
 void cakima (int n, float x[], float y[], float yd[][4]);

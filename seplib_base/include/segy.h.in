@@ -1,8 +1,8 @@
-#include<sitedef.h>
+#include<sepConfig.h>
 #ifndef SU_SEP2
 #define SU_SEP2 ads
 
-#include "@SUINCLUDES@/segy.h"
+#include "@SU_INCLUDES@/segy.h"
 
 #undef gettr
 #undef gettra
