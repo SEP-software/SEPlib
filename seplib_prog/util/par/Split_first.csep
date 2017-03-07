@@ -13,6 +13,7 @@
 #include<seplib.h>
 #include<sep3dc.h>
 #include<sepaux.h>
+#include<sep_par.h>
 #include<superset.h>
 #ifndef SEPNULL2
 #define SEPNULL2 ((void *) 0)

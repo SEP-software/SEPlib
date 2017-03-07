@@ -25,12 +25,15 @@
  
 =item pattern - char*
  
+=back
+
 =cut
 */
 #include <string.h>
 #include<seplib.h>
 #include<sep3dc.h>
 #include<sepaux.h>
+#include<sep_par.h>
 #include<superset.h>
 #ifndef SEPNULL2
 #define SEPNULL2 ((void *) 0)
@@ -42,6 +45,8 @@
 int broadcast_data_old(float *data, int n1, int n2);
 int broadcast_data(int impi,int nmpi,float *data, int n1, int n2);
 void init_mpi_seplib(int argc, char **argv);
+extern int sep_thread_num(void);
+extern int sep_num_thread(void);
 
 int main(int argc, char **argv){
   char *name;

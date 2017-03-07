@@ -9,15 +9,19 @@
 =cut
 */
 
-#include<string.h>
-#include<seplib.h>
-#include<sep3dc.h>
-#include<sepaux.h>
-#include<superset.h>
+#include <sepConfig.h>
+#if HAVE_STRING_H
+#include <string.h>
+#endif
+#include <seplib.h>
+#include <sep3dc.h>
+#include <sepaux.h>
+#include <superset.h>
+#include <sep_par.h>
 #ifndef SEPNULL2
 #define SEPNULL2 ((void *) 0)
 #endif
-#include<mpi.h>
+#include <mpi.h>
 
 
 struct _distrib{
