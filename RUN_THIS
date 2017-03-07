@@ -3,7 +3,7 @@ export CMAKE_C_COMPILER=icc
 export CWP_ROOT=/opt/SU
 export CC=icc
 export FC=ifort
-export CMAKE_PREFIX_PATH="/opt/FFTW:/opt/SU"
+export CMAKE_PREFIX_PATH="/opt/FFTW:/opt/SU:${CWPROOT}"
 export CMAKE_INSTALL_PREFIX=/opt/SEP/SEP8.1
 cmake -DCMAKE_INSTALL_PREFIX=/opt/SEP/SEP8.1   .. 
 make

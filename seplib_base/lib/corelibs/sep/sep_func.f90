@@ -7,7 +7,12 @@ implicit none
  
 interface 
 
-  subroutine seperr(string) bind(c,name="seperr")
+    subroutine sepwarn(err,string) bind(c,name="sepwarn")
+    import
+    integer(c_int), intent(in) :: err
+    character(C_CHAR), dimension(*),intent(in) :: string
+  end subroutine
+    subroutine fseperr(string) bind(c,name="seperr")
     import
     character(C_CHAR), dimension(*),intent(in) :: string
   end subroutine
@@ -33,6 +38,16 @@ end function
 end interface
 
 contains
+  subroutine erexit(string) 
+    character(len=*) :: string
+    call seperr(string//C_NULL_CHAR)
+  end subroutine
+
+  subroutine seperr(string) 
+    character(len=*) :: string
+    call fseperr(string//C_NULL_CHAR)
+    call exit(-1);
+  end subroutine
 
 subroutine c2forstr(str)
  character(len=*) :: str
