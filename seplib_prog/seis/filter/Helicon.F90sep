@@ -73,15 +73,16 @@ program Helico
 	integer, dimension (:), allocatable :: n, m,n_a,imid,ismall,ibig,ii
 	type(filter)                        :: aa
 
+        call SEP_ADD_DOC()
 	call sep_init ()
-              call SEP_ADD_DOC()
+        call sep_begin_prog()
 	dim = sep_dimension()
 	allocate (n (dim), m (dim))
 	call from_history (n)
-	call from_aux ("filt",na)
+	call from_aux ("filt","na",na)
 	call allocatehelix (aa, na)
 
-	! get paramters
+	! get parameters
 	call from_aux ("filt", "a0", a0, 1.)
 	call from_aux ("filt", "lag", aa%lag, (/ (ia, ia = 1, na) /))
 	call from_param("regrid",myregrid,.true.)
@@ -98,7 +99,7 @@ program Helico
 	! get flags
 	call from_par ("adj",adj,.false.)
 	call from_par ("div",div,.false.)
-	call sep_close ()
+	call hclose ()
 
 	! allocate space for data
 	nx = product (n)
@@ -111,7 +112,7 @@ program Helico
 		call sep_read (pp)
 	end if
 
-	! cehck and allocate space for bounds, convert data to cartesian from helix
+	! check and allocate space for bounds, convert data to cartesian from helix
 	if(mybound) then
 		allocate (n_a (dim), imid (dim),ismall(dim),ibig(dim),ii(dim))
 		ibig=0; ismall=0
@@ -151,6 +152,6 @@ program Helico
 	! clean up 
 	deallocate (n, m, pp, qq)
 	call deallocatehelix (aa)
-	call exit (0)
+	call sep_end_prog()
 
 end program Helico

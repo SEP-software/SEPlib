@@ -99,16 +99,16 @@ B<seis/filter>
 #include <seplib.h>
 #include <sepmath.h>
 #include <sepfft.h>
+#ifdef HAVE_STRING_H
 #include <string.h>
+#endif
 #include<complex.h>
 #define AMPLITUDE 1
 #define POWER     2
 #define DB        3
 #define DBNORM    4
 
-int main (argc, argv, envp) 
-     int argc;
-     char  **argv, **envp;
+int main (int argc, char **argv, char **envp) 
 {
 	int j1,j2,j3, n1,n2,n3, esize;
 	int n1pad,n1out,n2out,n3out,eout;

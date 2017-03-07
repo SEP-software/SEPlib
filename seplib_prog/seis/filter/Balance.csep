@@ -71,8 +71,9 @@ Revised: Morgan Brown (23Jan2003) - Removed switch statements (converted
 ADD_DEF_SEP_DOC
 
 #include <sep.main>
+#include <stdlib.h>
 #include <stdio.h>
-MAIN()
+int MAIN(void)
 {
 	int i1, n1, n1out;
 	int i2, n2, n2out;

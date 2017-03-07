@@ -27,12 +27,16 @@
 !!$
 !!$=item  esize     - integer   [8]
 !!$
+!!$=back
+!!$
 !!$=head1 EXAMPLES
 !!$		Cfft < in.h sign=1 esize=8 > fft.h
 !!$ 		Compute complex forward fft of input dataset in.H
 !!$
 !!$		Cfft < fft.h sign=-1 esize=8 > out.h
 !!$ 		Compute complex inverse fft of input dataset fft.H
+!!$
+!!$=over 4
 !!$
 !!$=back
 !!$

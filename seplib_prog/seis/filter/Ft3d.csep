@@ -100,7 +100,7 @@ Modified  10/9/86  stew    added putch's for fft parameters.
  */
 
 
-#include <sepmathf.h>
+/*#include <sepmathf.h>*/
 
 /*
    sets up infd, outfd, instream, outstream, doc (SOURCE), pi, and 
@@ -123,9 +123,10 @@ int fft_it();
 
 float complex  *data;
 ADD_DEF_SEP_DOC
+#include <stdlib.h>
 #include <sep.main>
 
-MAIN()
+int MAIN(void)
 {
 	int n1=0, n2=0, n3=0, esize,nbyte,i,num;
 	float sign1=0.,sign2=0.,sign3=0., center1=0.,center2=0.,center3=0.;
@@ -375,7 +376,7 @@ MAIN()
 			seperr("trouble writing out data \n");
 	}
         sep_end_prog();
-	return(0);
+	return(EXIT_SUCCESS);
 }
 	
 #if NeedFunctionPrototypes

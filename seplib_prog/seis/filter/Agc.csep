@@ -89,8 +89,9 @@ static int window=200, dwind=10, detect=0;
 float thresh=25.;
 
 ADD_DEF_SEP_DOC
+#include <stdlib.h>
 #include <sep.main>
-MAIN()
+int MAIN(void)
 {
 	int ix, nt, nx, n3, esize;
         int normpow;

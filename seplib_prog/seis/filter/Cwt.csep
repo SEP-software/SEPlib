@@ -57,14 +57,14 @@ Cwt  - Complex continuous wavelet transform of seismic traces
           2- use linear freq sampling
           
 
-=back 4 
+=back
 
 =head1 EXAMPLES
           
   This generates amplitude spec of the CWT impulse response (IR).
      Spike k1=1 n1=125 | Cwt |Grey|Tube
  Real part of Fourier IR with linear freq sampling 
-     Spike k1=1 n1=125 | Cwt  k=2 fs=2 out_type=3 |Grey|Tube,
+     Spike k1=1 n1=125 | Cwt  k=2 fs=2 out_type=3 |Grey|Tube
 
 =head1 Notes
 
@@ -130,8 +130,11 @@ void cconv (int lx, int ifx, float complex *x,
 	    int ly, int ify, float complex *y,
 	    int lz, int ifz, float complex *z);
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <sep3d.h>
+
 int main(int argc, char **argv)
 {
         int icdp;		/* output (t,f) spectrum counter */
@@ -217,7 +220,7 @@ int main(int argc, char **argv)
         if (!getch ("k","d", &k)) k = 1;
 		if (k != 1 && k != 2) {
 			k = 1;
-			sepwarn("Bad kernal wavelet choice ... use Morlet");
+			sepwarn(1,"Bad kernel wavelet choice ... use Morlet");
 		}
 
 		/* allocate arrays */
@@ -234,7 +237,7 @@ int main(int argc, char **argv)
 		if (fs == 2) {
 			tmax = (1-nt)*dt;
 			df = 1/(2.0*tmax);
-			sepwarn("df = %g",df);
+			sepwarn(2,"df = %g",df);
 			for (ia=na-1; ia>=0; ia--) {
 				a[ia] = fmax/(fmax + (ia)*df);
 			}
@@ -255,8 +258,8 @@ int main(int argc, char **argv)
 		}
         
         /* echo extra info if verbose is requested */
-		if (verbose==1) sepwarn("fmax = %g, fmin = %g\n", fmax, fmax/a[na-1]);
-		if (verbose==1) sepwarn("scale_index / scale_value / frequency");
+		if (verbose==1) sepwarn(3,"fmax = %g, fmin = %g\n", fmax, fmax/a[na-1]);
+		if (verbose==1) sepwarn(4,"scale_index / scale_value / frequency");
 		if (verbose==1) {
 			for (ia=0; ia<na; ia++) {
 
@@ -346,7 +349,7 @@ int main(int argc, char **argv)
 	} 
         
 	putch("esize","d",&esize);
- return 0;
+ return EXIT_SUCCESS;
 }
 
 

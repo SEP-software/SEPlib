@@ -82,6 +82,7 @@ October 1986 corrected calculation of n1new -Paul Fowler
 /* Keywords : energy power semblance velocity-analysis contour
  */
 #include<sepfilter.h>
+#include<stdlib.h>
 ADD_DEF_SEP_DOC
 #include <sep.main>
 /*
@@ -91,8 +92,9 @@ ADD_DEF_SEP_DOC
  * #include <seplib.h>
  */
 
+extern int getparameters(int *pn1, int *pn2, int *pn3, float *pd1, float *po1, int *plwind, int *pj1, int *pn1new, int *pnorm, int *pave);
 
-MAIN()
+int MAIN(void)
 {
 	int ave;         /* flag for normalizing by window length */
 	int j1;          /* fast axis subsampling factor	*/
@@ -123,7 +125,7 @@ MAIN()
 		seperr("trouble calling energy \n");
 
         sep_end_prog();
-	return(0);
+	return(EXIT_SUCCESS);
 }
 
 /**********************************************************************
@@ -134,18 +136,19 @@ MAIN()
 *  Energy                                                             *
 *  Note that all arguments are passed as pointers.                    *
 **********************************************************************/
-getparameters(pn1, pn2, pn3, pd1, po1, plwind, pj1, pn1new, pnorm, pave)
+int
+getparameters(int *pn1, int *pn2, int *pn3, float *pd1, float *po1, int *plwind, int *pj1, int *pn1new, int *pnorm, int *pave)
 
-int *pave;      /* flag for normalizing by window length */
-int *pnorm;     /* flag for normalizing range of values	*/
-int *pn1;       /* number of fast axis points */
-int *pn2;       /* number of intermediate axis points */
-int *pn3;       /* number of slow axis points */
-int *pn1new;    /* number of output fast axis points */
-float *pd1;     /* fast axis sampling interval */
-float *po1;     /* fast axis origin	*/
-int *plwind;    /* length of smoothing window */
-int *pj1;       /* subsampling factor */
+/*int *pave; */     /* flag for normalizing by window length */
+/*int *pnorm; */    /* flag for normalizing range of values	*/
+/*int *pn1; */      /* number of fast axis points */
+/*int *pn2;  */     /* number of intermediate axis points */
+/*int *pn3; */      /* number of slow axis points */
+/*int *pn1new; */   /* number of output fast axis points */
+/*float *pd1; */    /* fast axis sampling interval */
+/*float *po1;  */   /* fast axis origin	*/
+/*int *plwind;*/    /* length of smoothing window */
+/*int *pj1; */      /* subsampling factor */
 
 {
 	int hlwind;          /* half length of window */

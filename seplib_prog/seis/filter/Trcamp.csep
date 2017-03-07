@@ -58,10 +58,13 @@ B<seis/filter>
 */	 
 
 ADD_DEF_SEP_DOC
-#include <sep.main> 
 
-MAIN()
-{ 
+#include <sep3d.h>
+#include <sep.main> 
+#include <stdlib.h>
+
+int MAIN(void)
+{
 	int n1,it1,it2,itm,idhd,i,esize,n3,n2;
 	int nbig,isum,itape,one=1;
 	float eps,t1,t2,o1,o2,o3,sum;
@@ -136,5 +139,5 @@ MAIN()
 			seperr("trouble writing output \n");
 	} 
        sep_end_prog();
-	return(0);
+	return(EXIT_SUCCESS);
 }

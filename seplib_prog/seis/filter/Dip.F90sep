@@ -106,6 +106,7 @@
 ! Author - Robert Clapp
 program dip_prog 
   use sep
+  use sep_3d_mod
   use sep3d_struct_mod
   use find_xz_dip_mod
   implicit none
@@ -114,6 +115,7 @@ program dip_prog
   type(sep3d) :: data
   character(len=20) :: method
   integer :: nwind(3),niter,nl_iter,ierr,n3,i3
+  integer :: istat
   real :: eps,eps2,icycle
   integer :: maxsize
   logical :: verb,verb2,v3d,coher
@@ -170,12 +172,12 @@ program dip_prog
       if (ierr.ne.0) then
         call seperr("trouble allocating data")
       end if
-      call sreed("in",dat,size(dat)*4)
+      istat= sreed("in",dat,size(dat)*4)
       if (.not. find_sergey_fast(n,dat,nl_iter,eps,eps2,dip,verb))&
         & then
         call seperr("trouble finding Sergey dip using fast method")
       end if
-      call srite("out",dip,size(dip)*4)
+      istat= srite("out",dip,size(dip)*4)
     else if (method(1:8) .eq. "sergey_s") then
       call from_param("eps",eps,.04)
       call from_param("niter",niter,20)
@@ -190,12 +192,12 @@ program dip_prog
       if (ierr.ne.0) then
         call seperr("trouble allocating data")
       end if
-      call sreed("in",dat,size(dat)*4)
+      istat= sreed("in",dat,size(dat)*4)
       if (.not. find_sergey_slow(n,dat,niter,nl_iter,eps,dip,verb))&
         & then
         call seperr("trouble finding Sergey dip using slow method")
       end if
-      call srite("out",dip,size(dip)*4)
+      istat= srite("out",dip,size(dip)*4)
     else if (method(1:6) .eq. "puck_f") then
       nwind(1)=min(n(1),5)
       nwind(2)=min(n(2),5)
@@ -212,12 +214,12 @@ program dip_prog
       if (ierr.ne.0) then
         call seperr("trouble allocating data")
       end if
-      call sreed("in",dat3,size(dat3)*4)
+      istat= sreed("in",dat3,size(dat3)*4)
       if (.not. find_puck_dip_fast(dat3,nwind,dip3,coh)) then
         call seperr("trouble finding Puch dip using fast method")
       end if
-      call srite("out",dip3,size(dip3)*4)
-      if(coher) call srite('coher',coh,size(coh)*4)
+      istat= srite("out",dip3,size(dip3)*4)
+      if(coher) istat= srite('coher',coh,size(coh)*4)
     else if (method(1:6) .eq. "puck_s") then
       nwind(1)=min(n(1),5)
       nwind(2)=min(n(2),5)
@@ -234,12 +236,12 @@ program dip_prog
       if (ierr.ne.0) then
         call seperr("trouble allocating data")
       end if
-      call sreed("in",dat3,size(dat3)*4)
+      istat= sreed("in",dat3,size(dat3)*4)
       if (.not. find_puck_dip_slow(dat3,nwind,dip3,coh,verb)) then
         call seperr("trouble finding Puch dip using fast method")
       end if
-      if(coher) call srite('coher',coh,size(coh)*4)
-      call srite("out",dip3,size(dip3)*4)
+      if(coher) istat= srite('coher',coh,size(coh)*4)
+      istat= srite("out",dip3,size(dip3)*4)
     else
       write(0,*) "method=",trim(method)
       call seperr( "Unknown method")

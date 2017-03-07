@@ -82,6 +82,7 @@ _XFUNCPROTOBEGIN
 int  gain1(float *x, int n, float scale);
 int  gain4(float *x, int n, float scale);
 float  clipit(float *x, int n);
+void set_output_data_format(const char *);
 _XFUNCPROTOEND
 #else
 int  gain1();
@@ -89,7 +90,7 @@ int  gain4();
 float  clipit();
 #endif
 
-MAIN ()
+int MAIN (void)
 	{
 	int n, n1, n2, n3, esize, i,ierr;
 	float clip;
@@ -131,7 +132,7 @@ MAIN ()
 		srite ("out",data1,n*esize);
 		}
        sep_end_prog();
-       return(0);
+       return(EXIT_SUCCESS);
 	}
 
 /*******************************************************************

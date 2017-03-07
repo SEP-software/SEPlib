@@ -74,7 +74,7 @@ Martin Karrenbach 11-3-92  changed alloc(sizeof()) and sreed/srite sizeof(xdr)
 
 ADD_DEF_SEP_DOC
 #include <sep.main>
-MAIN()
+int MAIN(void)
 {
 	int nt, nx, np, it, ix, esize;
 	int nrdwr;

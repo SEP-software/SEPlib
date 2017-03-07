@@ -41,7 +41,9 @@
 !!$                              stabilization factor
 !!$
 !!$=back
+!!$
 !!$=head1  COMMENTS
+!!$
 !!$   defaults
 !!$
 !!$          a1=5,a2=2,a3=1     In-line or 2-D PEFs only.

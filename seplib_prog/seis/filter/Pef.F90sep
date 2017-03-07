@@ -4,7 +4,7 @@
 !!$
 !!$=head1 SYNOPSIS
 !!$
-!!$Pef < data.H a= [center=] [gap=] [maskin=] [maskout=] > pef.H
+!!$Pef < data.H a= [niter=] [center=] [gap=] [nullval=] [maskin=] [maskout=] > pef.H
 !!$
 !!$=head1 DESCRIPTION
 !!$
@@ -31,6 +31,9 @@
 !!$B<integer array> I<gap>=0 (optional) - filter gap
 !!$
 !!$B<filename> I<maskin, maskout> (optional) - data selectors 
+!!$
+!!$B<float> I<nullval> (optional) - if I<maskin> not provided samples with
+!!        this value are considered missing.  Default is 0.
 !!$
 !!$=item to history
 !!$
@@ -70,13 +73,16 @@ program Pef3
   real,    dimension (:), pointer     :: dd, kk
   type( filter)                       :: aa   
   character (len = 6)                 :: varname
+  real                                :: nullval
+  logical                             :: usenullval
 
-  call sep_init ()
   call SEP_ADD_DOC()
+  call sep_init ()
+  nullval = 0.0
   dim = sep_dimension ()
   allocate (n (dim), n0 (dim), center (dim), a (dim), gap (dim))
   call from_history (n)
-  call to_history ("nm",n)
+  call to_history ("n",n)
   a=1; n0=1; center=1; gap=1
   call from_param ("a", a)
   center = 1
@@ -93,6 +99,8 @@ program Pef3
      call from_param ("lag", aa%lag)
      call from_param ("n", n0)
   end if
+  
+  if(1 .EQ. getch('nullval','f',nullval)) usenullval = .TRUE.
 
   n123 = product (n)
   allocate (dd (n123), kk (n123)) 
@@ -101,10 +109,13 @@ program Pef3
      call sep_read (kk, "maskin")
   else
      kk = 1.
+     if(usenullval) then
+         where (dd .EQ. nullval) kk = 0.
+     endif
   end if
 
   call boundn( n0, n, a, aa) 
-  call find_mask( (kk /= 0.), aa)   ! missing data
+  call find_mask( (kk /= 0), aa)   ! missing data
 
   if (exist_file ("maskout")) then
      where (aa%mis) 
@@ -125,21 +136,12 @@ program Pef3
   call resize( aa)                       ! eliminate zeroes
   call printn( n, center, a, aa)         ! print filter
 
-  call to_history ("n1", size ( aa%lag))
-  do i=2, dim
-     call to_history (axisname(i),1)
-  end do
+  call to_history ("na", size ( aa%lag))
+!  call to_history ("n", n)
+   do i=1, dim
+      call to_history (axisname(i),n(i))
+   end do
   call to_history ("lag", aa%lag)
-  do i=1, size (aa%lag)
-     if (i < 10) then
-        write (varname,"(a,i1)") "lag",i
-     else if (i < 100) then
-        write (varname,"(a,i2)") "lag",i
-     else
-        write (varname,"(a,i3)") "lag",i
-     end if
-     call to_history_int (varname, aa%lag (i))
-  end do
   call sep_write (aa%flt)
  
   call sep_close ()

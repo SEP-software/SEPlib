@@ -4,7 +4,7 @@
 !!$
 !!$=head1 SYNOPSIS
 !!$
-!!$Miss < in.H prec=1 niter=100 padin=0 padout=0 filt= [mask=] > interp.H
+!!$Miss < in.H prec=1 niter=100 padin=0 padout=0 filt= [mask=] [nullval=] > interp.H
 !!$
 !!$=head1 DESCRIPTION
 !!$
@@ -33,6 +33,9 @@
 !!$
 !!$B<filename> I<mask> (optional) - selector for known data
 !!$
+!!$B<real> I<nullval> (optional) - missing data flagged with this value
+!!$                                if mask not supplied.  Default 0.0
+!!$
 !!$=back
 !!$
 !!$=head1 EXAMPLES
@@ -59,7 +62,7 @@ program Miss
   implicit none
   integer                                     :: dim, na,ia, niter, n1, n2
   integer                                     :: maxlag, padin, padout, p1, p2
-  real                                        :: a0
+  real                                        :: a0, nullval
   integer                                     :: prec
   integer, dimension (:), allocatable         :: n, m, a
   real,    dimension (:), allocatable, target :: mm, kk
@@ -67,10 +70,10 @@ program Miss
   logical, dimension (:), allocatable, target :: known
   logical, dimension (:),             pointer :: pknown
   type( filter)                               :: aa
-  integer ::i
 
-  call sep_init ()
   call SEP_ADD_DOC()
+  call sep_init ()
+  call sep_begin_prog()
   dim = sep_dimension ()
   allocate (n (dim), m (dim), a (dim))
   call to_history ("dim",dim)
@@ -79,12 +82,13 @@ program Miss
   call from_par ("niter", niter, 100)
   call from_par ("padin", padin, 0)   
   call from_par ("padout", padout, 0)
+  call from_par ("nullval", nullval, 0.0)
   n (dim) = n (dim) + padin + padout
-  call from_aux ("filt", "n1", na)
+  call from_aux ("filt", "na", na)
   call allocatehelix (aa, na)
 
   call from_aux ("filt","a0", a0, 1.)
-  call from_aux ("filt","nm",m)
+  call from_aux ("filt","n",m)
   a = 1
   call from_aux ("filt","a",a, a)
   call from_aux ("filt","lag", aa%lag, (/ (ia, ia = 1, na) /))
@@ -112,7 +116,7 @@ program Miss
      call sep_read (pkk, "mask")
      pknown = (pkk /= 0.)
   else
-     pknown = (pmm /= 0.)
+     pknown = (pmm /= nullval)
   end if
   maxlag = maxval (aa%lag)
   if (padout*n1 >= maxlag) known (n2 - maxlag + 1:n2) = .true.
@@ -124,5 +128,5 @@ program Miss
 
   deallocate (n, m, a, mm, kk, known)
   call deallocatehelix( aa)
-  call exit (0)
+  call sep_end_prog()
 end program Miss

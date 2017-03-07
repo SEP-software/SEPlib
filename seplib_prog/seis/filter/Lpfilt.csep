@@ -79,13 +79,16 @@ Martin Karrenbach 11-3-92  changed alloc(sizeof()) and sreed/srite sizeof(xdr)
  */
 ADD_DEF_SEP_DOC
 
+#include <math.h>
 #include <sep.main>
-MAIN()
+void conv (float *x,int lx,float *y,int ly,float *z,int lz);
+
+int MAIN(void)
 {
 	int size,nx,ix,order,jmax,i,j,k,lnd,lfinal,od2,nt,n3,ntrace;
 	int esize;
 	float dt,*z,*num,*den,*sn,*sd,*tn,*td;
-	float cutoff,arg,den0,sum,pi,a,aa,aap4,c,b;
+	float cutoff,arg,den0,sum,mypi,a,aa,aap4,c,b;
 	float *x,*y,*space;
 
         sep_begin_prog();
@@ -108,10 +111,10 @@ MAIN()
 	hclose(); /* before writing output data */
 
 	/* compute constants */
-	pi = 3.141592654;
+	mypi = 3.141592654;
 	od2 = order / 2;
 	if (od2 < 1) od2 = 1;
-	a = 2. * sin (pi*cutoff) / cos (pi*cutoff);
+	a = 2. * sin (mypi*cutoff) / cos (mypi*cutoff);
 	aa = a * a;
 	aap4 = aa + 4;
 	c = 2. * aa - 8.;
@@ -133,7 +136,7 @@ MAIN()
 
 	/* compute filter */
 	num[0] = aa;  num[1] = 2. * aa;  num[2] = aa;
-	arg = pi * 0.25 / od2;
+	arg = mypi * 0.25 / od2;
 	b = 4. * a * sin (arg);
 	den[0] = aap4 + b;  den[1] = c;  den[2] = aap4 - b;
 
@@ -142,7 +145,7 @@ MAIN()
 			tn[j] = num[j];
 			td[j] = den[j];
 		}
-		arg = pi * .5 / od2 * (i + 0.5);
+		arg = mypi * .5 / od2 * (i + 0.5);
 		b = 4. * a * sin (arg);
 		sn[0] = aa; sn[1] = 2. * aa; sn[2] = aa;
 		sd[0] = aap4 + b; sd[1] = c; sd[2] = aap4 - b;
@@ -189,9 +192,7 @@ MAIN()
 *	z	output wavelet                                             *
 *	lz	length of z                                                *
 *******************************************************************/
-conv (x,lx,y,ly,z,lz)
-int lx,ly,lz;
-float *x,*y,*z;
+void conv (float *x,int lx,float *y,int ly,float *z,int lz)
 {
 	int i,j,jmin,jmax;
 

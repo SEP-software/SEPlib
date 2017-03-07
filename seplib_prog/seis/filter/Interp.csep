@@ -112,8 +112,9 @@ D. Rothman, 27Nov83
 #define SINC 2
 
 ADD_DEF_SEP_DOC
+#include <stdlib.h>
 #include <sep.main>
-MAIN()
+int MAIN(void)
 {
 	int nt=0, nx=0,  lsinc, nintp, nsint, ntout, i, ix, itint;
 	int it, it0, j, itc,ndim ;
@@ -424,6 +425,6 @@ MAIN()
 	}
 
  sep_end_prog();
- return(0);
+ return(EXIT_SUCCESS);
 }
 

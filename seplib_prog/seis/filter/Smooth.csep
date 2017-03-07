@@ -10,11 +10,10 @@
  
 =head1  INPUT PARAMETERS
 
-=over 4
-
-   Halfwidth is the width in sample points of a rectangle which 
+        Halfwidth is the width in sample points of a rectangle which 
              when convolved with itself gives a triangle:
 
+=over 4
 
 =item   rect1,rect2,rect3     - integer 
 

@@ -153,9 +153,9 @@ float cent (float p,float *x,int n);
 void fstpick(float *x,int *ant,int *aitpeak,int *alwind,float *aperc);
 
 ADD_DEF_SEP_DOC
-
+#include <stdlib.h>
 #include <sep.main>
-MAIN()
+int MAIN(void)
 {
 	int nt, it, nx, n3, idx=1, nxx, ntt, ix, ip, nxmin, nxmax, n3tpow;
 	int ntmin, nxtest, iofdep=0;
@@ -406,7 +406,7 @@ MAIN()
 	}
 
         sep_end_prog();
-	return(0);
+	return(EXIT_SUCCESS);
 }      
 
 /*********************************************************************
