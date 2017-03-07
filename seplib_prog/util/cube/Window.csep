@@ -195,13 +195,14 @@ Revised:    S. Levin   9/9/83	Added flush of input pipe and check
  * Keyword: subsample  window  data-shuffle
  */
 
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 ADD_DEF_SEP_DOC
 #include <sep.main>
 
 
-MAIN ()
+int MAIN (void)
 {
 int             ignoren4, junk;
 int             filesize;
@@ -271,7 +272,7 @@ struct dimensions
 	dm[i].df = 1.;
 	dm[i].ji = 1;
 	dm[i].fi = 0;
-	sprintf (dm[i].labeli, "");
+	dm[i].labeli[0] = '\0';
     }
 
 /* removed checking for "ne". Nobody is old enough to remember and use
@@ -716,6 +717,6 @@ not certain whether transposed n's preferred; using un-transposed */
     }
 
     auxclose("in");
-  return(0);
+  return(EXIT_SUCCESS);
 }
 /*  $Id: Window.csep,v 1.1.1.1 2004/03/25 06:37:29 cvs Exp $ */

@@ -124,19 +124,14 @@ Purpose:
 */
 
 
+ADD_DEF_SEP_DOC
 
-
-
-
-
-
-
-
-
+#include <stdlib.h>
+#include <superset.h>
 #include <sep3dc.h>
 #include<sep3d.h>
-ADD_DEF_SEP_DOC
 #include <sep.main>
+int grab_data_params(sep3d *, sep3d *);
 int grab_parms(sep3d*,sep3d*);
 int axis_part(sep3d*,int *);
 int esize_change(sep3d*,int*);
@@ -162,7 +157,7 @@ int op_type,in_mult,out_mult;
 int nkeys,i1,i2,i3,i4,i5,i6,i7,i8,i9,i,j,k;
 int key_index[2];
 int int_key[2];
-MAIN(){
+int MAIN(void){
 sep3d input,output;
 int fwind[10],jwind[10],nwind[10],ngrid[10],nkeys_in;
 float *buf1,*buf2,*buf3;
@@ -235,7 +230,7 @@ for(i1=0; i1 < nlen[0]; i1++){ fwind[1]=n_part[0][i1];
   }
  }}}}}}}}}
 
- return(0);
+ return(EXIT_SUCCESS);
 }
 void int_float(float *buf1, int f, int j,  int n, float *e1,float *e2){
 int i,k;

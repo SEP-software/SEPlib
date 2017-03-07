@@ -94,7 +94,7 @@ copyright (c) 1991 Stanford University
  * Keyword: merge header
  */
 
-
+#include <stdlib.h>
 #include <seplib.h>
 #include <string.h>
 #include <sepaux.h>
@@ -116,9 +116,7 @@ static char     copy_buf[BUFSIZ];  /* for efficient data transfer */
 
 char           **xenvp;
 
-main (argc, argv, envp)
-    int				argc;
-    char			**argv, **envp;
+int main (int argc, char **argv, char **envp)
 {
 	extern int		sepxargc;
 	extern char		**sepxargv, **xenvp;
@@ -391,8 +389,7 @@ main (argc, argv, envp)
 		}
 	}
 
-	exit (0);
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 

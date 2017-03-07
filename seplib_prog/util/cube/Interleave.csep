@@ -68,11 +68,13 @@ Purpose:
 */	 
 
 ADD_DEF_SEP_DOC
+#include <stdlib.h>
+#include <sep3d.h>
 #include <sep.main> 
 
 
-MAIN()
-{ 
+int MAIN(void)
+{
 	int *n_1,*n_2,nd1,nd2,esize1,esize2,axis,b1,e,ib,ie,i,big;
 	char *array;
 	char temp_ch[10];
@@ -132,5 +134,5 @@ MAIN()
 		}
 	}
         sep_end_prog();
-	return(0);
+	return(EXIT_SUCCESS);
 } 

@@ -63,12 +63,21 @@ Author:Robert G. Clapp
 
 2/20/98 Begun
 */
-
+#include <sepConfig.h>
+#include <stdlib.h>
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif
+#ifdef HAVE_STRING_H
 #include <string.h>
-#include <seplib.h>
+#endif
+#ifdef HAVE_SYS_FILE_H
 #include <sys/file.h>
+#endif
+#ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
+#endif
+#include <seplib.h>
 #include <superset.h>
 
 
@@ -104,9 +113,7 @@ int cat_it(char **files,int nf, int *n1, int *n_axis,
 _XFUNCPROTOEND
 #endif
 
-main (argc, argv)
-int argc;
-char **argv;
+int main (int argc, char **argv)
 {
 	int i2,nfiles,iarg,logic,tempi,axis,*n_out,n,ierr,i1,key_size,*n1;
 	int block_b,block_e,tot_read_b,tot_read_a,read,nkeys_in,nkeys_out,drn;
@@ -177,7 +184,7 @@ char **argv;
                seperr("trouble grabbing in order \n");
 
         sep_end_prog();
-	return(0);
+	return(EXIT_SUCCESS);
 }
 
 

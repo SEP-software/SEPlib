@@ -68,6 +68,7 @@ Purpose:
 
 */	 
 
+#include <sep3d.h>
 #include <sepaux.h>
 
 #if NeedFunctionPrototypes
@@ -83,12 +84,12 @@ static int ntraces,nhin,nb;
 static char read_from[2048];
 ADD_DEF_SEP_DOC
 #include <sep.main> 
-MAIN()
+int MAIN(void)
 { 
 
 	int ndim,tempi,nlast;
 	int *n,*beg,*end,*nout;
-	int i,j;
+	int i,j, rc;
 	float *o,*d;
 	int maxsize,esize;
 	int extend;
@@ -195,8 +196,12 @@ MAIN()
 		if(verb) 
 			fprintf(stderr,"Creating a temporary file. Increasing maxsize or not piping in input will speed up processing \n");
 	
-		strcpy(temp_ch,"TEMP_XXXXXX"); mktemp(temp_ch);
-		auxtmp(temp_ch);
+		strcpy(temp_ch,"TEMP_XXXXXX"); rc = mkstemp(temp_ch);
+                if(rc == -1) {
+                   perror("Pad: mkstemp ");
+                   seperr("Unable to create temporary file \"%s\".\n",temp_ch);
+                }
+		auxtmp(temp_ch); close(rc);
 /*		if(NULL==auxtmp(temp_ch)) seperr("trouble creating temporary file \n");*/
 
 		/*unpipe input */

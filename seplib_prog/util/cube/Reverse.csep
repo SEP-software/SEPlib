@@ -81,10 +81,11 @@ B<util/cube>
  */
 
 ADD_DEF_SEP_DOC
+#include <stdlib.h>
 #include <sep.main>
 #define MEMSIZE  20000000  /* Cut off point for core usage, bytes */
 
-MAIN()
+int MAIN(void)
 {
 	char *trace, *trace2;
 
@@ -293,5 +294,5 @@ MAIN()
 			/******************************************************************/
     	}
   	}
-	return(0); /* main (in seplib) calls MAIN as a subroutine. */
+	return(EXIT_SUCCESS); /* main (in seplib) calls MAIN as a subroutine. */
 } /* End of MAIN */

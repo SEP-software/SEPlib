@@ -108,7 +108,7 @@ Author:Robert G. Clapp
 #include <sep3dc.h>
 #include <math.h>
 
-
+extern int sep_thread_num(void);
 
 #define STRING_SIZE 128
 #define NOT_SET -1

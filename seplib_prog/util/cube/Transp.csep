@@ -73,6 +73,8 @@ Purpose:
 */   
 
 ADD_DEF_SEP_DOC
+#include <stdlib.h>
+#include <unistd.h>
 #include <sep.main> 
 #include<superset.h>
 #define INPUT 0
@@ -108,8 +110,8 @@ int transp_reg();
 
 ADD_DEF_SEP_DOC
 
-MAIN()
-{ 
+int MAIN(void)
+{
 
   int n1;
   int verb,mem,ndim;
@@ -137,7 +139,7 @@ MAIN()
   }
   
         sep_end_prog();
-  return(0);
+  return(EXIT_SUCCESS);
  
  } 
 #if NeedFunctionPrototypes
@@ -149,7 +151,7 @@ int read_pars(verb,plane,mem,ndim,pipein,pipeout,nreshape_dim,reshape_dims)
 int *verb,*plane,*mem,*ndim,*pipein,*pipeout,*nreshape_dim,*reshape_dims;
 #endif
 {
-char pl[2],temp_ch[3];
+char pl[3],temp_ch[3];
 
 if(0==getch("verb","d",verb)) *verb=0;
 
@@ -375,6 +377,7 @@ int *plane,mem,*nin,*nout,ndim,pipein,*pipeout,nre,*redims;
 #endif
 {
 int n,nr;
+int rc;
 float o,d;
 long long memd;
 int axis[6],tempi,i,itemp;
@@ -435,8 +438,12 @@ strcpy(temp_file,"in");
 if((tot[3] *2. >memd && pipein==1 && *pipeout==1 )){
   if(verb>0) fprintf(stderr,"I am going to have create a temporary file \n");
   itemp=1;
-  strcpy(temp_file,"TEMP_XXXXXX"); mkstemp(temp_file);
-  auxtmp(temp_file);
+  strcpy(temp_file,"TEMP_XXXXXX"); rc = mkstemp(temp_file);
+  if(rc == -1) {
+     perror("Transp: mkstemp");
+     seperr("Transp: error creating temp file \"%s\".\n", temp_file);
+  }
+  auxtmp(temp_file); close(rc);
 /*  if(NULL==auxtmp(temp_file))*/
 /*    seperr("trouble creating temporary file \n");*/
 }
