@@ -19,6 +19,7 @@
 /*
  * Keyword: vplot raster movie pen
  */
+#include<sepConfig.h>
 #include <stdio.h>
 #include "../include/enum.h"
 #include "../include/extern.h"

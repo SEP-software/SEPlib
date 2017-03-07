@@ -33,13 +33,19 @@
  *	Added support for ppm output, (ppmpen, Ppmpen).
  */
 
+#include<sepConfig.h>
 
+#include <stdlib.h>
 #include <stdio.h>
 #include "../include/enum.h"
 #include "../include/extern.h"
 #include "../include/err.h"
 #include "../include/params.h"
+#if defined(__stdc__) || defined(__STDC__)
 #include <string.h>
+#else
+#include <strings.h>
+#endif
 #ifdef SEP
 #include <ctype.h>
 #endif

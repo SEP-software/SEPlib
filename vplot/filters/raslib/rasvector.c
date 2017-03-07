@@ -17,6 +17,7 @@
  * Joe Dellinger (SEP), May 7 1989
  *	RGB version added.
  */
+#include<sepConfig.h>
 
 #include <stdlib.h>
 #include <stdio.h>

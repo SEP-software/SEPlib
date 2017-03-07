@@ -29,7 +29,11 @@
 /*
  * Erase the graphics area
  */
+#include<sepConfig.h>
+
 #include	<stdio.h>
+#include        <string.h>
+#include        <unistd.h>
 #include	"../include/erasecom.h"
 #include	"../include/enum.h"
 #include	"../include/err.h"
@@ -137,7 +141,10 @@ int             value;
                sprintf (scratch_file, "%s%s%d%s", PEN_SPOOL, "/Tcpr_", counter, "_XXXXXX");
             }
 
-	    mkstemp (scratch_file);
+	    if(-1 == mkstemp (scratch_file))
+            {
+                ERR (WARN, name, "mkstemp() failure on vplot spool scratch file.\n");
+            }
 	    pltout = fopen (scratch_file, "w");
 	    if (pltout == NULL)
 	    {

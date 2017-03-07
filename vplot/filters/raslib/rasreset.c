@@ -16,6 +16,7 @@
  *	Please log any further modifications made to this file:
  */
 #include<stdio.h>
+#include<sepConfig.h>
 
 
 #include "raspen.h"

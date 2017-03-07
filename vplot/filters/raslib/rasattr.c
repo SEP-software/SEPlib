@@ -21,6 +21,7 @@
 /*
  * control graphics attributes
  */
+#include <sepConfig.h>
 #include <stdio.h>
 #include "../include/attrcom.h"
 #include "../include/extern.h"

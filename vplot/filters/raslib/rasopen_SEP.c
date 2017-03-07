@@ -33,14 +33,22 @@
  *	Added support for ppm output, (ppmpen, Ppmpen).
  */
 
+#include<sepConfig.h>
 
+#include <stdlib.h>
 #include <stdio.h>
 #include "../include/enum.h"
 #include "../include/extern.h"
 #include "../include/err.h"
 #include "../include/params.h"
+#if defined(__stdc__) || defined(__STDC__)
 #include <string.h>
+#else
+#include <strings.h>
+#endif
+#ifdef SEP
 #include <ctype.h>
+#endif
 #define DEFAULT_OUT	isatty(fileno(pltout))
 #include "raspen.h"
 
@@ -62,9 +70,11 @@ int             default_out = YES;
 
 void rasopen (void)
 {
+#ifdef SEP
 char            headname[30], fname[80];
 char            path[50];
 char           *front, *tail, *ptr;
+#endif
 char            newpath[60];
 MIXED		vartemp;
 
@@ -212,6 +222,7 @@ MIXED		vartemp;
     getpar ("n1", "d", vartemp);
     vartemp.i = &dev_ymax;
     getpar ("n2", "d", vartemp);
+#ifdef SEP
     if (esize == 1)
     {
 	Puthead ("\n\n# Raspen: VPLOT graphics via Movie,\n");
@@ -226,6 +237,7 @@ MIXED		vartemp;
     Puthead ("\tesize=%d\n", esize);
     Puthead ("\tn1=%d\n", dev_xmax);
     Puthead ("\tn2=%d\n", dev_ymax);
+#endif
 
 
     /*
@@ -240,6 +252,7 @@ MIXED		vartemp;
 
     if (!grf_format && default_out)
     {
+#ifdef SEP
 	datapath (path);
 /* Code stolen from output.c to get a reasonable raster file name. */
 	if (0 < findnm (headfd, headname, sizeof (headname)))
@@ -277,6 +290,9 @@ MIXED		vartemp;
 
 	sprintf (newpath, "%s%s", path, fname);
 	Puthead ("\tin=%s\n", newpath);
+#else
+	sprintf (newpath, "%s", "raster_file");
+#endif
 	pltout = fopen (newpath, "w");
 	if (pltout == NULL)
 	    ERR (FATAL, name, "can't open file %s\n", newpath);
@@ -287,9 +303,11 @@ MIXED		vartemp;
 	strcpy (colfile, "colfile");
 	vartemp.s = &(colfile[0]);
 	getpar ("colfile", "s", vartemp);
+#ifdef SEP
 	Puthead ("\tcolfile=%s\n", colfile);
 	Puthead ("\tcolor=T\n");
 	if (color_mult == 1)
 	    Puthead ("\tumask=255\n");
+#endif
     }
 }
