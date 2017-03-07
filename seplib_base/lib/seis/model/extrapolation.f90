@@ -6,6 +6,7 @@ use wavelet_mod
 use kernal_mod
 use wave_mod
 use image_mod
+use sep_io_mod
 implicit none
 logical, private, save :: verb
 integer, parameter :: big_=selected_int_kind(11)
@@ -184,7 +185,7 @@ integer :: node_nsx,i_processor,node_isx,ierr,iown,ic,nsteps
 real,pointer :: shot_block(:,:),wave_x_min_max(:,:),tmp_shot_block(:,:)
 type(sep3d) :: wave_s
 integer,allocatable :: ndone(:)
-integer,external :: sep_thread_num
+! integer,external :: sep_thread_num
 
 
 img_jt=nint(extrapolation%img_dt/extrapolation%dt)

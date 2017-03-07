@@ -2,6 +2,7 @@ module wave_mod
 use extrapolation_types
 use rtm_section_mod
 use sep3d_struct_mod
+use sep3d_io_mod
 
 implicit none
 type(sep3d),private :: shot_wave,rec_wave
@@ -68,7 +69,7 @@ subroutine wave_seek(extrapolation,n_node)
 type(extrapolation_type)::extrapolation
 integer :: n_node
 integer :: n_block, ret_seek
-integer, external :: sseek_block
+! integer, external :: sseek_block
 if (extrapolation%shot_or_rec(1:4)=='shot') then
   n_block=(extrapolation%isx/n_node-1)*shot_wave%n(4)
   ret_seek=sseek_block("ShotWave",n_block,block_size,0)
@@ -85,7 +86,7 @@ subroutine wave_output(extrapolation,wave_block)
 type(extrapolation_type):: extrapolation
 real :: wave_block(:,:)
 
-integer, external:: srite
+! integer, external:: srite
 if (extrapolation%shot_or_rec(1:4)=='shot') then
   if ( srite("ShotWave",wave_block(:,:),block_size) /= block_size ) then
     write(0,*) "trouble in writing shot wave"
