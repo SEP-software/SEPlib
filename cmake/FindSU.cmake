@@ -1,9 +1,9 @@
 # - Find FFTW
-# Find the native FFTW includes and library
+# Find the native SU includes and library
 #
-#  SU_INCLUDES    - where to find fftw3.h
-#  SU_LIBRARIES   - List of libraries when using FFTW.
-#  SU_FOUND       - True if FFTW found.
+#  SU_INCLUDES    - where to find su.h
+#  SU_LIBRARIES   - List of libraries when using SU.
+#  SU_FOUND       - True if SU found.
 
 if (SU_INCLUDES)
   # Already in cache, be silent
