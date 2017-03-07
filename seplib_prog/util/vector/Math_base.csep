@@ -31,7 +31,6 @@ Add   file1.H file2.H file3.H mode=[sum],prod,div > out.H Add, multiply, or divi
 
 =head1 INPUT PARAMETERS
 
-
 =head2 Math
 
 =over 4
@@ -75,6 +74,8 @@ Add   file1.H file2.H file3.H mode=[sum],prod,div > out.H Add, multiply, or divi
 =item pow      -  float          
 
       Power to raise data to
+
+=back 
 
 =head2 Gpow
 
@@ -126,7 +127,7 @@ Math  file1=a.H file2=b.H exp_real='file1.re*file2.re-file1.im*file2.im'
 
 
 
-=item NOTES
+=head2 NOTES
 
 Math is not automatically complex aware.
 If you are doing addition,subtraction with files it
@@ -163,9 +164,10 @@ Date Created:Fri Jul 30 22:10:30 PDT 1999
 Purpose: 
 
 */   
+#include <stdlib.h>
 #include <seplib.h> 
 #include <sep3d.h>
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 #include <string.h>
 #endif
 #include <sys/stat.h>
@@ -227,7 +229,7 @@ char out_tag[256];
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-main (int argc, char **argv, char **envp)
+int main (int argc, char **argv, char **envp)
 _XFUNCPROTOEND
 #else
 main (argc, argv, envp)
@@ -266,10 +268,10 @@ ADD_SEP_DOC
   
   else if(eout==8){
     sprintf(temp_ch,"#Using %s to produce real portion\n",exp_real);
-    if(verb==1) fprintf(stderr,temp_ch);
+    if(verb==1) fprintf(stderr,"%s\n",temp_ch);
     putlin(temp_ch);
     sprintf(temp_ch,"#Using %s to produce imaginary portion\n",exp_imag);
-    if(verb==1) fprintf(stderr,temp_ch);
+    if(verb==1) fprintf(stderr,"%s\n",temp_ch);
     putlin(temp_ch);
   }
 
@@ -378,7 +380,7 @@ ADD_SEP_DOC
   
 
 sep_end_prog();
-return(0);
+return(EXIT_SUCCESS);
 
 }
 

@@ -124,13 +124,16 @@ B<util/vector>
  *     [loclip,hiclip] or [-clip,clip] modified as necessary by dscale.
  *     Added softclip option as per Jon's paper.
  */
-#include<complex.h>
+#include <sepConfig.h>
+#include <stdlib.h>
+#include <complex.h>
 #include <sep3dc.h>
 #include <sepmath.h>
 ADD_DEF_SEP_DOC
 #include <sep.main>
+void quant(int,float *, int);
 /*----------------------------------------------------------------------------*/
-MAIN ()
+int MAIN (void)
 {
 	int     n1, n2, n3, k, pos, esize ;
 	float   clip, dclip, pclip, *x;
@@ -382,7 +385,7 @@ MAIN ()
  }
    
  sep_end_prog();
- return(0);
+ return(EXIT_SUCCESS);
 }
 /******************************************************************************
 *                                function quant                               *
@@ -400,9 +403,7 @@ MAIN ()
 *  quant reorders a[] such that a[j]<a[k] if j<k i.e. a[k-1]                  *
 *  is the k/n quantile.                                                       *
 ******************************************************************************/
-quant (k, a, n)
-	int k,n;
-	float  *a; 
+void quant (int k, float *a, int n)
 {
 	int     low, hi, i, j;
 	double  ak, aa;

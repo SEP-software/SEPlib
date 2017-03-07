@@ -69,10 +69,11 @@ B<util/vector>
 >*/ 
 
 ADD_DEF_SEP_DOC
+#include <stdlib.h>
 #include <sep.main> 
 
-MAIN()
-{ 
+int MAIN(void)
+{
 
   int n1,n,tempi,esize,maxsize;
   float *input,range,*output,scale,big,avg;
@@ -133,7 +134,7 @@ if(esize*n*n1!= srite("out", output, esize*n*n1))
   seperr("trouble writing out data \n");
  
  
-return(0);
+return(EXIT_SUCCESS);
  } 
 
 
