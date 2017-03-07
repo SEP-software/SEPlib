@@ -1,3 +1,4 @@
+#include <sepConfig.h>
 #include <stdio.h>
 #define F_COL		(0001)
 #define F_FAT		(0002)
