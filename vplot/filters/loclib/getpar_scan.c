@@ -557,11 +557,28 @@ char *yytext_ptr;
 #if HAVE_STRING_H
 #include <string.h>
 #endif
+#if HAVE_STDLIB_H
 #include <stdlib.h>
+#endif
+#if HAVE_CTYPE_H
 #include <ctype.h>
+#endif
 #include "../loclib/fastpar.h"
- extern ssize_t read (int __fd, void *__buf, size_t __nbytes) __wur;
+extern ssize_t read (int __fd, void *__buf, size_t __nbytes) __wur;
 static int massage(char *string,char *out,int len,int quote);
+
+#if HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif
+#if HAVE_SYS_UIO_H
+#include <sys/uio.h>
+#endif
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+#if HAVE_FCNTL_H
+#include <fcntl.h>
+#endif
 
 
 #define MAX_INPUT_DEPTH 10
@@ -664,7 +681,10 @@ void getpar_stack_par(char *val)
     len = (int)fsize(fd);
     buffer=alloc(len+3);
     buffer[0]='\n';
-    read(fd,buffer+1,len);
+    if(len != read(fd,buffer+1,len)) {
+       perror("getpar_stack_par()");
+       exit(-1);
+    }
     buffer[len+1]='\n';
     buffer[len+2]='\0';
 
@@ -1653,6 +1673,10 @@ static void yy_load_buffer_state  (void)
 
 	yyfree((void *) b  );
 }
+
+#ifndef __cplusplus
+extern int isatty ( int );
+#endif
 
 /* Initializes or reinitializes a buffer.
  * This function is sometimes called more than once on the same buffer,

@@ -18,8 +18,13 @@
  * nx is the number of elements needed in the array. 
  */
 #include <stdio.h>
+#if defined(__stdc__) || defined(__STDC__)
 #include <stdlib.h>
+#else
+        extern char *malloc(size_t);
+#endif
 #include "../include/extern.h"
+extern void seperr(const char *, ... );
 #define SMALLBLOCK 0
 char *alloc (size_t size)
 {

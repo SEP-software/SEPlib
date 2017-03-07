@@ -18,12 +18,17 @@
  *			what to do.
  *     7-18-97 bob prototypes, declare voids, etc
  */
+#include <sepConfig.h>
 #include "../include/extern.h"
 #include "fastpar.h"
 #include <stdio.h>
 
+#ifdef HAVE_STRING_H
 #include <string.h>
+#endif
+#ifdef HAVE_STRINGS_H
 #include <strings.h>
+#endif
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN 

@@ -17,13 +17,24 @@
    for saw compatibility
    Revised  6-2-99   Bob Begun translation to GNU standards
  */
+#include <sepConfig.h>
+#ifdef HAVE_STRING_H
 #include<string.h>
+#endif
+#ifdef HAVE_STRINGS_H
 #include<strings.h>
+#endif
 #include <stdio.h>
 
+#if defined (HAVE_STDLIB_H)
 #include<stdlib.h>
+#else
+extern int atoi();
+#endif /* HAVE_STDLIB  */
+
 #include <math.h>
 #include "fastpar.h"
+extern void seperr(const char *, ... );
 
 /*prototypes for functions just used in this subroutine */
 #if NeedFunctionPrototypes

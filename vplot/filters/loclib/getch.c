@@ -103,10 +103,15 @@ B<sep>
  * Revided: bob    7/97   Added prototypes, include lib_internal.h
  */
 
+#include <sepConfig.h>
+#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
+#endif
 #include "../include/extern.h"
 #include "fastpar.h"
+#ifdef HAVE_STRING_H
 #include <string.h>
+#endif
 #include <sep_pars_external.h>
 
 #define GETCH_QUEUE_SIZE 1023
@@ -118,12 +123,12 @@ static int first_invoke = 1;
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-int getch( const char *tag, const char *type, void *ptr )
+int getch( const char *tag, char *type, void *ptr )
 _XFUNCPROTOEND
 #else
 int
 getch(tag,type,ptr)
-const char *tag, *type;
+char *tag, *type;
 char* ptr;
 #endif
 {
@@ -187,14 +192,14 @@ B<sep>
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-int getch_add_string(const char *string)
+int getch_add_string(char *string)
 _XFUNCPROTOEND
 #else
 int getch_add_string(string)
 char *string;
 #endif
 {
-     const char* copy;
+     char* copy;
      int iargc;
 
     if(first_invoke) {

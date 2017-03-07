@@ -10,6 +10,7 @@
 
 #include <fcntl.h>
 #include "../include/extern.h"
+extern void seperr(const char *, ... );
 #include <unistd.h>
 
 int file (char *name,int mode)

@@ -1,3 +1,4 @@
+#include <sepConfig.h>
 #include "../include/extern.h"
 #ifndef FASTPARG_H
 #define FASTPARG_H

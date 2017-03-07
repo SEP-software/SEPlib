@@ -33,6 +33,7 @@ Dave Nichols    8-22-89 always pass getp_getval unions not particular types
 #include <stdlib.h>
 #include <ctype.h>
 #include "fastpar.h"
+extern void seperr(const char *, ... );
 /*#define MIXED    union { char *s; int *i; float *f; double *g }*/
 #define MAXLINE 256
 #define MAXNAMES 20

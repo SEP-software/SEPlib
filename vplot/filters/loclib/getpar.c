@@ -26,6 +26,7 @@ dave 		9/17/90  Use stdarg for ANSI-C compilers
 */
 
 #include "../include/extern.h"
+extern int getch( const char *tag, char *type, void *ptr );
 #ifndef GETPARSYNONYM
 #define GETPARSYNONYM getpar
 #endif  /* GETPARSYNONYM */
@@ -34,7 +35,7 @@ int GETPARSYNONYM( char *name, char *type, MIXED  var)
 {
    int rc;
 
-        rc = getch(name,type,var);
+        rc = getch(name,type,*((void **) (&var)));
 
 	return (rc);
 }
