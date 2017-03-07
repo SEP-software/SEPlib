@@ -83,10 +83,10 @@ double *ealloc1double(size_t n1);
 double *erealloc1double(double *v, size_t n1);
 double **ealloc2double(size_t n1, size_t n2);
 double ***ealloc3double(size_t n1, size_t n2, size_t n3);
-complex *ealloc1complex(size_t n1);
-complex *erealloc1complex(complex *v, size_t n1);
-complex **ealloc2complex(size_t n1, size_t n2);
-complex ***ealloc3complex(size_t n1, size_t n2, size_t n3);
+OLDcomplex *ealloc1complex(size_t n1);
+OLDcomplex *erealloc1complex(OLDcomplex *v, size_t n1);
+OLDcomplex **ealloc2complex(size_t n1, size_t n2);
+OLDcomplex ***ealloc3complex(size_t n1, size_t n2, size_t n3);
 
 *****************************************************************************
 Notes:
@@ -391,9 +391,9 @@ double ***ealloc3double(size_t n1, size_t n2, size_t n3)
 
 
 /* allocate a 1-d array of complexs */
-complex *ealloc1complex(size_t n1)
+OLDcomplex *ealloc1complex(size_t n1)
 {
-	complex *p;
+	OLDcomplex *p;
 
 	if (ERROR == (p=alloc1complex(n1)))
 		seperr("%s: malloc failed", __FILE__);
@@ -402,9 +402,9 @@ complex *ealloc1complex(size_t n1)
 
 
 /* re-allocate a 1-d array of complexs */
-complex *erealloc1complex(complex *v, size_t n1)
+OLDcomplex *erealloc1complex(OLDcomplex *v, size_t n1)
 {
-	complex *p;
+	OLDcomplex *p;
 
 	if (ERROR == (p=realloc1complex(v, n1)))
 		seperr("%s: realloc failed", __FILE__);
@@ -413,9 +413,9 @@ complex *erealloc1complex(complex *v, size_t n1)
 
 
 /* allocate a 2-d array of complexs */
-complex **ealloc2complex(size_t n1, size_t n2)
+OLDcomplex **ealloc2complex(size_t n1, size_t n2)
 {
-	complex **p;
+	OLDcomplex **p;
 
 	if (ERROR == (p=alloc2complex(n1, n2)))
 		seperr("%s: malloc failed", __FILE__);
@@ -424,9 +424,9 @@ complex **ealloc2complex(size_t n1, size_t n2)
 
 
 /* allocate a 3-d array of complexs */
-complex ***ealloc3complex(size_t n1, size_t n2, size_t n3)
+OLDcomplex ***ealloc3complex(size_t n1, size_t n2, size_t n3)
 {
-	complex ***p;
+	OLDcomplex ***p;
 
 	if (ERROR == (p=alloc3complex(n1, n2, n3)))
 		seperr("%s: malloc failed", __FILE__);

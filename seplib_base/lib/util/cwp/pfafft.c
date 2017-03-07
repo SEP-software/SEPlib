@@ -846,13 +846,13 @@ Author:  Dave Hale, Colorado School of Mines, 06/16/89
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-void pfacc(int isign, int n, complex cz[])
+void pfacc(int isign, int n, OLDcomplex cz[])
 _XFUNCPROTOEND
 #else
 void pfacc(isign, n, cz)
 int isign;
 int n;
-complex cz[];
+OLDcomplex cz[];
 #endif
 /*****************************************************************************
 Prime factor fft:  complex to complex transform, in place
@@ -2105,13 +2105,13 @@ Author:  Dave Hale, Colorado School of Mines, 04/27/89
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-void pfacr (int isign, int n, complex cz[], float rz[])
+void pfacr (int isign, int n, OLDcomplex cz[], float rz[])
 _XFUNCPROTOEND
 #else
 void pfacr (isign, n, cz, rz)
 int isign;
 int n;
-complex cz[];
+OLDcomplex cz[];
 float rz[];
 #endif
 /*****************************************************************************
@@ -2179,7 +2179,7 @@ Author:  Dave Hale, Colorado School of Mines, 06/13/89
     }
 
     /* do complex to complex transform */
-    pfacc(isign,n/2,(complex*)z);
+    pfacc(isign,n/2,(OLDcomplex*)z);
 }
 
 #if NeedFunctionPrototypes
@@ -2220,11 +2220,11 @@ Author:  Dave Hale, Colorado School of Mines, 06/13/89
     int i,ir,ii,jr,ji,no2;
     float *z,tempr,tempi,sumr,sumi,difr,difi;
     double wr,wi,wpr,wpi,wtemp,theta;
-    complex *cz;
+    OLDcomplex *cz;
 
     /* copy input to output while scaling */
 
-    cz = (complex*)kz;
+    cz = (OLDcomplex*)kz;
     z = (float*)cz;
 
     for (i=0; i<n; i++)
@@ -2269,7 +2269,7 @@ Author:  Dave Hale, Colorado School of Mines, 06/13/89
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-void pfamcc (int isign, int n, int nt, int k, int kt, complex cz[])
+void pfamcc (int isign, int n, int nt, int k, int kt, OLDcomplex cz[])
 _XFUNCPROTOEND
 #else
 void pfamcc (isign, n, nt, k, kt, cz)
@@ -2278,7 +2278,7 @@ int n;
 int nt;
 int k;
 int kt;
-complex cz[];
+OLDcomplex cz[];
 #endif
 /*****************************************************************************
 Prime factor fft:  multiple complex to complex transforms, in place
@@ -3722,7 +3722,7 @@ Author:  Dave Hale, Colorado School of Mines, 06/15/89
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-void pfa2cc (int isign, int idim, int n1, int n2, complex cz[])
+void pfa2cc (int isign, int idim, int n1, int n2, OLDcomplex cz[])
 _XFUNCPROTOEND
 #else
 void pfa2cc (isign, idim, n1, n2, cz)
@@ -3730,7 +3730,7 @@ int isign;
 int idim;
 int n1;
 int n2;
-complex cz[];
+OLDcomplex cz[];
 #endif
 /*****************************************************************************
 Prime factor fft:  2-D complex to complex transforms, in place
@@ -3802,7 +3802,7 @@ Author:  Dave Hale, Colorado School of Mines, 06/15/89
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-void pfa2cr (int isign, int idim, int n1, int n2, complex cz[], float rz[])
+void pfa2cr (int isign, int idim, int n1, int n2, OLDcomplex cz[], float rz[])
 _XFUNCPROTOEND
 #else
 void pfa2cr (isign, idim, n1, n2, cz, rz)
@@ -3810,7 +3810,7 @@ int isign;
 int idim;
 int n1;
 int n2;
-complex cz[];
+OLDcomplex cz[];
 float rz[];
 #endif
 /*****************************************************************************
@@ -3937,13 +3937,13 @@ Modified:  Dave Hale, Colorado School of Mines, 11/26/89
     if (idim==1) {
 
         /* transform as complex elements */
-        pfa2cc(isign,1,n1/2,n2,(complex*)z);
+        pfa2cc(isign,1,n1/2,n2,(OLDcomplex*)z);
 
     /* else, if transforming dimension 2 */
     } else {
 
         /* transform as complex elements */
-        pfa2cc(isign,2,n1,n2/2,(complex*)z);
+        pfa2cc(isign,2,n1,n2/2,(OLDcomplex*)z);
 
         /* unmerge even and odd vectors */
         temp = (float*)malloc(n1*sizeof(float));
@@ -3961,7 +3961,7 @@ Modified:  Dave Hale, Colorado School of Mines, 11/26/89
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-void pfa2rc (int isign, int idim, int n1, int n2, float rz[], complex cz[])
+void pfa2rc (int isign, int idim, int n1, int n2, float rz[], OLDcomplex cz[])
 _XFUNCPROTOEND
 #else
 void pfa2rc (isign, idim, n1, n2, rz, cz)
@@ -3970,7 +3970,7 @@ int idim;
 int n1;
 int n2;
 float rz[];
-complex cz[];
+OLDcomplex cz[];
 #endif
 /*****************************************************************************
 Prime factor fft:  2-D real to complex transforms
@@ -4113,7 +4113,7 @@ main()
 {
 	int nmin,n,no,nfft,nffto;
 	float cpu,total;
-	complex *c=alloc1complex(720720);
+	OLDcomplex *c=alloc1complex(720720);
 	int npfao2 (int nmin, int nmax);
 		
 	for (n=0; n<720720; ++n)

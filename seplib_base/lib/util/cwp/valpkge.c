@@ -59,7 +59,7 @@ Authors: CWP: Jack K. Cohen, Shuki Ronen
 /*Robert G. Clapp	12/9/95			*/
 /* Revised to make it independent of SU types (except val) */
 #include <sepConfig.h>
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 #include <string.h>
 #endif
 extern void seperr(const char *, ... );
