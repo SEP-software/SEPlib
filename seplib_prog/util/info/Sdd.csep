@@ -107,11 +107,13 @@ copyright (c) 1991 Stanford University
 #define  NO     0
 #define MAX_LINE_LENGTH 409600
 
+#include<sepConfig.h>
 
 static      int      allpos,ncp,fl;
 static float  dbuff[MAX_LINE_LENGTH/2 +1];
 static int   beg,nelem; 
 static char buf_new[MAX_LINE_LENGTH],buf_old[MAX_LINE_LENGTH*2];
+
 #include<sepmath.h>
 
 int ddreed (char *intag,float *ptr,int length,int esize);
@@ -121,11 +123,18 @@ int dd_strip(char *ptr, char *ptrcp, int nbuf);
 int dd_scale( float *ptr, int n );
 int  cmplx2r(float *in,float *out,int n,char flag);
 int r2cmplx(float *in,float *out,int n,char flag);
+int etoa(float *data, int block, int esize, int line, char *in_form, int last);
+int new_atoe (float *data, int *n, int block, int esize, int *end);
+int num (char s);
+int checkrange (int N, float *data);
+int convto1 (int N, float *data, char *outtag);
 
 ADD_DEF_SEP_DOC
 
+#include <stdlib.h>
 #include <sep.main>
-MAIN ()
+
+int MAIN (void)
 {
 int             n1, n2, n3, N, line, ein, eout, i, emax,block,ndim,i1,nt;
 char           *data;
@@ -240,7 +249,7 @@ int            loc,last,axis=1,ierr;
 
     if(ein==0){
       nconverted=0;
-       new_atoe (data, &nconverted,block, emax,&end);
+       new_atoe ((float *) data, &nconverted,block, emax,&end);
       if(end==1) 
         seperr("trouble reading ascii file after %d elements \n",
           ntot+nconverted *emax/4);
@@ -255,7 +264,7 @@ int            loc,last,axis=1,ierr;
       if (ein == 8) sreed ("in", data, block * emax);
       else ddreed ("in", (float*) data, block * ein, ein);
   
-      etoa (data, block, ein, line, in_form,last);
+      etoa ((float *)data, block, ein, line, in_form,last);
      }
 
     /*
@@ -278,13 +287,10 @@ int            loc,last,axis=1,ierr;
   }
   if (n1 == 0) putch ("n1", "d", &N);
 
-  return(0);
+  return(EXIT_SUCCESS);
 }      /* end of MAIN */
 
-etoa (data, block, esize, line, in_form,last)
-    float          *data;
-    int             block, esize,  line,last;
-    char           *in_form;
+int etoa (float *data, int block, int esize, int line, char *in_form, int last)
 /*
  * data , pointer to data, converted to real numbers
  * n1,n2,n3, size of dataset
@@ -407,11 +413,7 @@ char            buf[200],buf2[200],buf3[200],buf4[200];
   return(0);
 }
 
-new_atoe (data, n, block, esize, end)
-float *data;
-int esize;
-int *end;
-int *n, block;
+int new_atoe (float *data, int *n, int block, int esize, int *end)
 {
 int i,b,nlen,nc,bstring,estring,nscan,convert;
 char cbuff[MAX_LINE_LENGTH];
@@ -437,7 +439,10 @@ while(nc<convert){
   if(feof(instream)){ *end=1; return(1);}
 
   /* read in a line */
-  fgets(cbuff,MAX_LINE_LENGTH-2,instream);
+  if(NULL == fgets(cbuff,MAX_LINE_LENGTH-2,instream)) {
+     perror("Sdd: instream read problem ");
+     *end=1; return(1);
+  }
 /*fprintf(stderr,"checkt his %s convert-%d nc-%d",cbuff,convert,nc);*/
 
 
@@ -478,13 +483,10 @@ return(0);
 }
 
 
-atoe (data, n, block,esize,end)
-    float          *data;
-    int             esize,*end;
-    int            *n,block;
+int atoe (float *data, int *n, int block,int esize,int *end)
 {
 int             lof, i, nscan, N1,ss;
-int             num (),read,left,i1,tt,last;
+int             read,left,i1,tt,last;
 char            temp_buf[4096];
 
     read=0; 
@@ -532,8 +534,7 @@ char            temp_buf[4096];
   *n=read;
   return(0);
 }
-num (s)
-    char            s;
+int num (char s)
 {
 int             res;
     res = 0;
@@ -545,10 +546,7 @@ int             res;
 
 
 
-convto1 (N, data, outtag)
-    int             N ;
-    float          *data;
-    char* outtag;
+int convto1 (int N, float *data, char *outtag)
 /*
  * converts floats in the range -128,127 to movie bytes
  */
@@ -566,9 +564,7 @@ short int       zero = 128;
   return(0);
 }
 
-checkrange (N, data)
-    int             N;
-    float          *data;
+int checkrange (int N, float *data)
 /* check whether data are in [-128.,127] */
 {
 int             i;

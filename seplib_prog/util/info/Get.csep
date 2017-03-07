@@ -48,6 +48,7 @@ B<util/info>
 =cut
   
  >*/
+#include <stdlib.h>
 #include <seplib.h>
 #include <string.h>
 
@@ -56,9 +57,7 @@ extern int             sepxargc;
 extern char          **sepxargv;
 */
 
-main (argc, argv, envp)
-    int             argc;
-    char          **argv, **envp;
+int main (int argc, char **argv, char **envp)
 {
 char            string[120];
 int             ii;
@@ -99,5 +98,5 @@ int             parform;
 	}
     }
     printf ("\n");
-    return 0;
+    return EXIT_SUCCESS;
 }

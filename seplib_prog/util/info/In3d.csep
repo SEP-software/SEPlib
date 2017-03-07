@@ -65,19 +65,36 @@ Author:Robert G. Clapp
 #define         HEAD    "/dev/null"
 #define         OUT    "/dev/null"
 /*#include <sep.main>*/
-#include<unistd.h>
 /*#include <seplib.h>*/
+#include <sepConfig.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif
+#ifdef HAVE_STRING_H
 #include <string.h>
+#endif
 #include <seplib.h>
-#include<sep3dc.h>
+#include <sep3dc.h>
+#ifdef HAVE_SYS_FILE_H
 #include <sys/file.h>
+#endif
+#ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
-#include<sepmath.h>
-#include<strings.h>
+#endif
+#include <sepmath.h>
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
 
 
+#ifdef HAVE_STDLIB_H
 #include<stdlib.h>
+#else
+extern int atoi();
+#endif /* HAVE_STDLIB  */
 #define STRING_SIZE 20024
     char zero_check[9];
 
@@ -190,11 +207,11 @@ keyXX=XXXXXXXXXXX   type=scalar_float   format=native_float
 o123456789 123456789 123456789 123456789 123456789 123456789 123456789
 */
 sprintf(temp1,"key%d=%s",ikey,name);
-if(ithread==0) fprintf(stdout,temp1);
+if(ithread==0) fprintf(stdout,"%s",temp1);
 for(i=0; i < 25 - (int)strlen(temp1); i++) {if(ithread==0) fprintf(stdout,"%s"," ");}
 
 sprintf(temp1,"type=%s",type);
-if(ithread==0) fprintf(stdout,temp1);
+if(ithread==0) fprintf(stdout,"%s",temp1);
 for(i=0; i < 45 - 25-(int)strlen(temp1); i++){ if(ithread==0) fprintf(stdout,"%s"," ");}
 
 
@@ -212,7 +229,7 @@ nxx=XXXXXXX oxx=XXXXXXXXX dxx=XXXXXXXXX labelxx=XXXXXXXX
 o123456789 123456789 123456789 123456789 123456789 123456789 123456789
 */
 sprintf(temp1,"n%d=%d",iax,n);
-if(ithread==0) fprintf(stdout,temp1);
+if(ithread==0) fprintf(stdout,"%s",temp1);
 for(i=0; i < 14 - (int)strlen(temp1); i++){ if(ithread==0) fprintf(stdout,"%s"," ");}
 
 sprintf(temp1,"o%d=%g",iax,(double)o);
@@ -225,7 +242,7 @@ if((int)strlen(temp1) >=14){
   temp1[13]='\0';
 }
      
-if(ithread==0) fprintf(stdout,temp1);
+if(ithread==0) fprintf(stdout,"%s",temp1);
 
 for(i=0; i < 28 - 14-(int)strlen(temp1); i++){if(ithread==0)  fprintf(stdout,"%s"," ");}
 
@@ -239,7 +256,7 @@ if((int)strlen(temp1) >=14){
   temp1[13]='\0';
 }
      
-if(ithread==0) fprintf(stdout,temp1);
+if(ithread==0) fprintf(stdout,"%s",temp1);
 for(i=0; i < 41 - 26-(int)strlen(temp1); i++){if(ithread==0)  fprintf(stdout,"%s"," ");}
 
 if(ithread==0) fprintf(stdout,"label%d=%s\n",iax,label);

@@ -1,5 +1,4 @@
-
- /*$
+/*$
 
 =head1 NAME
 
@@ -64,9 +63,8 @@ B<util/info>
 
 =cut
 
-
-
 >*/
+
 /*
 
  KEYWORDS data display  binary  ascii
@@ -122,13 +120,18 @@ enum
 };      /* index to Type */
 char            type[10] = "float";  /* default type */
 int             number = 1;
+
 #define OUT "stdout"
 #define HEAD "/dev/null"
 
-
+#include <sepConfig.h>
+#include <stdlib.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 ADD_DEF_SEP_DOC
 #include <sep.main>
-MAIN ()
+int MAIN(void)
 {
 long            i, n, count;
 int             l[MAXCOL];
@@ -141,6 +144,10 @@ int             esize;
 int             skip, byteskip ,byte_grab;
 double   bytetotsize,totsize;
 
+ if(isatty(fileno(stdin))) {
+      doc(SOURCE);
+fprintf(stderr,"called doc(%s)\n",SOURCE);
+ }
 
     esize = -1;
     if (fetch ("esize", "d", &esize))
@@ -367,6 +374,6 @@ double   bytetotsize,totsize;
   CASE (b);
   break;
     }
-  return(0);
+  return(EXIT_SUCCESS);
 
 }
