@@ -118,7 +118,7 @@ program dip_prog
   integer :: maxsize
   logical :: verb,verb2,v3d
   call SEP_ADD_DOC()
-  call sep_init(SOURCE)
+  call sep_init()
   call sep_begin_prog()
   call init_sep3d("in",data,"INPUT")
   n=1

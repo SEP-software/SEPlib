@@ -76,7 +76,7 @@ program flatten
   integer :: niter,npts,ntable,ierr
 
   call SEP_ADD_DOC()
-  call sep_init(SOURCE)
+  call sep_init()
   call from_history("n1",n1)
   call from_history("n2",n2)
   call from_history("n3",n3)
