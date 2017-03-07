@@ -100,7 +100,7 @@ extern FILE *controltty;
  */
 extern struct device dev;
 
-extern void MAIN_(void);
+extern int MAIN_(void);
 extern int gen_do_dovplot(int,FILE **, char [][MAXFLEN+1]);
 extern void genmarker(int,int,int,int *);
 extern void gentext (char *,float,float,float,float);
