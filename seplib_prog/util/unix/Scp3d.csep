@@ -8,7 +8,9 @@
 
  Copy seplib dataset
 
-=head1 PARAMETERS
+=head1 INPUT PARAMETERS
+
+=over 4
 
 =item max_size - int
 
@@ -17,6 +19,8 @@
 =item copy_data - int
 
 	[1] copy the data
+
+=back 
 
 =head1 SYNOPSIS
 
@@ -50,10 +54,14 @@ B<util/unix>
  * Keyword: copy  : Mv
  */
 
+#include <sepConfig.h>
+#include <stdlib.h>
+#ifdef HAVE_STRING_H
 #include <string.h>
+#endif
 #include <seplib.h>
 #include <sep3d.h>
-main(int argc,char **argv,char **envp)
+int main(int argc,char **argv,char **envp)
 {
  extern int sepxargc;
  extern char **sepxargv ;
@@ -152,4 +160,5 @@ if(follow_h==1 && iout==1){
    }
  }
 /* auxclose(tag_out);*/
+ return(EXIT_SUCCESS);
 }
