@@ -133,7 +133,13 @@ B<util/info>
 #include <stdlib.h>
 #include <errno.h>
 #include <pthread.h>
+#ifdef MACOS
+#include <mach/mach_init.h>
+#include <mach/task.h>
+#include <mach/semaphore.h>
+#else
 #include <semaphore.h>
+#endif
 #include <math.h>
 #include <signal.h>
 #include <inttypes.h>
@@ -192,9 +198,13 @@ void *scanbuf(void *arg) {
     while(1) {
 
         /*update running totals and check min max stuff */  
-    
+#ifdef MACOS
+        rc = semaphore_wait(par->ok_to_process);
+        if(rc != 0) perror("semaphore_wait scanbuf\n");
+#else   
         rc = sem_wait(&par->ok_to_process);
         if(rc != 0) perror("sem_wait scanbuf\n");
+#endif
     
         if(par->esize==4){
     
@@ -263,8 +273,13 @@ void *scanbuf(void *arg) {
             if(amplitude != 0) par->nzero=par->nzero+1;
           } 
         }
+#ifdef MACOS
+        rc = semaphore_signal(par->done_processing);
+        if(rc != 0) perror("semaphore_signal scanbuf\n");
+#else
         rc = sem_post(&par->done_processing);
         if(rc != 0) perror("sem_post scanbuf\n");
+#endif
 
         /* switch buffers */
         ibuf = (ibuf+1)%2;
@@ -272,7 +287,7 @@ void *scanbuf(void *arg) {
   return arg;
 }
 
-MAIN(){
+int MAIN(void){
 
   int i1;
   uint64_t tot;
@@ -287,6 +302,8 @@ MAIN(){
   int first = 1;
   int rc;
   pthread_t tid;
+
+  doc(SOURCE);
 
   par=(params *) malloc(sizeof(params));
 
@@ -357,18 +374,30 @@ MAIN(){
   par->countsav[1] = par->count;
 
   /* set up double buffering */
+#ifdef MACOS
+  rc = semaphore_create(mach_task_self(), &(par->ok_to_process), SYNC_POLICY_FIFO,0);
+  if(rc != 0) perror("semaphore_create ok_to_process\n");
+  rc = semaphore_create(mach_task_self(), &(par->done_processing), SYNC_POLICY_FIFO,0);
+  if(rc != 0) perror("semaphore_create done_processing\n");
+#else
   rc = sem_init(&par->ok_to_process,0,0);
   if(rc != 0) perror("sem_init ok_to_process\n");
   rc = sem_init(&par->done_processing,0,0);
   if(rc != 0) perror("sem_init done_processing\n");
+#endif
 
   /* start processing thread */
   rc = pthread_create(&tid,NULL,scanbuf,par);
   if(rc != 0) perror("pthread_create processing thread\n");
 
   while( par->count < tot) {                   /* read in the data */
+#ifdef MACOS
+    if(!first) rc = semaphore_wait(par->done_processing);
+    if(rc != 0) perror("semaphore_wait done_processing\n");
+#else
     if(!first) rc = sem_wait(&par->done_processing);
     if(rc != 0) perror("sem_wait done_processing\n");
+#endif
     first = !1;
     read=mem;
     if(read > (tot-par->count)) read=tot-par->count;
@@ -382,8 +411,13 @@ MAIN(){
       tot=par->count+par->read_in/par->esize;
     }
 
+#ifdef MACOS
+    rc = semaphore_signal(par->ok_to_process);
+    if(rc != 0) perror("semaphore_signal ok_to_process\n");
+#else
     rc = sem_post(&par->ok_to_process);
     if(rc != 0) perror("sem_wait ok_to_process\n");
+#endif
 
     par->countsav[ibuf] = par->count;
     ibuf = (ibuf+1)%2;
@@ -391,8 +425,13 @@ MAIN(){
     par->countsav[ibuf] = par->count;
   }
 
+#ifdef MACOS
+  rc = semaphore_wait(par->done_processing);
+  if(rc != 0) perror("semaphore_wait ok_to_process\n");
+#else
   rc = sem_wait(&par->done_processing);
   if(rc != 0) perror("sem_wait ok_to_process\n");
+#endif
 
   rc = pthread_cancel(tid);
   if(rc != 0) perror("pthread_cancel processing thread\n");
@@ -475,6 +514,17 @@ MAIN(){
   if(!strcmp( par->want, "short")){
       printf("%6.2f  pct. zeros %g-min max-%g \n",100.*((double)(par->count-par->nzero))/((double)par->count),par->f_minv,par->f_maxv);  
   }
+#ifdef MACOS
+  rc = semaphore_destroy(mach_task_self(),par->ok_to_process);
+  if(rc != 0) perror("semaphore_destroy ok_to_process");
+  rc = semaphore_destroy(mach_task_self(),par->done_processing);
+  if(rc != 0) perror("semaphore_destroy done_processing");
+#else
+  rc = sem_destroy(&par->ok_to_process);
+  if(rc != 0) perror("sem_destroy ok_to_process");
+  rc = sem_destroy(&par->done_processing);
+  if(rc != 0) perror("sem_destroy done_processing");
+#endif
 
   return EXIT_SUCCESS;
 }
