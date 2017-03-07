@@ -50,10 +50,24 @@
 #include <sepConfig.h>
 #include	<stdio.h>
 #include	<math.h>
+#ifdef HAVE_STRING_H
 #include <string.h>
+#endif
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
+#ifdef HAVE_SYS_FILE_H
 #include	<sys/file.h>
+#endif
+#ifdef HAVE_FCNTL_H
+#include <fcntl.h>
+#endif
 #include	"../../include/vplot.h"
 #include	"../include/extern.h"
 #include	"../include/err.h"
@@ -119,7 +133,13 @@ static double   up_orient_dx, up_orient_dy;
 static double   xorigin_f, yorigin_f, xold_f, yold_f;
 static int      ttxfont, cur_color_save, overlay_save;
 
+#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
+#else
+extern char *malloc();
+extern char *calloc();
+extern char *getenv();
+#endif
 
 static void
 swab_font (char *stuff, int bytecount)

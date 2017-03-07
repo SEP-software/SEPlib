@@ -16,9 +16,14 @@
  *	Please log any further modifications made to this file:
  */
 
+#include <sepConfig.h>
 #include <stdio.h>
+#ifdef HAVE_STRING_H
 #include <string.h>
+#endif
+#ifdef HAVE_STRINGS_H
 #include <strings.h>
+#endif
 #include "../include/params.h"
 #include "../include/extern.h"
 

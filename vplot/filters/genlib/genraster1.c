@@ -19,6 +19,7 @@
  *	of dev.raster.
  */
 
+#include <sepConfig.h>
 #include <stdio.h>
 #include "../include/extern.h"
 #include "../include/err.h"
@@ -30,7 +31,7 @@
 #define OFF 0
 #define ON 1
 
-#if HAVE_STDLIB_H
+#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #else
 extern char    *malloc ();

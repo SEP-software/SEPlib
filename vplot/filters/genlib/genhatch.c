@@ -23,6 +23,7 @@
 
  */
 
+#include <sepConfig.h>
 #include <stdio.h>
 #include <math.h>
 #include "../include/enum.h"
@@ -33,7 +34,7 @@
 
 static void poly_rot (float angle, int *x, int *y);
 
-#if HAVE_STDLIB_H
+#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #else
 extern char    *malloc ();

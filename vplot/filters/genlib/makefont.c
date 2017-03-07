@@ -149,6 +149,7 @@ int             sint;
 int             integer;
 int             lengtht;
 int             lig[7];
+size_t		iolen;
 
     mde = (char *) malloc (MAX_LENGTH * sizeof (char));
     x = (int *) malloc (MAX_LENGTH * sizeof (int));
@@ -198,12 +199,21 @@ int             lig[7];
     }
     strcat (name, "_");
 
-    fgets (string, sizeof(string), stdin);
+    if(((char *) NULL) == fgets (string, sizeof(string), stdin)) {
+       perror("1. fgets ");
+       exit(EXIT_FAILURE);
+    }
     sscanf (string, "%d %d", &start, &end);
-    fgets (string, sizeof(string), stdin);
+    if(((char *) NULL) == fgets (string, sizeof(string), stdin)) {
+       perror("2. fgets ");
+       exit(EXIT_FAILURE);
+    }
     sscanf (string, "%d %d %d", &letter, &line, &space);
     space -= 2 * letter;
-    fgets (string, sizeof(string), stdin);
+    if(((char *) NULL) == fgets (string, sizeof(string), stdin)) {
+       perror("3. fgets ");
+       exit(EXIT_FAILURE);
+    }
     sscanf (string, "%d %d %d %d %d", &top, &cap, &half, &base, &bottom);
 
     sprintf (string, "%slig", name);
@@ -212,7 +222,10 @@ int             lig[7];
 
     while (1)
     {
-	fgets (string, sizeof(string), stdin);
+	if(((char *) NULL) == fgets (string, sizeof(string), stdin)) {
+           perror("4. fgets ");
+           exit(EXIT_FAILURE);
+        }
 /* At most 6 characters in a ligature! */
 	lig[0] = 0;
 	i = sscanf (string, "%d %d %d %d %d %d %d",
@@ -221,7 +234,10 @@ int             lig[7];
 	{
 	    printf ("%d,  ", 0);
 	    integer = 0;
-	    write (fd, (char *) &integer, sizeof (int));
+	    iolen = sizeof(int); if(iolen != write (fd, (char *) &integer, iolen)) {
+                perror("0. write ");
+                exit(EXIT_FAILURE);
+            }
 	    length[6] += sizeof (int);
 
 	    printf ("\n};\n\n");
@@ -232,19 +248,28 @@ int             lig[7];
 	{
 	    printf ("%d,  ", i - 1);
 	    integer = i - 1;
-	    write (fd, (char *) &integer, sizeof (int));
+	    iolen = sizeof(int); if(iolen != write (fd, (char *) &integer, iolen)) {
+                perror("1. write");
+                exit(EXIT_FAILURE);
+            }
 	    length[6] += sizeof (int);
 
 	    printf ("%d, ", lig[0]);
 	    integer = lig[0];
-	    write (fd, (char *) &integer, sizeof (int));
+	    iolen = sizeof(int); if(iolen != write (fd, (char *) &integer, iolen)) {
+                perror("2. write");
+                exit(EXIT_FAILURE);
+            }
 	    length[6] += sizeof (int);
 
 	    for (j = 1; j < i; j++)
 	    {
 		printf ("%d,", lig[j]);
 		integer = lig[j];
-		write (fd, (char *) &integer, sizeof (int));
+		iolen = sizeof(int); if(iolen != write (fd, (char *) &integer, iolen)) {
+                    perror("3. write");
+                    exit(EXIT_FAILURE);
+                }
 		length[6] += sizeof (int);
 	    }
 	    printf ("\n");
@@ -379,7 +404,10 @@ int             lig[7];
 	{
 	    printf ("%d,", xout);
 	    uint = xout;
-	    write (fd, (char *) &uint, sizeof (unsigned int));
+	    iolen = sizeof(unsigned int); if(iolen != write (fd, (char *) &uint, iolen)) {
+                perror("4. write");
+                exit(EXIT_FAILURE);
+            }
 	    length[5] += sizeof (unsigned int);
 	    if (xout == EOCBIT)
 		printf ("\n");
@@ -392,9 +420,15 @@ int             lig[7];
  */
     sprintf (string, "%scheck", name);
     fd = creat (string, 0777);
-    write (fd, (char *) "Vplot Binary fonT  \n", 20);
+    iolen = 20; if(iolen != write (fd, (char *) "Vplot Binary fonT  \n", iolen)) {
+        perror("5. write");
+        exit(EXIT_FAILURE);
+    }
     integer = FONTCHECK;
-    write (fd, (char *) &integer, sizeof (int));
+    iolen = sizeof(int); if(iolen != write (fd, (char *) &integer, iolen)) {
+        perror("6. write");
+        exit(EXIT_FAILURE);
+    }
     close (fd);
 
 /*
@@ -413,7 +447,10 @@ int             lig[7];
     {
 	printf ("%d,", addr[i]);
 	integer = addr[i];
-	write (fd, (char *) &integer, sizeof (int));
+	iolen = sizeof(int); if(iolen != write (fd, (char *) &integer, iolen)) {
+            perror("7. write");
+            exit(EXIT_FAILURE);
+        }
 	length[1] += sizeof (int);
     }
     close (fd);
@@ -426,7 +463,10 @@ int             lig[7];
     {
 	printf ("%d,", lwidth[i]);
 	sint = lwidth[i];
-	write (fd, (char *) &sint, sizeof (int));
+	iolen = sizeof(int); if(iolen != write (fd, (char *) &sint, iolen)) {
+            perror("8. write");
+            exit(EXIT_FAILURE);
+        }
 	length[2] += sizeof (int);
     }
     close (fd);
@@ -439,7 +479,10 @@ int             lig[7];
     {
 	printf ("%d,", rwidth[i]);
 	sint = rwidth[i];
-	write (fd, (char *) &sint, sizeof (int));
+	iolen = sizeof(int); if(iolen != write (fd, (char *) &sint, iolen)) {
+            perror("9. write");
+            exit(EXIT_FAILURE);
+        }
 	length[3] += sizeof (int);
     }
     close (fd);
@@ -452,7 +495,10 @@ int             lig[7];
     {
 	printf ("%d,", symb[i]);
 	sint = symb[i];
-	write (fd, (char *) &sint, sizeof (int));
+	iolen = sizeof(int); if(iolen != write (fd, (char *) &sint, iolen)) {
+            perror("10. write");
+            exit(EXIT_FAILURE);
+        }
 	length[4] += sizeof (int);
     }
     close (fd);
@@ -464,25 +510,55 @@ int             lig[7];
     sprintf (string, "%sdim", name);
     fd = creat (string, 0777);
     sint = bottom;
-    write (fd, (char *) &sint, sizeof (int));
+    iolen = sizeof(int); if(iolen != write (fd, (char *) &sint, iolen)) {
+        perror("11. write");
+        exit(EXIT_FAILURE);
+    }
     sint = base;
-    write (fd, (char *) &sint, sizeof (int));
+    iolen = sizeof(int); if(iolen != write (fd, (char *) &sint, iolen)) {
+        perror("12. write");
+        exit(EXIT_FAILURE);
+    }
     sint = half;
-    write (fd, (char *) &sint, sizeof (int));
+    iolen = sizeof(int); if(iolen != write (fd, (char *) &sint, iolen)) {
+        perror("13. write");
+        exit(EXIT_FAILURE);
+    }
     sint = cap;
-    write (fd, (char *) &sint, sizeof (int));
+    iolen = sizeof(int); if(iolen != write (fd, (char *) &sint, iolen)) {
+        perror("14. write");
+        exit(EXIT_FAILURE);
+    }
     sint = top;
-    write (fd, (char *) &sint, sizeof (int));
+    iolen = sizeof(int); if(iolen != write (fd, (char *) &sint, iolen)) {
+        perror("15. write");
+        exit(EXIT_FAILURE);
+    }
     sint = letter;
-    write (fd, (char *) &sint, sizeof (int));
+    iolen = sizeof(int); if(iolen != write (fd, (char *) &sint, iolen)) {
+        perror("16. write");
+        exit(EXIT_FAILURE);
+    }
     sint = line;
-    write (fd, (char *) &sint, sizeof (int));
+    iolen = sizeof(int); if(iolen != write (fd, (char *) &sint, iolen)) {
+        perror("17. write");
+        exit(EXIT_FAILURE);
+    }
     sint = space;
-    write (fd, (char *) &sint, sizeof (int));
+    iolen = sizeof(int); if(iolen != write (fd, (char *) &sint, iolen)) {
+        perror("18. write");
+        exit(EXIT_FAILURE);
+    }
     sint = start;
-    write (fd, (char *) &sint, sizeof (int));
+    iolen = sizeof(int); if(iolen != write (fd, (char *) &sint, iolen)) {
+        perror("19. write");
+        exit(EXIT_FAILURE);
+    }
     sint = end;
-    write (fd, (char *) &sint, sizeof (int));
+    iolen = sizeof(int); if(iolen != write (fd, (char *) &sint, iolen)) {
+        perror("20. write");
+        exit(EXIT_FAILURE);
+    }
     length[0] += 10 * sizeof (int);
     close (fd);
 
@@ -503,12 +579,18 @@ int             lig[7];
 
     sprintf (string, "%sheader", name);
     fd = creat (string, 0777);
-    write (fd, (char *) &lengtht, sizeof (int));
-    write (fd, (char *) length2, 7 * sizeof (int));
+    iolen = sizeof(int); if(iolen != write (fd, (char *) &lengtht, iolen)) {
+        perror("21. write");
+        exit(EXIT_FAILURE);
+    }
+    iolen= 7*sizeof(int); if(iolen != write (fd, (char *) length2, iolen)) {
+        perror("22. write");
+        exit(EXIT_FAILURE);
+    }
     close (fd);
 #if defined(__stdc__) || defined(__STDC__)
-        return (0);
+        return (EXIT_SUCCESS);
 #else
-	exit(0);
+	exit(EXIT_SUCCESS);
 #endif
 }

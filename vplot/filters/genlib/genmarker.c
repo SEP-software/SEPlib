@@ -102,7 +102,7 @@ char           *txbuffer = txbuf;
     else
     if (type >= 127)		/* special non-ASCII character */
     {
-	sprintf (txbuffer, "\\v%d \0", type);
+	sprintf (txbuffer, "\\v%d ", type);
 	text_marker (txbuffer, size, npts, pvec);
     }
     else			/* 0 through 5 are pre-defined; 6 through 20

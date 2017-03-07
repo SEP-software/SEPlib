@@ -18,6 +18,7 @@
  *	Make number of arguments to dev.attributes and dev.raster consistent.
  */
 
+#include <sepConfig.h>
 #include <stdio.h>
 #include "../include/pat.h"
 #include "../include/vertex.h"
@@ -26,7 +27,11 @@
 #include "../include/enum.h"
 #include "../include/attrcom.h"
 
+#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
+#else
+extern char    *malloc ();
+#endif
 
 /* Make the damn modulo function work for negative numbers */
 #define MODULO(A,B)	(((A)>=0)?((A)%(B)):(((A)%(B)+(B))%(B)))

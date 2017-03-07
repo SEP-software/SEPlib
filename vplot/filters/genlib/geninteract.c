@@ -57,7 +57,10 @@ int geninteract (
 	}
 	else
 	{
-	    fgets (string, 79, controltty);
+	    if(NULL == fgets (string, 79, controltty))
+            {
+	        ERR (WARN, name, "Sorry, problem reading string from terminal.");
+            }
 	}
 	break;
     default:
