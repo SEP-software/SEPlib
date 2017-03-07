@@ -9,6 +9,8 @@
 !!$
 !!$=head1 PARAMETERS
 !!$
+!!$=over 4
+!!$
 !!$=item vel - sepfile (required)
 !!$
 !!$ Velocity file
@@ -75,6 +77,7 @@
 !!$
 !!$ [.3]  bacground saturation
 !!$
+!!$=back
 !!$
 !!$=head1 DESCRIPTION
 !!$
