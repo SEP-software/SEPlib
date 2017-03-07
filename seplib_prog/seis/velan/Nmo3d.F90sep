@@ -176,9 +176,9 @@ program NMO3d
   vel1d=.true.
   intag="in"
   outtag="out"
+  call SEP_ADD_DOC()
   call sep_init()
   call sep_begin_prog()
-  call SEP_ADD_DOC()
   call init_3d()
 !###################
 !generic parameters#

@@ -173,8 +173,9 @@ added signal handling for vdiv by zero  Stewart A. Levin 12/5/85
 
 ADD_DEF_SEP_DOC
 
+#include <stdlib.h>
 #include <sep.main>
-MAIN()
+int MAIN(void)
   {
   int ng,nf,nf0,nt,nv,nw,ig,dg,g0,jf,ivi,ivo,nvi,nvi1,nvitemp=10,nvo,iv,iv0;
   int astrt,ap,anum,aden,annz,affovv,amute,asclrs,aspace,aend;
