@@ -74,7 +74,13 @@
 #include "../include/params.h"
 #include "../include/extern.h"
  
+#ifdef SEP
 #define GETPAR getch
+extern int getch(const char *, const char *, MIXED);
+#else
+#define GETPAR getpar
+extern int getpar(char *, char *, MIXED);
+#endif
 
 Display		*pen_display;
 GC		pen_gc;

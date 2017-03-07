@@ -442,7 +442,7 @@ static void release_event(Widget w, XtPointer client_data, XEvent *ev, Boolean *
   int rc;
   pid_t waitpid;
   char cmdbuf[BUFSIZ];
-  char parfile[9999+5];
+  char parfile[MAXPATHLEN+5];
   char *cptr;
   XButtonEvent *bev = (XButtonEvent *) ev;
   Rectangle *rect;
@@ -496,7 +496,9 @@ static void release_event(Widget w, XtPointer client_data, XEvent *ev, Boolean *
 #ifdef notdef
         freopen(pltinname[0],"r",stdin);
 #endif
-        freopen("/dev/null","r",stdin);
+        if(((FILE *) NULL) == freopen("/dev/null","r",stdin)) {
+            perror("zoom stdin reopen");
+        }
         rc = execlp(cmdbuf,cmdbuf,parfile,NULL);
         if(rc == -1) perror("Zoom attempt failed: ");
         _exit(EXIT_FAILURE);

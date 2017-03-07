@@ -215,7 +215,7 @@ float y
     POINTER = XtCreateManagedWidget("dialog1", dialogWidgetClass,
 					       offsetBox, argList, args);
     args = 0;
-    sprintf( xoff_string, "%4.2f\0", 1.0 );
+    sprintf( xoff_string, "%4.2f", 1.0 );
     XtSetArg( argList[0], XtNvalue, (XtArgVal)xoff_string ); args++;
     XtSetArg( argList[1], XtNlabel, (XtArgVal)"x-off" ); args++;
     XtSetArg( argList[2], XtNfromHoriz, POINTER); args++;
@@ -223,21 +223,21 @@ float y
 					       offsetBox, argList, args);
 
     args = 0;
-    sprintf( yoff_string, "%4.2f\0", 1.0 );
+    sprintf( yoff_string, "%4.2f", 1.0 );
     XtSetArg( argList[0], XtNvalue, (XtArgVal)yoff_string ); args++;
     XtSetArg( argList[1], XtNlabel, (XtArgVal)"y-off" ); args++;
     XtSetArg( argList[2], XtNfromHoriz, xOffset); args++;
     yOffset = XtCreateManagedWidget("dialog2", dialogWidgetClass,
 					      offsetBox, argList, args);
     args = 0;
-    sprintf( xov_string, "%4.2f\0", 0.0 );
+    sprintf( xov_string, "%4.2f", 0.0 );
     XtSetArg( argList[0], XtNvalue, (XtArgVal)xov_string ); args++;
     XtSetArg( argList[1], XtNlabel, (XtArgVal)"Oval-x" ); args++;
     XtSetArg( argList[2], XtNfromHoriz, yOffset); args++;
     XOVAL = XtCreateManagedWidget("dialog2", dialogWidgetClass,
 					      offsetBox, argList, args);
     args = 0;
-    sprintf( yov_string, "%4.2f\0", 0.0 );
+    sprintf( yov_string, "%4.2f", 0.0 );
     XtSetArg( argList[0], XtNvalue, (XtArgVal)yov_string ); args++;
     XtSetArg( argList[1], XtNlabel, (XtArgVal)"Oval-y" ); args++;
     XtSetArg( argList[2], XtNfromHoriz, XOVAL); args++;
@@ -249,7 +249,7 @@ float y
 				vpaneWidget, NULL, 0);
 
     args = 0;
-    sprintf( fat_string, "%3d\0", 0);
+    sprintf( fat_string, "%3d", 0);
     XtSetArg( argList[0], XtNvalue, (XtArgVal)fat_string ); args++;
     XtSetArg( argList[1], XtNlabel, (XtArgVal)"fat" ); args++;
     XtSetArg( argList[2], XtNleft, XtChainLeft ); args++;
@@ -257,7 +257,7 @@ float y
 					      otherBox, argList, args);
 
     args = 0;
-    sprintf( color_string, "%2d\0", 7);
+    sprintf( color_string, "%2d", 7);
     XtSetArg( argList[0], XtNvalue, (XtArgVal)color_string ); args++;
     XtSetArg( argList[1], XtNlabel, (XtArgVal)"color" ); args++;
     XtSetArg( argList[2], XtNfromHoriz, Fat); args++;
@@ -268,7 +268,7 @@ float y
 				vpaneWidget, NULL, 0);
 
     args = 0;
-    sprintf( size_string, "%6.3f\0", .25);
+    sprintf( size_string, "%6.3f", .25);
     XtSetArg( argList[0], XtNvalue, (XtArgVal)size_string ); args++;
     XtSetArg( argList[1], XtNlabel, (XtArgVal)"Size" ); args++;
     XtSetArg( argList[2], XtNfromHoriz, Color); args++;
