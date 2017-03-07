@@ -39,6 +39,8 @@
 !!$
 !!$=item nws*nmpi_threads*nomp_threads must be a multiple of aw__n
 !!$
+!!$=back
+!!$
 !!$=cut
 !!$
 !!$

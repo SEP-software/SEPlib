@@ -68,7 +68,6 @@
 !!$
 !!$=over 4
 !!$
-!!$
 !!$=item az__n (integer) (axis 3 of S, axis 5 of R)
 !!$
 !!$  Number of depth steps
@@ -185,9 +184,6 @@
 !!$
 !!$ Perform split step phase shift migration/modeling
 !!$
-!!$
-!!$
-!!$
 !!$=head1 COMMENTS
 !!$
 !!$=over 4
@@ -211,6 +207,8 @@
 !!$=item nzs must be a multiple of az__n
 !!$
 !!$=item nws*nmpi_threads*nomp_threads must be a multiple of aw__n 
+!!$
+!!$=back
 !!$
 !!$=cut
 !!$
