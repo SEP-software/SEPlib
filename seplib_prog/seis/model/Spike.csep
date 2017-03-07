@@ -94,11 +94,11 @@ B<seis/model>
 
 ADD_DEF_SEP_DOC
 
-
+#include <stdlib.h>
 #include <sep.main> 
 
-MAIN()
-{ 
+int MAIN(void)
+{
 
   int n1,n2,n3,n4,n5,n6,n7,i6;
 	float o1,o2,o3,o4,o5,o6,o7;
@@ -236,7 +236,7 @@ for(i3=0; i3 < n3; i3++){
 }
 }
 sep_end_prog();
-return(0);
+return(EXIT_SUCCESS);
 
 
 }

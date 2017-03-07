@@ -11,6 +11,7 @@
 !!$=head1 PARAMETERS
 !!$                                            
 !!$=over 4
+!!$                                            
 !!$=item migrationormodel - char*
 !!$
 !!$   [modeling]  :to do forward modeling
@@ -74,6 +75,7 @@
 !!$
 !!$ [10.] How often to print when non-master process
 !!$
+!!$=back
 !!$
 !!$=head1 CATEGORY
 !!$
@@ -86,6 +88,7 @@ use sep
 
 implicit none
 integer :: i_node,n_node,ierr
+! integer, external :: sep_thread_num
 logical stat
 
 call SEP_ADD_DOC()
