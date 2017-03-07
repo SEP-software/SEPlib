@@ -265,7 +265,7 @@ char            stringr[80];
 			}
 			if (mask == 1)
 			{
-			    fprintf (pltout, "%02.2x", outchar);
+			    fprintf (pltout, "%2.2x", outchar);
 			    mask = mask0;
 			    outchar = 0;
 			}

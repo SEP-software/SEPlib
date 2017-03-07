@@ -602,7 +602,10 @@ char           *spooldirnm;
 	    sprintf (scratch_file, "%s%s", PEN_SPOOL, "/PSPEN_XXXXXX");
 	}
 
-	mkstemp (scratch_file);
+	if(-1 == mkstemp (scratch_file))
+        {
+            ERR(WARN, name, "mkstemp() failed for vplot spool temp file.\n");
+        }
 	if ((pltout = fopen (scratch_file, "w")) == NULL)
 	{
 	    if (spooldirnm != NULL)

@@ -155,14 +155,14 @@ int             rangle;
 	bitcount++;
 	if (bitcount == 8)
 	{
-	    fprintf (pltout, "%02.2x", outchar);
+	    fprintf (pltout, "%2.2x", outchar);
 	    mask = mask0;
 	    outchar = 0;
 	    bitcount = 0;
 	}
     }
     if (bitcount != 0)
-	fprintf (pltout, "%02.2x", outchar);
+	fprintf (pltout, "%2.2x", outchar);
 
     if (count != out_of - 1)
 	return;

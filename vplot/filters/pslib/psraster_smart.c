@@ -104,7 +104,7 @@ int             rangle;
 	{
 	   	for (i=j; (i<j+80 && i<xpix*ypix); i++)
 	   	{
-	    fprintf (pltout, "%02.2x", 255 - (int) raster_block[i]);
+	    fprintf (pltout, "%2.2x", 255 - (int) raster_block[i]);
 	   	}
     	   	fprintf (pltout, "\n");
 	}
@@ -115,7 +115,7 @@ int             rangle;
 	{
 	   	for (i=j; (i<j+80 && i<xpix*ypix); i++)
 	   	{
-	    fprintf (pltout,"%02.2x", 255 - ps_grey_ras[(int) raster_block[i]]);
+	    fprintf (pltout,"%2.2x", 255 - ps_grey_ras[(int) raster_block[i]]);
 	   	}
     	   	fprintf (pltout, "\n");
 	}
@@ -129,7 +129,7 @@ int             rangle;
 	{
 		for (i=j; (i<j+80 && i<xpix*ypix); i++)
 		{
-	    	fprintf (pltout, "%02.2x%02.2x%02.2x", red[(int) raster_block[i]],green[(int) raster_block[i]],blue[(int) raster_block[i]]);
+	    	fprintf (pltout, "%2.2x%2.2x%2.2x", red[(int) raster_block[i]],green[(int) raster_block[i]],blue[(int) raster_block[i]]);
 		}
     		fprintf (pltout, "\n");
 	}

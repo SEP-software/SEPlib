@@ -103,7 +103,13 @@
 extern char    *getenv ();
 #endif
 
+#ifdef SEP
 #define GETPAR getch
+extern int getch(const char *, const char *, MIXED);
+#else
+#define GETPAR getpar
+extern int getpar( char *,  char *, MIXED);
+#endif
 
 
 #ifndef DEFAULT_PAPER_SIZE
@@ -604,7 +610,9 @@ char           *spooldirnm;
 	    sprintf (scratch_file, "%s%s", PEN_SPOOL, "/PSPEN_XXXXXX");
 	}
 
-	mkstemp (scratch_file);
+	if(-1 == mkstemp (scratch_file)) {
+            perror(scratch_file);
+        }
 	if ((pltout = fopen (scratch_file, "w")) == NULL)
 	{
 	    if (spooldirnm != NULL)

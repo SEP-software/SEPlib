@@ -51,7 +51,13 @@ extern char    *getenv ();
 #include "../include/err.h"
 #include "ps.h"
 
+#ifdef SEP
 #define GETPAR getch
+extern int getch(const char *, const char *, MIXED);
+#else
+#define GETPAR getpar
+extern int getpar(const char *, const char *, MIXED);
+#endif
 
 void psclose (int status)
 {
