@@ -8,7 +8,7 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../include")
 set(FORTRANSEP  )
 
 set(CSEP
-Create3d.csep  Headermath.csep	Synch3d.csep  Window_key.csep)
+Create3d.csep  HeaderBBox.csep	Headermath.csep	Synch3d.csep  Window_key.csep)
 
 
 
@@ -38,6 +38,7 @@ FOREACH(cprog ${CSEP})
 ENDFOREACH(cprog)
 
 TARGET_LINK_LIBRARIES(Create3d superset sep3d sep)
+TARGET_LINK_LIBRARIES(HeaderBBox sepmath sep3d sep)
 TARGET_LINK_LIBRARIES(Headermath sepaux sepvector sepconvert superset sep3d sep)
 TARGET_LINK_LIBRARIES(Synch3d superset sep3d sep)
 TARGET_LINK_LIBRARIES(Window_key superset sep3d sep)
