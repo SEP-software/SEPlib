@@ -15,11 +15,18 @@
 
 10/96 - Biondo :  Added V(elocity) color table
  */
+#include <sepConfig.h>
 #include <stdio.h>
+#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
+#endif
 #include <math.h>
+#ifdef HAVE_STRING_H
 #include <string.h>
+#endif
+#ifdef HAVE_STRINGS_H
 #include <strings.h>
+#endif
 #include <assert.h>
 #include "../include/vplot.h"
 
@@ -496,7 +503,11 @@ int NAME_TO_COLTAB (char *colname, int nocol, float *red, float *green, float *b
 	      fprintf (stderr, "Minimum allowed color in colfile is 0\n");
 	      exit (-1);
 	    }
-	  fscanf (fdc, "%f %f %f\n", red + ii, green + ii, blue + ii);
+	  if(3 != fscanf (fdc, "%f %f %f\n", red + ii, green + ii, blue + ii))
+            {
+              perror("name_to_coltab(): reading colfile");
+              exit (-1);
+            }
 	  if (red[ii] < 0.0f || green[ii] < 0.0f || blue[ii] < 0.0f)
 	    {
 	      fprintf (stderr, "Minimum allowed rgb value in colfile is 0.\n");

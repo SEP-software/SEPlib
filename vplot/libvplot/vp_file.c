@@ -23,8 +23,11 @@
  *      Added double precision _g/g versions
  */
 
+#include <sepConfig.h>
 #include <stdio.h>
+#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
+#endif
 #include "../include/vplot.h"
 #include "vp_pc.h"
 

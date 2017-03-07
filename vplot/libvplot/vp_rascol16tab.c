@@ -1,3 +1,4 @@
+#include <sepConfig.h>
 #include "../include/vplot.h"
 /*
  * vp_rascoltab
