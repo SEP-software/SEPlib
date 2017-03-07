@@ -8,7 +8,7 @@
  * Revised: stew 2/25/95 Deleted unused inline[256] variable
  */
 #include <sepConfig.h>
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 #include <string.h>
 #endif
 #include    <stdio.h>

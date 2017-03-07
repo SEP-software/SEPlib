@@ -17,7 +17,7 @@ Print program name, user, time and system in header file
 /* maketitle 7/18/97  bob: prototypes*/
  
 #include <sepConfig.h>
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 #include <string.h>
 #endif
 #include <unistd.h>

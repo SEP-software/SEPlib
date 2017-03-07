@@ -295,9 +295,8 @@ int opensock2( remhost, portstr )
 #include <signal.h>
 static int ringring;
 
-#if defined(MACOS)
 #define RETSIGTYPE void
-#endif
+
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
 static RETSIGTYPE catchem( int signo ) { ringring = 0; }

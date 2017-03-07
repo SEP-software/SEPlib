@@ -11,7 +11,7 @@
  */
 #include <sepConfig.h>
 #include <stdio.h>
-#if HAVE_UNISTD_H
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 #include "sep_main_internal.h"

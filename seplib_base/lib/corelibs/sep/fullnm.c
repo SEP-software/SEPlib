@@ -65,7 +65,13 @@ B<sep>
  */
 
 
+#include <sepConfig.h>
+
 #include <prototypes.h>
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 /* FROM GNU Bash */
 #if !defined (MAXPATHLEN) && defined (HAVE_LIMITS_H)

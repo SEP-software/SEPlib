@@ -63,6 +63,11 @@ interface
     character(C_CHAR),dimension(*) ::arg,typ
     real(C_FLOAT),dimension(*) :: val
   end function
+      integer function getch_g_f_a(arg,typ,val) bind(c,name="getch_g_f_a")
+    import
+    character(C_CHAR),dimension(*) ::arg,typ
+    real(C_DOUBLE),dimension(*) :: val
+  end function
    integer function getch_i_f_a(arg,typ,val) bind(c,name="getch_i_f_a")
     import
     character(C_CHAR),dimension(*) ::arg,typ
@@ -424,7 +429,7 @@ end function
 
 integer function tet_l_f(arg,typ,val)
   character(len=*) arg,typ
-  logical :: val
+  logical(C_BOOL) :: val
   tet_l_f= tetch_l_f(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
 end function
 
@@ -533,7 +538,7 @@ integer function het_i_f(arg,typ,val)
 end function
 integer function het_l_f(arg,typ,val)
   character(len=*) arg,typ
-  logical :: val
+  logical(C_BOOL) :: val
   het_l_f= hetch_l_f(trim(arg)//C_NULL_CHAR,typ,val)
 end function
 integer function het_f_f_a(arg,typ,val)
@@ -553,7 +558,7 @@ integer function het_i_f_a(arg,typ,val)
 end function
 integer function het_l_f_a(arg,typ,val)
   character(len=*) arg,typ
-  logical,dimension(:) :: val
+  logical(C_BOOL),dimension(:) :: val
   het_l_f_a= hetch_l_f_a(trim(arg)//C_NULL_CHAR,trim(typ)//C_NULL_CHAR,val)
 end function
 

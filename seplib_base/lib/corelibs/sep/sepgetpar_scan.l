@@ -16,7 +16,7 @@ DQ	\"([^"\n]*\"\")*[^"\n]*["\n]
  *                      of yylook->getpar_yylook, etc. for Solaris
  */
 #include <sepConfig.h>
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 #include <string.h>
 #endif
 #include <ctype.h>
@@ -37,7 +37,7 @@ static int massage();
 
 
 #define MAX_INPUT_DEPTH 10
-#if !defined(FLEX)
+#if !defined(FLEX) && !defined(FLEX_SCANNER)
 #undef input
 #define input() ((int) *(input_stack[input_depth]++))
 #undef unput

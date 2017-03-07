@@ -118,7 +118,7 @@ B<sep>
 #include <sepConfig.h>
 #include <stdio.h>
 #include <stdlib.h>
-#ifdef MACOS
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
@@ -287,7 +287,10 @@ else{
 				perror("doc()");
 				seperr("doc() source not at  %s \n",name);
 				}
-					fgets(first,5,s); 
+                                        first[0] = '\0';
+					if(((char *) NULL) ==  fgets(first,5,s)) {
+                                           perror("doc read problem ");
+					}
 					if(0==strncmp(first,"!!$",3) ||
 					 0==strncmp(first,"#$",2) ||
 					 0==strncmp(first,"/*$",3) )

@@ -7,11 +7,7 @@ implicit none
  
 interface 
 
-  subroutine erexit(string) bind(c,name="seperr")
-    import
-    character(C_CHAR), dimension(*) :: string
-  end subroutine
-    subroutine seperr(string) bind(c,name="seperr")
+  subroutine seperr(string) bind(c,name="seperr")
     import
     character(C_CHAR), dimension(*),intent(in) :: string
   end subroutine
@@ -49,6 +45,10 @@ subroutine c2forstr(str)
 end subroutine
 
 
+subroutine erexit(string)
+    character, dimension(*), intent(in) :: string
+    call seperr(string)
+end subroutine
 
 
 end module

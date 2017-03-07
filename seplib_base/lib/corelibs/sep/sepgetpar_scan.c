@@ -1,5 +1,5 @@
 
-#line 3 "sepgetpar_scan.c"
+#line 3 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -8,7 +8,7 @@
 #define FLEX_SCANNER
 #define YY_FLEX_MAJOR_VERSION 2
 #define YY_FLEX_MINOR_VERSION 5
-#define YY_FLEX_SUBMINOR_VERSION 35
+#define YY_FLEX_SUBMINOR_VERSION 37
 #if YY_FLEX_SUBMINOR_VERSION > 0
 #define FLEX_BETA
 #endif
@@ -141,15 +141,7 @@ typedef unsigned int flex_uint32_t;
 
 /* Size of default input buffer. */
 #ifndef YY_BUF_SIZE
-#ifdef __ia64__
-/* On IA-64, the buffer size is 16k, not 8k.
- * Moreover, YY_BUF_SIZE is 2*YY_READ_BUF_SIZE in the general case.
- * Ditto for the __ia64__ case accordingly.
- */
-#define YY_BUF_SIZE 32768
-#else
 #define YY_BUF_SIZE 16384
-#endif /* __ia64__ */
 #endif
 
 /* The state buf must be large enough to hold one state per character in the main buffer.
@@ -161,7 +153,12 @@ typedef unsigned int flex_uint32_t;
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
 #endif
 
-extern int yyleng;
+#ifndef YY_TYPEDEF_YY_SIZE_T
+#define YY_TYPEDEF_YY_SIZE_T
+typedef size_t yy_size_t;
+#endif
+
+extern yy_size_t yyleng;
 
 extern FILE *yyin, *yyout;
 
@@ -200,11 +197,6 @@ extern FILE *yyin, *yyout;
 
 #define unput(c) yyunput( c, (yytext_ptr)  )
 
-#ifndef YY_TYPEDEF_YY_SIZE_T
-#define YY_TYPEDEF_YY_SIZE_T
-typedef size_t yy_size_t;
-#endif
-
 #ifndef YY_STRUCT_YY_BUFFER_STATE
 #define YY_STRUCT_YY_BUFFER_STATE
 struct yy_buffer_state
@@ -222,7 +214,7 @@ struct yy_buffer_state
 	/* Number of characters read into yy_ch_buf, not including EOB
 	 * characters.
 	 */
-	int yy_n_chars;
+	yy_size_t yy_n_chars;
 
 	/* Whether we "own" the buffer - i.e., we know we created it,
 	 * and can realloc() it to grow it, and should free() it to
@@ -292,8 +284,8 @@ static YY_BUFFER_STATE * yy_buffer_stack = 0; /**< Stack as an array. */
 
 /* yy_hold_char holds the character lost when yytext is formed. */
 static char yy_hold_char;
-static int yy_n_chars;		/* number of characters read into yy_ch_buf */
-int yyleng;
+static yy_size_t yy_n_chars;		/* number of characters read into yy_ch_buf */
+yy_size_t yyleng;
 
 /* Points to current character in buffer. */
 static char *yy_c_buf_p = (char *) 0;
@@ -321,7 +313,7 @@ static void yy_init_buffer (YY_BUFFER_STATE b,FILE *file  );
 
 YY_BUFFER_STATE yy_scan_buffer (char *base,yy_size_t size  );
 YY_BUFFER_STATE yy_scan_string (yyconst char *yy_str  );
-YY_BUFFER_STATE yy_scan_bytes (yyconst char *bytes,int len  );
+YY_BUFFER_STATE yy_scan_bytes (yyconst char *bytes,yy_size_t len  );
 
 void *yyalloc (yy_size_t  );
 void *yyrealloc (void *,yy_size_t  );
@@ -548,8 +540,8 @@ static int yy_prev_more_offset = 0;
 
 char yytext[YYLMAX];
 char *yytext_ptr;
-#line 1 "sepgetpar_scan.l"
-#line 9 "sepgetpar_scan.l"
+#line 1 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
+#line 9 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 /* lexical scanning for fast getpar */
 /* Revised 3-8-86 stew  Added time stamp to enable older method of handling
  *			multiple tags.  Moved par= intiialization to
@@ -740,7 +732,7 @@ register int tlen)
 }
 
 
-#line 744 "sepgetpar_scan.c"
+#line 736 "lex.yy.c"
 
 #define INITIAL 0
 #define FOUNDTAG 1
@@ -780,7 +772,7 @@ FILE *yyget_out (void );
 
 void yyset_out  (FILE * out_str  );
 
-int yyget_leng (void );
+yy_size_t yyget_leng (void );
 
 char *yyget_text (void );
 
@@ -822,12 +814,7 @@ static int input (void );
 
 /* Amount of stuff to slurp up with each read. */
 #ifndef YY_READ_BUF_SIZE
-#ifdef __ia64__
-/* On IA-64, the buffer size is 16k, not 8k */
-#define YY_READ_BUF_SIZE 16384
-#else
 #define YY_READ_BUF_SIZE 8192
-#endif /* __ia64__ */
 #endif
 
 /* Copy whatever the last rule matched to the standard output. */
@@ -931,9 +918,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 200 "sepgetpar_scan.l"
+#line 200 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 
-#line 937 "sepgetpar_scan.c"
+#line 924 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -1062,7 +1049,7 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 201 "sepgetpar_scan.l"
+#line 201 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 {
 			 yy.vlen = yyleng-2; yy.val=suballoc(yy.vlen+1);
 			 yy.vlen = massage(yytext+1,yy.val,yy.vlen,yytext[0]);
@@ -1072,7 +1059,7 @@ YY_RULE_SETUP
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 206 "sepgetpar_scan.l"
+#line 206 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 {
 			 yy.vlen = yyleng-2; yy.val=suballoc(yy.vlen+1);
 			 yy.vlen = massage(yytext+1,yy.val,yy.vlen,yytext[0]);
@@ -1082,7 +1069,7 @@ YY_RULE_SETUP
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 211 "sepgetpar_scan.l"
+#line 211 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 {
 				 yy.vlen=yyleng; yy.val=suballoc(yy.vlen+1);
 		 		 memcpy(yy.val,yytext,yy.vlen+1); BEGIN 0;
@@ -1091,7 +1078,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 216 "sepgetpar_scan.l"
+#line 216 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 {
 			 yy.tlen=yyleng-1; yy.tag=suballoc(yy.tlen+1);
 			 memcpy(yy.tag,yytext,yy.tlen);
@@ -1100,7 +1087,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 221 "sepgetpar_scan.l"
+#line 221 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 {
 			 yy.tlen=yyleng-2; yy.tag=suballoc(yy.tlen+1);
 			 memcpy(yy.tag,yytext+1,yy.tlen);
@@ -1110,7 +1097,7 @@ YY_RULE_SETUP
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 226 "sepgetpar_scan.l"
+#line 226 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 {
                          yy.tlen=yyleng-1; yy.tag=suballoc(yy.tlen+1);
                          memcpy(yy.tag,yytext,yy.tlen);
@@ -1120,7 +1107,7 @@ YY_RULE_SETUP
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 231 "sepgetpar_scan.l"
+#line 231 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 { yy.tlen=yyleng-2; yy.tag=suballoc(yy.tlen+1);
 			  memcpy(yy.tag,yytext+1,yy.tlen);
 			  yy.tag[yy.tlen]='\0'; yy.val=NULL; return(FOUNDTAG);
@@ -1128,23 +1115,23 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 235 "sepgetpar_scan.l"
+#line 235 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 /* skip comment lines */;
 	YY_BREAK
 case 9:
-#line 237 "sepgetpar_scan.l"
+#line 237 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
-#line 237 "sepgetpar_scan.l"
+#line 237 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 ;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 238 "sepgetpar_scan.l"
+#line 238 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 ECHO;
 	YY_BREAK
-#line 1148 "sepgetpar_scan.c"
+#line 1135 "lex.yy.c"
 			case YY_STATE_EOF(INITIAL):
 			case YY_STATE_EOF(FOUNDTAG):
 				yyterminate();
@@ -1331,7 +1318,7 @@ static int yy_get_next_buffer (void)
 
 	else
 		{
-			int num_to_read =
+			yy_size_t num_to_read =
 			YY_CURRENT_BUFFER_LVALUE->yy_buf_size - number_to_move - 1;
 
 		while ( num_to_read <= 0 )
@@ -1347,7 +1334,7 @@ static int yy_get_next_buffer (void)
 
 		/* Read in more data. */
 		YY_INPUT( (&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move]),
-			(yy_n_chars), (size_t) num_to_read );
+			(yy_n_chars), num_to_read );
 
 		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
 		}
@@ -1438,7 +1425,7 @@ static int yy_get_next_buffer (void)
 	if ( ! yy_is_jam )
 		*(yy_state_ptr)++ = yy_current_state;
 
-	return yy_is_jam ? 0 : yy_current_state;
+		return yy_is_jam ? 0 : yy_current_state;
 }
 
     static void yyunput (int c, register char * yy_bp )
@@ -1453,7 +1440,7 @@ static int yy_get_next_buffer (void)
 	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
 		{ /* need to shift things up to make room */
 		/* +2 for EOB chars. */
-		register int number_to_move = (yy_n_chars) + 2;
+		register yy_size_t number_to_move = (yy_n_chars) + 2;
 		register char *dest = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[
 					YY_CURRENT_BUFFER_LVALUE->yy_buf_size + 2];
 		register char *source =
@@ -1506,7 +1493,7 @@ static int yy_get_next_buffer (void)
 
 		else
 			{ /* need more input */
-			int offset = (yy_c_buf_p) - (yytext_ptr);
+			yy_size_t offset = (yy_c_buf_p) - (yytext_ptr);
 			++(yy_c_buf_p);
 
 			switch ( yy_get_next_buffer(  ) )
@@ -1672,10 +1659,6 @@ static void yy_load_buffer_state  (void)
 	yyfree((void *) b  );
 }
 
-#ifndef __cplusplus
-extern int isatty (int );
-#endif /* __cplusplus */
-    
 /* Initializes or reinitializes a buffer.
  * This function is sometimes called more than once on the same buffer,
  * such as during a yyrestart() or at EOF.
@@ -1788,7 +1771,7 @@ void yypop_buffer_state (void)
  */
 static void yyensure_buffer_stack (void)
 {
-	int num_to_alloc;
+	yy_size_t num_to_alloc;
     
 	if (!(yy_buffer_stack)) {
 
@@ -1885,7 +1868,7 @@ YY_BUFFER_STATE yy_scan_string (yyconst char * yystr )
  * 
  * @return the newly allocated buffer state object.
  */
-YY_BUFFER_STATE yy_scan_bytes  (yyconst char * yybytes, int  _yybytes_len )
+YY_BUFFER_STATE yy_scan_bytes  (yyconst char * yybytes, yy_size_t  _yybytes_len )
 {
 	YY_BUFFER_STATE b;
 	char *buf;
@@ -1972,7 +1955,7 @@ FILE *yyget_out  (void)
 /** Get the length of the current token.
  * 
  */
-int yyget_leng  (void)
+yy_size_t yyget_leng  (void)
 {
         return yyleng;
 }
@@ -2131,7 +2114,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 238 "sepgetpar_scan.l"
+#line 238 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 
 
 	void getpar_push_input(

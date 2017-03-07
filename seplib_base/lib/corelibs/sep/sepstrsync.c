@@ -50,7 +50,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
-#if HAVE_UNISTD_H
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 #if defined(MACOS) || defined(LINUX)
