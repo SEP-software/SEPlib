@@ -237,8 +237,8 @@ MIXED		vartemp;
 
 int vpopen_name (int num)
 {
-char            string[20];
-char            outname[120];
+char            string[BUFSIZ];
+char            outname[BUFSIZ];
 static FILE    *vp_pltout = NULL;
 static int      gotwhich = 0;
 int		newout;

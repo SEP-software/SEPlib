@@ -19,6 +19,7 @@
  */
 
 #include "../include/extern.h"
+#ifdef SEP
 /*
  * Override the default places Pen wants to send "out" and "head".
  * Change them back to the normal SEP defaults.
@@ -31,3 +32,4 @@ void sepwhere (void)
 {
 return;
 }
+#endif
