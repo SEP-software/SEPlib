@@ -65,6 +65,7 @@
 #Martin Karrenbach
 #keywords:  latex tex postscript ps vplot
 
+set path=( ${SEP}/bin ${path} )
 
 if ($#argv < 1)  then
   head -42 $0 |more

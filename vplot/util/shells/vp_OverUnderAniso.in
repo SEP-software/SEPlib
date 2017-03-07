@@ -37,6 +37,7 @@
 #$DISTR
 #$
 #$=cut
+set path=( ${SEP}/bin ${path} )
 
 if ($#argv < 1)  then
 	head -25 $0 |more	

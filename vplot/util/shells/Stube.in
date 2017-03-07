@@ -29,6 +29,8 @@
 #
 # Keywords: graphics vplot tty
 #
+set path=( ${SEP}/bin ${path} )
+
 	if($TERM =~ xterm) then
 	Sxtpen $*
 	exit

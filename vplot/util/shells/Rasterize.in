@@ -18,6 +18,8 @@
 #
 # It leaves temp files around if you kill it before completion.
 #
+set path=( ${SEP}/bin ${path} )
+
 set infile=$1
 
 set tempfile = /tmp/$$temp
