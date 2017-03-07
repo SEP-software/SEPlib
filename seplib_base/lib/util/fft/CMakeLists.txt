@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 project(SEPLIB-base-lib-util-fft)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../include)
+include_directories(/usr/local/include)
+include_directories(/usr/include)
 
 set (SOURCES 
 cefft.c        fftw.f90      ft1axis.f90  ftlib1.f90  refft.c	  rvfft.c

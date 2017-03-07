@@ -81,6 +81,8 @@ B<sepfft>
  *	isign	sign of sqrt(-1)
  *	scale	scale factor; sqrt(1./nx) conserves energy
 */
+#define f2cFortran
+#include <sepfftf.h>
 #include<complex.h>
 int cvfft (float complex *x,int lx,int nx,int isign,double scale)
       {
