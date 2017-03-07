@@ -8,7 +8,10 @@ Date Created:Mon Aug 17 14:19:08 PDT 1998
 Purpose: 
 
 */	 
-#ifdef MACOS
+
+#include <sepConfig.h>
+
+#ifdef HAVE_STRING_H
 #include <string.h>
 #endif
 #define SET_SDOC 3

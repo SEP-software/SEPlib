@@ -1,6 +1,6 @@
 #define SET_SDOC 1
 #include<sepConfig.h>
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 #include <string.h>
 #endif
 #include<superset.h>
