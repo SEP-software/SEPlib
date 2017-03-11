@@ -60,10 +60,4 @@ subroutine c2forstr(str)
 end subroutine
 
 
-subroutine erexit(string)
-    character, dimension(*), intent(in) :: string
-    call seperr(string)
-end subroutine
-
-
 end module
