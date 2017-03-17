@@ -1,4 +1,4 @@
-# - Find FFTW
+# - Find SU
 # Find the native SU includes and library
 #
 #  SU_INCLUDES    - where to find su.h
