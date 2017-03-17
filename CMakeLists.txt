@@ -113,6 +113,10 @@ configure_file (
   "${PROJECT_BINARY_DIR}/sepConfig.h"
   )
 
+configure_file (
+  "${PROJECT_SOURCE_DIR}/seplib_base/include/ratsep.pl.in"
+  "${PROJECT_BINARY_DIR}/seplib_base/include/ratsep"
+  )
 
 
 INSTALL(
