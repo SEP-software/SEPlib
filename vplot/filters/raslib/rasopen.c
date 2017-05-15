@@ -47,9 +47,7 @@
 #include "raspen.h"
 
 /*#include <ppm.h>*/
-#ifdef HAVE_PPM
 #include "ppm.h"
-#endif
 
 unsigned char  *image;
 int		color_mult;
@@ -96,12 +94,8 @@ MIXED		vartemp;
 	strcmp (wstype, "ppm") == 0
      )
     {
-#ifndef HAVE_PPM
-	ERR(FATAL,name," ppm format not available ");
-#else
 	ppm_format = YES;
 	ppm_init( &sepxargc, sepxargv );
-#endif
     }
 
 

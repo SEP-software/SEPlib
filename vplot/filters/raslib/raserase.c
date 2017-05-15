@@ -43,10 +43,8 @@
 extern char    *getenv ();
 #endif
 
-#ifdef HAVE_PPM
 /*#include <ppm.h>*/
 #include "ppm.h"
-#endif
 
 void raserase (int command)
 {
@@ -90,7 +88,6 @@ int             value;
 	    ERR (FATAL, name, "Can't write raster image %d\n", counter);
 	}
     }
-#ifdef HAVE_PPM
     else if ( ppm_format )
     {
 	static int called=0;
@@ -123,7 +120,6 @@ int             value;
         }
 	pm_close( pltout );
     }
-#endif
     else
     {
 	if (default_out)
