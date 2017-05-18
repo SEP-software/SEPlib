@@ -49,7 +49,9 @@ TARGET_LINK_LIBRARIES(ppmpen ras_pen  genlib vplotutil loclib  vplot ${NETPBM_LI
 
 ADD_EXECUTABLE(Sppmpen ${SEPPEN_BASE})
 TARGET_LINK_LIBRARIES(Sppmpen ras_pen_SEP  genlib vplotutil loclib  vplot tseplib sep ${NETPBM_LIBRARY} ${X11_XAW} ${X11_XT} ${X11_LIBRARIES} m)
+install(TARGETS Sppmpen ppmpen Spspen pspen Svppen vppen Sxtpen xtpen  DESTINATION bin)
+else(NETPBM_FOUND)
+install(TARGETS  Spspen pspen Svppen vppen Sxtpen xtpen  DESTINATION bin)
 
 endif(NETPBM_FOUND)
 
-install(TARGETS Sppmpen ppmpen Spspen pspen Svppen vppen Sxtpen xtpen  DESTINATION bin)
