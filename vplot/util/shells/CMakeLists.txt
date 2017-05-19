@@ -3,8 +3,8 @@ project(SEPLIB-base-tool-makedepend)
 
 
 
-set(SCRIPTS vp_Movie Stube  vp_SideBySideAniso
-vp_Overlay	tube		      vp_SideBySideIso
+set(SCRIPTS vp_Movie   vp_SideBySideAniso
+vp_Overlay		      vp_SideBySideIso
 pstexpen	vp_OverUnderAniso
 vp_annotate vp_Unrotate
 Rasterize	vp_OverUnderIso)

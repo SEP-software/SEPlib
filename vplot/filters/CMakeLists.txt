@@ -55,3 +55,14 @@ install(TARGETS  Spspen pspen Svppen vppen Sxtpen xtpen  DESTINATION bin)
 
 endif(NETPBM_FOUND)
 
+macro(makeLink src dest target)
+ add_custom_target(${target} ALL
+   COMMAND ${CMAKE_COMMAND} -E create_symlink ${src} ${dest}
+    DEPENDS  ${src} COMMENT "mklink ${src} -> ${dest}")
+   set(LINKS ${LINKS} ${CMAKE_CURRENT_BINARY_DIR}/${dest})
+endmacro()
+makelink(Sxtpen Tube Tube_link)
+makelink(xtpen  tube tube_link)
+makelink(Sxtpen Stube Stube_link)
+
+install(PROGRAMS  ${LINKS}  DESTINATION bin)
