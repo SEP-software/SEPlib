@@ -1076,8 +1076,8 @@ end interface
 !!$=cut
   logical function valid_structure(sep3df)
     type(sep3d) :: sep3df
-    valid_structure = .FALSE.
-    if(LLE(sep3df%usage,"INPUT")) valid_structure = .TRUE.
+    valid_structure = .FALSE.    
+     if(LLE(sep3df%usage,"INPUT")) valid_structure = .TRUE.
     if(LLE(sep3df%usage,"OUTPUT")) valid_structure = .TRUE.
     if(LLE(sep3df%usage,"SCRATCH")) valid_structure = .TRUE.
   end function 
@@ -3191,7 +3191,7 @@ end interface
     if (0.ne.sep3d_rite_format(tag,structure%tag)) then
       call seperr("trouble writing out structure to disk2")
     end if
-    if (0.ne.sep3d_rite_ntraces(tag,structure%tag)) then
+        if (0.ne.sep3d_rite_ntraces(tag,structure%tag)) then
       call seperr("trouble writing out structure to disk3")
     end if
   end subroutine 
@@ -4594,7 +4594,8 @@ call c2forstr(typ)
     integer,intent(in) :: n
     real,intent(in) :: o,d
     character(len=*),intent(in) :: lab,unit
-    sep3d_set_axis=sep3d_set_axisf(trim(tag)//C_NULL_CHAR,ind,n,o,d,lab,unit)
+    sep3d_set_axis=sep3d_set_axisf(trim(tag)//C_NULL_CHAR,ind,n,o,d,trim(lab)//C_NULL_CHAR,&
+      trim(unit)//C_NULL_CHAR)
  end function
  integer function sep3d_change_dims(tag,ndim,n)
    character(len=*) ,intent(in) :: tag

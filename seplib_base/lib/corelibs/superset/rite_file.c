@@ -71,7 +71,7 @@ int ith;
 sep_3d *info;
 int i,tot,ierr,in_order;
 float one;
-char temp_ch[1024],temp_name[2049];
+char temp_ch[1024],temp_name[2049],temp2_ch[1024];
 
 
 info = tag_info_sep3d(sep3dname, INQUIRE);  /* get info on this tag */
@@ -185,14 +185,15 @@ if(1==1){
     "trouble setting no headers for tag %s \n",tag));
 
    strcpy(temp_ch,"hff=-1 gff=-1 ");
-   for(i=info->ndims+1;i < 10; i++) sprintf(temp_ch,"%s n%d=1 ",temp_ch,i);
-   auxputhead(tag,"%s",temp_ch);
-	
+   for(i=info->ndims+1;i < 10; i++) sprintf(temp2_ch,"%s n%d=1 ",temp_ch,i);
+   auxputhead(tag,"%s",temp2_ch);
+
 }
 }
 
 /*if(0!=strcmp("/scr1/bob/stemp.H",tag)){}*/
 i=1;
+
 ierr=sep3d_rite_axis(tag,1,info->n[0],info->o[0],info->d[0],
      info->label[0],info->unit[0]);
 if(ierr!=SUCCESS) return(ierr);
