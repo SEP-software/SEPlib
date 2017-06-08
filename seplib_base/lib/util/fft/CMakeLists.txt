@@ -7,7 +7,7 @@ include_directories(/usr/include)
 set (SOURCES 
 cefft.c        fftw.f90      ft1axis.f90  ftlib1.f90  refft.c	  rvfft.c
 cvfft90.c      fftwflag.f90  ft2axis.f90  ftnew.f90    rfft.f90   sep_fft.f90
- fth.f90       rowcc.f90)
+fth.f90       rowcc.f90 fake_fftw.f90)
 
 set (FORTRANS
 ftu.f90s
@@ -16,8 +16,9 @@ ftu.f90s
 if(FFTW_LIBRARIES)
 MESSAGE("FFTW INSTALLED")
 set (sppflags "-DUSE_FFTW" )
-else(FFTW_LIBRARIES)
-set(SOURCES ${SOURCES} fake_fftw.f90)
+include_directories(${FFTW_INCLUDES})
+#else(FFTW_LIBRARIES)
+#set(SOURCES ${SOURCES} fake_fftw.f90)
 endif(FFTW_LIBRARIES)
 
 FOREACH (fort ${FORTRANS})
