@@ -365,7 +365,7 @@ int ii;
     getpar ("selfdoc", "1", vartemp);
     if (in_isatty && docflag)
     {
-	for (int ii = 0; ii < doclength; ii++)
+	for (ii = 0; ii < doclength; ii++)
 	    printf ("%s\n", documentation[ii]);
 	exit (0);
     }
