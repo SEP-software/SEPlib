@@ -94,7 +94,7 @@ void sepstr_in_head( info )
 
     assert( info->entrytype == STREAMIN ); 
    
-    if( !noheader() || strcmp(info->tagname, "in")!=0 ){ 
+    if( !noheader() || strcmp(info->tagname, "in")!=0 ){
        /* input header */
        if( strchr( info->headername, '|' ) != 0 )              /* pipe  */
          open_inpipe( info ); 
@@ -143,10 +143,11 @@ void readhdr( info )
 #endif
 {
     /* int count; Never Used */
-    int flen,next;
+    int flen, next;
     /* char *hptr; Never Used */
-    int headfd,len;
+    int headfd, len;
     char *hdrbuf;
+    int it1, it2, it3;
 
 		len=STDINHEAD;
 		hdrbuf=(char*)malloc(sizeof(char)*len);
@@ -155,7 +156,9 @@ void readhdr( info )
 
     assert( info->entrytype == STREAMIN || info->entrytype == STREAMINOUT );
 
-    if( noheader()  && strcmp(info->tagname, "in")==0 ){ 
+    it1 = noheader();
+    it2 = strcmp(info->tagname, "in");
+    if( it1  && (it2 == 0) ){ 
 	info->headerbuf = (char*)malloc(18);
 	strcpy( info->headerbuf, "No input header \n");
 	info->hdrlen=16;
@@ -164,7 +167,8 @@ void readhdr( info )
 
     headfd=fileno( (info->headfile) );
 
-    if( isatty(headfd) ){
+    it3 = isatty(headfd);
+    if( it3 ){
 	info->headerbuf = (char*)malloc(18);
 	strcpy( info->headerbuf, "Input from a tty\n");
 	info->hdrlen=16;
