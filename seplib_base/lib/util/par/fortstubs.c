@@ -1,3 +1,4 @@
+#define f2cFortran
 #include "cfortran.h"
 #include <sep_par.h>
 FCALLSCSUB1(sep_close_lock,SEP_CLOSE_LOCK_,sep_close_lock_,STRING)
