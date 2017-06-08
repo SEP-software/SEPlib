@@ -552,7 +552,7 @@ char *yytext_ptr;
  *                      of yylook->getpar_yylook, etc. for Solaris
  */
 #include <sepConfig.h>
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 #include <string.h>
 #endif
 #include <ctype.h>
@@ -573,7 +573,7 @@ static int massage();
 
 
 #define MAX_INPUT_DEPTH 10
-#if !defined(FLEX)
+#if !defined(FLEX) && !defined(FLEX_SCANNER)
 #undef input
 #define input() ((int) *(input_stack[input_depth]++))
 #undef unput
@@ -2124,7 +2124,7 @@ void yyfree (void * ptr )
 	  if(input_depth++ == MAX_INPUT_DEPTH)
 		seperr("too many nested par files\n");
 	  input_stack[input_depth] = buffer;
-#if defined(FLEX)
+#if defined(FLEX) || defined(FLEX_SCANNER)
   input_state[input_depth] =yy_scan_string(input_stack[input_depth]);
 #endif
 	  if(dealloc) dealloc_stack[input_depth] = buffer;
@@ -2134,7 +2134,7 @@ void yyfree (void * ptr )
 	int
 	yywrap()
 	{
-#if defined(FLEX)
+#if defined(FLEX) || defined(FLEX_SCANNER)
  yy_delete_buffer(input_state[input_depth] );
   if(((char *) NULL) != dealloc_stack[input_depth]) {
 	free(dealloc_stack[input_depth]);
