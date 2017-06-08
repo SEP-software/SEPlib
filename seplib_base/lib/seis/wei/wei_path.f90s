@@ -38,7 +38,6 @@ real, pointer    :: dz(:),omega(:)
 real, allocatable:: slow(:,:,:)
 logical          :: adj
 integer          :: i,i1,ido,i2,ndone,fdone,nslows
-integer,external :: auxin
 
 path_z_begin=.true.
 call grab_current_wave_space_pad(wsep)
