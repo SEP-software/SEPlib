@@ -6,6 +6,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/../../corelibs/sep)
 include_directories(/usr/include)
 include_directories(/usr/local/include)
+include_directories(${FFTW_INCLUDES})
 
 
 set (SOURCES 
