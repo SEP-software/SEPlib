@@ -102,6 +102,7 @@ int lhx;
 	/* allocate space for the hetch queue */
 	info->hetch_queue = new_queue( HETCH_QUEUE_SIZE);
 	info->hqlen = HETCH_QUEUE_SIZE;
+        if(info->headfile) if(isatty(fileno(info->headfile))) return;
 	getpar_push_input(headx,0);
 	getpar_scan(info->hetch_queue,info->hqlen);
     }
