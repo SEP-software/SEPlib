@@ -1,5 +1,5 @@
 
-#line 3 "getpar_scan.c"
+#line 3 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -540,8 +540,8 @@ static int yy_prev_more_offset = 0;
 
 char yytext[YYLMAX];
 char *yytext_ptr;
-#line 1 "getpar_scan.l"
-#line 9 "getpar_scan.l"
+#line 1 "/sep/stew/seplib_git/SEPlib/vplot/filters/loclib/getpar_scan.l"
+#line 9 "/sep/stew/seplib_git/SEPlib/vplot/filters/loclib/getpar_scan.l"
 /* lexical scanning for fast getpar */
 /* Revised 3-8-86 stew  Added time stamp to enable older method of handling
  *			multiple tags.  Moved par= intiialization to
@@ -552,37 +552,39 @@ char *yytext_ptr;
  *                      of yylook->getpar_yylook, etc. for Solaris
  * Revised 3=26=15 stew drop suballoc 
  */
-#include <sitedef.h>
+#include <sepConfig.h>
 #include "../include/extern.h"
-#if HAVE_STRING_H
+extern void seperr(const char *, ... );
+#ifdef HAVE_STRING_H
 #include <string.h>
 #endif
-#if HAVE_STDLIB_H
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
-#if HAVE_CTYPE_H
+#ifdef HAVE_CTYPE_H
 #include <ctype.h>
 #endif
 #include "../loclib/fastpar.h"
-extern ssize_t read (int __fd, void *__buf, size_t __nbytes) __wur;
-static int massage(char *string,char *out,int len,int quote);
-
-#if HAVE_SYS_TYPES_H
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif
-#if HAVE_SYS_UIO_H
+#ifdef HAVE_SYS_UIO_H
 #include <sys/uio.h>
 #endif
-#if HAVE_UNISTD_H
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#if HAVE_FCNTL_H
+#ifdef HAVE_FCNTL_H
 #include <fcntl.h>
 #endif
+static int massage(char *string,char *out,int len,int quote);
 
 
 #define MAX_INPUT_DEPTH 10
-#if !defined(FLEX)
+#if !defined(FLEX) && !defined(FLEX_SCANNER)
 #undef input
 #define input() ((int) *(input_stack[input_depth]++))
 #undef unput
@@ -684,7 +686,7 @@ void getpar_stack_par(char *val)
     if(len != read(fd,buffer+1,len)) {
        perror("getpar_stack_par()");
        exit(-1);
-    }
+    }   
     buffer[len+1]='\n';
     buffer[len+2]='\0';
 
@@ -747,7 +749,7 @@ register int tlen)
 }
 
 
-#line 731 "getpar_scan.c"
+#line 753 "lex.yy.c"
 
 #define INITIAL 0
 #define FOUNDTAG 1
@@ -933,9 +935,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 195 "getpar_scan.l"
+#line 217 "/sep/stew/seplib_git/SEPlib/vplot/filters/loclib/getpar_scan.l"
 
-#line 919 "getpar_scan.c"
+#line 941 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -1064,7 +1066,7 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 196 "getpar_scan.l"
+#line 218 "/sep/stew/seplib_git/SEPlib/vplot/filters/loclib/getpar_scan.l"
 {
 			 yy.vlen = yyleng-2; yy.val=alloc(yy.vlen+1);
 			 yy.vlen = massage(yytext+1,yy.val,yy.vlen,yytext[0]);
@@ -1074,7 +1076,7 @@ YY_RULE_SETUP
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 201 "getpar_scan.l"
+#line 223 "/sep/stew/seplib_git/SEPlib/vplot/filters/loclib/getpar_scan.l"
 {
 			 yy.vlen = yyleng-2; yy.val=alloc(yy.vlen+1);
 			 yy.vlen = massage(yytext+1,yy.val,yy.vlen,yytext[0]);
@@ -1084,7 +1086,7 @@ YY_RULE_SETUP
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 206 "getpar_scan.l"
+#line 228 "/sep/stew/seplib_git/SEPlib/vplot/filters/loclib/getpar_scan.l"
 {
 				 yy.vlen=yyleng; yy.val=alloc(yy.vlen+1);
 		 		 memcpy(yy.val,yytext,yy.vlen+1); BEGIN 0;
@@ -1093,7 +1095,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 211 "getpar_scan.l"
+#line 233 "/sep/stew/seplib_git/SEPlib/vplot/filters/loclib/getpar_scan.l"
 {
 			 yy.tlen=yyleng-1; yy.tag=alloc(yy.tlen+1);
 			 memcpy(yy.tag,yytext,yy.tlen);
@@ -1102,7 +1104,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 216 "getpar_scan.l"
+#line 238 "/sep/stew/seplib_git/SEPlib/vplot/filters/loclib/getpar_scan.l"
 {
 			 yy.tlen=yyleng-2; yy.tag=alloc(yy.tlen+1);
 			 memcpy(yy.tag,yytext+1,yy.tlen);
@@ -1112,7 +1114,7 @@ YY_RULE_SETUP
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 221 "getpar_scan.l"
+#line 243 "/sep/stew/seplib_git/SEPlib/vplot/filters/loclib/getpar_scan.l"
 {
                          yy.tlen=yyleng-1; yy.tag=alloc(yy.tlen+1);
                          memcpy(yy.tag,yytext,yy.tlen);
@@ -1122,7 +1124,7 @@ YY_RULE_SETUP
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 226 "getpar_scan.l"
+#line 248 "/sep/stew/seplib_git/SEPlib/vplot/filters/loclib/getpar_scan.l"
 { yy.tlen=yyleng-2; yy.tag=alloc(yy.tlen+1);
 			  memcpy(yy.tag,yytext+1,yy.tlen);
 			  yy.tag[yy.tlen]='\0'; yy.val=NULL; return(FOUNDTAG);
@@ -1130,23 +1132,23 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 230 "getpar_scan.l"
+#line 252 "/sep/stew/seplib_git/SEPlib/vplot/filters/loclib/getpar_scan.l"
 /* skip comment lines */;
 	YY_BREAK
 case 9:
-#line 232 "getpar_scan.l"
+#line 254 "/sep/stew/seplib_git/SEPlib/vplot/filters/loclib/getpar_scan.l"
 case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
-#line 232 "getpar_scan.l"
+#line 254 "/sep/stew/seplib_git/SEPlib/vplot/filters/loclib/getpar_scan.l"
 ;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 233 "getpar_scan.l"
+#line 255 "/sep/stew/seplib_git/SEPlib/vplot/filters/loclib/getpar_scan.l"
 ECHO;
 	YY_BREAK
-#line 1130 "getpar_scan.c"
+#line 1152 "lex.yy.c"
 			case YY_STATE_EOF(INITIAL):
 			case YY_STATE_EOF(FOUNDTAG):
 				yyterminate();
@@ -1674,10 +1676,6 @@ static void yy_load_buffer_state  (void)
 	yyfree((void *) b  );
 }
 
-#ifndef __cplusplus
-extern int isatty ( int );
-#endif
-
 /* Initializes or reinitializes a buffer.
  * This function is sometimes called more than once on the same buffer,
  * such as during a yyrestart() or at EOF.
@@ -2133,7 +2131,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 233 "getpar_scan.l"
+#line 255 "/sep/stew/seplib_git/SEPlib/vplot/filters/loclib/getpar_scan.l"
 
 
 	void getpar_push_input(register char *buffer,register int dealloc)
@@ -2141,7 +2139,7 @@ void yyfree (void * ptr )
 	  if(input_depth++ == MAX_INPUT_DEPTH)
 		seperr("too many nested par files\n");
 	  input_stack[input_depth] = buffer;
-#if defined(FLEX)
+#if defined(FLEX) || defined(FLEX_SCANNER)
   input_state[input_depth] =yy_scan_string(input_stack[input_depth]);
 #endif
 	  if(dealloc) dealloc_stack[input_depth] = buffer;
@@ -2151,7 +2149,7 @@ void yyfree (void * ptr )
 	int
 	yywrap()
 	{
-#if defined(FLEX)
+#if defined(FLEX) || defined(FLEX_SCANNER)
  yy_delete_buffer(input_state[input_depth] );
   if(((char *) NULL) != dealloc_stack[input_depth]) {
 	free(dealloc_stack[input_depth]);

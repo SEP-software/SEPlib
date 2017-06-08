@@ -258,7 +258,7 @@ register int tlen)
 	  if(input_depth++ == MAX_INPUT_DEPTH)
 		seperr("too many nested par files\n");
 	  input_stack[input_depth] = buffer;
-#if defined(FLEX)
+#if defined(FLEX) || defined(FLEX_SCANNER)
   input_state[input_depth] =yy_scan_string(input_stack[input_depth]);
 #endif
 	  if(dealloc) dealloc_stack[input_depth] = buffer;
@@ -268,7 +268,7 @@ register int tlen)
 	int
 	yywrap()
 	{
-#if defined(FLEX)
+#if defined(FLEX) || defined(FLEX_SCANNER)
  yy_delete_buffer(input_state[input_depth] );
   if(((char *) NULL) != dealloc_stack[input_depth]) {
 	free(dealloc_stack[input_depth]);
