@@ -51,7 +51,11 @@ find_package(SU)
 if(SU_LIBRARIES)
 set(SU_SUPPORT true)
 endif(SU_LIBRARIES)
+<<<<<<< HEAD
 find_package(FFTW)
+=======
+find_package(FFTW )
+>>>>>>> 50eade7c860b7705e35aedb024e79bd890f83f20
 find_package(PBM)
 
 
