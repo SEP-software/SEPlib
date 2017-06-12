@@ -51,7 +51,8 @@ find_package(SU)
 if(SU_LIBRARIES)
 set(SU_SUPPORT true)
 endif(SU_LIBRARIES)
-find_package(FFTW )
+find_package(FFTW)
+find_package(PBM)
 
 
 INCLUDE (CheckIncludeFiles)
