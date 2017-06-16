@@ -5,7 +5,7 @@
 ! Reference velocity selection by a generalized Lloyd method(Clapp 2002)
 !
 module lloyd_mod 
-  use quantile_mod
+  use gee_quantile_mod
   use sep
   implicit none
   real, private, save :: min_r_pct,min_s_pct,minme,maxme,slow_own
@@ -32,7 +32,7 @@ module lloyd_mod
     real :: array(:),near(:)
     do ib=1,nn 
       i=real(ib)*real(size(array))/real(nn+1)
-      near(ib)=quantile(i,array)
+      near(ib)=gee_quantile(i,array)
     end do
   end subroutine 
   subroutine mean_init(nar,array,nn,near)

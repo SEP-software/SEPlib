@@ -13,7 +13,7 @@ set (sppflags "-DUSE_FFTW" )
 set(FSOURCES ${FSOURCES}
 	  wei_fk_share.f90s  wei_path.f90s      wei_timers.f90s
 weiattr.f90s	  wei_flags.f90s     wei_pspi.f90s      wei_verb.f90s
-wei_basics.f90s	  wei_image.f90s     wei_quantile.f90s  wei_wavespace.f90s
+wei_basics.f90s	  wei_image.f90s     wei_wavespace.f90s
 wei_cam.f90s	  wei_imaging.f90s   wei_run.f90s       wei_wem.f90s
 weicig.f90s	  wei_kmap.f90s	    wei_sll.f90s       wei_xmap.f90s
 wei_data.f90s	  wei_mem.f90s	    wei_slow.f90s
