@@ -681,7 +681,7 @@ int cleanup (void)
     if (!allowecho)
     {
 /*#ifdef SOLARIS*/
-#if defined(SOLARIS) || defined(LINUX)
+#if defined(SOLARIS) || defined(LINUX) || defined(__APPLE__) || defined(MACOS)
 	ioctl (pltoutfd, TCSETAW, (char *) (&tty_clean_state));
 #else
 	ioctl (pltoutfd, TIOCLSET, (char *) (&tty_clean_local_mode));
