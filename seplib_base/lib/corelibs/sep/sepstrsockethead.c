@@ -14,7 +14,7 @@
 extern int errno;
 #endif
 
-#if defined(MACOS) || defined(LINUX)
+#if defined(__APPLE__) || defined(LINUX)
 #define USE_SOCKETS
 #endif
 #ifdef HAVE_UNISTD_H

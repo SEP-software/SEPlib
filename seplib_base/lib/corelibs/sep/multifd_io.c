@@ -23,7 +23,7 @@
  */
 
 #include <sepConfig.h>
-#if defined(HAVE_FCNTL_H) || defined(MACOS)
+#if defined(HAVE_FCNTL_H) || defined(__APPLE__)
 #include <fcntl.h>
 #endif
 
@@ -32,7 +32,7 @@
 #include <string.h>
 
 
-#if defined(HAVE_ERRNO_H) || defined(MACOS)
+#if defined(HAVE_ERRNO_H) || defined(__APPLE__)
 #include <errno.h>
 #endif
 

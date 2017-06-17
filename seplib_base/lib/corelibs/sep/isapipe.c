@@ -74,7 +74,7 @@ DISTR
 #include <sys/types.h>
 #include <sys/file.h>
 
-#if defined (HAVE_ERRNO_H) || defined(MACOS)
+#if defined (HAVE_ERRNO_H) || defined(__APPLE__)
 #include <errno.h>
 #endif
 

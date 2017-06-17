@@ -19,7 +19,7 @@
    Modified Robert  Clapp 6/1/99 Introduce GNU defs, include possixstat.h
  */
 #include <sepConfig.h>
-#if defined (HAVE_FCNTL_H) || defined(MACOS)
+#if defined (HAVE_FCNTL_H) || defined(__APPLE__)
 #include <fcntl.h>
 #endif
 

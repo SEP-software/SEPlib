@@ -93,7 +93,7 @@
 
 #include <sys/types.h>
 
-#if defined(HAVE_ERRNO_H) || defined(MACOS)
+#if defined(HAVE_ERRNO_H) || defined(__APPLE__)
 #include <errno.h>
 #else
 
@@ -117,7 +117,7 @@ extern int errno;
 #include <netdb.h>
 #include <string.h>
 #include <unistd.h>
-#if defined (HAVE_STDLIB_H) || defined(MACOS)
+#if defined (HAVE_STDLIB_H) || defined(__APPLE__)
 #include<stdlib.h>
 #else
 extern int atoi();

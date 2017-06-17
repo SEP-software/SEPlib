@@ -53,7 +53,7 @@ KEYWORDS: filename find
 #include <sys/stat.h>
 
 
-#if defined(HAVE_DIRENT_H) || defined(MACOS)
+#if defined(HAVE_DIRENT_H) || defined(__APPLE__)
 # include <dirent.h>
 #define NAMLEN(dirent) strlen((dirent)->d_name)
 #else

@@ -31,7 +31,7 @@ Check if stream is closed and available for reuse
 
 
 
-#if defined(HAVE_ERRNO_H) || defined(MACOS)
+#if defined(HAVE_ERRNO_H) || defined(__APPLE__)
 #include <errno.h>
 #endif
 

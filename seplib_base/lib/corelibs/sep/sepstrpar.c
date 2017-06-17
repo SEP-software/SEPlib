@@ -47,7 +47,7 @@ extern char **sepxargv;
 #define REGC 1
 #endif
 
-#if defined(MACOS) || defined(CYGWIN)
+#if defined(__APPLE__) || defined(CYGWIN)
 #define re_comp regcomp
 #define re_exec regexec
 #endif

@@ -43,7 +43,7 @@
 #endif
 #include <string.h>
 
-#if defined(HAVE_ERRNO_H) || defined(MACOS)
+#if defined(HAVE_ERRNO_H) || defined(__APPLE__)
 #include <errno.h>
 #else
 
@@ -59,7 +59,7 @@ extern int errno;
 #include <assert.h>
 #include <unistd.h>
 
-#if defined(MACOS) || defined(LINUX)
+#if defined(__APPLE__) || defined(LINUX)
 #define USE_SOCKETS
 #endif
 #include "streamlist.h"

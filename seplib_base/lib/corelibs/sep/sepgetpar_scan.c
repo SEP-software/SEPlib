@@ -557,7 +557,7 @@ char *yytext_ptr;
 #endif
 #include <ctype.h>
 #include <unistd.h>
-#ifdef MACOS
+#ifdef __APPLE__
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <fcntl.h>

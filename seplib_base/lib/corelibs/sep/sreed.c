@@ -117,18 +117,18 @@ Modified: Robert Clapp 6-1-99 Switched to GNU Prototypes
 #include <sepcube.h>
 #include "sep_main_internal.h"
 
-#if defined(HAVE_SYS_TYPES_H) || defined(MACOS)
+#if defined(HAVE_SYS_TYPES_H) || defined(__APPLE__)
 #include <sys/types.h>
 #endif
-#if defined(HAVE_SYS_SOCKET_H) || defined(MACOS)
+#if defined(HAVE_SYS_SOCKET_H) || defined(__APPLE__)
 #include <sys/socket.h>
 #endif
 
-#if defined(HAVE_RPC_RPC_H) || defined(MACOS)
+#if defined(HAVE_RPC_RPC_H) || defined(__APPLE__)
 #include <rpc/rpc.h>
 #endif
 
-#if defined(HAVE_RPC_TYPES_H) || defined(MACOS)
+#if defined(HAVE_RPC_TYPES_H) || defined(__APPLE__)
 #include <rpc/types.h>
 #endif
 

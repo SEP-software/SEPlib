@@ -53,7 +53,7 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#if defined(MACOS) || defined(LINUX)
+#if defined(__APPLE__) || defined(LINUX)
 #define USE_SOCKETS
 #endif
 #include <sepcube.h>

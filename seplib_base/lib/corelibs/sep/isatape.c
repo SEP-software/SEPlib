@@ -41,7 +41,7 @@ KEYWORDS: tape seek
 #if defined(HAVE_SYS_TYPES_H)
 #include <sys/types.h>
 #endif
-#ifdef MACOS
+#ifdef __APPLE__
 #include <unistd.h>
 #endif
 
@@ -73,7 +73,7 @@ int fd;
  *
  */
 
-#if defined(HAVE_SYS_IOCTL_H) &&  !defined(SGI) && !defined(MACOS)
+#if defined(HAVE_SYS_IOCTL_H) &&  !defined(SGI) && !defined(__APPLE__)
 #include <sys/ioctl.h>
 
 
