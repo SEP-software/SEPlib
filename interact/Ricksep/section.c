@@ -1,4 +1,4 @@
-#include <sitedef.h>
+#include <sepConfig.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <math.h>

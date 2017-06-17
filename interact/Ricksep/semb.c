@@ -9,7 +9,7 @@ semblance and nmo in c
 */
 
 
-#include<sitedef.h>
+#include<sepConfig.h>
 #if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
 #ifdef SEPLIB
 int create_vel(int *location, float *velocity);

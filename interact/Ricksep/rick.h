@@ -1,6 +1,6 @@
 #ifndef RICK_H_
 #define RICK_H_
-#include <sitedef.h>
+#include <sepConfig.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #if defined(XAW)

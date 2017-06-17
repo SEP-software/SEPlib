@@ -1,4 +1,4 @@
-#include <sitedef.h>
+#include <sepConfig.h>
 #ifdef __APPLE__
 #include <fcntl.h>
 #endif

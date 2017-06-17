@@ -1,4 +1,4 @@
-#include <sitedef.h>
+#include <sepConfig.h>
 #include <math.h>
 #if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
 /*

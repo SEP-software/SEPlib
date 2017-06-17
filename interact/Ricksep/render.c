@@ -1,4 +1,4 @@
-#include <sitedef.h>
+#include <sepConfig.h>
 #include <math.h>
 #if HAVE_UNISTD_H
 #include <unistd.h>

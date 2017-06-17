@@ -8,7 +8,7 @@ Dummy default functions
 
 */
 
-#include<sitedef.h>
+#include<sepConfig.h>
 #if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
 
 #include <rick.h> 
