@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <sys/types.h>
-#if defined(HAVE_SYS_PARAM_H) || defined(MACOS)
+#if defined(HAVE_SYS_PARAM_H) || defined(__APPLE__)
 #include <sys/param.h>
 #endif
 #include <sys/stat.h>
@@ -21,7 +21,7 @@
 #include <time.h>
 #include <errno.h>
 
-#if defined(HAVE_UTIME_H) || defined(MACOS)
+#if defined(HAVE_UTIME_H) || defined(__APPLE__)
 #include <utime.h>
 #endif
 
