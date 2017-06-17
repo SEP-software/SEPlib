@@ -13,7 +13,7 @@
 #include<segy.h>
 segy tr;
 #endif
-#ifdef MACOS
+#ifdef __APPLE__
 #include <fcntl.h>
 #endif
 

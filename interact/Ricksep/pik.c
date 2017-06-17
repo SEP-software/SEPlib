@@ -1,5 +1,5 @@
 #include <sitedef.h>
-#ifdef MACOS
+#ifdef __APPLE__
 #include <unistd.h>
 #endif
 #if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)

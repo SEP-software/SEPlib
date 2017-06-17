@@ -1,5 +1,5 @@
 #include <sitedef.h>
-#ifdef MACOS
+#ifdef __APPLE__
 #include <fcntl.h>
 #endif
 #if HAVE_UNISTD_H
