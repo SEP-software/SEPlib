@@ -329,7 +329,7 @@ main(int argc, char **argv)
 	initargs(argc, argv);
    ADD_SEP_DOC
    doc(SOURCE);
-	/* requestdoc(1); */ /* stdin not used */
+	requestdoc(-1); /* dummy to pull in CWP xargc, xargv symbols */
 
    getch_add_string("noheader=y");
   handle_additional();
