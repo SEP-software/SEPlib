@@ -189,7 +189,7 @@
 /*
  * signal catching
  */
-#if defined(MACOS)
+#if defined(__APPLE__)
 void            cleanup (int);
 #else
 #if defined(SIGFNC_RTN_VOID)
@@ -200,17 +200,17 @@ int             cleanup (void);
 #endif
 int             signum[] =
 {
-#if defined(LINUX) || defined(MACOS)
+#if defined(LINUX) || defined(__APPLE__)
  SIGHUP, SIGINT, SIGQUIT, SIGIOT, SIGBUS, SIGPIPE, SIGTERM, SIGXCPU, SIGXFSZ
 #else
  SIGHUP, SIGINT, SIGQUIT, SIGIOT, SIGEMT, SIGPIPE, SIGTERM, SIGXCPU, SIGXFSZ
 #endif
 };
 #define NOSIG (sizeof (signum)/sizeof (int))	/* number of signals caught */
-#if defined(SOLARIS ) || defined(LINUX) || defined(MACOS)
+#if defined(SOLARIS ) || defined(LINUX) || defined(__APPLE__)
 struct sigaction   errhandler =
 {
-#if defined(LINUX) || defined(MACOS)
+#if defined(LINUX) || defined(__APPLE__)
 #ifdef LINUX
  cleanup, 0, 0
 #else
@@ -222,7 +222,7 @@ struct sigaction   errhandler =
 };
 struct sigaction   ignored =
 {
-#if defined(LINUX) || defined(MACOS)
+#if defined(LINUX) || defined(__APPLE__)
  SIG_IGN, 0, 0
 #else
  0, SIG_IGN, 0
@@ -387,12 +387,12 @@ int ii;
     if (getpar ("signal", "s", (MIXED) string) == 0)
     {
 /*#ifdef SOLARIS*/
-#if defined(SOLARIS) || defined(LINUX) || defined(MACOS)
+#if defined(SOLARIS) || defined(LINUX) || defined(__APPLE__)
         sigfillset(&(errhandler.sa_mask));
 #endif
 	for (ii = 0; ii < NOSIG; ++ii)
 	{
-#if defined(SOLARIS) || defined(LINUX) || defined(MACOS)
+#if defined(SOLARIS) || defined(LINUX) || defined(__APPLE__)
 	    if (-1 == sigaction (signum[ii], &ignored, &oldvec))
 	    {
 		ERR (FATAL, name, "Bad sigvec call!");
@@ -655,7 +655,7 @@ int ii;
 
 #if defined(HAVE_TERMIO_H)
 #else /* USG */
-#ifdef MACOS
+#ifdef __APPLE__
 /*ARGSUSED*/
 void cleanup (int signum)
 #else
@@ -667,7 +667,7 @@ int cleanup (void)
 #endif
 {
 #ifndef SOLARIS
-#if defined(LINUX) || defined(MACOS)
+#if defined(LINUX) || defined(__APPLE__)
 #else
     sigblock (~(SIGKILL | SIGSTOP | SIGCONT));
 #endif
@@ -696,7 +696,7 @@ int cleanup (void)
 #endif
     }
     exit (0);
-#if !defined(SIGFNC_RTN_VOID) && !defined(MACOS)
+#if !defined(SIGFNC_RTN_VOID) && !defined(__APPLE__)
 /*NOTREACHED*/
     return 0;
 #endif
