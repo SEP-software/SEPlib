@@ -189,6 +189,9 @@ int             line_count;
      */
     piped_in = ioctl ((fileno (stdin)),
 #if defined(HAVE_TERMIOS_H) || defined(HAVE_SYS_TERMIOS_H)
+#ifndef TCGETA
+#define TCGETA TIOCGETA
+#endif
 	TCGETA,
 #else
 	TIOCGETP,

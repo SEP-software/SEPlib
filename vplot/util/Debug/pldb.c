@@ -117,10 +117,7 @@ int             doclength =
 #ifdef HAVE_STDLIB_H
 #include        <stdlib.h>
 #endif
-#ifdef HAVE_SYS_IOCTL_H
-#include	<sys/ioctl.h>
-#endif
-#if defined(HAVE_TERMIOS_H)
+#if defined(HAVE_TERMIOS_H) || defined(__APPLE__)
 #include        <termios.h>
 #else
 #if defined(HAVE_SYS_TERMIOS_H)
@@ -134,6 +131,9 @@ int             doclength =
 #endif
 #endif
 #endif
+#endif
+#ifdef HAVE_SYS_IOCTL_H
+#include	<sys/ioctl.h>
 #endif
 #include	<ctype.h>
 #include	"../../include/vplot.h"
@@ -187,6 +187,9 @@ int             retstat = 0;
      */
     piped_in = ioctl ((fileno (stdin)),
 #if defined(HAVE_TERMIOS_H) || defined(HAVE_SYS_TERMIOS_H)
+#ifndef TCGETA
+#define TCGETA TIOCGETA
+#endif
 	TCGETA,
 #else
 	TIOCGETP,
