@@ -1,4 +1,4 @@
-#include <sitedef.h>
+#include <sepConfig.h>
 #if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
 /*
 data axis to image axis map object

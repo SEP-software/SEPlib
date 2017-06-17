@@ -671,7 +671,7 @@ B<interact>
 /*
 main program code
 */
-#include <sitedef.h>
+#include <sepConfig.h>
 #if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>

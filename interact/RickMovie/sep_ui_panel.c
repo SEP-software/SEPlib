@@ -1,4 +1,4 @@
-#include <sitedef.h>
+#include <sepConfig.h>
 #if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
 /*
 user interface: permanent control panel plus various popup panels
