@@ -5,6 +5,11 @@ include_directories("${CMAKE_CURRENT_BINARY_DIR}/../../../seplib_base/lib/coreli
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../seplib_base/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../include")
 
+if(FFTW_LIBRARIES)
+MESSAGE("FFTW INSTALLED")
+set (sppflags "-DUSE_FFTW" )
+include_directories(${FFTW_INCLUDES})
+endif(FFTW_LIBRARIES)
 
 set(FORTRANSEP 
 Cfft.F90sep	Fx2d.F90sep	MostlyCausal.F90sep	Transf.F90sep
@@ -23,12 +28,17 @@ PCAcluster.csep
 
 
 FOREACH(fort ${FORTRANSEP})
-  STRING(REGEX REPLACE ".F90sep\$" ".f90" fortFile "${fort}")
+  STRING(REGEX REPLACE ".F90sep\$" ".f90s" fortFileS "${fort}")
+  STRING(REGEX REPLACE ".f90s\$" ".f90" fortFile ${fortFileS})
   STRING(REGEX REPLACE ".F90sep\$" "" prog "${fort}")
   set(PROGS "${PROGS} ${prog}")
-   ADD_CUSTOM_COMMAND(OUTPUT  "${fortFile}"
-     COMMAND  ${CMAKE_CURRENT_SOURCE_DIR}/../../../seplib_base/include/sep_doc_it <${CMAKE_CURRENT_SOURCE_DIR}/${fort} -fortran  >${fortFile}
+
+   ADD_CUSTOM_COMMAND(OUTPUT  "${fortFileS}"
+     COMMAND  ${CMAKE_CURRENT_SOURCE_DIR}/../../../seplib_base/include/sep_doc_it <${CMAKE_CURRENT_SOURCE_DIR}/${fort} -fortran  >${fortFileS}
      DEPENDS "${fort}")
+  ADD_CUSTOM_COMMAND(OUTPUT "${fortFile}"
+    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/../../../seplib_base/tools/spp/spp < ${fortFileS} ${sppflags} >${fortFile}
+     DEPENDS "${fortFileS}")
     ADD_EXECUTABLE(${prog}  ${prog}.f90)
    install(TARGETS ${prog} DESTINATION bin)
 ENDFOREACH(fort)
@@ -59,7 +69,7 @@ TARGET_LINK_LIBRARIES(Envelope sepclassutil sepfilter sepfft sepvector sep3d sep
 TARGET_LINK_LIBRARIES(Median sepaux sep3d sep)
 TARGET_LINK_LIBRARIES(Smooth superset sep3d sep)
 TARGET_LINK_LIBRARIES(Noise  sepmath superset sep3d sep)
-TARGET_LINK_LIBRARIES(FFT5D sepfft sepaux sep3d sep)
+TARGET_LINK_LIBRARIES(FFT5D sepfft sepaux sep3d sep ${FFTW_LIBRARIES})
 TARGET_LINK_LIBRARIES(Smooth superset sep3d sep)
 TARGET_LINK_LIBRARIES(Miss  sepgeef90 sepclassutil sep3d sep)
 TARGET_LINK_LIBRARIES(Pef sepgeef90 sepclassutil superset sep3d sep)

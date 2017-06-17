@@ -68,12 +68,15 @@ program FFT5d_
 !! input  is  z- hx- hy- mx- my-ro
 !! output is kz-khx-khy-kmx-kmy-ro
 
-#ifndef USE_FFTW
-  use fftw_sep_fake_mod
-#endif
   use sep
   use utilities_mod
+#ifdef USE_FFTW
+  use, intrinsic :: iso_c_binding
+  include "fftw3.f03"
+#else
   use fftw_flags_mod
+  use fftw_sep_fake_mod
+#endif
 
   logical :: adj, verb
   integer :: stat,ierr
