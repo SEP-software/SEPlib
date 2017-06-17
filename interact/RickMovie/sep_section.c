@@ -6,7 +6,7 @@ plot sections and profiles
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#if defined(MACOS) || defined(LINUX)
+#if defined(__APPLE__) || defined(LINUX)
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>

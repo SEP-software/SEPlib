@@ -7,7 +7,7 @@ pick object contains screen pick, map axis, view configuration and picking
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <stdlib.h>
-#ifdef MACOS
+#ifdef __APPLE__
 #include <unistd.h>
 #include <fcntl.h>
 #endif

@@ -8,7 +8,7 @@ The eighth bit of the data bytes stores the region mark.
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <stdlib.h>
-#ifdef MACOS
+#ifdef __APPLE__
 #include <unistd.h>
 #include <fcntl.h>
 #endif

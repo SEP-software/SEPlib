@@ -7,7 +7,7 @@ one animator shared between all parts of a view
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <stdlib.h>
-#ifdef MACOS
+#ifdef __APPLE__
 #include <unistd.h>
 #include <fcntl.h>
 #endif

@@ -10,7 +10,7 @@ contains optimized subroutines for rapid raster rendering
 #if HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#if defined(MACOS) || defined(LINUX)
+#if defined(__APPLE__) || defined(LINUX)
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>

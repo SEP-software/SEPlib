@@ -7,7 +7,7 @@ does window, zoom, frame tracking, and tic labels
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <stdlib.h>
-#if defined(MACOS) || defined(LINUX)
+#if defined(__APPLE__) || defined(LINUX)
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
