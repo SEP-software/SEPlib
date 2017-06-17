@@ -20,9 +20,9 @@ static char *sccsid = "@(#)fgrep.c	4.2 (Berkeley) 10/20/82";
 #include <unistd.h>
 #endif
 #include <ctype.h>
-#if defined(MACOS) || defined(LINUX)
+#if defined(__APPLE__) || defined(LINUX)
 #include <sys/types.h>
-#ifdef MACOS
+#ifdef __APPLE__
 #include <sys/uio.h>
 #endif
 #ifdef LINUX
