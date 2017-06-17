@@ -88,11 +88,12 @@ program Transf
   use sep_3d_mod
   use cos_taper_mod
 #ifdef USE_FFTW
-#include "fftw3.f03"
+  implicit none
+ include "fftw3.f03"
 #else
   use fftw_sep_fake_mod
-#endif
   implicit none
+#endif
   integer :: i,ib
   integer :: nb !block size
   integer :: shift2 !whether or not shift the second axis
