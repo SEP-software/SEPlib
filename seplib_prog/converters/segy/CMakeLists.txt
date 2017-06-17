@@ -43,8 +43,8 @@ ENDFOREACH(cprog)
 
 
 if(SU_LIBRARIES)
-TARGET_LINK_LIBRARIES(Segy2sep  sepsu superset   sep3d sep ${SU_LIBRARIES})
-TARGET_LINK_LIBRARIES(Sep2segy  sepsu superset  sep3d sep ${SU_LIBRARIES})
+TARGET_LINK_LIBRARIES(Segy2sep  sepsu ${SU_LIBRARIES} superset   sep3d sep)
+TARGET_LINK_LIBRARIES(Sep2segy  sepsu ${SU_LIBRARIES} superset  sep3d sep)
 endif(SU_LIBRARIES)
 install(FILES ${progs} DESTINATION bin)
 
