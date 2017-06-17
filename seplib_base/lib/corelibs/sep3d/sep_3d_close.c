@@ -45,7 +45,7 @@ Purpose:
 #endif
 #include<stdio.h>
 #include <sep3d.h>
-#if defined(MACOS) || defined(LINUX)
+#if defined(__APPLE__) || defined(LINUX)
 #define USE_SOCKETS
 #endif
 #ifdef HAVE_UNISTD_H
