@@ -109,7 +109,7 @@
  *  Bob Clapp 10-98  Switched to POSIX (ala Sloaris) for LINUX signals
  */
 
-#include<sepConfig.h>
+#include <sepConfig.h>
 #include <stdio.h>
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -140,17 +140,21 @@
 #endif /* SEP */
 
 
+#if defined(HAVE_TERMIOS_H) || defined(HAVE_SYS_TERMIOS_H)
+#include	<termios.h>
+#else
 #if defined(HAVE_TERMIO_H)
 #include	<termio.h>
 #else
 #if defined (HAVE_SGTTY_H)
 #include	<sgtty.h>
-#else
+#endif /* HAVE_SGTTY_H */
+#endif /* HAVE_TERMIO_H */
+#endif /* HAVE_TERMIOS_H */
+
 #ifdef HAVE_SYS_IOCTL_H
 #include	<sys/ioctl.h>
-#endif
-#endif
-#endif /* USG */
+#endif /* HAVE_SYS_IOCTL_H */
 #ifdef HAVE_SYS_TYPES_H
 #include	<sys/types.h>
 #endif
@@ -180,7 +184,7 @@
 #include	"./include/extern.h"
 
 
-#if defined(HAVE_TERMIO_H)
+#if defined(HAVE_TERMIO_H) || defined(HAVE_TERMIOS_H) || defined(HAVE_SYS_TERMIOS_H)
 #else /* USG */
 /*
  * signal catching
@@ -373,7 +377,7 @@ int ii;
     pltout = stdout;
 #endif /* SEP */
 
-#if defined(HAVE_TERMIO_H)
+#if defined(HAVE_TERMIO_H) || defined(HAVE_TERMIOS_H) || defined(HAVE_SYS_TERMIOS_H)
 
 #else /* USG */
     /*
@@ -681,7 +685,10 @@ int cleanup (void)
     if (!allowecho)
     {
 /*#ifdef SOLARIS*/
-#if defined(SOLARIS) || defined(LINUX) || defined(__APPLE__) || defined(MACOS)
+#if defined(SOLARIS) || defined(LINUX) || defined(HAVE_TERMIOS_H) || defined(HAVE_SYS_TERMIOS_H)
+#ifndef TCSETAW
+#define TCSETAW TCSADRAIN
+#endif
 	ioctl (pltoutfd, TCSETAW, (char *) (&tty_clean_state));
 #else
 	ioctl (pltoutfd, TIOCLSET, (char *) (&tty_clean_local_mode));

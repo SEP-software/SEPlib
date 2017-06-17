@@ -35,6 +35,9 @@
 #define		GETPAR	getpar
 
 
+#if defined(HAVE_TERMIOS_H)
+#include	<termios.h>
+#else
 #if defined(HAVE_TERMIO_H)
 #include	<termio.h>
 #else /* USG */
@@ -43,8 +46,9 @@
 #else
 #include	<sys/ioctl.h>
 #include	<sgtty.h>
-#endif
-#endif /* USG */
+#endif /* LINUX */
+#endif /* HAVE_TERMIO_H */
+#endif /* HAVE_TERMIOS_H */
 #include	<sys/types.h>
 #include	<sys/stat.h>
 #include	<ctype.h>
@@ -154,7 +158,7 @@ char		dummystr[] = " ";
      /*
     if (!allowecho)
     {
-#if defined(HAVE_TERMIO_H)
+#if defined(HAVE_TERMIO_H) || defined(HAVE_TERMIOS_H)
 	if (ioctl (pltoutfd, TCSETAW, &tty_clean_state) == -1)
 	{
 		ERR (FATAL, name, "Bad ioctl call!");

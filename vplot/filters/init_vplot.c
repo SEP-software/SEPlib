@@ -54,6 +54,9 @@
 #include	<sepConfig.h>
 #include	<stdio.h>
 #include	<math.h>
+#if defined(HAVE_TERMIOS_H)
+#include        <termios.h>
+#endif
 #if defined(HAVE_TERMIO_H)
 #include	<termio.h>
 #endif
@@ -97,6 +100,21 @@ extern int fetch(const char *, const char *, MIXED);
 #else
 #define		GETPAR	getpar
 #endif /* SEP */
+
+#if defined(HAVE_TERMIOS_H)
+struct termios   tty_clean_state;
+struct termios   tty_plot_state;
+#else
+#if defined(HAVE_TERMIO_H)
+struct termio   tty_clean_state;
+struct termio   tty_plot_state;
+#else
+struct sgttyb   tty_clean_state;
+struct sgttyb   tty_plot_state;
+int             tty_clean_local_mode;
+int             tty_plot_local_mode;
+#endif /* HAVE_TERMIO_H */
+#endif /* HAVE_TERMIOS_H */
 
 
 /* 

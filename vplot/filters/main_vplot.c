@@ -140,6 +140,9 @@ extern char     sepheadwhere[];
 #endif /* SEP */
 
 
+#if defined(HAVE_TERMIOS_H)
+#include	<termios.h>
+#else
 #if defined(HAVE_TERMIO_H)
 #include	<termio.h>
 #else
@@ -148,7 +151,9 @@ extern char     sepheadwhere[];
 #else
 #include	<sys/ioctl.h>
 #endif
-#endif /* USG */
+#endif /* HAVE_TERMIO_H */
+#endif /* HAVE_TERMIOS_H */
+
 #ifdef HAVE_SYS_TYPES_H
 #include	<sys/types.h>
 #endif
@@ -160,6 +165,10 @@ extern char     sepheadwhere[];
 #endif
 #ifdef HAVE_SIGNAL_H
 #include	<signal.h>
+#endif
+
+#ifdef __APPLE__
+#include <term.h>
 #endif
 
 #include	"../include/vplot.h"
@@ -681,7 +690,10 @@ int cleanup (void)
     if (!allowecho)
     {
 /*#ifdef SOLARIS*/
-#if defined(SOLARIS) || defined(LINUX) || defined(__APPLE__) || defined(MACOS)
+#if defined(SOLARIS) || defined(LINUX) || defined(MACOS) || defined(__APPLE__)
+#ifndef TCSETAW
+#define TCSETAW TCSADRAIN
+#endif
 	ioctl (pltoutfd, TCSETAW, (char *) (&tty_clean_state));
 #else
 	ioctl (pltoutfd, TIOCLSET, (char *) (&tty_clean_local_mode));
