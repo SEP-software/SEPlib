@@ -137,6 +137,7 @@ B<util/info>
 #include <mach/mach_init.h>
 #include <mach/task.h>
 #include <mach/semaphore.h>
+#define sem_t semaphore_t
 #else
 #include <semaphore.h>
 #endif
