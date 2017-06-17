@@ -627,7 +627,7 @@ main(int argc, char **argv)
 	return (0);
 }
 
-#if defined(_HPUX_SOURCE) || defined(LINUX) || defined(MACOS)
+#if defined(_HPUX_SOURCE) || defined(LINUX) || defined(__APPLE__)
 #include <string.h>
 #include <inttypes.h>
 #include <arpa/inet.h> /* for byte swap macro */
