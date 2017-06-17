@@ -6,6 +6,9 @@
 #include <sepConfig.h>
 #include <sys/types.h>
 
+#if defined(HAVE_TERMIOS_H) || defined(HAVE_SYS_TERMIOS_H)
+#include<termios.h>
+#endif
 #if defined(HAVE_TERMIO_H)
 #include<termio.h>
 #endif
@@ -20,7 +23,15 @@
 /*
  * external variables (quite a few of them)
  */
+#if defined(HAVE_TERMIOS_H)
+extern struct termios tty_clean_state;
+#else
+#if defined(HAVE_TERMIO_H)
 extern struct termio tty_clean_state;
+#else
+extern struct sgttyb tty_clean_state;
+#endif
+#endif
 
 /*
  * these must be DECLARED in dev.conf
@@ -379,5 +390,13 @@ extern FILE	*headstream;
 extern int 	sepxargc;
 extern char   **sepxargv;
 
+#if defined(HAVE_TERMIOS_H)
+extern struct termios tty_clean_state;
+#else
+#if defined(HAVE_TERMIO_H)
 extern struct termio tty_clean_state;
+#else
+extern struct sgttyb tty_clean_state;
+#endif
+#endif
 #endif
