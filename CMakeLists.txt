@@ -25,7 +25,6 @@ SET(SEPlib_DIRNAME_include "include")
 INCLUDE(CMakePackageConfigHelpers)
 
 
-
 CONFIGURE_PACKAGE_CONFIG_FILE(
   "${CMAKE_CURRENT_SOURCE_DIR}/SEPlibConfig.cmake.in"
   "${CMAKE_CURRENT_BINARY_DIR}/SEPlibConfig.cmake"
@@ -52,10 +51,14 @@ if(SU_LIBRARIES)
 set(SU_SUPPORT true)
 endif(SU_LIBRARIES)
 find_package(FFTW)
+find_package(Motif)
 find_package(PBM)
+find_package(Xt)
+find_package(JNI)
 
 
 INCLUDE (CheckIncludeFiles)
+CHECK_INCLUDE_FILES(termios.h HAVE_TERMIOS_H)
 CHECK_INCLUDE_FILES(termio.h HAVE_TERMIO_H)
 CHECK_INCLUDE_FILES(stdio.h HAVE_STDIO_H)
 CHECK_INCLUDE_FILES(stdlib.h HAVE_STDLIB_H)
@@ -85,6 +88,7 @@ CHECK_INCLUDE_FILES(rpc/rpc.h HAVE_RPC_RPC_H)
 CHECK_INCLUDE_FILES(rpc/types.h HAVE_RPC_TYPES_H)
 CHECK_INCLUDE_FILES(ctime.h HAVE_CTIME_H)
 CHECK_INCLUDE_FILES(utime.h HAVE_UTIME_H)
+CHECK_INCLUDE_FILES(Xm/Xm.h HAVE_XM_XM_H)
 
  
 # add the binary tree to the search path for include files
@@ -99,12 +103,12 @@ FIND_LIBRARY(X11_XAW Xaw HINTS /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 )
 
 
   
-install(FILES ${PROJECT_BINARY_DIR}/sepConfig.h  DESTINATION include)
 add_subdirectory(ratfor90)
 add_subdirectory(seplib_base)
 add_subdirectory(vplot)
 add_subdirectory(seplib_prog)
 add_subdirectory(sep_python)
+add_subdirectory(interact)
 add_subdirectory(config)
 
 
@@ -113,6 +117,8 @@ configure_file (
   "${PROJECT_SOURCE_DIR}/sepConfig.h.in"
   "${PROJECT_BINARY_DIR}/sepConfig.h"
   )
+
+install(FILES ${PROJECT_BINARY_DIR}/sepConfig.h  DESTINATION include)
 
 configure_file (
   "${PROJECT_SOURCE_DIR}/seplib_base/include/ratsep.pl.in"
