@@ -555,8 +555,12 @@ char *yytext_ptr;
 #ifdef HAVE_STRING_H
 #include <string.h>
 #endif
+#ifdef HAVE_CTYPE_H
 #include <ctype.h>
+#endif
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #ifdef __APPLE__
 #include <sys/types.h>
 #include <sys/uio.h>
@@ -732,7 +736,7 @@ register int tlen)
 }
 
 
-#line 736 "lex.yy.c"
+#line 740 "lex.yy.c"
 
 #define INITIAL 0
 #define FOUNDTAG 1
@@ -918,9 +922,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 200 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
+#line 204 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 
-#line 924 "lex.yy.c"
+#line 928 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -1049,7 +1053,7 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 201 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
+#line 205 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 {
 			 yy.vlen = yyleng-2; yy.val=suballoc(yy.vlen+1);
 			 yy.vlen = massage(yytext+1,yy.val,yy.vlen,yytext[0]);
@@ -1059,7 +1063,7 @@ YY_RULE_SETUP
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 206 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
+#line 210 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 {
 			 yy.vlen = yyleng-2; yy.val=suballoc(yy.vlen+1);
 			 yy.vlen = massage(yytext+1,yy.val,yy.vlen,yytext[0]);
@@ -1069,7 +1073,7 @@ YY_RULE_SETUP
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 211 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
+#line 215 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 {
 				 yy.vlen=yyleng; yy.val=suballoc(yy.vlen+1);
 		 		 memcpy(yy.val,yytext,yy.vlen+1); BEGIN 0;
@@ -1078,7 +1082,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 216 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
+#line 220 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 {
 			 yy.tlen=yyleng-1; yy.tag=suballoc(yy.tlen+1);
 			 memcpy(yy.tag,yytext,yy.tlen);
@@ -1087,7 +1091,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 221 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
+#line 225 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 {
 			 yy.tlen=yyleng-2; yy.tag=suballoc(yy.tlen+1);
 			 memcpy(yy.tag,yytext+1,yy.tlen);
@@ -1097,7 +1101,7 @@ YY_RULE_SETUP
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 226 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
+#line 230 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 {
                          yy.tlen=yyleng-1; yy.tag=suballoc(yy.tlen+1);
                          memcpy(yy.tag,yytext,yy.tlen);
@@ -1107,7 +1111,7 @@ YY_RULE_SETUP
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 231 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
+#line 235 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 { yy.tlen=yyleng-2; yy.tag=suballoc(yy.tlen+1);
 			  memcpy(yy.tag,yytext+1,yy.tlen);
 			  yy.tag[yy.tlen]='\0'; yy.val=NULL; return(FOUNDTAG);
@@ -1115,23 +1119,23 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 235 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
+#line 239 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 /* skip comment lines */;
 	YY_BREAK
 case 9:
-#line 237 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
+#line 241 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
-#line 237 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
+#line 241 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 ;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 238 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
+#line 242 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 ECHO;
 	YY_BREAK
-#line 1135 "lex.yy.c"
+#line 1139 "lex.yy.c"
 			case YY_STATE_EOF(INITIAL):
 			case YY_STATE_EOF(FOUNDTAG):
 				yyterminate();
@@ -2114,7 +2118,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 238 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
+#line 242 "/sep/stew/seplib_git/SEPlib/seplib_base/lib/corelibs/sep/sepgetpar_scan.l"
 
 
 	void getpar_push_input(
