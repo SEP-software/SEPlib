@@ -19,9 +19,13 @@ DQ	\"([^"\n]*\"\")*[^"\n]*["\n]
 #ifdef HAVE_STRING_H
 #include <string.h>
 #endif
+#ifdef HAVE_CTYPE_H
 #include <ctype.h>
+#endif
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#ifdef MACOS
+#endif
+#ifdef __APPLE__
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <fcntl.h>
