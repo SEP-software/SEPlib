@@ -1,5 +1,5 @@
 #include <sepConfig.h>
-#if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
+#if defined (MOTIF_FOUND) || defined(HAVE_ATHENA)
 /*
 User_interface: canvas controls
 */
@@ -1149,7 +1149,7 @@ void UIHistoryAnimateUndoUpdate(XtPointer ptr, XtIntervalId *id) {
 #if defined(XAW)
     XtAppAddTimeOut(ui->context, (unsigned long) 3*MovieDelay()+1, UIHistoryAnimateUndoUpdate, ptr);
 #endif
-#if defined(HAVE_MOTIF)
+#if defined(MOTIF_FOUND)
     XtAppAddTimeOut(ui->context, (unsigned long) 30*MovieDelay()+1, UIHistoryAnimateUndoUpdate, ptr);
 #endif
 
@@ -1169,7 +1169,7 @@ void UIHistoryAnimateRedoUpdate(XtPointer ptr, XtIntervalId *id) {
 #if defined(XAW)
     XtAppAddTimeOut(ui->context, (unsigned long) 3*MovieDelay()+1, UIHistoryAnimateRedoUpdate, ptr);
 #endif
-#if defined(HAVE_MOTIF)
+#if defined(MOTIF_FOUND)
     XtAppAddTimeOut(ui->context, (unsigned long) 30*MovieDelay()+1, UIHistoryAnimateRedoUpdate, ptr);
 #endif
 
@@ -1353,7 +1353,7 @@ void UIPathViewAnimateForwardUpdate(XtPointer ptr, XtIntervalId *id) {
 #if defined(XAW)
     XtAppAddTimeOut(ui->context, (unsigned long) MovieDelay()+1, UIPathViewAnimateForwardUpdate, ptr);
 #endif
-#if defined(HAVE_MOTIF)
+#if defined(MOTIF_FOUND)
     XtAppAddTimeOut(ui->context, (unsigned long) 10*MovieDelay()+1, UIPathViewAnimateForwardUpdate, ptr);
 #endif
 
@@ -1374,7 +1374,7 @@ void UIPathViewAnimateBackwardUpdate(XtPointer ptr, XtIntervalId *id) {
 #if defined(XAW)
     XtAppAddTimeOut(ui->context, (unsigned long) MovieDelay()+1, UIPathViewAnimateBackwardUpdate, ptr);
 #endif
-#if defined(HAVE_MOTIF)
+#if defined(MOTIF_FOUND)
     XtAppAddTimeOut(ui->context, (unsigned long) 10*MovieDelay()+1, UIPathViewAnimateBackwardUpdate, ptr);
 #endif
 

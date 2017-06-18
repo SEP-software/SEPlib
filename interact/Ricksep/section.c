@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <math.h>
 #include "rick.h"
-#if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
+#if defined (MOTIF_FOUND) || defined(HAVE_ATHENA)
 #ifdef SEPLIB
 /*
 plot sections and profiles

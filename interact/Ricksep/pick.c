@@ -2,7 +2,7 @@
 #ifdef __APPLE__
 #include <unistd.h>
 #endif
-#if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
+#if defined (MOTIF_FOUND) || defined(HAVE_ATHENA)
 /*
 pick object code
 pick object contains screen pick, map axis, view configuration and picking

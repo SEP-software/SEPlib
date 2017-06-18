@@ -2,10 +2,10 @@
 #ifdef __APPLE__
 #include <fcntl.h>
 #endif
-#if HAVE_UNISTD_H
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
+#if defined (MOTIF_FOUND) || defined(HAVE_ATHENA)
 /*
 data axis to image axis map object
 does window, zoom, frame tracking, and tic labels

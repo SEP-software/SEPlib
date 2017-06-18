@@ -1,5 +1,5 @@
 #include <sepConfig.h>
-#if defined(HAVE_MOTIF) || defined(HAVE_ATHENA)
+#if defined(MOTIF_FOUND) || defined(HAVE_ATHENA)
 /*
 movie object code
 one animator shared between all parts of a view
@@ -144,7 +144,7 @@ int MovieOn ()
 #if defined(HAVE_ATHENA)
 	ViewDrawMovie ();
 #endif
-#if defined(HAVE_MOTIF)
+#if defined(MOTIF_FOUND)
 	ViewDrawMovie ();
 #endif
   return(0);

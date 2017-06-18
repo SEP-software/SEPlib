@@ -1,5 +1,5 @@
 #include <sepConfig.h>
-#if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
+#if defined (MOTIF_FOUND) || defined(HAVE_ATHENA)
 /*
 Identifies and processes continginous region between bounds starting at a seed.
 There are three definitions of continginous: 6 faces +- 12 edges +- 8 corners.

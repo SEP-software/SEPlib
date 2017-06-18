@@ -1,6 +1,6 @@
 #include <sepConfig.h>
 #include <math.h>
-#if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
+#if defined (MOTIF_FOUND) || defined(HAVE_ATHENA)
 /*
 view object code
 */
@@ -1237,7 +1237,7 @@ XtTimerCallbackProc ViewDrawMovie () {
 #if defined(XAW)
   if (MovieRun()) UITimer(MovieDelay()+1,ViewDrawMovie);
 #endif
-#if defined(HAVE_MOTIF)
+#if defined(MOTIF_FOUND)
   if (MovieRun()) UITimer(MovieDelay()*10+1,(XtTimerCallbackProc)ViewDrawMovie);
 #endif
   

@@ -9,7 +9,7 @@ Dummy default functions
 */
 
 #include<sepConfig.h>
-#if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
+#if defined (MOTIF_FOUND) || defined(HAVE_ATHENA)
 
 #include <rick.h> 
 #include <math.h>

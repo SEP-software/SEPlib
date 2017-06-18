@@ -694,8 +694,7 @@ B<interact>
 main program code
 */
 #include <sepConfig.h>
-#if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
-#include <sitedef.h>
+#if defined (MOTIF_FOUND) || defined(HAVE_ATHENA)
 #include "rick.h"
 #if defined (HAVE_STDLIB_H)
 #include<stdlib.h>
@@ -1102,7 +1101,7 @@ sep_add_doc_line("CATEGORY");
 sep_add_doc_line("    interact");
 sep_add_doc_line("");
 
-        doc(SOURCE);
+        doc(""/*SOURCE*/);
 #else
       initargs(argc,argv);
         requestdoc(0);
@@ -1120,7 +1119,7 @@ sep_add_doc_line("");
 	AnoInit ();
 	RegionInit ();
 	set_data_lists();
-#if defined (HAVE_MOTIF)
+#if defined (MOTIF_FOUND)
 	UIInit (sepxargc,sepxargv);
 #endif
 #if defined(XAW)

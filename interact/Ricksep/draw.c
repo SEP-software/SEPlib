@@ -1,6 +1,6 @@
 #include <sepConfig.h>
 #include <math.h>
-#if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
+#if defined (MOTIF_FOUND) || defined(HAVE_ATHENA)
 /*
 Xwindows drawing primitives
 */

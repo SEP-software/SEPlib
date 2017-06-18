@@ -1,6 +1,6 @@
 #include <sepConfig.h>
 #include <math.h>
-#if HAVE_UNISTD_H
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 #if defined(__APPLE__) || defined(LINUX)
@@ -8,7 +8,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #endif
-#if defined (HAVE_MOTIF) || defined(HAVE_ATHENA)
+#if defined (MOTIF_FOUND) || defined(HAVE_ATHENA)
 /*
 render object code
 draws raster images into various buffers

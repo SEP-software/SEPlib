@@ -3,6 +3,9 @@
 /*
 basic definitions
 */
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
+#endif
 
 /* allocate memory for count objects of a class */
 #define NEW(class,var,count)	{\
@@ -41,13 +44,13 @@ typedef char Message[256];
 #define	GetparInit	initargs
 #define err             err
 #endif
-#ifdef SEPLIB
+/*#ifdef SEPLIB*/
 #include<sepcube.h>
 #define GETPARSTRING    getch
 #define GETPARFLOAT     getch
 #define GETPARINT       getch
 #define err		seperr
-#endif
+/*#endif*/
 
 extern int memwatch;
 
