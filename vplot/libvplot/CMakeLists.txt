@@ -19,4 +19,5 @@ vp_color.c	  vp_hatchload.c  vp_raster.c	    vp_ucircle.c      vp_where.c)
 
 
 add_library(vplot ${SOURCES})
+TARGET_LINK_LIBRARIES(vplot m)
 install(TARGETS vplot DESTINATION lib)
