@@ -13,4 +13,5 @@ cos_taper.f90  icaf277.f90   sep_filter.f90  tcai277.f90)
 
 
 add_library(sepfilter ${SOURCES})
+target_link_libraries(sepfilter sepgeef90 sepclassutil superset sep3d sep)
 install(TARGETS sepfilter DESTINATION lib)
