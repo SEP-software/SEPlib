@@ -33,7 +33,9 @@ ENDFOREACH(fort)
 add_library(sepwei ${SOURCES})
 
 if(FFTW_LIBRARIES)
-target_link_libraries (sepwei ${FFTW_LIBRARIES})
+target_link_libraries (sepwei sepgeef90 sep3d sep ${FFTW_LIBRARIES} m)
+else(FFTW_LIBRARIES)
+target_link_libraries (sepwei m)
 endif(FFTW_LIBRARIES)
 
 install(TARGETS sepwei DESTINATION lib)
