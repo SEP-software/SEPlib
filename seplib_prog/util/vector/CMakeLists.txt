@@ -39,11 +39,11 @@ FOREACH(cprog ${CSEP})
 ENDFOREACH(cprog)
 
 
-
-TARGET_LINK_LIBRARIES(Solver_ops sepaux superset sep3d sep)
-TARGET_LINK_LIBRARIES(Clip superset sep3d sep)
-TARGET_LINK_LIBRARIES(Log superset sep3d sep)
-TARGET_LINK_LIBRARIES(Math_base superset sep3d sep)
+set_property(TARGET Solver_ops PROPERTY LINKER_LANGUAGE Fortran)
+TARGET_LINK_LIBRARIES(Solver_ops sepaux sepmath superset sep3d sep)
+TARGET_LINK_LIBRARIES(Clip superset sep3d sep m)
+TARGET_LINK_LIBRARIES(Log superset sep3d sep m)
+TARGET_LINK_LIBRARIES(Math_base superset sep3d sep m)
 
 macro(makeLink src dest target)
  add_custom_target(${target} ALL
