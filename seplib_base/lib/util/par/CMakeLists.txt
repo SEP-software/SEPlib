@@ -4,7 +4,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../include)
 
 
 set (SOURCES 
-fortstubs.c lock.c  pass.c  pass_mpi.c  sep_param.f90  split.c)
+fortstubs.c lock.c  pass_mpi.c  sep_param.f90  split.c)
 
 
 add_library(seppar ${SOURCES})
