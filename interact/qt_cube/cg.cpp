@@ -3,7 +3,10 @@
 
 #include <assert.h>
 #include <float.h>
-#include <iostream.h>
+// #include <iostream.h>
+#include <iostream>
+using std::cout;
+#include <cmath>
 #include <math.h>
 #include <stdio.h>
 

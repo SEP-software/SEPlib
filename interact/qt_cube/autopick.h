@@ -1,3 +1,5 @@
+#ifndef QT_CUBE_AUTOPICK_H
+#define QT_CUBE_AUTOPICK_H
 #include<vector>
 #include "float_2d.h"
 #include "float_1d.h"
@@ -58,4 +60,4 @@ class autopick{
   
 };
   
-  
+#endif
