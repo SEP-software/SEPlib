@@ -14,4 +14,5 @@ helixcartmod_big.f90  pad2.f90	       septimers.f90)
 
 
 add_library(sepaux ${SOURCES})
+TARGET_LINK_LIBRARIES(sepaux superset sep3d sep)
 install(TARGETS sepaux DESTINATION lib)
