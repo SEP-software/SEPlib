@@ -24,7 +24,9 @@ ENDFOREACH(fort)
 add_library(sepimage ${SOURCES})
 
 if(FFTW_LIBRARIES)
-target_link_libraries (sepimage ${FFTW_LIBRARIES})
+target_link_libraries(sepimage sepfft sepmath sepvector sep ${FFTW_LIBRARIES} m)
+else()
+target_link_libraries(sepimage sepfft sepmath sepvector sep m)
 endif()
 
 install(TARGETS sepimage DESTINATION lib)
