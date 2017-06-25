@@ -10,7 +10,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
 ADD_EXECUTABLE(makefont makefont.c)
-TARGET_LINK_LIBRARIES(makefont vplot)
+TARGET_LINK_LIBRARIES(makefont m c)
 
 
 add_library(genlib ${SOURCES})
@@ -41,7 +41,7 @@ FOREACH(font ${FONTS})
   set(mybin "${baseloc}.bin")
   SET(outfile "${mybin}")
    ADD_CUSTOM_TARGET("${myinc}"
-     COMMAND  ${CMAKE_CURRENT_BINARY_DIR}/makefont <${infile}  ${base} >${myinc}
+     COMMAND  ${CMAKE_CURRENT_BINARY_DIR}/makefont ${base} <${infile} >${myinc}
      COMMAND  cat ${mycheck} ${myheader}  ${mydim} ${myaddr} ${mywidthl} ${mywidthr} ${mysymbol} ${mysvec} ${myig} > ${outfile}
      DEPENDS "${infile}" makefont
      )
