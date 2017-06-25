@@ -160,7 +160,14 @@ size_t		iolen;
     lwidth = (int *) malloc (MAX_FONT * sizeof (int));
     rwidth = (int *) malloc (MAX_FONT * sizeof (int));
     symb = (int *) malloc (MAX_FONT * sizeof (int));
-
+    if(symb == ((int *) NULL)) {
+      fprintf(stderr,"malloc failure(s). Exiting.\n");
+#if defined(__stdc__) || defined(__STDC__)
+      return(EXIT_FAILURE);
+#else
+      exit(EXIT_FAILURE);
+#endif
+    }
     for (i = 0; i < MAX_FONT; i++)
     {
 	addr[i] = UNDEFINED;
@@ -218,6 +225,11 @@ size_t		iolen;
 
     sprintf (string, "%slig", name);
     fd = creat (string, 0777);
+    if(fd == -1) {
+       fprintf(stderr,"creat(\"%s\") failed!\n. Exiting.\n",string);
+       perror("creat failure");
+       exit(EXIT_FAILURE);
+    }
     printf ("int %slig[] =\n{\n", name);
 
     while (1)
@@ -292,6 +304,11 @@ size_t		iolen;
     printf ("unsigned int %svec[] =\n{\n", name);
     sprintf (string, "%ssvec", name);
     fd = creat (string, 0777);
+    if(fd == -1) {
+       fprintf(stderr,"creat(\"%s\") failed!\n. Exiting.\n",string);
+       perror("creat failure");
+       exit(EXIT_FAILURE);
+    }
 
     for (i = 0, iaddr = 0; i < nc; ++i)
     {
@@ -420,6 +437,11 @@ size_t		iolen;
  */
     sprintf (string, "%scheck", name);
     fd = creat (string, 0777);
+    if(fd == -1) {
+       fprintf(stderr,"creat(\"%s\") failed!\n. Exiting.\n",string);
+       perror("creat failure");
+       exit(EXIT_FAILURE);
+    }
     iolen = 20; if(iolen != write (fd, (char *) "Vplot Binary fonT  \n", iolen)) {
         perror("5. write");
         exit(EXIT_FAILURE);
@@ -441,6 +463,11 @@ size_t		iolen;
 
     sprintf (string, "%saddr", name);
     fd = creat (string, 0777);
+    if(fd == -1) {
+       fprintf(stderr,"creat(\"%s\") failed!\n. Exiting.\n",string);
+       perror("creat failure");
+       exit(EXIT_FAILURE);
+    }
 
     printf ("};\n\n\nint %saddr[] =\n{\n", name);
     for (i = 0; i <= end - start; ++i)
@@ -457,6 +484,11 @@ size_t		iolen;
 
     sprintf (string, "%swidthl", name);
     fd = creat (string, 0777);
+    if(fd == -1) {
+       fprintf(stderr,"creat(\"%s\") failed!\n. Exiting.\n",string);
+       perror("creat failure");
+       exit(EXIT_FAILURE);
+    }
 
     printf ("\n};\n\n\nint %swidthl[] =\n{\n", name);
     for (i = 0; i <= end - start; ++i)
@@ -473,6 +505,11 @@ size_t		iolen;
 
     sprintf (string, "%swidthr", name);
     fd = creat (string, 0777);
+    if(fd == -1) {
+       fprintf(stderr,"creat(\"%s\") failed!\n. Exiting.\n",string);
+       perror("creat failure");
+       exit(EXIT_FAILURE);
+    }
 
     printf ("\n};\n\n\nint %swidthr[] =\n{\n", name);
     for (i = 0; i <= end - start; ++i)
@@ -509,6 +546,11 @@ size_t		iolen;
        name, bottom, base, half, cap, top, letter, line, space, start, end);
     sprintf (string, "%sdim", name);
     fd = creat (string, 0777);
+    if(fd == -1) {
+       fprintf(stderr,"creat(\"%s\") failed!\n. Exiting.\n",string);
+       perror("creat failure");
+       exit(EXIT_FAILURE);
+    }
     sint = bottom;
     iolen = sizeof(int); if(iolen != write (fd, (char *) &sint, iolen)) {
         perror("11. write");
@@ -579,6 +621,11 @@ size_t		iolen;
 
     sprintf (string, "%sheader", name);
     fd = creat (string, 0777);
+    if(fd == -1) {
+       fprintf(stderr,"creat(\"%s\") failed!\n. Exiting.\n",string);
+       perror("creat failure");
+       exit(EXIT_FAILURE);
+    }
     iolen = sizeof(int); if(iolen != write (fd, (char *) &lengtht, iolen)) {
         perror("21. write");
         exit(EXIT_FAILURE);
