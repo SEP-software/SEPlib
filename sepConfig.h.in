@@ -3,6 +3,7 @@
 #define VPLOT_FONT_DIR "@VPLOT_FONT_DIR@"
 #cmakedefine SU_SUPPORT
 #cmakedefine MOTIF_FOUND
+#cmakedefine JNI_FOUND
 #cmakedefine HAVE_TERMIOS_H
 #cmakedefine HAVE_TERMIO_H
 #cmakedefine HAVE_STDIO_H
