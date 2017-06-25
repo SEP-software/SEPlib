@@ -52,7 +52,9 @@
  *      Changed signals from bsd to posix1 for linux
  */
 #include<sepConfig.h>
+#ifndef SEP
 #define SEP 1
+#endif
 #include	<stdio.h>
 #ifdef HAVE_STDLIB_H
 #include	<stdlib.h>

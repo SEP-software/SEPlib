@@ -118,6 +118,9 @@
 #include <unistd.h>
 #endif
 #include "./include/extern.h"
+#ifndef SEP
+#define SEP 1
+#endif
 
 #ifdef SEP
 
@@ -260,6 +263,8 @@ char          **xsepxargv;
 char            scrap[MAXFLEN + 1];
 int             hclose_done = NO;
 int             fake_header = NO;
+int get_hclose_done(void) { return hclose_done;}
+FILE *get_headstream(void) { return headstream;}
 int MAIN (void)
 
 #else /* SEP */
