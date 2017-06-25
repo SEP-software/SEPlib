@@ -30,10 +30,12 @@
 void Puthead (char *format, ... )
 {
   va_list ap;
-    if (headstream == NULL || hclose_done)
+  extern int get_hclose_done(void);
+  extern FILE *get_headstream(void);
+    if (get_headstream() == NULL || get_hclose_done())
 	return;
     va_start(ap,format);
-    vfprintf(headstream,format,ap);
+    vfprintf(get_headstream(),format,ap);
     va_end(ap);
-    fflush (headstream);
+    fflush (get_headstream());
 }
