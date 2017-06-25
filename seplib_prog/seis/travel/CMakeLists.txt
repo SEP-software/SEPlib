@@ -42,10 +42,10 @@ ENDFOREACH(cprog)
 
 
 
-TARGET_LINK_LIBRARIES(FMeikonal  septravel sepaux sep3d sep)
+TARGET_LINK_LIBRARIES(FMeikonal  septravel sepaux sepmath sep3d sep)
 TARGET_LINK_LIBRARIES(Gfgradz  sepcwp superset sep3d sep)
-TARGET_LINK_LIBRARIES(Hwt2d  septravel superset sep3d sep)
-TARGET_LINK_LIBRARIES(Hwt3d  septravel superset sep3d sep)
+TARGET_LINK_LIBRARIES(Hwt2d  septravel sepaux sepmath superset sep3d sep m)
+TARGET_LINK_LIBRARIES(Hwt3d  septravel sepaux sepmath superset sep3d sep m)
 TARGET_LINK_LIBRARIES(MTTmaps  sepcwp superset sep3d sep)
 
 install(PROGRAMS ${progs} DESTINATION bin)
