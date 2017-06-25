@@ -47,11 +47,12 @@ ENDFOREACH(cprog)
 
 
 
-TARGET_LINK_LIBRARIES(Fdmod  sepcwp superset sep3d sep)
+TARGET_LINK_LIBRARIES(Fdmod  sepcwp superset sep3d sep m)
 TARGET_LINK_LIBRARIES(Spike  superset sep3d sep)
 TARGET_LINK_LIBRARIES(Surface  superset sep3d sep)
-TARGET_LINK_LIBRARIES(Wavelet  sepfft superset sep3d sep)
+TARGET_LINK_LIBRARIES(Wavelet  sepfft superset sep3d sep m)
 TARGET_LINK_LIBRARIES(Aniso2d  superset sep3d sep)
+set_property(TARGET Kirmod3d PROPERTY LINKER_LANGUAGE Fortran)
 TARGET_LINK_LIBRARIES(Kirmod3d sepimage superset sep3d sep)
 TARGET_LINK_LIBRARIES(Gauss  superset sep3d sep)
 TARGET_LINK_LIBRARIES(Marine_geom3d  superset sep3d sep)
