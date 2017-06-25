@@ -19,4 +19,5 @@ cinterp1.f90   ft2axis.f90  matmult.f90   signum.f90	zpad1.f90
 classutil.f90  ft3D.f90     nmo1.f90	  simpleft.f90)
 
 add_library(sepclassutil ${SOURCES})
+target_link_libraries(sepclassutil ${FFTW_LIBRARIES})
 install(TARGETS sepclassutil DESTINATION lib)
