@@ -51,4 +51,5 @@ heliarr.f90	      lsqr.f90		precsolver.f90)
 
 
 add_library(sepgeef90 ${SOURCES})
+target_link_libraries(sepgeef90 sepclassutil)
 install(TARGETS sepgeef90 DESTINATION lib)
