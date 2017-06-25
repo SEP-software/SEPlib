@@ -11,4 +11,5 @@ pctrist.f90   rand.f90	 vtris.f90
 
 
 add_library(sepmath ${SOURCES})
+target_link_libraries(sepmath sepaux sep m)
 install(TARGETS sepmath DESTINATION lib)
