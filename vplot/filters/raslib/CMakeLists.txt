@@ -5,9 +5,9 @@ project(SEPLIB-vplot-filters-raslib)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../seplib_base/include ${NETPBM_INCLUDE_DIR})
 set (SOURCE1 
-rasattr.c	rasconf.c   rasopen.c	   rasreset.c	 rasvector4.c
-rasclose.c	rasdoc.h    rasopen_SEP.c  rasvector2.c  rasvector.c
-rasclose_SEP.c	raserase.c  raspen.h	   rasvector3.c)
+rasattr.c	rasconf.c   rasreset.c	 rasvector4.c
+rasvector2.c  rasvector.c
+raserase.c     rasvector3.c)
 
 
 set(SOURCES ${SOURCE1} rasclose.c rasopen.c )
