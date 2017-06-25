@@ -1,8 +1,8 @@
 /* native method for GetNumberAxes class static methods sep_get_number_data_axes() */
-#include "../include/sitedef.h"
+#include "sepConfig.h"
 #include "edu_stanford_sep_seplib_corelibs_sep_GetNumberAxes.h"
 #include <seplib.h>
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 #include <string.h>
 #endif
 #include <errno.h>

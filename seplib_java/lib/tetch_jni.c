@@ -1,8 +1,8 @@
 /* native method for Tetch class static methods tetch() */
-#include "../include/sitedef.h"
+#include "sepConfig.h"
 #include "edu_stanford_sep_seplib_corelibs_sep_Tetch.h"
 #include <seplib.h>
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 #include <string.h>
 #endif
 

@@ -1,9 +1,9 @@
 /* native method for Sreed class static methods sseek() */
-#include "../include/sitedef.h"
+#include "sepConfig.h"
 #include "edu_stanford_sep_seplib_corelibs_sep_Sseek.h"
 #include <seplib.h>
 #include <sep_main_external.h>
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 #include <string.h>
 #endif
 #include <errno.h>

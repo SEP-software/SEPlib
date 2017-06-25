@@ -1,5 +1,5 @@
 /* native method for Putch class static methods putch() */
-#include "../include/sitedef.h"
+#include "sepConfig.h"
 #include "edu_stanford_sep_seplib_corelibs_sep_Putch.h"
 #include <seplib.h>
 

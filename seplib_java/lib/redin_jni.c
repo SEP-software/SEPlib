@@ -1,5 +1,5 @@
 /* native method for Redin class static method redin() */
-#include "../include/sitedef.h"
+#include "sepConfig.h"
 #include "edu_stanford_sep_seplib_corelibs_sep_Redin.h"
 #include <seplib.h>
 

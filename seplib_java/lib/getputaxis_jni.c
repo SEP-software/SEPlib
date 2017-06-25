@@ -1,10 +1,10 @@
 /* native method for GetNumberAxes class static methods
    sep_{get,put}_data_axis_par() */
-#include "../include/sitedef.h"
+#include "sepConfig.h"
 #include "edu_stanford_sep_seplib_corelibs_sep_GetPutAxis.h"
 #include <seplib.h>
 #include <sep3d.h>
-#if HAVE_STRING_H
+#ifdef HAVE_STRING_H
 #include <string.h>
 #endif
 #include <errno.h>

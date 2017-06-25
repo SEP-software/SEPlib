@@ -1,5 +1,5 @@
 /* native method for Auxputch class static methods putch() */
-#include "../include/sitedef.h"
+#include "sepConfig.h"
 #include "edu_stanford_sep_seplib_corelibs_sep_Auxputch.h"
 #include <seplib.h>
 

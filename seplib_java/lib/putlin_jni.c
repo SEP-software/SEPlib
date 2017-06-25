@@ -1,5 +1,5 @@
 /* native method for Putlin class static method putlin() */
-#include "../include/sitedef.h"
+#include "sepConfig.h"
 #include "edu_stanford_sep_seplib_corelibs_sep_Putlin.h"
 #include <seplib.h>
 

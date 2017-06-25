@@ -1,5 +1,5 @@
 /* native method for Redout class static method redout() */
-#include "../include/sitedef.h"
+#include "sepConfig.h"
 #include "edu_stanford_sep_seplib_corelibs_sep_Redout.h"
 #include <seplib.h>
 
