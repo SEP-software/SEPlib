@@ -9,4 +9,5 @@ doc.c  geth.c  Puthead.c  seperr.c  sepwhere.c)
 
 
 add_library(tseplib ${SOURCES})
+TARGET_LINK_LIBRARIES(tseplib sep)
 install(TARGETS tseplib DESTINATION lib)
