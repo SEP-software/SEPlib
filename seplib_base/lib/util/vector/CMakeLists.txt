@@ -9,4 +9,5 @@ copy77.f90     inv.f90	    scale.f90  setvalf.c       sqrt.f90)
 
 
 add_library(sepvector ${SOURCES})
+target_link_libraries(sepvector sep)
 install(TARGETS sepvector DESTINATION lib)
