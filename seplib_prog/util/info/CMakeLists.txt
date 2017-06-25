@@ -40,13 +40,14 @@ FOREACH(cprog ${CSEP})
 ENDFOREACH(cprog)
 
 
-
-TARGET_LINK_LIBRARIES(Attr3dhead sepaux superset sep3d sep)
+set_property(TARGET Attr3dhead PROPERTY LINKER_LANGUAGE Fortran)
+TARGET_LINK_LIBRARIES(Attr3dhead sepaux sepmath superset sep3d sep m)
 TARGET_LINK_LIBRARIES(Datapath superset sep3d sep)
 TARGET_LINK_LIBRARIES(Disfil superset sep3d sep)
 TARGET_LINK_LIBRARIES(In3d superset sep3d sep)
-TARGET_LINK_LIBRARIES(Attr superset sep3d sep pthread)
-TARGET_LINK_LIBRARIES(Dis3dhead sepaux superset sep3d sep)
+TARGET_LINK_LIBRARIES(Attr superset sep3d sep pthread m)
+set_property(TARGET Dis3dhead PROPERTY LINKER_LANGUAGE Fortran)
+TARGET_LINK_LIBRARIES(Dis3dhead sepaux sepmath superset sep3d sep)
 TARGET_LINK_LIBRARIES(Get superset sep3d sep)
 TARGET_LINK_LIBRARIES(Sdd superset sep3d sep)
 
