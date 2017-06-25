@@ -22,7 +22,7 @@ IF(${BIGENDIAN})
 ENDIF(${BIGENDIAN})
 
 
-set (SOURCES alloc.c	${CMAKE_CURRENT_BINARY_DIR}/sepgetpar_scan.c	 hcount.c	 puthead.c		   sepstrpar.c
+set (SOURCES 	${CMAKE_CURRENT_BINARY_DIR}/sepgetpar_scan.c	 hcount.c	 puthead.c		   sepstrpar.c
 auxclose.c	 head.c		 putlin.c		   sepstrput.c
 auxin.c		 helixcart.c	 redin.c		   sepstrscrdata.c
 auxpar.c	 hetch.c	 redout.c		   sepstrscrhead.c
