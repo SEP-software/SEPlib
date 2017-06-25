@@ -21,4 +21,5 @@ cinloip.f90   imospray.f90     mkwallwt.f90	pvi.f90
 cinloiwt.f90  iner.f90	       moplan.f90	scaleit.f90)
 
 add_library(seppvi ${SOURCES})
+target_link_libraries(seppvi sepclassutil superset sep3d sep)
 install(TARGETS seppvi DESTINATION lib)
