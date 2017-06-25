@@ -1,0 +1,8 @@
+project(SEPLIB-interact)
+cmake_minimum_required(VERSION 2.8)
+#add_subdirectory(include)
+add_subdirectory(RickMovie)
+add_subdirectory(Ricksep)
+if(Qt4_FOUND)
+add_subdirectory(qt_cube)
+endif(Qt4_FOUND)
