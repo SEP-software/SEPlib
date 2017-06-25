@@ -42,3 +42,11 @@ do i= 1, n
 end do 
 return
 end  
+subroutine halfdif( adj, n, xx, yy )
+integer adj, n
+real xx(n), yy(n)
+integer add
+add = 0
+call halfdifa( adj, add, n, xx, yy )
+return
+end
