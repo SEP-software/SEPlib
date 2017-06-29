@@ -136,7 +136,13 @@ QT4_WRAP_CPP(MOC_SRCS ${MOC_HEADERS})
 
 ADD_EXECUTABLE(qt_cube ${SOURCES} ${MOC_SRCS})
 
-TARGET_LINK_LIBRARIES(qt_cube ${QT_LIBRARIES} ${MOTIF_LIBRARIES} ${XT_LIBRARIES} seppar sep)
+TARGET_LINK_LIBRARIES(qt_cube ${QT_LIBRARIES} ${XT_LIBRARIES} seppar sep)
 
-install(FILES qt_cube DESTINATION bin)
+install(PROGRAMS qt_cube DESTINATION bin)
 
+configure_file(
+    "${PROJECT_SOURCE_DIR}/Sep_cube.py.in"
+    "${PROJECT_BINARY_DIR}/Sep_cube"
+)
+
+install(PROGRAMS Sep_cube DESTINATION bin)

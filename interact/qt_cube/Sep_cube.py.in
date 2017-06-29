@@ -12,7 +12,7 @@ sufixes={"H" : "SEP", "T" :"SEP", "h": "SEP", "t": "SEP", "RSF": "SEP", "HH": "S
 
 myt=["SEP","SEGY","SEISPAK","SU"]
 
-sepbin="@prefix@/bin"
+sepbin="@CMAKE_INSTALL_PREFIX@/bin"
 debug=0
 
 binary="%s/qt_cube"%sepbin
