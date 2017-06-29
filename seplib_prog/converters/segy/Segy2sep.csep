@@ -246,7 +246,7 @@ NULL};
 /**************** end self doc ***********************************/
 
 /* Subroutine prototypes */
-static void ibm_to_float(int from[], int to[], int n, int myendian);
+static void ibm_to_float(int from[], float to[], int n, int myendian);
 static void int_to_float(int *from, float *to, int n, int myendian);
 static void short_to_float(short from[], float to[], int n, int myendian);
 static void tapebhed_to_bhed(const tapebhed *tapebhptr, bhed *bhptr);
@@ -576,7 +576,7 @@ main(int argc, char **argv)
 				case 1:
 			  /* Convert IBM floats to native floats */
 					ibm_to_float((int *) tr.data,
-						(int *) tr.data, ns, myendian);
+						(float *) tr.data, ns, myendian);
 					break;
 				case 2:
 
@@ -635,7 +635,7 @@ main(int argc, char **argv)
 static void ibm_to_float(int in[], float out[], int nwds, int myendian)
 {
 
-*********************************************************************
+/*********************************************************************
 Author: Stew Levin (translated from fortran by f2c)
 ********************************************************************/
 /**************** end self doc ********************************/
@@ -763,7 +763,7 @@ typedef		int	logical;
 
 #else /* use the regular (slower) ibm_to_float routine */
 
-static void ibm_to_float(int from[], int to[], int n, int myendian)
+static void ibm_to_float(int from[], float fto[], int n, int myendian)
 /***********************************************************************
 ibm_to_float - convert between 32 bit IBM and IEEE floating numbers
 ************************************************************************
@@ -787,6 +787,7 @@ Credits: CWP: Brian Sumner,  c.1985
 *************************************************************************/
 {
     register int fconv, fmant, i, t;
+    int *to = (int *) fto;
 
     for (i=0;i<n;++i) {
 
