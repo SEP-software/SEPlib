@@ -38,6 +38,7 @@ FOREACH(cprog ${CSEP})
 ENDFOREACH(cprog)
 
 TARGET_LINK_LIBRARIES(Create3d superset sep3d sep)
+set_property(TARGET HeaderBBox PROPERTY LINKER_LANGUAGE CXX)
 TARGET_LINK_LIBRARIES(HeaderBBox sepmath sep3d sep m)
 TARGET_LINK_LIBRARIES(Headermath sepaux sepvector sepconvert sepmath superset sep3d sep m)
 TARGET_LINK_LIBRARIES(Synch3d superset sep3d sep)
