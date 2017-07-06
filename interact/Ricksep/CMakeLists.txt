@@ -5,6 +5,7 @@ include_directories("${CMAKE_CURRENT_BINARY_DIR}/../../seplib_base/lib/corelibs"
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../seplib_base/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../include")
 include_directories("${MOTIF_INCLUDE_DIR}")
+include_directories("${XT_INCLUDE_DIR}")
 
 
 set(CSOURCES
@@ -41,8 +42,8 @@ view.c
 
 ADD_EXECUTABLE(Ricksep ${CSOURCES})
 
+set_target_properties(Ricksep PROPERTIES LINK_FLAGS "${MOTIF_LIBRARIES} ${XT_LIBRARIES} ${X11_X11_LIB} -lXp -lXext")
+TARGET_LINK_LIBRARIES(Ricksep seppar sep m)
 
-TARGET_LINK_LIBRARIES(Ricksep ${MOTIF_LIBRARIES} ${XT_LIBRARIES} seppar sep m)
-
-install(FILES Ricksep DESTINATION bin)
+install(PROGRAMS Ricksep DESTINATION bin)
 
