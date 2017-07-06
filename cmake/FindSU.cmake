@@ -12,9 +12,9 @@ endif (SU_INCLUDES)
 
 find_path (SU_INCLUDES su.h)
 
-find_library (SU_LIB HINTS ${CWPROOT}  NAMES su)
-find_library (SUCWP_LIB HINTS ${CWPROOT}  NAMES cwp)
-find_library (SUPAR_LIB HINTS ${CWPROOT}  NAMES par)
+find_library (SU_LIB HINTS $ENV{CWPROOT}  NAMES su)
+find_library (SUCWP_LIB HINTS $ENV{CWPROOT}  NAMES cwp)
+find_library (SUPAR_LIB HINTS $ENV{CWPROOT}  NAMES par)
 if(SU_LIB)
 if(SUCWP_LIB)
 if(SUPAR_LIB)
