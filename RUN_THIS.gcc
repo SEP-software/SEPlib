@@ -1,11 +1,15 @@
-export CMAKE_FORTRAN_COMPILER=ifort
-export CMAKE_C_COMPILER=icc
-export CWP_ROOT=/opt/SU
+#!/bin/sh -v
+export LM_LICENSE_FILE=27013@cees-download.stanford.edu
 export CC=/opt/gcc-6/bin/gcc
 export FC=/opt/gcc-6/bin/gfortran
-export CC="gcc -g"
-export FC="gfortran -g"
-export CMAKE_PREFIX_PATH="/opt/FFTW:/opt/SU"
+export CMAKE_C_COMPILER=${CC}
+export CMAKE_FORTRAN_COMPILER=${FC}
+export CWPROOT=/opt/SU
+export CMAKE_PREFIX_PATH="/opt/FFTW:${CWPROOT}"
 export CMAKE_INSTALL_PREFIX=/opt/SEP/SEP8.1_gcc
-cmake -DCMAKE_INSTALL_PREFIX=/opt/SEP/SEP8.1_gcc   .. 
-make
+\rm -f CMakeCache.txt
+find . -type d -name CMakeFiles -exec \rm -rf \{\} \;
+cmake -DBUILD_SHARED_LIBS=True -DCMAKE_INSTALL_PREFIX=/opt/SEP/SEP8.1_gcc . 
+make && make install
+cmake -DBUILD_SHARED_LIBS=False -DCMAKE_INSTALL_PREFIX=/opt/SEP/SEP8.1_gcc . 
+make && make install
