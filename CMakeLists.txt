@@ -7,7 +7,20 @@ MESSAGE("Installing SEPlib in ${CMAKE_INSTALL_PREFIX}")
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 set(CMAKE_POSITION_INDEPENDENT_CODE True)
-#set(BUILD_SHARED_LIBS True)
+#
+#  SEPLIB can be built with or without shared libraries.
+#  If shared libraries are desired, we suggest building
+#  with shared libraries first using
+#
+#       cmake -DBUILD_SHARED_LIBS=True
+#
+#  and then rebuilding without shared libraries using
+#
+#       cmake -DBUILD_SHARED_LIBS=False
+#
+#  so that the standard program executables are
+#  statically linked.
+#
 set(CMAKE_SKIP_INSTALL_RPATH False)
 set(CMAKE_SKIP_RPATH False)
 
@@ -105,8 +118,8 @@ include_directories("${PROJECT_BINARY_DIR}")
 
 MESSAGE ( STATUS "Searching for X11..." )
 FIND_PACKAGE ( X11 REQUIRED )
-FIND_LIBRARY(X11_XT Xt HINTS /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 )
-FIND_LIBRARY(X11_XAW Xaw HINTS /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 )
+FIND_LIBRARY(X11_XT Xt PATHS /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 /opt/X11/lib /opt/local/lib)
+FIND_LIBRARY(X11_XAW Xaw PATHS /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 /opt/X11/lib /opt/local/lib)
 
 
   
