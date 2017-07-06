@@ -20,12 +20,12 @@ set(MOTIF_FOUND 0)
 if(UNIX)
   find_path(MOTIF_INCLUDE_DIR
     Xm/Xm.h
-    /usr/openwin/include
+    PATHS /usr/openwin/include /Applications/OpenMotif21/include
     )
 
   find_library(MOTIF_LIBRARIES
     Xm
-    /usr/openwin/lib
+    PATHS /usr/openwin/lib /Applications/OpenMotif21/lib
     )
 
 endif()
