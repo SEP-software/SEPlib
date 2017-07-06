@@ -15,14 +15,14 @@ find_path (FFTWF_INCLUDES fftw3.f03)
 
 find_library (FFTW_LIB NAMES fftw3)
 find_library (FFTWF_LIB NAMES fftw3f)
-if(FFTW_LIB)
 if(FFTWF_INCLUDES)
+if(FFTW_LIB)
 set(FFTW_LIBRARIES ${FFTW_LIB})
-endif(FFTWF_INCLUDES)
+endif(FFTW_LIB)
 if(FFTWF_LIB)
 set(FFTW_LIBRARIES ${FFTWF_LIB} ${FFTW_LIB})
 endif(FFTWF_LIB)
-endif(FFTW_LIB)
+endif(FFTWF_INCLUDES)
 
 # handle the QUIETLY and REQUIRED arguments and set FFTW_FOUND to TRUE if
 # all listed variables are TRUE
