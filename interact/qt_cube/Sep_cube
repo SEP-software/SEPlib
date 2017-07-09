@@ -12,7 +12,7 @@ sufixes={"H" : "SEP", "T" :"SEP", "h": "SEP", "t": "SEP", "RSF": "SEP", "HH": "S
 
 myt=["SEP","SEGY","SEISPAK","SU"]
 
-sepbin="/sep/stew/SEP8.1_icc/bin"
+sepbin="/sep/stew/SEP8.1_gcc/bin"
 debug=0
 
 binary="%s/qt_cube"%sepbin
