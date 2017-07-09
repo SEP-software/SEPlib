@@ -1,5 +1,4 @@
 #!/bin/sh -v
-export LM_LICENSE_FILE=27013@cees-download.stanford.edu
 export CC=/opt/gcc-6/bin/gcc
 export FC=/opt/gcc-6/bin/gfortran
 export CMAKE_C_COMPILER=${CC}
