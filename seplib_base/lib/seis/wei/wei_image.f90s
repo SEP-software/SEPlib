@@ -182,7 +182,6 @@ write_image_iz=.false.
 
 
 big=.false.
-call sep_open_lock(tag)
 npadx= grab_current_npadx()
 npady= grab_current_npady()
 
@@ -274,7 +273,6 @@ if(zero) then
 end if
 
 
-call sep_close_lock(tag)
 write_image_iz=.true.
 end function
 
@@ -291,7 +289,6 @@ read_image_iz=.false.
  
 npadx= grab_current_npadx()
 npady= grab_current_npady()
-call sep_open_lock(tag)
 
 big=.false.
 
@@ -349,7 +346,6 @@ call add_mem(size(junkr)+size(junkc))
     end do
 call del_mem(size(junkr)+size(junkc))
 deallocate(junkr,junkc)
-call sep_close_lock(tag)
 read_image_iz=.true.
 end function
 

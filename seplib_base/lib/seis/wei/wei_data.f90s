@@ -114,7 +114,6 @@ logical :: ddd,big
 integer :: npadx,npady
 read_data_if=.false.
  
-call sep_open_lock(tag)
 
 npadx=grab_current_npadx()
 npady=grab_current_npady()
@@ -157,7 +156,6 @@ fw=0; fw(5)=i_f-1
     end do
 call del_mem(size(junkc))
 deallocate(junkc)
-call sep_close_lock(tag)
 read_data_if=.true.
 end function
 
