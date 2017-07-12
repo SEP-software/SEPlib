@@ -6,6 +6,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/../../corelibs/sep)
 include_directories(/usr/include)
 include_directories(/usr/local/include)
+if(FFTW_LIBRARIES)
 include_directories(${FFTW_INCLUDES})
 
 
@@ -21,3 +22,4 @@ classutil.f90  ft3D.f90     nmo1.f90	  simpleft.f90)
 add_library(sepclassutil ${SOURCES})
 target_link_libraries(sepclassutil ${FFTW_LIBRARIES})
 install(TARGETS sepclassutil DESTINATION lib)
+endif(FFTW_LIBRARIES)
