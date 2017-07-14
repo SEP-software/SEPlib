@@ -34,6 +34,7 @@ set(CSEP
 
 ADD_EXECUTABLE(RickMovie ${CSEP})
 
+set_target_properties(RickMovie PROPERTIES LINK_FLAGS "${MOTIF_LIBRARIES} ${X11_Xt_LIB} ${X11_X11_LIB} ${X11_XP_LIB} ${X11_Xext_LIB}")
 
 TARGET_LINK_LIBRARIES(RickMovie sep)
 
