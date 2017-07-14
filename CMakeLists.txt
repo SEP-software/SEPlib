@@ -108,7 +108,6 @@ CHECK_INCLUDE_FILES(rpc/rpc.h HAVE_RPC_RPC_H)
 CHECK_INCLUDE_FILES(rpc/types.h HAVE_RPC_TYPES_H)
 CHECK_INCLUDE_FILES(ctime.h HAVE_CTIME_H)
 CHECK_INCLUDE_FILES(utime.h HAVE_UTIME_H)
-CHECK_INCLUDE_FILES(Xm/Xm.h HAVE_XM_XM_H)
 
  
 # add the binary tree to the search path for include files
@@ -120,8 +119,11 @@ MESSAGE ( STATUS "Searching for X11..." )
 FIND_PACKAGE ( X11 REQUIRED )
 FIND_LIBRARY(X11_XT Xt PATHS /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 /opt/X11/lib /opt/local/lib)
 FIND_LIBRARY(X11_XAW Xaw PATHS /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 /opt/X11/lib /opt/local/lib)
+FIND_LIBRARY(X11_XP Xp PATHS /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 /opt/X11/lib /opt/local/lib)
 
 
+INCLUDE (CheckIncludeFile)
+CHECK_INCLUDE_FILE(Xm/Xm.h HAVE_XM_XM_H "-I${MOTIF_INCLUDE_DIR}/.")
   
 add_subdirectory(ratfor90)
 add_subdirectory(seplib_base)
