@@ -13,7 +13,7 @@ endif(FFTW_LIBRARIES)
 
 set(FORTRANSEP 
 Cfft.F90sep	Fx2d.F90sep	MostlyCausal.F90sep	Transf.F90sep
-Halfint.F90sep	Helderiv.F90sep	Helicon.F90sep		
+Halfint.F90sep	Helderiv.F90sep	Helicon.F90sep		Kolmogorov.F90sep
 Median.F90sep	Miss.F90sep	Mute3d.F90sep	      	Dip.F90sep
 Mute.F90sep	Edit.F90sep	Txdec.F90sep		Envelope.F90sep
 Noise.F90sep	FFT5D.F90sep	Pef.F90sep		Detrend.F90sep
@@ -98,7 +98,7 @@ TARGET_LINK_LIBRARIES(Filter sepfft sepaux sepmath superset sep3d sep m)
 TARGET_LINK_LIBRARIES(Bandpass superset sep3d sep m)
 TARGET_LINK_LIBRARIES(Again superset sep3d sep m)
 TARGET_LINK_LIBRARIES(PCAcluster sepmath sep)
-#TARGET_LINK_LIBRARIES(Kolmogorov sepgeef90 seppvi sepclassutil sepfft sep3d sep ${FFTW_LIBRARIES})
+TARGET_LINK_LIBRARIES(Kolmogorov sepgeef90 seppvi sepclassutil sepfft sep3d sep ${FFTW_LIBRARIES})
 TARGET_LINK_LIBRARIES(Helderiv sepgeef90 sepclassutil sep3d sep)
 TARGET_LINK_LIBRARIES(Detrend sepgeef90 sepclassutil sep3d sep)
 
