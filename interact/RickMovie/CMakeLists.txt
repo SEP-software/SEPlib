@@ -5,6 +5,7 @@ include_directories("${CMAKE_CURRENT_BINARY_DIR}/../../seplib_base/lib/corelibs"
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../seplib_base/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../include")
 include_directories("${MOTIF_INCLUDE_DIR}")
+include_directories("${X11_Xt_INCLUDE_PATH}/.")
 
 set(CSEP
     sep_axis.c
@@ -31,10 +32,10 @@ set(CSEP
 )
 
 
-#ADD_EXECUTABLE(RickMovie ${CSEP})
+ADD_EXECUTABLE(RickMovie ${CSEP})
 
 
-#TARGET_LINK_LIBRARIES(RickMovie sep)
+TARGET_LINK_LIBRARIES(RickMovie sep)
 
-#install(FILES RickMovie DESTINATION bin)
+install(FILES RickMovie DESTINATION bin)
 
