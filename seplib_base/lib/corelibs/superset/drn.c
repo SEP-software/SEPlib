@@ -245,9 +245,11 @@ return(SUCCESS);
 }
 int sep3d_set_inorder(const char *sepname) {
     sep3d_set_inorder_flag(sepname, 1);
+   return 0;
 }
 int sep3d_unset_inorder(const char *sepname) {
     sep3d_set_inorder_flag(sepname, 0);
+   return 0;
 }
 
 _XFUNCPROTOBEGIN

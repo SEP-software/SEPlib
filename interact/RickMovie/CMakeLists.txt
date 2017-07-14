@@ -31,10 +31,10 @@ set(CSEP
 )
 
 
-ADD_EXECUTABLE(RickMovie ${CSEP})
+#ADD_EXECUTABLE(RickMovie ${CSEP})
 
 
-TARGET_LINK_LIBRARIES(RickMovie sep)
+#TARGET_LINK_LIBRARIES(RickMovie sep)
 
-install(FILES RickMovie DESTINATION bin)
+#install(FILES RickMovie DESTINATION bin)
 

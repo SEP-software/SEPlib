@@ -168,7 +168,7 @@ void page_doc();
 #endif
 
 _XFUNCPROTOBEGIN
-void sep_add_doc_line (char* line)
+void sep_add_doc_line (const char* line)
 _XFUNCPROTOEND
 {
                                                                                     

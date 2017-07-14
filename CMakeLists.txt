@@ -134,7 +134,7 @@ INCLUDE(UseJava)
 add_subdirectory(seplib_java)
 endif(JNI_FOUND AND Java_JAVAC_EXECUTABLE AND Java_JAVAH_EXECUTABLE AND Java_JAR_EXECUTABLE AND Java_JAVADOC_EXECUTABLE)
 add_subdirectory(sep_python)
-add_subdirectory(interact)
+#add_subdirectory(interact)
 add_subdirectory(config)
 
 

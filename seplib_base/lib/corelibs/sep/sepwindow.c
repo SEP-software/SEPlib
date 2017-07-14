@@ -207,8 +207,8 @@ NO = 0 /*logical int definiton */
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN 
-int sep_reed_rite_window_rec(int,const char*,int,int,int,int,int,int, 
- int*,int*,int*,int*,int*,int*,int,void*);
+int sep_reed_rite_window_rec(int,const char*,const int,const int,const int,const int,const int,const int, 
+ const int*,const int*,const int*,const int*,const int*,const int*,const int,void*);
 void sep_comp_index_grid(int,int, int*);
 _XFUNCPROTOEND 
 #else
@@ -219,8 +219,8 @@ void sep_comp_index_grid();
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN 
-int sreed_window( const char *tag_history, int *n_dim_cube, int *n_cube, 
-		int *n_wind,int *f_wind,int *j_wind, int esize, void *values)
+int sreed_window( const char *tag_history, const int *n_dim_cube, const int *n_cube, 
+		const int *n_wind,const int *f_wind,const int *j_wind, const int esize, void *values)
 _XFUNCPROTOEND 
 #else 
 int sreed_window(tag_history, n_dim_cube, n_cube, n_wind, f_wind, j_wind, esize, values)
@@ -241,8 +241,8 @@ char *values;
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN 
-int srite_window(const char *tag_history, int *n_dim_cube, int *n_cube, 
-		int *n_wind,int *f_wind,int *j_wind, int esize, void *values)
+int srite_window(const char *tag_history, const int *n_dim_cube, const int *n_cube, 
+		const int *n_wind,const int *f_wind,const int *j_wind, const int esize, void *values)
 _XFUNCPROTOEND 
 #else 
 int srite_window(tag_history, n_dim_cube, n_cube, n_wind, f_wind, j_wind, esize, values)
@@ -262,9 +262,9 @@ char *values;
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN 
-int sep_window(int mode,const char *tag_history,
-                int *n_dim_cube, int *n_cube, 
-		int *n_wind,int *f_wind,int *j_wind, int esize, void *values)
+int sep_window( int mode,const char *tag_history,
+                const int *n_dim_cube, const int *n_cube, 
+		const int *n_wind,const int *f_wind,const int *j_wind, const int esize, void *values)
 _XFUNCPROTOEND 
 #else 
 int sep_window(mode,tag_history, n_dim_cube, n_cube, n_wind, f_wind, j_wind, esize, values)
@@ -585,19 +585,19 @@ typedef struct _wind wind;
 #define BUFSIZE 50000000
 char wind_buf[BUFSIZE];
 
-void compress_it(int ndim, int *ncube, int *nwind, int *fwind, int *jwind, int esize,
+void compress_it(const int ndim, const int *ncube, const int *nwind, const int *fwind, const int *jwind, const int esize,
    wind *comp, int type);
-int window_it(const char *tag, wind *pars, int write, char *buffer);
+int window_it(const char *tag, wind *pars, const int write, char *buffer);
 
-int sreed_window_new(const char *tag_history, int ndim, int *n_cube, 
-		int *n_wind,int *f_wind,int *j_wind, int esize, void *values){
+int sreed_window_new(const char *tag_history, const int ndim, const int *n_cube, 
+		const int *n_wind,const int *f_wind,const int *j_wind, const int esize, void *values){
 		
  wind compress;
   compress_it(ndim,n_cube,n_wind,f_wind,j_wind,esize,&compress,0);
    return(window_it(tag_history,&compress,0,values));
 }
-int srite_window_new(const char *tag_history, int ndim, int *n_cube, 
-		int *n_wind,int *f_wind,int *j_wind, int esize, void *values){
+int srite_window_new(const char *tag_history, const int ndim, const int *n_cube, 
+		const int *n_wind,const int *f_wind,const int *j_wind, const int esize, void *values){
 		
  wind compress;
   compress_it(ndim,n_cube,n_wind,f_wind,j_wind,esize,&compress,1);
@@ -696,8 +696,8 @@ int window_it(const char *tag, wind *pars, int write,char *buffer){
 
 
 
-void compress_it(int ndim, int *ncube,int *nwind, int *fwind, int *jwind,
-int esize, wind *comp, int type){
+void compress_it(const int ndim,const int *ncube,const int *nwind, const int *fwind,const int *jwind,
+const int esize, wind *comp, const int type){
   
   wind big;
   long long big_int=(long long)1024*(long long)1024*(long long)1024*2-1;

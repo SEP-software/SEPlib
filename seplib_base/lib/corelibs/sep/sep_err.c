@@ -88,7 +88,7 @@ _XFUNCPROTOEND
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
 /*VARARGS1*/
-int seperr( char *format, ... )
+int seperr(const char *format, ... )
 _XFUNCPROTOEND
 #else
 /*VARARGS0*/
