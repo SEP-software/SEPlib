@@ -108,7 +108,7 @@ program Noisey
   real,dimension(:), allocatable :: array,noise
   logical :: one_file,first
   call SEP_ADD_DOC()
-  call sep_init()
+  call sep_init('')
   call sep_begin_prog()
   call from_param("file",file,"in")
   if (file(1:2).ne."in") then

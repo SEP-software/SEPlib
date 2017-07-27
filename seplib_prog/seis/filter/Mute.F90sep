@@ -122,7 +122,7 @@ program Mute_it
   logical,allocatable :: lkill(:)
   character (len = 80)              :: file
   call SEP_ADD_DOC()
-  call SEP_INIT()
+  call SEP_INIT('')
   call sep_begin_prog()
 ! get parameters
   call from_history("o1",t0)

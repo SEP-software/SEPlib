@@ -132,7 +132,7 @@ program Transf
   integer :: ith,nth
 !READ IN PARAMS
   call SEP_ADD_DOC()
-  call SEP_INIT()
+  call SEP_INIT('')
   call from_param("maxsize",maxsize,50)
   call from_param("is2d",is2d,.false.)
   call from_param("shotmig",shotmig,.false.)

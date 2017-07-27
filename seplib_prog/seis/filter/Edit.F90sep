@@ -60,7 +60,7 @@ program Edit
   integer :: nfactor
   real, allocatable :: modl(:,:,:),resi(:,:,:),modla(:,:,:)
   call SEP_ADD_DOC()
-  call sep_init()
+  call sep_init('')
   call sep_begin_prog()
 
   call from_history("n1",n1)

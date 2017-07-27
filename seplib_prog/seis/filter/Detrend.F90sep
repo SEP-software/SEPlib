@@ -60,7 +60,7 @@ program Detrend
         character*8                         :: action
 
         call SEP_ADD_DOC()
-	call sep_init ()
+	call sep_init ('')
         if(0 .NE. getch("action","s",action)) then
           if(action(1:4) .EQ. 'calc') then
              call getch_add_string('head=/dev/null'//CHAR(0))

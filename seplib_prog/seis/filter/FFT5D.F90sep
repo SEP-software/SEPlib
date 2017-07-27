@@ -93,7 +93,7 @@ integer, parameter  :: dbl=selected_real_kind(10,50)
   complex, dimension(:,:,:),     pointer :: sft
   integer, dimension(5) :: ni
 
-  call sep_init()
+  call sep_init('')
   call SEP_ADD_DOC()
 
   call from_param("adj",adj,.false.)
