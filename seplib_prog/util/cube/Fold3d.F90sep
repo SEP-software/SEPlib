@@ -85,7 +85,7 @@ program Fold3d
   integer :: iaxis,itot
   logical :: verb
   call SEP_ADD_DOC()
-  call SEP_INIT()
+  call SEP_INIT('')
   call init_3d()
 !GRAB PARAMETERS FROM THE COMMAND LINE
   call from_param("verb",verb,.false.)

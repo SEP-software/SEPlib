@@ -166,7 +166,7 @@ program Sort_it2
 !             GET PRELIMINARY PARAMETERS, SET SOME PROGRAM VARIABLES,
 !                   CHECK DATA, DO SOME PRELIMINARY ALLOCATION
   call SEP_ADD_DOC()
-  call SEP_INIT()
+  call SEP_INIT('')
   call init_3d()
   call sep_prog(progname)
 

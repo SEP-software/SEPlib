@@ -111,7 +111,7 @@ program Stack3d
   integer       :: ndo_big,nblock_big
 !INITIALIZE
   call SEP_ADD_DOC()
-  call SEP_INIT()
+  call SEP_INIT('')
   call init_3d()
   call init_sepf90()
   call sep_begin_prog()
