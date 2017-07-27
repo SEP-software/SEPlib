@@ -104,7 +104,7 @@ implicit none
 real, allocatable, dimension (:) :: out
 integer n1, n2, n3, mode
 call SEP_ADD_DOC()
-call sep_init()
+call sep_init('')
   if (0>= getch('n2','d',n2 )) then
     call erexit('Trouble reading  n2 from param  ')
   end if

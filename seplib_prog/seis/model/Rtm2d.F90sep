@@ -92,6 +92,7 @@ integer :: i_node,n_node,ierr
 logical stat
 
 call SEP_ADD_DOC()
+call sep_init('')
 
 stat=extrapolate()
 
