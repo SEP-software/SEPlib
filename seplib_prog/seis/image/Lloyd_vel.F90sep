@@ -57,7 +57,7 @@ integer :: nref,i,iref,izs,ia,ib,imap,n(3),ntot
 logical :: vel_map,notfirst
 
 call SEP_ADD_DOC()
-call sep_init()
+call sep_init('')
 call from_param("nref",nref,4)
 call from_param("vel_map",vel_map,.false.)
 call init_lloyd();

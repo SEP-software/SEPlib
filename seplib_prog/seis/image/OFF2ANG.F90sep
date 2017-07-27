@@ -122,7 +122,7 @@ program OFF2ANG
 #endif
 
   pi = acos(-1.)
-  call sep_init()
+  call sep_init('')
   call SEP_ADD_DOC()
 
   !----------------------------------------------------------------
