@@ -90,7 +90,7 @@ integer, allocatable, dimension (:,:,:) :: itab
 !      to match what subroutines expected to see
 integer conj,inv, nt, nx, nv
 call SEP_ADD_DOC()
-call SEP_INIT()
+call SEP_INIT('')
   if (0>= getch('conj','d',conj )) then
     conj = 0
   end if

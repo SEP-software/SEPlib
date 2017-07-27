@@ -101,7 +101,7 @@ program Velan3d
   integer :: smooth,esize,nd_out,tempi,ierr
   real    :: mute,dv,v0
   call SEP_ADD_DOC()
-  call SEP_INIT()
+  call SEP_INIT('')
   call sep_begin_prog()
   call init_3d()
   call init_sepf90()

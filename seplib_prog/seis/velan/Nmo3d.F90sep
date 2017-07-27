@@ -177,7 +177,7 @@ program NMO3d
   intag="in"
   outtag="out"
   call SEP_ADD_DOC()
-  call sep_init()
+  call sep_init('')
   call sep_begin_prog()
   call init_3d()
 !###################

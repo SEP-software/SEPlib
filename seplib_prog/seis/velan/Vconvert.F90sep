@@ -137,7 +137,7 @@ program Vconvert
   !    /* converted values of input parameter    */
 !/* Input parameters from data history header and command line */
   call SEP_ADD_DOC()
-  call SEP_INIT()
+  call SEP_INIT('')
   call sep_begin_prog()
   call getparameters( n1in,   n1out,  n2,     n3,     d1in,d1out,  o1in&
     &,   o1out,  vopt1,  vopt2,vpar1,  vpar2,  vtype1, vtype2, lsinc&
