@@ -18,9 +18,9 @@ cadd.f90       diag.f90     ident.f90	  rand01.f90	triangle2.f90
 causint.f90    ft1axis.f90  igrad1.f90	  ruffen1.f90	triangle.f90
 cinterp1.f90   ft2axis.f90  matmult.f90   signum.f90	zpad1.f90
 classutil.f90  ft3D.f90     nmo1.f90	  simpleft.f90)
-if(FFTW_LIBRARIES)
+IF(${FFTW_FOUND})
 set (SOURCES ${SOURCES} ftu.f90 halfdifa.f90)
-endif(FFTW_LIBRARIES)
+endif(${FFTW_FOUND})
 
 
 
