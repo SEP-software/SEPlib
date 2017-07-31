@@ -6,10 +6,9 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/../../corelibs/sep)
 include_directories(/usr/include)
 include_directories(/usr/local/include)
-if(FFTW_LIBRARIES)
+IF(${FFTW_FOUND})
 include_directories(${FFTW_INCLUDES})
-endif(FFTW_LIBRARIES)
-
+endif(${FFTW_FOUND})
 
 set (SOURCES 
 adjnull.f90    contran.f90  fth.f90	  null.f90	spot0.f90
