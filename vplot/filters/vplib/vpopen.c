@@ -35,7 +35,7 @@
 #include "../include/params.h"
 #include "vp.h"
 
-int             vpbig = YES;
+int             vpbig = NO; /* bug workaround for now --- Stew */
 int             vpdumb = NO;
 int             vpstat = NO;
 int             vpfit = NO;
