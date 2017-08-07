@@ -32,7 +32,7 @@ enable_language(Fortran C CXX)
 set(CMAKE_Fortran_MODULE_DIRECTORY  ${CMAKE_INSTALL_PREFIX}/include)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O2")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pg")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2")
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -O2")
 set(DEFAULT_DOC_PATH ${CMAKE_INSTALL_PREFIX}/bin)
 
