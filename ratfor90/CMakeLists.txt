@@ -3,4 +3,4 @@ project(SEPLIB-ratfor90)
 
 
 
-install(FILES ratfor90 DESTINATION bin)
+install(PROGRAMS ratfor90 DESTINATION bin)
