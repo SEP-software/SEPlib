@@ -38,5 +38,5 @@ set_target_properties(RickMovie PROPERTIES LINK_FLAGS "${MOTIF_LIBRARIES} ${X11_
 
 TARGET_LINK_LIBRARIES(RickMovie sep)
 
-install(FILES RickMovie DESTINATION bin)
+install(PROGRAMS RickMovie DESTINATION bin)
 
