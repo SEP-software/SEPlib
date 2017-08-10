@@ -54,3 +54,12 @@ TARGET_LINK_LIBRARIES(Sdd superset sep3d sep)
 
 install(PROGRAMS ${progs} DESTINATION bin)
 
+if(SYMLINK_FOUND)
+install_symlink( "In3d" "${CMAKE_INSTALL_PREFIX}/bin/In" )
+if(NOT CMAKE_HOST_APPLE)
+if(NOT APPLE)
+install_symlink( "Sdd" "${CMAKE_INSTALL_PREFIX}/bin/Dd" )
+endif(NOT APPLE)
+endif(NOT CMAKE_HOST_APPLE)
+endif(SYMLINK_FOUND)
+

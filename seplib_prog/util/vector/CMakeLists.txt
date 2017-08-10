@@ -45,29 +45,20 @@ TARGET_LINK_LIBRARIES(Clip superset sep3d sep m)
 TARGET_LINK_LIBRARIES(Log superset sep3d sep m)
 TARGET_LINK_LIBRARIES(Math_base superset sep3d sep m)
 
-macro(makeLink src dest target)
- add_custom_target(${target} ALL
-   COMMAND ${CMAKE_COMMAND} -E create_symlink ${src} ${dest} 
-    DEPENDS  ${src} COMMENT "mklink ${src} -> ${dest}")
-   set(LINKS ${LINKS} ${CMAKE_CURRENT_BINARY_DIR}/${dest})
-endmacro()
+install(PROGRAMS ${progs} arithpar DESTINATION bin)
 
-
-makelink(Clip Scale clip_target)
-makelink(Math_base Cadd cadd_lin)
-makelink(Math_base Add add_lin)
-makelink(Math_base Pow pow_link)
-makelink(Math_base Gpow gpow_lin)
-makelink(Math_base Cabs2 cabs2_link)
-makelink(Math_base Cabs cabs_lin)
-makelink(Math_base Conj conj_link)
-makelink(Math_base Imag imag_link)
-makelink(Math_base Real real_link)
-makelink(Math_base Rtoc rtoc_link)
-makelink(Math_base Cmplx cmplx_link)
-
-
-
-
-install(PROGRAMS ${LINKS} ${progs} arithpar DESTINATION bin)
+if( ${SYMLINK_FOUND} )
+   install_symlink(Clip "${CMAKE_INSTALL_PREFIX}/bin/Scale")
+   install_symlink(Math_base "${CMAKE_INSTALL_PREFIX}/bin/Cadd")
+   install_symlink(Math_base "${CMAKE_INSTALL_PREFIX}/bin/Add")
+   install_symlink(Math_base "${CMAKE_INSTALL_PREFIX}/bin/Pow")
+   install_symlink(Math_base "${CMAKE_INSTALL_PREFIX}/bin/Gpow")
+   install_symlink(Math_base "${CMAKE_INSTALL_PREFIX}/bin/Cabs2")
+   install_symlink(Math_base "${CMAKE_INSTALL_PREFIX}/bin/Cabs")
+   install_symlink(Math_base "${CMAKE_INSTALL_PREFIX}/bin/Conj")
+   install_symlink(Math_base "${CMAKE_INSTALL_PREFIX}/bin/Imag")
+   install_symlink(Math_base "${CMAKE_INSTALL_PREFIX}/bin/Real")
+   install_symlink(Math_base "${CMAKE_INSTALL_PREFIX}/bin/Rtoc")
+   install_symlink(Math_base "${CMAKE_INSTALL_PREFIX}/bin/Cmplx")
+endif( ${SYMLINK_FOUND} )
 
