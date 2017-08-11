@@ -1,25 +1,46 @@
 #!/bin/sh -v
-export LM_LICENSE_FILE=27013@cees-download.stanford.edu
+LM_LICENSE_FILE=27013@cees-download.stanford.edu export LM_LICENSE_FILE
 . /opt/Intel_16/bin/compilervarsMPI.sh intel64
-export CC=icc
-export CXX=icpc
-export FC=ifort
-export CWPROOT=/opt/SU
+CC=icc export CC
+CXX=icpc export CXX
+FC=ifort export FC
+CWPROOT=/opt/SU export CWPROOT
+SEP=/opt/SEP/SEP8.1_icc export SEP
 \rm -f CMakeCache.txt
 find . -type d -name CMakeFiles -exec \rm -rf \{\} \;
-cmake -DBUILD_SHARED_LIBS=True \
-       -DCMAKE_PREFIX_PATH="/opt/FFTW;${CWPROOT}" \
-       -DCMAKE_C_COMPILER="${CC}" \
-       -DCMAKE_CXX_COMPILER="${CXX}" \
-       -DCMAKE_FORTRAN_COMPILER="${FC}" \
-       -DCMAKE_INSTALL_PREFIX=/opt/SEP/SEP8.1_icc \
-       . 
+mkdir -p ${SEP}
+mkdir -p ${SEP/include
+mkdir -p ${SEP/bin
+mkdir -p ${SEP}/lib
+mkdir -p ${SEP}/lib/syslibs
+mkdir -p ${SEP}/share
+find ${SEP} -type l -exec \rm -f \{\} \;
+find ${SEP} -type f -exec \rm -f \{\} \;
+cmake \
+     -DBUILD_SHARED_LIBS=True \
+     -DCMAKE_FIND_LIBRARY_SUFFIXES=".so;.a" \
+     -DCMAKE_C_COMPILER="${CC}" \
+     -DCMAKE_CXX_COMPILER="${CXX}" \
+     -DCMAKE_FORTRAN_COMPILER="${FC}" \
+     -DCMAKE_PREFIX_PATH="/opt/FFTW;${CWPROOT}" \
+     -DCMAKE_INSTALL_PREFIX="${SEP}" . 
 make && make install
-cmake -DBUILD_SHARED_LIBS=False \
-       -DCMAKE_PREFIX_PATH="/opt/FFTW;${CWPROOT}" \
-       -DCMAKE_C_COMPILER="${CC}" \
-       -DCMAKE_CXX_COMPILER="${CXX}" \
-       -DCMAKE_FORTRAN_COMPILER="${FC}" \
-       -DCMAKE_INSTALL_PREFIX=/opt/SEP/SEP8.1_icc \
-       . 
+find ${SEP}/bin -type l -exec \rm -f \{\} \;
+find ${SEP}/bin -type f -exec \rm -f \{\} \;
+cmake \
+     -DBUILD_SHARED_LIBS=False \
+     -DCMAKE_FIND_LIBRARY_SUFFIXES=".a;.so" \
+     -DCMAKE_C_COMPILER="${CC}" \
+     -DCMAKE_CXX_COMPILER="${CXX}" \
+     -DCMAKE_FORTRAN_COMPILER="${FC}" \
+     -DCMAKE_PREFIX_PATH="/opt/FFTW;${CWPROOT}" \
+     -DCMAKE_INSTALL_PREFIX="${SEP}" . 
 make && make install
+for i in `ldd ${SEP}/bin/* | \
+    grep -v " not " | \
+    grep lib | sort -k 1,1 -u | \
+    grep -v "${SEP}" | \
+    grep -v '[  ]/lib' | \
+    grep -v '[  ]/usr/lib' |  \
+    awk '{ print $3 }'` ; \
+    do cp -f $i ${SEP}/lib/syslibs/. ; done
