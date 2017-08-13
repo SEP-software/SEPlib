@@ -1,3 +1,5 @@
+#ifndef SEPVELAN_H
+#define SEPVELAN_H
 #include<sepvelan.h> 
 #define NMO_NEIGHBOR(adj, add, slow,x t0, dt, n, zz, tt) CCALLSFSUB9(NMO_NEIGHBOR,nmo_neighbor,INT,INT,FLOATV,FLOAT,FLOAT, FLOAT, INT, FLOATV, FLOATV, adj, add, slow,    x, t0, dt, n,zz,  tt )
 #define NMO_NEIGHBOR_W(adj, add, slow,x t0, dt, n, zz, tt) CCALLSFSUB9(NMO_NEIGHBOR_W,nmo_neighbor_w,INT,INT,FLOATV,FLOAT,FLOAT, FLOAT, INT, FLOATV, FLOATV, adj, add, slow,    x, t0, dt, n,zz,  tt )
@@ -7,4 +9,4 @@
 #define VINT2RMS(inverse, vminallow, dt, vint, nt,  vrms)  CCALLSFSUB6(VINT2RMS,
  vint2rms, INT, FLOAT, FLOAT, FLOATV, INT, FLOATV, inverse, vminallow, dt, vint,
  nt,  vrms)
-
+#endif

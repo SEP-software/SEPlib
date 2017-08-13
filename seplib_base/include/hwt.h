@@ -15,6 +15,9 @@
 #define ABS(a) ( ((a)>=(0.0)) ? (a):(-a) )
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef struct {
   double dx,dy,dz;
@@ -154,6 +157,9 @@ void tesselate_rays();
 
 
 
+#ifdef __cplusplus
+}
+#endif
 
 
 

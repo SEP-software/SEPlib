@@ -1,6 +1,11 @@
+#ifndef SEP_PARS_EXTERNAL_H
+#define SEP_PARS_EXTERNAL_H
 #include <prototypes.h>
 #include <stdio.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
@@ -17,6 +22,12 @@ extern int puthead(char*, ... );
 extern int tetch(char*,char*, ... );
 extern int putlin(char*);
 _XFUNCPROTOEND
+
+#endif
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 /*  $Id: sep_pars_external.h,v 1.1.1.1 2004/03/25 06:37:22 cvs Exp $ */

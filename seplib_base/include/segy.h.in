@@ -2,7 +2,11 @@
 #ifndef SU_SEP2
 #define SU_SEP2 ads
 
+#ifdef __cplusplus
+extern "C" {
 #include "@SU_INCLUDES@/segy.h"
+}
+#endif
 
 #undef gettr
 #undef gettra
@@ -12,6 +16,9 @@
 #define gettra(x, y) tgettra("in", (x), (y))
 #define puttr(x) tputtr("out", (x))
 
+#ifdef __cplusplus
+extern C {
+#endif
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
 extern int tgettr(char*,segy*);
@@ -28,7 +35,9 @@ void both_initargs(int,char**);
 extern int finish_susep(void);
 #endif
 
-
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif

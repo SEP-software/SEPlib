@@ -48,7 +48,11 @@
 #if defined(HAVE_STDLIB_H)
 #include <time.h>
 #else
-extern long time();
+extern
+#ifdef __cplusplus
+  "C"
+#endif
+long time();
 #endif
 
 

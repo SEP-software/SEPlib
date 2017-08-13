@@ -2,6 +2,10 @@
 #ifndef MPI_SEP_LIB_H
 #define MPI_SEP_LIB_H 1
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct _file_locks;
                                                                                 
 struct _file_locks{
@@ -128,6 +132,10 @@ int mpi_sep_valid_processors();
 int mpi_sep_jobs_running();
 int sep_num_thread();
 int sep_thread_num();
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif

@@ -28,6 +28,9 @@ typedef struct { float re, im;} d0u1m2m3y4cmplx;
 #define NINT(x) ((int)((x)>0.0?(x)+0.5:(x)-0.5))
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifndef dcomplex
 typedef struct _dcomplexStruct { /* double-precision complex number */
@@ -861,4 +864,7 @@ void fprintfval();
 void scanfval();
 #endif
 
+#ifdef __cplusplus
+}
+#endif
 #endif

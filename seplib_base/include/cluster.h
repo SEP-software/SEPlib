@@ -27,6 +27,8 @@
  * 
  */
 
+#ifndef CLUSTERVERSION
+
 #ifndef min
 #define min(x, y)	((x) < (y) ? (x) : (y))
 #endif
@@ -39,6 +41,10 @@
 #endif
 
 #define CLUSTERVERSION "1.52a"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* Chapter 2 */
 double clusterdistance (int nrows, int ncolumns, double** data, int** mask,
@@ -91,3 +97,9 @@ double median (int n, double x[]);
 
 double* calculate_weights(int nrows, int ncolumns, double** data, int** mask,
   double weights[], int transpose, char dist, double cutoff, double exponent);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif/*CLUSTERVERSION*/

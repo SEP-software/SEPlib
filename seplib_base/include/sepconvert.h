@@ -10,6 +10,9 @@
 #include "prototypes.h"
 #include<stdio.h>
 #include<stdlib.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
 extern int createfloat(int, float*, float*);
@@ -26,6 +29,9 @@ extern int xdrbhdrsub();
 extern int xdrhdrsub();
 extern int reed_char_real();
 extern int rite_real_char();
+#endif
+#ifdef __cplusplus
+}
 #endif
 
 #endif
