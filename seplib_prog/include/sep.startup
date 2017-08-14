@@ -55,6 +55,9 @@
 #include <string.h>
 #include <seplib.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 char **xenvp;
 #ifdef IN
@@ -73,6 +76,10 @@ FILE *instream, *outstream, *headstream /* , *segystream */ ;
 extern int sepxargc;
 extern char **sepxargv;
  
+#ifdef __cplusplus
+}
+#endif
+
 int main(int argc,char **argv, char **envp)
 {
 
