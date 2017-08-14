@@ -5,7 +5,7 @@ include_directories("${CMAKE_CURRENT_BINARY_DIR}/../../../seplib_base/lib/coreli
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../seplib_base/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../include")
 
-set(FORTRANSEP Fold3d.F90sep	 Stack3d.F90sep  )
+set(FORTRANSEP Fold3d.F90sep Sort3d.F90sep  Stack3d.F90sep  )
 
 set(CSEP
  Pad.csep      Reverse.csep      Transp.csep
@@ -48,6 +48,7 @@ TARGET_LINK_LIBRARIES(Reverse  sep3d sep)
 TARGET_LINK_LIBRARIES(Transp superset  sep3d sep)
 TARGET_LINK_LIBRARIES(Patch  sepaux sepmath sep3d sep m)
 TARGET_LINK_LIBRARIES(Scat3d  superset sep3d sep)
+TARGET_LINK_LIBRARIES(Sort3d sepaux sepmath sep3d sep)
 TARGET_LINK_LIBRARIES(SortByHdrs sep3d sep)
 TARGET_LINK_LIBRARIES(Window3d  superset sep3d sep)
 TARGET_LINK_LIBRARIES(Reshape  superset sep3d sep)
