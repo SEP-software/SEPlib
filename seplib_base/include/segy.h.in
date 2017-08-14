@@ -4,7 +4,9 @@
 
 #ifdef __cplusplus
 extern "C" {
+#endif
 #include "@SU_INCLUDES@/segy.h"
+#ifdef __cplusplus
 }
 #endif
 

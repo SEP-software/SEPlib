@@ -10,7 +10,9 @@
 #endif
 #ifdef __cplusplus
 extern "C" {
+#endif
 #include "@SU_INCLUDES@/su.h"
+#ifdef __cplusplus
 }
 #endif
 

@@ -1,4 +1,4 @@
-#ifdef SEPAUX_H
+#ifndef SEPAUX_H
 #define SEPAUX_H
 /*this should be changed - don't need to pull in all of the includes that
 this implies */
