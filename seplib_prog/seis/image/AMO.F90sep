@@ -104,7 +104,7 @@ program Amo
   complex, allocatable, dimension(:,:,:) :: cmpxcube
   integer                                :: n1_cmpxcube
 
-  call sep_init()
+  call sep_init('')
   call SEP_ADD_DOC()
 
   call from_history("n1",p%n(1))

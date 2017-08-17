@@ -124,7 +124,7 @@ real, allocatable, dimension (:,:) :: s5
 integer      :: conj,inv, n1, n2p, n2q
 call initpar()
 call SEP_ADD_DOC()
-call SEP_INIT()
+call SEP_INIT('')
   if (0>= getch('conj','d',conj )) then
     conj = 0
   end if

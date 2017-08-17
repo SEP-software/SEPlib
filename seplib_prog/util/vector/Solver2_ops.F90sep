@@ -75,7 +75,7 @@ logical :: esize8,verb
 real :: scr,sci
 
 call SEP_ADD_DOC()
-call sep_init()
+call sep_init('')
 call sep_begin_prog()
 
 call getch_add_string("head=/dev/null")

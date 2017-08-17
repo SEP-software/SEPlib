@@ -91,7 +91,7 @@ integer*4, allocatable, dimension (:,:,:) :: itab2
 ! 19Oct2002 - Morgan - Fixed to history.
 integer conj,inv, nt, nx, nv
 call SEP_ADD_DOC()
-call SEP_INIT()
+call SEP_INIT('')
 call sep_begin_prog()
   if (0>= getch('conj','d',conj )) then
     conj = 0

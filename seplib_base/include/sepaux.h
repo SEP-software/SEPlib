@@ -1,7 +1,12 @@
+#ifndef SEPAUX_H
+#define SEPAUX_H
 /*this should be changed - don't need to pull in all of the includes that
 this implies */
 #include<prototypes.h> 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define MAXHEAD 100 /* Maximum number of headers */
 
@@ -79,4 +84,8 @@ extern int  pad_it();
 extern int pad_portion();
 extern int init_loop_calc();
 extern int do_sep_loop();
+#endif
+#ifdef __cplusplus
+}
+#endif
 #endif

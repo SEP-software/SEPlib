@@ -8,7 +8,13 @@
 #define CWP_Exit() finish_susep()
 #define SEP3d_AUX_I 1
 #endif
+#ifdef __cplusplus
+extern "C" {
+#endif
 #include "@SU_INCLUDES@/su.h"
+#ifdef __cplusplus
+}
+#endif
 
 
 

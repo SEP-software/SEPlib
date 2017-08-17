@@ -661,7 +661,7 @@ contains
     if (present (file)) then
        stat = sep_get_number_data_axes(file,nd)
     else
-       stat = sep_get_number_data_axes("in",nd)
+       stat = sep_get_number_data_axes("in"//C_NULL_CHAR,nd)
     end if
     if (stat /= 0) call erexit("Trouble obtaining number of data axes")
   end function sep_dimension

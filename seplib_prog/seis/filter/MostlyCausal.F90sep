@@ -65,7 +65,7 @@ implicit none
 integer n1,n2, m1, kmin, kmax, node,ierr
 real, allocatable, dimension (:,:) :: data
   call SEP_ADD_DOC()
-  call sep_init()
+  call sep_init('')
   if (0>= hetch('n1','d',n1 )) then
     call erexit('Trouble reading  n1 from history  ')
   end if

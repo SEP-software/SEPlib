@@ -77,7 +77,7 @@ program Pef3
   logical                             :: usenullval
 
   call SEP_ADD_DOC()
-  call sep_init ()
+  call sep_init ('')
   nullval = 0.0
   dim = sep_dimension ()
   allocate (n (dim), n0 (dim), center (dim), a (dim), gap (dim))

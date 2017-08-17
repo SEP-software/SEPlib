@@ -32,7 +32,7 @@ enable_language(Fortran C CXX)
 set(CMAKE_Fortran_MODULE_DIRECTORY  ${CMAKE_INSTALL_PREFIX}/include)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O2")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pg")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2")
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -O2")
 set(DEFAULT_DOC_PATH ${CMAKE_INSTALL_PREFIX}/bin)
 
@@ -75,7 +75,7 @@ find_package(Java)
 find_package(JNI)
 set(QT_USE_QT3SUPPORT True)
 find_package(Qt4)
-
+find_package(SymLink)
 
 INCLUDE (CheckIncludeFiles)
 CHECK_INCLUDE_FILES(termios.h HAVE_TERMIOS_H)
@@ -134,7 +134,8 @@ INCLUDE(UseJava)
 add_subdirectory(seplib_java)
 endif(JNI_FOUND AND Java_JAVAC_EXECUTABLE AND Java_JAVAH_EXECUTABLE AND Java_JAR_EXECUTABLE AND Java_JAVADOC_EXECUTABLE)
 add_subdirectory(sep_python)
-add_subdirectory(interact)
+#Breaking remote installs...remove for now
+#add_subdirectory(interact)
 add_subdirectory(config)
 
 

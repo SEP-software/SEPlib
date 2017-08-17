@@ -48,29 +48,18 @@ FOREACH(prg ${SCRIPTS})
    install(PROGRAMS  ${prg} DESTINATION bin)
 ENDFOREACH(prg)
 
-	
+install(PROGRAMS ${progs} DESTINATION bin)
 
+if( ${SYMLINK_FOUND} )
+   install_symlink( "Srm3d" "${CMAKE_INSTALL_PREFIX}/bin/Rm3d" )
+   install_symlink( "Scp3d" "${CMAKE_INSTALL_PREFIX}/bin/Cp3d" )
+   if(NOT CMAKE_HOST_APPLE)
+   if(NOT APPLE)
+      install_symlink( "Srm3d" "${CMAKE_INSTALL_PREFIX}/bin/Rm" )
+      install_symlink( "Scp3d" "${CMAKE_INSTALL_PREFIX}/bin/Cp" )
+      install_symlink( "Sls" "${CMAKE_INSTALL_PREFIX}/bin/Ls" )
+   endif(NOT APPLE)
+   endif(NOT CMAKE_HOST_APPLE)
+endif( ${SYMLINK_FOUND} )
 
-
-
-macro(makeLink src dest target)
- add_custom_target(${target} ALL
-   COMMAND ${CMAKE_COMMAND} -E create_symlink ${src} ${dest}
-    DEPENDS  ${src} COMMENT "mklink ${src} -> ${dest}")
-   set(LINKS ${LINKS} ${CMAKE_CURRENT_BINARY_DIR}/${dest})
-endmacro()
-
-makelink(Srm3d Rm3d rm3d_link)
-makelink(Scp3d Cp3d Cp3d_link)
-if(NOT ${CMAKE_HOST_WIN32})
-if(NOT ${CMAKE_HOST_APPLE})
-if(NOT ${APPLE})
-makelink(Srm3d Rm rm_link)
-makelink(Scp3d Cp cp_link)
-makelink(Sls Ls ls_link)
-endif(NOT ${APPLE})
-endif(NOT ${CMAKE_HOST_APPLE})
-endif(NOT ${CMAKE_HOST_WIN32})
-
-install(PROGRAMS ${progs} ${LINKS}  DESTINATION bin)
 

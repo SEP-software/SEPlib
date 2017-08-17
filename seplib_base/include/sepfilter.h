@@ -2,6 +2,9 @@
 #define SEPFILTER_H yada
 #include<prototypes.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
@@ -12,6 +15,9 @@ int toep (int m,float *r,float *f,float *g,float *a);
 _XFUNCPROTOEND
 #else
 int energy();
+#endif
+#ifdef __cplusplus
+}
 #endif
 #endif
 

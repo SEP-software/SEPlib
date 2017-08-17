@@ -12,6 +12,10 @@
 #include <sepcube.h>
 #include <stdio.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
 extern int sep_put_number_keys(const char* tag, int* nkeys);
@@ -126,5 +130,8 @@ extern int sep_copy_header_keys();
 extern int sep_reorder_data();
 #endif
 
+#ifdef __cplusplus
+}
+#endif
 #endif/* _SEP3D_H */
 /*  $Id: sep3d.h,v 1.1.1.1 2004/03/25 06:37:22 cvs Exp $ */

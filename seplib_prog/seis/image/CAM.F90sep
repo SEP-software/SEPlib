@@ -239,7 +239,7 @@ program Phase
   logical :: pCIG,cigs,sll,add,eraseR,eraseD
   character(len=128) :: order,R,D
 
-  call sep_init()
+  call sep_init('')
   call SEP_ADD_DOC()
 
 

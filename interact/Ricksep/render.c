@@ -3,9 +3,13 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#if defined(__APPLE__) || defined(LINUX)
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif
+#ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
+#endif
+#ifdef HAVE_FCNTL_H
 #include <fcntl.h>
 #endif
 #if defined (MOTIF_FOUND) || defined(HAVE_ATHENA)

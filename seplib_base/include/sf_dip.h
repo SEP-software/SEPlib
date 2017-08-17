@@ -2,6 +2,10 @@
 
 #ifndef _sf_dip
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void dip2_init(int niter          /* number of linear iterations */,
 	       int nx, int ny     /* dimensions */, 
 	       float fx, float fy /* smoothing */, 
@@ -69,6 +73,9 @@ void allpass21 (bool der          /* derivative flag */,
 
 
 
+#ifdef __cplusplus
+}
+#endif
 
 
 

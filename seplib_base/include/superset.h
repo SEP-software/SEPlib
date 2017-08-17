@@ -3,6 +3,9 @@
 #include <sepConfig.h>
 #include<sep3d.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 enum{
  /*****************/
@@ -175,6 +178,9 @@ extern void sep_mpi_stop(void);
 
 
 _XFUNCPROTOEND
+#endif
+#ifdef __cplusplus
+}
 #endif
 #endif
 /*  $Id: superset.h,v 1.3 2004/07/08 18:15:32 bob Exp $ */

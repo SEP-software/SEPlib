@@ -228,7 +228,7 @@ REAL*8 :: total_time(0:20)=1.e-3 ! sum of time for a given operation.
 !___________________________________________________________________________
 CALL initpar()
 call SEP_ADD_DOC()
-call doc()
+call doc('')
 CALL from_param('fn_color',fn_color,'dip_azim_plot.color')
 CALL from_param('dip1',fn_f1,'NONE')
 CALL from_param('dip2',fn_f2,'NONE')

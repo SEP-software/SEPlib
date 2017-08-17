@@ -19,6 +19,9 @@ static double snftEkd=3.14159265358979323846264338327950288419716939937510;
 #endif
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*typedef struct { float re, im;} complex; */
 #ifndef OLDcomplex
@@ -67,4 +70,7 @@ _XFUNCPROTOEND
 #endif
 #endif
 
+#ifdef __cplusplus
+}
+#endif
 #endif

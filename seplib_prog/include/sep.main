@@ -16,7 +16,11 @@
  * copyright (c) 1991 Stanford University
  *
  */
-extern int MAIN(void);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+int MAIN(void);
 #include <sep.startup>
 MAIN();
 #include <sep.wrapup>

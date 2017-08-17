@@ -64,7 +64,7 @@ program the_program
   integer maxnt,ip,ix,np,nx,ierr,nt,iop
   complex, allocatable :: data(:)
   call SEP_ADD_DOC()
-  call sep_init()
+  call sep_init('')
   call sep_begin_prog()
 ! get input parameters
   call from_either("sign",iop,1)

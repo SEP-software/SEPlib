@@ -98,7 +98,7 @@ TARGET_LINK_LIBRARIES(Filter sepfft sepaux sepmath superset sep3d sep m)
 TARGET_LINK_LIBRARIES(Bandpass superset sep3d sep m)
 TARGET_LINK_LIBRARIES(Again superset sep3d sep m)
 TARGET_LINK_LIBRARIES(PCAcluster sepmath sep)
-TARGET_LINK_LIBRARIES(Kolmogorov sepgeef90 seppvi sepclassutil sepfft sepaux sep3d sep ${FFTW_LIBRARIES})
+TARGET_LINK_LIBRARIES(Kolmogorov sepgeef90 seppvi sepclassutil sepfft sep3d sep ${FFTW_LIBRARIES})
 TARGET_LINK_LIBRARIES(Helderiv sepgeef90 sepclassutil sep3d sep)
 TARGET_LINK_LIBRARIES(Detrend sepgeef90 sepclassutil sep3d sep)
 

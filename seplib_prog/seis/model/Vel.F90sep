@@ -159,7 +159,7 @@ real dz,dx,dy,z0,x0,y0,xa1,xa2,xb1,xb2,z1,z2
 real xa3,xb3,z3,xa4,xb4,z4,xa5,xb5,z5,xa6,xb6,z6,xa7,xb7,z7,xa8,xb8,z8
 real zmax,xmax,xasmo,xbsmo,z1smo,z2smo
 call SEP_ADD_DOC()
-call SEP_INIT()
+call SEP_INIT('')
 call initpar()
 call sep_begin_prog()
   if (0>= getch('n1','d',nz )) then

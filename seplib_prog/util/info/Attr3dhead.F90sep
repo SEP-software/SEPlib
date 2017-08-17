@@ -90,7 +90,7 @@ program Attr90
   
   call SEP_ADD_DOC()
 
-  call sep_init()
+  call sep_init('')
 
   call init_3d()
 !             GET PRELIMINARY PARAMETERS, SET SOME PROGRAM VARIABLES,

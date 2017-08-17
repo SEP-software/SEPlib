@@ -5,7 +5,7 @@ include_directories("${CMAKE_CURRENT_BINARY_DIR}/../../../seplib_base/lib/coreli
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../seplib_base/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../include")
 
-set(FORTRANSEP Fold3d.F90sep	 Stack3d.F90sep  )
+set(FORTRANSEP Fold3d.F90sep Sort3d.F90sep  Stack3d.F90sep  )
 
 set(CSEP
  Pad.csep      Reverse.csep      Transp.csep
@@ -48,19 +48,23 @@ TARGET_LINK_LIBRARIES(Reverse  sep3d sep)
 TARGET_LINK_LIBRARIES(Transp superset  sep3d sep)
 TARGET_LINK_LIBRARIES(Patch  sepaux sepmath sep3d sep m)
 TARGET_LINK_LIBRARIES(Scat3d  superset sep3d sep)
+TARGET_LINK_LIBRARIES(Sort3d sepaux sepmath sep3d sep)
 TARGET_LINK_LIBRARIES(SortByHdrs sep3d sep)
 TARGET_LINK_LIBRARIES(Window3d  superset sep3d sep)
 TARGET_LINK_LIBRARIES(Reshape  superset sep3d sep)
 
-macro(makeLink src dest target)
- add_custom_target(${target} ALL
-   COMMAND ${CMAKE_COMMAND} -E create_symlink ${src} ${dest}
-    DEPENDS  ${src} COMMENT "mklink ${src} -> ${dest}")
-   set(LINKS ${LINKS} ${dest})
-endmacro()
-
-makelink(Window3d Window window_link)
-
 install(PROGRAMS ${links} Scat DESTINATION bin)
 
+if( ${SYMLINK_FOUND} )
+install_symlink( "Window3d" "${CMAKE_INSTALL_PREFIX}/bin/Window")
+install_symlink( "Scat3d" "${CMAKE_INSTALL_PREFIX}/bin/Cat3d")
+install_symlink( "Stack3d" "${CMAKE_INSTALL_PREFIX}/bin/Infill3d")
+install_symlink( "Stack3d" "${CMAKE_INSTALL_PREFIX}/bin/Stack")
+install_symlink( "Sort3d" "${CMAKE_INSTALL_PREFIX}/bin/Grid_fold")
+if(NOT CMAKE_HOST_APPLE)
+if(NOT APPLE)
+install_symlink( "Scat" "${CMAKE_INSTALL_PREFIX}/bin/Cat")
+endif(NOT APPLE)
+endif(NOT CMAKE_HOST_APPLE)
+endif( ${SYMLINK_FOUND} )
 

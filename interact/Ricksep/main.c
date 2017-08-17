@@ -716,8 +716,7 @@ int memwatch = 0;
 
 int	sepxargc;
 char	**sepxargv;
-main (argc,argv)
-int argc; char **argv;
+int main (int argc, char **argv)
 	{
 	extern int sepxargc;
 	extern char **sepxargv, *help;
@@ -1127,10 +1126,10 @@ sep_add_doc_line("");
 #endif
 	/* interactive loop */
 	UIMain ();
-  return(0);
+  return(EXIT_SUCCESS);
 	}
 
-void MainFirst ()
+void MainFirst (void)
 	{
  int i;
 	View myv;
@@ -1155,7 +1154,7 @@ void MainFirst ()
 	}
 
 
-core ()
+int core (void)
 	{
 	FILE *fd;
 	string line;
@@ -1166,6 +1165,7 @@ core ()
 	}
 #else
 #include<seplib.h>
+int
 main (argc,argv)
 int argc; char **argv;
   {

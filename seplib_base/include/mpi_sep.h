@@ -2,6 +2,9 @@
 #ifndef MPI_SEP_LIB_H
 #define MPI_SEP_LIB_H 1
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #if NeedFunctionPrototypes
 int mpi_sep_send_args(int,int,int);
@@ -83,6 +86,10 @@ int mpi_sep_next_group();
 int mpi_sep_valid_nproc();
 int mpi_sep_valid_processors();
 int mpi_sep_jobs_running();
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif

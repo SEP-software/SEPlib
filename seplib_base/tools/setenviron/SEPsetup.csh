@@ -1,6 +1,6 @@
 #!/bin/csh -f
 #
-# SEPsetup.sh: Set up paths for invoking SEP commands in csh or tcsh
+# SEPsetup.csh: Set up paths for invoking SEP commands in csh or tcsh
 #
 # To use run the command
 #

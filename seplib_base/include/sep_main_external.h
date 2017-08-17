@@ -1,7 +1,12 @@
+#ifndef SEP_MAIN_EXTERNAL_H
+#define SEP_MAIN_EXTERNAL_H
 #include <prototypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
@@ -139,3 +144,8 @@ extern int sseekable();
 #define MIN(a,b) ( ((a)<(b)) ? (a):(b) )
 #endif
 
+#ifdef __cplusplus
+}
+#endif
+
+#endif

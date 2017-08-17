@@ -35,7 +35,7 @@
 #include "../include/params.h"
 #include "vp.h"
 
-int             vpbig = YES;
+int             vpbig = NO; /* bug workaround for now --- Stew */
 int             vpdumb = NO;
 int             vpstat = NO;
 int             vpfit = NO;
@@ -50,6 +50,8 @@ int             vpasize[2] = {0, 0};
 int             vpframe = -1;
 
 int             vpsetflag;
+
+int             vpnobuf = NO;
 
 void vpopen (void)
 {
@@ -75,6 +77,8 @@ MIXED		vartemp;
 /*
  * Special options
  */
+    vartemp.i = &vpnobuf;
+    getpar ("nobuf", "1", vartemp);
     vartemp.i = &vpdumb;
     getpar ("dumb", "1", vartemp);
     vartemp.i = &vpblast;
@@ -325,9 +329,13 @@ MIXED		vartemp;
 
 void vp_check_filep (FILE *plot)
 {
-    if (isatty (fileno (plot)))
-	ERR (FATAL, name,
+    if(vpnobuf) {
+        (void) setvbuf(plot, NULL, _IONBF, 0);
+    } else {
+        if (isatty (fileno (plot)))
+ 	  ERR (FATAL, name,
 	     "Dumping binary data to your terminal is unhealthy.");
+    }
 
     vp_filep (plot);
 }

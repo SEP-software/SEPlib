@@ -74,7 +74,7 @@ program Helico
 	type(filter)                        :: aa
 
         call SEP_ADD_DOC()
-	call sep_init ()
+	call sep_init ('')
         call sep_begin_prog()
 	dim = sep_dimension()
 	allocate (n (dim), m (dim))

@@ -93,7 +93,7 @@ program Stolt
   integer :: nblocks,  iblocks
   integer(kind=dbl) :: ngathers, igathers, allgathers
 
-  call sep_init()
+  call sep_init('')
   call SEP_ADD_DOC() 
 
   call pinaxis(az ,1); az%l ="z";  call pouaxis(az ,1)

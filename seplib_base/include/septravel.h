@@ -2,6 +2,9 @@
 #define SEPTRAVEL_H yada
 #include<prototypes.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
@@ -25,6 +28,9 @@ void update();
 void cvupdate();
 int hwt_trace_rays();
 int hwt_travel_cube();
+#endif
+#ifdef __cplusplus
+}
 #endif
 #endif
 

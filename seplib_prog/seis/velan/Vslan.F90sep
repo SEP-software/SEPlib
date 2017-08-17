@@ -75,7 +75,7 @@ program Vslan
   real    d1,d1o,x0,dx,p0,dp,d2,d2o,o1o,o2o,o2,o1,eps
   character*10 window,noalias
   call SEP_ADD_DOC()
-  call SEP_INIT()
+  call SEP_INIT('')
   call sep_begin_prog()
     if (0>= getch('option','d',option )) then
       option = 2

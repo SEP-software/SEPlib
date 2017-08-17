@@ -217,7 +217,7 @@ program aa
   integer na,nb,nc,nd,ne,h
   real d1,dz,d2,dx,dt
   call SEP_ADD_DOC()
-  call SEP_INIT()
+  call SEP_INIT('')
   call sep_begin_prog()
   call from_aux("moduli","n1",nz)
   call from_aux("moduli","n2",nx)

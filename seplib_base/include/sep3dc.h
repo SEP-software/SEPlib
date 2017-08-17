@@ -5,6 +5,9 @@
 #define SEPNULL2 ((void *) 0)
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 struct _sep3d{
 char tag[256]    ;  /*sep_3d name */
@@ -88,5 +91,8 @@ int  sep3dc_grab_coordh(sep3d *s1, long long *coords);
 int  sep3dc_set_coordh(sep3d *s1, long long *coords);
 int  sep3dc_set_ncoord(sep3d *s1, int ncoord);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif
