@@ -6,11 +6,10 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../seplib_base/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../include")
 
 
-set(FORTRANSEP Solver_ops.F90sep
-)
+
 
 set(CSEP
-Clip.csep  Log.csep  Math_base.csep 
+Clip.csep  Log.csep  Math_base.csep Solver_ops.csep
 )
 
 
