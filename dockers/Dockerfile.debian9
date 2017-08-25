@@ -5,17 +5,19 @@ RUN mkdir -p /opt/SU
 RUN git clone https://github.com/JohnWStockwellJr/SeisUnix.git /opt/SU;cd /opt/SU/src && \
   touch cwp_su_version LICENSE_44R2_ACCEPTED MAILHOME_44R2 &&\
   echo "echo boo"  >chkroot.sh && \
-  chmod 777 chkroot.sh&& \
-  cd /opt/SU/src/par &&\
-   CWPROOT=/opt/SU make install  &&\
+  chmod 777 chkroot.sh &&\
+  cd /opt/SU/src/par/include&&\
+   CWPROOT=/opt/SU make INSTALL  &&\
+  cd /opt/SU/src/par/lib&&\
+   CWPROOT=/opt/SU make INSTALL  &&\
   cd /opt/SU/src/cwp/lib &&\
-   CWPROOT=/opt/SU make install  &&\
-  cd /opt/SU/src/su/include &&\
-   CWPROOT=/opt/SU make install  &&\
+   CWPROOT=/opt/SU make INSTALL   &&\
+ cd /opt/SU/src/su/include &&\
+   CWPROOT=/opt/SU make INSTALL   &&\
   cd /opt/SU/src/cwp/include &&\
-   CWPROOT=/opt/SU make install  &&\
-    rm -rf /opt/SU/lib /opt/SU/bin
-RUN apt-get update && apt-get install -y cmake libxaw7-dev  flex
+   CWPROOT=/opt/SU make INSTALL   &&\
+    rm -rf  /opt/SU/bin
+RUN apt-get update && apt-get install -y cmake libxaw7-dev g++  flex
 RUN mkdir -p /opt/SEP/build
 RUN echo export PATH=/usr/local/bin:/$PATH >>~root/.bash_profile
 ENV CMAKE_PREFIX_PATH="/opt/SU"
