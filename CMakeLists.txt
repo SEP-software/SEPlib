@@ -143,7 +143,7 @@ configure_file (
   "${PROJECT_BINARY_DIR}/module/seplib"
   )
 
-install(FILES ${PROJECT_BINARY_DIR}/module/seplib.in  DESTINATION module)
+install(FILES ${PROJECT_BINARY_DIR}/module/seplib  DESTINATION module)
 
 configure_file (
   "${PROJECT_SOURCE_DIR}/sepConfig.h.in"
