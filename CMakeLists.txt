@@ -138,7 +138,12 @@ add_subdirectory(sep_python)
 #add_subdirectory(interact)
 add_subdirectory(config)
 
+configure_file (
+  "${PROJECT_SOURCE_DIR}/module/seplib.in"
+  "${PROJECT_BINARY_DIR}/module/seplib"
+  )
 
+install(FILES ${PROJECT_BINARY_DIR}/module/seplib.in  DESTINATION module)
 
 configure_file (
   "${PROJECT_SOURCE_DIR}/sepConfig.h.in"
