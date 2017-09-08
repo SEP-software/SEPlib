@@ -40,6 +40,7 @@ FOREACH(cprog ${CSEP})
 ENDFOREACH(cprog)
 
 set_property(TARGET Fold3d PROPERTY LINKER_LANGUAGE Fortran)
+set_property(TARGET Sort3d PROPERTY LINKER_LANGUAGE Fortran)
 TARGET_LINK_LIBRARIES(Fold3d sepaux sepgeef90 sepclassutil sepmath ${FFTW_LIBRARIES} sep3d sep)
 TARGET_LINK_LIBRARIES(Stack3d superset sep3d sep)
 TARGET_LINK_LIBRARIES(Interleave  sep3d sep)
