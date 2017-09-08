@@ -34,7 +34,6 @@ config.sub,ltmain.sh,
 missing,mkinstalldirs
 acconfig.h,acincludes.m4
 install-sh,
-configure.in,configure- Program used to configure the SEPlib installation
 
 In addition, look in graphics/vplot/Docs for some useful vplot information
 including a couple app-default files for Xtpen.
