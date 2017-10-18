@@ -97,7 +97,7 @@ ADD_DEF_SEP_DOC
   auxpar("esize","d",&esize,"file1");
   for(i=0; i <9 ; i++){
     int n=1; 
-    sprintf(tmpch,"%s%d","n",i+1);
+    sprintf(tmpch,"%c%d","n",i+1);
     auxpar(tmpch,"d",&n,"file1");
     n123*=(long long)n;
   }
@@ -109,7 +109,7 @@ ADD_DEF_SEP_DOC
     if(esize!=esize2) seperr("file1 and file2 not of same type (complex,real)");
     for(i=0; i <9 ; i++){
       int n=1; 
-      sprintf(tmpch,"%s%d","n",i+1);
+      sprintf(tmpch,"%c%d","n",i+1);
       auxpar(tmpch,"d",&n,"file1");
       n1232*=(long long)n;
     }
