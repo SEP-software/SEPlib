@@ -38,7 +38,7 @@ FOREACH(cprog ${CSEP})
 ENDFOREACH(cprog)
 
 
-set_property(TARGET Solver_ops PROPERTY LINKER_LANGUAGE Fortran)
+# set_property(TARGET Solver_ops PROPERTY LINKER_LANGUAGE Fortran)
 TARGET_LINK_LIBRARIES(Solver_ops sepaux sepmath superset sep3d sep)
 TARGET_LINK_LIBRARIES(Clip superset sep3d sep m)
 TARGET_LINK_LIBRARIES(Log superset sep3d sep m)
@@ -59,5 +59,6 @@ if( ${SYMLINK_FOUND} )
    install_symlink(Math_base "${CMAKE_INSTALL_PREFIX}/bin/Real")
    install_symlink(Math_base "${CMAKE_INSTALL_PREFIX}/bin/Rtoc")
    install_symlink(Math_base "${CMAKE_INSTALL_PREFIX}/bin/Cmplx")
+   install_symlink(Math_base "${CMAKE_INSTALL_PREFIX}/bin/Math")
 endif( ${SYMLINK_FOUND} )
 
