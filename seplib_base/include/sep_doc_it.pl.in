@@ -16,7 +16,7 @@ $doc.="";
 if($type eq "-fortran"){
 $look_for="call SEP_ADD_DOC";
  $line_n_bef='call sep_add_doc_line("';
- $line_n_aft="//CHAR(0)\")\n";
+ $line_n_aft="\"//CHAR(0))\n";
 }
 elsif($type eq "-C"){
  $line_d_bef="\\\n sep_add_doc_line(\"";
