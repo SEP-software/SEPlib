@@ -26,23 +26,16 @@ Balance.csep  Energy.csep    Gpow.csep	  Smooth.csep  Trcamp.csep
 PCAcluster.csep
 )
 
-
 FOREACH(fort ${FORTRANSEP})
-  STRING(REGEX REPLACE ".F90sep\$" ".f90s" fortFileS "${fort}")
-  STRING(REGEX REPLACE ".f90s\$" ".f90" fortFile ${fortFileS})
+  STRING(REGEX REPLACE ".F90sep\$" ".f90" fortFile "${fort}")
   STRING(REGEX REPLACE ".F90sep\$" "" prog "${fort}")
   set(PROGS "${PROGS} ${prog}")
-
-   ADD_CUSTOM_COMMAND(OUTPUT  "${fortFileS}"
-     COMMAND  ${CMAKE_CURRENT_SOURCE_DIR}/../../../seplib_base/include/sep_doc_it <${CMAKE_CURRENT_SOURCE_DIR}/${fort} -fortran  >${fortFileS}
+   ADD_CUSTOM_COMMAND(OUTPUT  "${fortFile}"
+     COMMAND  ${CMAKE_CURRENT_SOURCE_DIR}/../../../seplib_base/include/sep_doc_it <${CMAKE_CURRENT_SOURCE_DIR}/${fort} -fortran   |${CMAKE_CURRENT_SOURCE_DIR}/../../../seplib_base/tools/spp/spp ${FORTRAN_FLAGS}  >${fortFile}
      DEPENDS "${fort}")
-  ADD_CUSTOM_COMMAND(OUTPUT "${fortFile}"
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/../../../seplib_base/tools/spp/spp < ${fortFileS} ${sppflags} >${fortFile}
-     DEPENDS "${fortFileS}")
     ADD_EXECUTABLE(${prog}  ${prog}.f90)
    install(TARGETS ${prog} DESTINATION bin)
 ENDFOREACH(fort)
-
 
 FOREACH(cprog ${CSEP})
   STRING(REGEX REPLACE ".csep\$" ".c" fortFile "${cprog}")
@@ -98,7 +91,7 @@ TARGET_LINK_LIBRARIES(Filter sepfft sepaux sepmath superset sep3d sep m)
 TARGET_LINK_LIBRARIES(Bandpass superset sep3d sep m)
 TARGET_LINK_LIBRARIES(Again superset sep3d sep m)
 TARGET_LINK_LIBRARIES(PCAcluster sepmath sep)
-TARGET_LINK_LIBRARIES(Kolmogorov sepgeef90 seppvi sepclassutil sepfft sepaux sep3d sep ${FFTW_LIBRARIES})
+TARGET_LINK_LIBRARIES(Kolmogorov sepgeef90 seppvi sepclassutil sepfft sepaux sepmath sep3d sep ${FFTW_LIBRARIES})
 TARGET_LINK_LIBRARIES(Helderiv sepgeef90 sepclassutil sep3d sep)
 TARGET_LINK_LIBRARIES(Detrend sepgeef90 sepclassutil sep3d sep)
 
