@@ -491,7 +491,7 @@ extern int atoi();
 #define YES 1
 #define NO  0
 char transp[5]="yes";
-char gainpanel[10]="1";
+char gainpanel[10]="0";
 static int  allpos;
 struct datainfo datain,dataout,datap;
 struct coordinfo coordinate;
