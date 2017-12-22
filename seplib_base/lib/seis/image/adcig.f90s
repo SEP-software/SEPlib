@@ -6,8 +6,9 @@ module adcig_mod
   use pctrist_mod
 #ifndef USE_FFTW
   use fftw_sep_fake_mod
+#else
+  use fftw_mod
 #endif
-  use fftwflags
 
 
   implicit none  
@@ -16,7 +17,7 @@ module adcig_mod
   !!----------------------------------------------------------------
   !! FFT
   real,              private :: scaleF, scaleI
-  integer(kind=dbl), private, dimension(:),pointer ::  planF,  planI
+  type(C_PTR), private, dimension(:),pointer ::  planF,  planI
 
   complex, dimension(:,:,:,:), allocatable, private :: cf
   complex, dimension(:,:,:),       pointer, private :: sftF !! shared
@@ -40,6 +41,7 @@ contains
     integer, intent(in) :: nth
     integer, dimension(3), intent(in) :: ni
     integer :: stat,i,j
+    type(C_PTR) :: jnk
     scaleF = 1./sqrt(1.*product(ni))
     scaleI = 1./sqrt(1.*ni(1))
 
@@ -57,11 +59,11 @@ contains
 !    ,    fFTW_ESTIMATE + fFTW_THREADSAFE + fFTW_IN_PLACE)
 
 do i=1,nth
-    call sfftw_plan_dft(planF(i),3,ni,cf(1,1,1,i),cf(1,1,1,i),fFTW_FORWARD  &
-    ,    fFTW_ESTIMATE + fFTW_THREADSAFE )
+    planF(i)= fftwf_plan_dft(3,ni,cf(:,:,:,i),cf(:,:,:,i),fFTW_FORWARD  &
+    ,    FFTW_ESTIMATE)
 
-    call sfftw_plan_dft(planI(i),1,(/ni(1)/),cf(1,1,1,i),cf(1,1,1,i),fFTW_BACKWARD &
-    ,    fFTW_ESTIMATE + fFTW_THREADSAFE )
+    planI(i)= fftwf_plan_dft(1,(/ni(1)/),cf(:,:,:,i),cf(:,:,:,i),fFTW_BACKWARD &
+    ,    fFTW_ESTIMATE  )
 end do
 
 
@@ -75,7 +77,7 @@ end do
 
     cf(:,:,:,ith) = f(:,:,:,isl)
 !    call fftwnd_f77_one(planF,cf(:,:,:,ith),0) !! Xform in place
-    call sfftw_execute(planF(ith))
+    call fftwf_execute_dft(planF(ith),cf(:,:,:,ith),cf(:,:,:,ith))
 
     f(:,:,:,isl) = cf(:,:,:,ith) * scaleF
 
@@ -96,7 +98,7 @@ end do
        do i3=1,n3
           cf(:,1,1,ith) = f(:,i2,i3,isl)
 !         call fftwnd_f77_one(planI,cf(:,i2,i3,ith),0) !! Xform in place
-          call sfftw_execute(planI(ith)) !! Xform in place
+          call fftwf_execute_dft(planI(ith),cf(:,i2,i3,ith),cf(:,i2,i3,ith)) !! Xform in place
           f(:,i2,i3,isl) = cf(:,1,1,ith) * scaleI
        end do
     end do
@@ -109,8 +111,8 @@ end do
 !    call fftwnd_f77_destroy_plan(planF)
 !    call fftwnd_f77_destroy_plan(planI)
     do i=1,size(cf,4)
-      call sfftw_destroy_plan(planF(i))
-      call sfftw_destroy_plan(planI(i))
+      call fftwf_destroy_plan(planF(i))
+      call fftwf_destroy_plan(planI(i))
     end do
 
     deallocate(cf,planF,planI,stat=stat)

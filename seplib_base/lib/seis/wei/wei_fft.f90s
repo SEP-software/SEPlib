@@ -6,7 +6,7 @@ module wei_fft_mod
   use  MKL_DFTI
 #endif
   implicit none
-  integer*8,pointer,private,save :: planF(:),planI(:),extraF(:),extraI(:)
+  type(c_ptr),pointer,private,save :: planF(:),planI(:),extraF(:),extraI(:)
 #ifdef SEP_MKL
  type(dfti_type), pointer,private :: dfti(:)
 #endif
@@ -41,9 +41,9 @@ contains
 
 
    do i=1,size(wfld,5)
-     call sfftw_plan_dft(planF(i),4,wsep%n,wfld(1,1,1,1,i),wfld(1,1,1,1,i),&
+     planF(i)= fftwf_plan_dft(4,wsep%n,wfld(:,:,:,:,i),wfld(:,:,:,:,i),&
        ffTW_FORWARD,fftW_PATIENT)
-     call sfftw_plan_dft(planI(i),4,wsep%n,wfld(1,1,1,1,i),wfld(1,1,1,1,i),&
+     planI(i)= fftwf_plan_dft(4,wsep%n,wfld(:,:,:,:,i),wfld(:,:,:,:,i),&
        ffTW_BACKWARD,fftW_PATIENT)
    end do
 #else
@@ -104,7 +104,7 @@ call seperr("no fftw")
 
     iplan=ith+(ipart-1)*my_nomp()
 #ifdef USE_FFTW
-    call sfftw_execute(extraI(iplan))
+  call  fftwf_execute_dft(extraI(iplan),data(:,:,:,:,ith),data(:,:,:,:,ith))
 #else
 call seperr("no fftw")
 #endif
@@ -133,7 +133,7 @@ call seperr("no fftw")
  call weifft_internal(iws,izs,ith,size(data)/size(data,5),size(data,5),data)
 #else
 #ifdef USE_FFTW
-    call sfftw_execute(planF(iws))
+    call fftwf_execute_dft(planF(iws),data(:,:,:,:,iws),data(:,:,:,:,iws))
 #else
 call seperr("no fftw")
 #endif
@@ -157,7 +157,7 @@ call seperr("no fftw")
  call weiift_internal(iws,izs,ith,size(data)/size(data,5),size(data,5),data)
 #else
 #ifdef USE_FFTW
-   call sfftw_execute(planI(iws))
+   call fftwf_execute_dft(planI(iws),data(:,:,:,:,iws),data(:,:,:,:,iws))
 #else
 call seperr("no fftw")
 #endif

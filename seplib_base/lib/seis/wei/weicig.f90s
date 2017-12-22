@@ -7,7 +7,7 @@ module wei_cig
 use wei_flags
 #else
 #ifndef USE_FFTW
-use fftw_sep_fake_mod
+use fftw_mod
 #endif
 #endif
 
@@ -36,8 +36,8 @@ use fftw_sep_fake_mod
 #endif
 
 
-  integer(kind=dbl),pointer,  private :: planF(:) !! forward FFT
-  integer(kind=dbl),pointer,  private :: planI(:) !! inverse FFT
+  type(c_ptr),pointer,  private :: planF(:) !! forward FFT
+  type(c_ptr),pointer,  private :: planI(:) !! inverse FFT
   real,               private :: scale
 
   real,               private :: pcigeps
@@ -232,8 +232,8 @@ contains
      er= dfticommitdescriptor(dfti(i)%dft_d)
 #else
 #ifdef USE_FFTW
-      call sfftw_plan_dft(planF(i),2,ni,hht(1,1,i),hht(1,1,i),FFTW_FORWARD,FFTW_PATIENT)
-      call sfftw_plan_dft(planI(i),2,ni,hht(1,1,i),hht(1,1,i),FFTW_BACKWARD,FFTW_PATIENT)
+      planF(i)= fftwf_plan_dft(2,ni,hht(:,:,i),hht(:,:,i),FFTW_FORWARD,FFTW_PATIENT)
+      planI(i)=fftwf_plan_dft(2,ni,hht(:,:,i),hht(:,:,i),FFTW_BACKWARD,FFTW_PATIENT)
 #else
      call seperr("no fftw")
 #endif
@@ -703,7 +703,7 @@ contains
         call forward_internal(wsep%N(3)*WSEP%n(4),size(hht,3),hht)
 #else
 #ifdef USE_FFTW
-          call sfftw_execute(planF(ith))
+          call fftwf_execute_dft(planF(ith),hht(:,:,ith),hht(:,:,ith))
 #endif
 #endif
           wfld(imx,imy,:,:,ith) = hht(:,:,ith) * scale
@@ -757,7 +757,7 @@ contains
         call backward_internal(wsep%N(3)*WSEP%n(4),size(hht,3),hht)
 #else
 #ifdef USE_FFTW
-          call sfftw_execute(planI(ith))
+          call fftwf_execute_dft(planI(ith),hht(:,:,ith),hht(:,:,ith))
 #endif
 #endif
           wfld(imx,imy,:,:,ith) = hht(:,:,ith) * scale

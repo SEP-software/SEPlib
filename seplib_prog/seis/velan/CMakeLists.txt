@@ -60,7 +60,7 @@ TARGET_LINK_LIBRARIES(Stretch  sepvelan sepfilter sepaux sepmath sep3d sep)
 set_property(TARGET Velan3d PROPERTY LINKER_LANGUAGE Fortran)
 TARGET_LINK_LIBRARIES(Velan3d  sepvelan sepfilter sepgeef90 sepaux sepmath superset  sep3d sep)
 set_property(TARGET Vslan PROPERTY LINKER_LANGUAGE Fortran)
-TARGET_LINK_LIBRARIES(Vslan  sepvelan sepfilter sepfft sepmath sepaux sepmath sep3d sep ${FFTW_LIBRARIES})
+TARGET_LINK_LIBRARIES(Vslan  sepvelan sepfilter sepfft sepmath sepaux sepmath sep3d sep ${FFTWF_LIBRARIES})
 
 install(PROGRAMS  Unmo Radnmo Radial NMO LMO ${progs} DESTINATION bin)
 

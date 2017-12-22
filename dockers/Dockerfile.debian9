@@ -22,7 +22,7 @@ RUN mkdir -p /opt/SEP/build
 RUN echo export PATH=/usr/local/bin:/$PATH >>~root/.bash_profile
 ENV CMAKE_PREFIX_PATH="/opt/SU"
 #USE THIS WHEN BUILDING INTERNAL SEP NETWORK
-RUN git clone http://zapad.Stanford.EDU/bob/SEPlib.git /opt/SEP/src &&\
+RUN git  clone http://zapad.Stanford.EDU/bob/SEPlib.git /opt/SEP/src &&\
    cd /opt/SEP/build && \
    cmake -DCMAKE_INSTALL_PREFIX=/opt/SEP ../src &&\
    cd /opt/SEP/build &&  \

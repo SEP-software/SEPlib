@@ -704,7 +704,7 @@ while(frite[3] < nout[3]){
           fread[3]=fbig3+ii;
           for(i=0; i < nbig2; i++){
             fread[2]=fbig2+i;
-            ierr==sreed_window(tagin,&five,nin,nread,fread,j,esize,block_in[k][i+ii*nbig2]);
+            ierr=sreed_window(tagin,&five,nin,nread,fread,j,esize,block_in[k][i+ii*nbig2]);
             if(ierr!=0 || verb==1){
               fprintf(stderr,"reading parameters ngrid-%d %d %d %d %d \n",nin[0],nin[1],nin[2],nin[3],nin[4]);
               fprintf(stderr,"reading parameters nwind-%d %d %d %d %d \n",nread[0],nread[1],nread[2],nread[3],nread[4]);

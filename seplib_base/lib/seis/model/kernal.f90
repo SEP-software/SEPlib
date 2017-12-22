@@ -1,6 +1,6 @@
 module kernal_mod
 use extrapolation_types
-use fftw_flags_mod
+use fftw_mod
 use sep
 
 implicit none
@@ -17,7 +17,7 @@ integer :: ib_middle,ib_minor1,ib_plus1,b_min,b_max ! for A-boundary
 integer :: nbtx,nbtz    ! n of taper boundary 
 real,private,allocatable :: xtaper(:),ztaper(:)  ! taper coefficient
 real,pointer    :: kx_sq(:), kz_sq(:)
-integer*8,private,save :: planF,planI
+type(c_ptr),private,save :: planF,planI
 
 contains
 !---------------------------------------------------------------------------
@@ -113,8 +113,8 @@ q_x=0.0; q_z=0.0
 !*************************************************************************
 
 !INITIALIZE THE FFT
-call sfftw_plan_dft(planF,2,(/nz,nx/),temp(1,1),temp(1,1), FFTW_FORWARD,FFTW_PATIENT)
-call sfftw_plan_dft(planI,2,(/nz,nx/),temp(1,1),temp(1,1), FFTW_BACKWARD,FFTW_PATIENT)
+planF= fftwf_plan_dft(2,(/nz,nx/),temp,temp, FFTW_FORWARD,FFTW_PATIENT)
+planI= fftwf_plan_dft(2,(/nz,nx/),temp,temp, FFTW_BACKWARD,FFTW_PATIENT)
 scale=sqrt(1./(nx*nz))
 
 
@@ -195,12 +195,12 @@ lap=0.
 !*************** fft for x-direction**************
 
 temp=wave_block
-call sfftw_execute(planF)
+call fftwf_execute_dft(planF,temp,temp)
 
 do ix=1,nx
   temp(:,ix)=temp(:,ix)*(-(kx_sq(ix)+kz_sq(:)))*scale
 end do
-call sfftw_execute(planI)
+call fftwf_execute_dft(planI,temp,temp)
 temp=temp*scale
 !if(sep_thread_num()==3) call srite("junk1.H",real(temp),size(temp)*4)
 !if(sep_thread_num()==3) call srite("junk5.H",real(temp),size(temp)*4)

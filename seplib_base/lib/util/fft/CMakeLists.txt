@@ -13,13 +13,13 @@ set (FORTRANS
 ftu.f90s
 )
 
-if(FFTW_LIBRARIES)
+if(FFTWF_LIBRARIES)
 MESSAGE("FFTW INSTALLED")
 set (sppflags "-DUSE_FFTW" )
 include_directories(${FFTW_INCLUDES})
-#else(FFTW_LIBRARIES)
+#else(FFTWF_LIBRARIES)
 #set(SOURCES ${SOURCES} fake_fftw.f90)
-endif(FFTW_LIBRARIES)
+endif(FFTWF_LIBRARIES)
 
 FOREACH (fort ${FORTRANS})
   STRING(REGEX REPLACE ".f90s\$" ".f90" fortFile "${fort}")
@@ -32,8 +32,8 @@ ENDFOREACH(fort)
 
 add_library(sepfft ${SOURCES})
 
-if(FFTW_LIBRARIES)
-target_link_libraries (sepfft ${FFTW_LIBRARIES})
+if(FFTWF_LIBRARIES)
+target_link_libraries (sepfft ${FFTWF_LIBRARIES})
 endif()
 
 install(TARGETS sepfft DESTINATION lib)

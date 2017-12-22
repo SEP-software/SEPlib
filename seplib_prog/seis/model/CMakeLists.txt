@@ -12,9 +12,9 @@ Aniso2d.F90sep	Kirmod3d.F90sep
 Gauss.F90sep	Marine_geom3d.F90sep  Scatter3d.F90sep
 Iso2d.F90sep	Planar3d.F90sep       Vel.F90sep
 )
-if(FFTW_LIBRARIES)
+if(FFTWF_LIBRARIES)
 set(FORTRANSEP ${FORTRANSEP} Rtm2d.F90sep)
-endif(FFTW_LIBRARIES)
+endif(FFTWF_LIBRARIES)
 
 set(CSEP
 Fdmod.csep  Spike.csep	Surface.csep  Wavelet.csep
@@ -60,9 +60,9 @@ TARGET_LINK_LIBRARIES(Scatter3d  superset sep3d sep)
 TARGET_LINK_LIBRARIES(Iso2d  superset sep3d sep)
 TARGET_LINK_LIBRARIES(Planar3d  superset sep3d sep)
 TARGET_LINK_LIBRARIES(Vel  superset sep3d sep)
-if(FFTW_LIBRARIES)
-TARGET_LINK_LIBRARIES(Rtm2d  sepmodel superset sep3d sep ${FFTW_LIBRARIES})
-endif(FFTW_LIBRARIES)
+if(FFTWF_LIBRARIES)
+TARGET_LINK_LIBRARIES(Rtm2d  sepmodel superset sep3d sep ${FFTWF_LIBRARIES})
+endif(FFTWF_LIBRARIES)
 
 install(PROGRAMS ${progs} DESTINATION bin)
 

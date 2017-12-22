@@ -10,9 +10,9 @@ set(FORTRANSEP
 AMO.F90sep  Lloyd_vel.F90sep  Stolt.F90sep
 )
 
-if(FFTW_LIBRARIES)
+if(FFTWF_LIBRARIES)
   set(FORTRANSEP ${FORTRANSEP} CAM.F90sep Phase.F90sep OFF2ANG.F90sep SRM.F90sep)
-endif(FFTW_LIBRARIES)
+endif(FFTWF_LIBRARIES)
 
 set(CSEP
 Kirch_2d_depth.csep
@@ -51,14 +51,16 @@ TARGET_LINK_LIBRARIES(AMO sepimage sepfft seppar superset sep3d sep m)
 TARGET_LINK_LIBRARIES(Lloyd_vel  sepwei sepgeef90 seppar superset sep3d sep)
 set_property(TARGET Stolt PROPERTY LINKER_LANGUAGE Fortran)
 TARGET_LINK_LIBRARIES(Stolt sepimage sepmath sepaux superset sep3d sep m)
-if(FFTW_LIBRARIES)
+if(FFTWF_LIBRARIES)
 set_property(TARGET SRM PROPERTY LINKER_LANGUAGE Fortran)
-TARGET_LINK_LIBRARIES(SRM sepimage sepmath sepaux superset sep3d sep ${FFTW_LIBRARIES} m)
+TARGET_LINK_LIBRARIES(SRM sepimage sepmath sepaux superset sep3d sep ${FFTWF_LIBRARIES} m)
 set_property(TARGET OFF2ANG PROPERTY LINKER_LANGUAGE Fortran)
-TARGET_LINK_LIBRARIES(OFF2ANG sepimage sepmath sepaux superset sep3d sep ${FFTW_LIBRARIES} m)
-TARGET_LINK_LIBRARIES(CAM sepwei sepfft seppar superset  sep3d sep ${FFTW_LIBRARIES} m)
-TARGET_LINK_LIBRARIES(Phase sepwei sepfft seppar superset sep3d sep ${FFTW_LIBRARIES} m)
-endif(FFTW_LIBRARIES)
+
+TARGET_LINK_LIBRARIES(OFF2ANG sepimage sepmath sepaux superset sep3d sep ${FFTWF_LIBRARIES} m ${FFTW_LIBRARIES}  m)
+
+TARGET_LINK_LIBRARIES(CAM sepwei sepfft seppar superset  sep3d sep ${FFTWF_LIBRARIES} m)
+TARGET_LINK_LIBRARIES(Phase sepwei sepfft seppar superset sep3d sep ${FFTWF_LIBRARIES} m)
+endif(FFTWF_LIBRARIES)
 
 install(PROGRAMS ${progs} DESTINATION bin)
 

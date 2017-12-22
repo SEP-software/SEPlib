@@ -117,9 +117,9 @@ include_directories("${PROJECT_BINARY_DIR}")
 
 MESSAGE ( STATUS "Searching for X11..." )
 FIND_PACKAGE ( X11 REQUIRED )
-FIND_LIBRARY(X11_XT Xt PATHS /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 /opt/X11/lib /opt/local/lib)
-FIND_LIBRARY(X11_XAW Xaw PATHS /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 /opt/X11/lib /opt/local/lib)
-FIND_LIBRARY(X11_XP Xp PATHS /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 /opt/X11/lib /opt/local/lib)
+FIND_LIBRARY(X11_XT Xt PATHS /opt/local /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 /opt/X11/lib /opt/local/lib)
+FIND_LIBRARY(X11_XAW Xaw PATHS /opt/local /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 /opt/X11/lib /opt/local/lib)
+FIND_LIBRARY(X11_XP Xp PATHS /opt/local /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 /opt/X11/lib /opt/local/lib)
 
 
 INCLUDE (CheckIncludeFile)
