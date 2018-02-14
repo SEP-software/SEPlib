@@ -9,6 +9,7 @@ module adcig_mod
 #else
   use fftw_mod
 #endif
+  use fftw_mod
 
 
   implicit none  
