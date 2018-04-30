@@ -13,13 +13,13 @@ set (FORTRANS
 ftu.f90s
 )
 
-if(FFTWF_LIBRARIES)
+#if(FFTWF_LIBRARIES)
 MESSAGE("FFTW INSTALLED")
 set (sppflags "-DUSE_FFTW" )
-include_directories(${FFTW_INCLUDES})
+include_directories(${FFTWF_INCLUDES})
 #else(FFTWF_LIBRARIES)
 #set(SOURCES ${SOURCES} fake_fftw.f90)
-endif(FFTWF_LIBRARIES)
+#endif(FFTWF_LIBRARIES)
 
 FOREACH (fort ${FORTRANS})
   STRING(REGEX REPLACE ".f90s\$" ".f90" fortFile "${fort}")
