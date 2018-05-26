@@ -76,6 +76,8 @@ find_package(JNI)
 set(QT_USE_QT3SUPPORT True)
 find_package(Qt4)
 find_package(SymLink)
+find_package(CCS)
+find_package(Tdb)
 
 INCLUDE (CheckIncludeFiles)
 CHECK_INCLUDE_FILES(termios.h HAVE_TERMIOS_H)
