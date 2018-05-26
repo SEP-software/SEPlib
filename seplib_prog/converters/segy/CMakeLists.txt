@@ -6,21 +6,23 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../seplib_base/include")
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../include")
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/../../../seplib_base/lib/seis/image")
-include_directories("/opt/geotrans3.3/CCS/src/dtcc/CoordinateSystems/misc")
-include_directories("/opt/geotrans3.3/CCS/src/dtcc/CoordinateSystems/utm")
-include_directories("/opt/geotrans3.3/CCS/src/dtcc/CoordinateTuples")
-include_directories("/opt/geotrans3.3/CCS/src/dtcc/CoordinateTuples")
-include_directories("/opt/geotrans3.3/CCS/src/dtcc/Enumerations")
-include_directories("/opt/geotrans3.3/CCS/src/dtcc/Exception")
-include_directories("/opt/geotrans3.3/CCS/src/dtcc")
-include_directories("/opt/tdb-1.2.12/include")
+if (CCS_INCLUDES)
+if (TDB_INCLUDE)
+include_directories(${CCS_INCLUDES})
+include_directories(${TDB_INCLUDE})
+endif (TDB_INCLUDE)
+endif (CCS_INCLUDES)
 
 set(FORTRANSEP 
 )
 
+if (CCS_INCLUDES)
+if (TDB_INCLUDE)
 set(KMLSRCS
 segykml.cpp
 )
+endif (TDB_INCLUDE)
+endif (CCS_INCLUDES)
 
 if(SU_LIBRARIES)
 include_directories(${SU_INCLUDES})
@@ -59,7 +61,11 @@ FOREACH(cppprog ${KMLSRCS})
   install(TARGETS ${prog} DESTINATION bin)
 ENDFOREACH(cppprog)
 
-TARGET_LINK_LIBRARIES(segykml /opt/geotrans3.3/CCS/linux_64/libMSPdtcc.a /opt/tdb-1.2.12/bin/default/libtdb.a)
+if (CCS_INCLUDES)
+if (TDB_INCLUDE)
+TARGET_LINK_LIBRARIES(segykml ${CCS_LIBRARIES} ${TDB_LIBRARY})
+endif (TDB_INCLUDE)
+endif (CCS_INCLUDES)
 
 if(SU_LIBRARIES)
 TARGET_LINK_LIBRARIES(Segy2sep  sepsu ${SU_LIBRARIES} superset   sep3d sep)
