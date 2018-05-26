@@ -10,13 +10,12 @@ if (TDB_INCLUDE)
 endif (TDB_INCLUDE)
 
 file (GLOB TDBDIRS "/opt/tdb*")
-find_path (TDB_INCLUDE NAMES tdb.h PATHS ${TDBDIRS})
+find_path (TDB_INCLUDE NAMES tdb.h PATHS ${TDBDIRS} PATH_SUFFIXES include)
 
-find_library (TDB_LIBS HINTS ${TDBDIRS} NAMES tdb)
+find_library (TDB_LIB HINTS ${TDBDIRS} NAMES tdb PATH_SUFFIXES bin/default bin/shared)
 if(TDB_LIB)
 set(TDB_LIBRARY ${TDB_LIB})
 endif(TDB_LIB)
-
 
 # handle the QUIETLY and REQUIRED arguments and set TDB_FOUND to TRUE if
 # all listed variables are TRUE
