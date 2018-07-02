@@ -57,7 +57,7 @@ ENDFOREACH(cprog)
 
 FOREACH(cppprog ${KMLSRCS})
   STRING(REGEX REPLACE ".cpp\$" "" prog "${cppprog}")
-  ADD_EXECUTABLE(${prog} ${cppprog})
+    ADD_EXECUTABLE(${prog} ${cppprog})
   install(TARGETS ${prog} DESTINATION bin)
 ENDFOREACH(cppprog)
 
