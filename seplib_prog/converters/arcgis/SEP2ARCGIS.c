@@ -41,7 +41,7 @@ int main(int argc, char **argv, char **envp)
     initpar(argc, argv);
     getch_add_string("head=/dev/null");
     if(!redin()) {
-	fprintf(stderr,"Syntax: %s <SEPlib_file > ARCGIS_file\n",argv[0]);
+	fprintf(stderr,"Syntax: %s <SEPlib_file > ARCGIS_file [NODATA_value=infinity]\n",argv[0]);
 	return(EXIT_FAILURE);
     }
 
@@ -50,7 +50,7 @@ int main(int argc, char **argv, char **envp)
     if(!fetch("o1","g",&xllcorner)) seperr("missing o1!\n");
     if(!fetch("o2","g",&yllcorner)) seperr("missing o2!\n");
     if(!fetch("d2","g",&cellsize)) seperr("missing d2!\n");
-    if(!fetch("NODATA_value","g",&NODATA_value)) NODATA_value = INFINITY;
+    if(!fetch("NODATA_value NODATA_VALUE nodata_value","g",&NODATA_value)) NODATA_value = INFINITY;
 
     puthead("ncols %u\n",ncols);
     puthead("nrows %u\n",nrows);
