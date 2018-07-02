@@ -1,5 +1,6 @@
 project(SEPLIB-prog-converters)
 cmake_minimum_required(VERSION 2.8)
+add_subdirectory(arcgis)
 add_subdirectory(csv)
 add_subdirectory(grafconv)
 add_subdirectory(matlab)
