@@ -91,13 +91,14 @@ float thresh=25.;
 ADD_DEF_SEP_DOC
 #include <stdlib.h>
 #include <sep.main>
+#include<assert.h>
 int MAIN(void)
 {
-	int ix, nt, nx, n3, esize;
+	int ix, nt, nx, n3, esize,it,itBig;
         int normpow;
 	double initaver, probe, lpnorm, lptemp, oldnorm;
 	float *x, *y, *xp, *yp, *tail, *head, *start, *end;
-
+    float *normTrace;
         sep_begin_prog();
 	/* fetch parameters */
 	if (!fetch("n1","d",&nt))
@@ -126,19 +127,66 @@ int MAIN(void)
 	hclose();
 
 	/* allocate storage */
-	x = (float *) alloc (nt*sizeof(float));
+	x = (float *) alloc (nt+window*sizeof(float));
 	y = (float *) alloc (nt*sizeof(float));
+    normTrace=(float*) alloc(nt*sizeof(float));
 
 	/* gain each trace by l1 norm of moving window */
 	for (ix = 0; ix<nx; ix++) {
 
-		if((nt*esize) != sreed ("in",x,nt*esize)) 
+		if((nt*esize) != sreed ("in",&x[window/2],nt*esize)) 
 			seperr("unexpected EOF on input\n");
-		xp = x;
-		yp = y;
+	
+        for(it=0; it< window/2;it++) x[it]=x[window/2];
+        for(it=0; it <window/2;it++) x[nt-window/2+it]=x[nt+window/2-1];
 
-		/* detect first significant energy by comparing 
-		   short moving window with an initial average */
+       if(ix==40) for(it=0; it < window+nt; it++) fprintf(stderr,"it=%d f=%f \n",it,x[it]);
+        for(it=0; it < nt; it++) y[it]=0;
+        normTrace[0]=0.;
+        if(normpow==2){
+          for(int it=0; it < window;it++) normTrace[0]+=x[it]*x[it];
+          for(int it=1; it < nt; it++){
+          normTrace[it]=normTrace[it-1]-x[it-1]*x[it-1]+x[window+it]*x[window+it];
+if(ix==40) fprintf(stderr,"NORM %d %f %f\n",it,normTrace[it],normTrace[it-1]);
+          }
+          for(int it=1; it < nt; it++)normTrace[it]=sqrtf(normTrace[it]);
+
+        }
+        else{
+          for(int it=0; it < window;it++) normTrace[0]+=x[it]*x[it];
+          for(int it=1; it < nt; it++){
+          normTrace[it]=normTrace[it-1]-fabsf(x[it-1])+fabsf(x[window+it]);
+          }
+
+        }
+        
+        initaver=0;
+        for(it=0; it < dwind; it++) {
+          initaver+=fabsf(x[it+window/2-dwind/2]);
+        }
+        itBig=-1; it=window/2+1;
+        probe=initaver;
+        while(itBig==-1 && it<nt+window){
+           probe-=x[it-dwind/2-1]+x[it+dwind/2];
+           if(probe >= thresh*initaver) itBig=it-window/2;
+
+           it++;
+        }
+
+               if(ix==40) for(it=0; it < window+nt; it++) fprintf(stderr,"TRY2 it=%d f=%f \n",it,x[it]);
+
+        if(itBig!=-1 ||  fabsf(x[it+window/2]) > .0001){
+           for(it=0; it < nt;it++){
+               if(fabsf(normTrace[it]) >0.) y[it]=x[it+window/2]/(normTrace[it]);
+            if(ix==40) fprintf(stderr,"CHECK %d %d %f %f %f\n",it,it+window/2,normTrace[it],x[it+window/2],y[it]);
+           }         
+
+
+        }
+srite ("out",y,nt*esize);
+
+/*
+
 		if (detect) {
 		detects: for (end=y+nt; yp<end;) *yp++ = 0.;
 			for (initaver = 0., end = x + dwind; xp<end;) {
@@ -155,12 +203,10 @@ int MAIN(void)
 				else probe += *tail++;
 
 			if ((xp == end)||(probe == 0.)) {
-				/*fprintf (stderr,"no energy detected in trace %d\n",ix);*/
 				goto right;
 			}
 		}
 
-		/* untaper beginning of trace */
 		for (start=xp, lpnorm=0., end=xp+window; xp<end;) {
                     if( normpow == 2) {
 			lpnorm += (*xp) * (*xp); xp++;
@@ -176,13 +222,11 @@ int MAIN(void)
                 if (normpow == 2) lptemp = sqrt(lpnorm);
                 else lptemp = lpnorm;
 		for (xp=start, end=start+window/2; xp<end;) *yp++ = *xp++/lptemp;
-
-		/* core routine */
 		for(tail=start,head=start+window,end=x+nt-window/2,oldnorm=lpnorm;xp<end;)
 		{
                         if(normpow == 2) {
                             lpnorm += ((*head) * (*head)); head++;
-                            lpnorm -= ((*tail) * (*tail)); head++;
+                            lpnorm -= ((*tail) * (*tail)); tail++;
 			    if (lpnorm == 0.) lpnorm = oldnorm;
 			    oldnorm = lpnorm;
                             lptemp = sqrt(lpnorm);
@@ -198,9 +242,10 @@ int MAIN(void)
 			*yp++ = *xp++ / lptemp;
 		}
 
-		/* untaper end of trace */
 		for (end=x+nt; xp<end;) *yp++ = *xp++/lptemp;
 		right: srite ("out",y,nt*esize);
+		*/
+
 	}
   sep_end_prog();
   return EXIT_SUCCESS;
