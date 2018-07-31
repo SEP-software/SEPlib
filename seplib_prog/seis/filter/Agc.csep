@@ -127,7 +127,7 @@ int MAIN(void)
 	hclose();
 
 	/* allocate storage */
-	x = (float *) alloc (nt+window*sizeof(float));
+	x = (float *) alloc ((nt+window)*sizeof(float));
 	y = (float *) alloc (nt*sizeof(float));
     normTrace=(float*) alloc(nt*sizeof(float));
 
@@ -137,25 +137,25 @@ int MAIN(void)
 		if((nt*esize) != sreed ("in",&x[window/2],nt*esize)) 
 			seperr("unexpected EOF on input\n");
 	
-        for(it=0; it< window/2;it++) x[it]=x[window/2];
-        for(it=0; it <window/2;it++) x[nt-window/2+it]=x[nt+window/2-1];
 
-       if(ix==40) for(it=0; it < window+nt; it++) fprintf(stderr,"it=%d f=%f \n",it,x[it]);
+        for(it=0; it< window/2;it++) x[it]=x[window/2];
+        for(it=0; it <window/2;it++) x[nt+window/2+it]=x[nt+window/2-1];
+
         for(it=0; it < nt; it++) y[it]=0;
         normTrace[0]=0.;
         if(normpow==2){
           for(int it=0; it < window;it++) normTrace[0]+=x[it]*x[it];
           for(int it=1; it < nt; it++){
           normTrace[it]=normTrace[it-1]-x[it-1]*x[it-1]+x[window+it]*x[window+it];
-if(ix==40) fprintf(stderr,"NORM %d %f %f\n",it,normTrace[it],normTrace[it-1]);
           }
           for(int it=1; it < nt; it++)normTrace[it]=sqrtf(normTrace[it]);
 
         }
         else{
-          for(int it=0; it < window;it++) normTrace[0]+=x[it]*x[it];
+          for(int it=0; it < window;it++) normTrace[0]+=fabsf(x[it]);
           for(int it=1; it < nt; it++){
           normTrace[it]=normTrace[it-1]-fabsf(x[it-1])+fabsf(x[window+it]);
+
           }
 
         }
@@ -173,12 +173,10 @@ if(ix==40) fprintf(stderr,"NORM %d %f %f\n",it,normTrace[it],normTrace[it-1]);
            it++;
         }
 
-               if(ix==40) for(it=0; it < window+nt; it++) fprintf(stderr,"TRY2 it=%d f=%f \n",it,x[it]);
 
         if(itBig!=-1 ||  fabsf(x[it+window/2]) > .0001){
            for(it=0; it < nt;it++){
                if(fabsf(normTrace[it]) >0.) y[it]=x[it+window/2]/(normTrace[it]);
-            if(ix==40) fprintf(stderr,"CHECK %d %d %f %f %f\n",it,it+window/2,normTrace[it],x[it+window/2],y[it]);
            }         
 
 
