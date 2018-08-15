@@ -37,6 +37,7 @@ set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -O2")
 set(DEFAULT_DOC_PATH ${CMAKE_INSTALL_PREFIX}/bin)
 
 SET(SEPlib_DIRNAME_lib     "lib")
+SET(SEPlib_DIRNAME_cmake "cmake")
 SET(SEPlib_DIRNAME_include "include")
 
 INCLUDE(CMakePackageConfigHelpers)
@@ -164,7 +165,7 @@ INSTALL(
   EXPORT
     SEPlibExports
   DESTINATION
-    ${SEPlib_DIRNAME_lib}
+    ${SEPlib_DIRNAME_cmake}
   )
 
 
