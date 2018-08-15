@@ -144,16 +144,16 @@ int MAIN(void)
         for(it=0; it < nt; it++) y[it]=0;
         normTrace[0]=0.;
         if(normpow==2){
-          for(int it=0; it < window;it++) normTrace[0]+=x[it]*x[it];
-          for(int it=1; it < nt; it++){
+          for( it=0; it < window;it++) normTrace[0]+=x[it]*x[it];
+          for( it=1; it < nt; it++){
           normTrace[it]=normTrace[it-1]-x[it-1]*x[it-1]+x[window+it]*x[window+it];
           }
-          for(int it=1; it < nt; it++)normTrace[it]=sqrtf(normTrace[it]);
+          for(it=1; it < nt; it++)normTrace[it]=sqrtf(normTrace[it]);
 
         }
         else{
-          for(int it=0; it < window;it++) normTrace[0]+=fabsf(x[it]);
-          for(int it=1; it < nt; it++){
+          for( it=0; it < window;it++) normTrace[0]+=fabsf(x[it]);
+          for( it=1; it < nt; it++){
           normTrace[it]=normTrace[it-1]-fabsf(x[it-1])+fabsf(x[window+it]);
 
           }
