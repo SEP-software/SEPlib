@@ -10,9 +10,7 @@ if (X11_INCLUDES)
   set (X11_FIND_QUIETLY TRUE)
 endif (X11_INCLUDES)
 
-MESSAGE("before includes")
 find_path (X11_INCLUDES X11/Intrinsic.h PATH /opt/local/include)
-MESSAGE("after includes")
 
 find_library (X11_LIBRARIES HINTS /opt/local/lib  NAMES X11)
 #find_library (SUCWP_LIB HINTS $ENV{CWPROOT}/lib  NAMES cwp)

@@ -51,4 +51,4 @@ set(SOURCES ${SOURCES} sep.f90       sep_func.f90  sep_mod.f90  sep_par.f90
 
 
 add_library(sep ${SOURCES})
-install(TARGETS sep DESTINATION lib EXPORT SEPlibExports)
+install(TARGETS sep DESTINATION lib EXPORT  SEPlibTargets)

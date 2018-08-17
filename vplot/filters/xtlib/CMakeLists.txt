@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 2.8)
 project(SEPLIB-vplot-filters-xtlib)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../seplib_base/include)
-MESSAGE("in x11 " ${X11_INCLUDES})
 include_directories(${X11_INCLUDES})
 set (SOURCE1 
 appdata.c  xtcolors.c	 xtdoc.h	   xtframe.h	   xtplot.c

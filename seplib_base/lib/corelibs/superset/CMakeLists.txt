@@ -22,7 +22,8 @@ debug.c    grid.c	   keys.c     struct_sepc.c)
 
 add_library(superset ${SOURCES})
 target_link_libraries(superset sep3d sep)
-install(TARGETS superset DESTINATION lib)
+install(TARGETS superset DESTINATION lib EXPORT SEPlibTargets)
+
 
 if(SU_LIBRARIES)
 include_directories(${SU_INCLUDES})

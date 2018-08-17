@@ -6,7 +6,6 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../seplib_base/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../include")
 
 if(FFTWF_LIBRARIES)
-MESSAGE("FFTW INSTALLED")
 set (sppflags "-DUSE_FFTW" )
 include_directories(${FFTWF_INCLUDES})
 endif(FFTWF_LIBRARIES)

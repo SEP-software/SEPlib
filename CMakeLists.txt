@@ -1,4 +1,5 @@
-project(SEPLIB)
+project(SEPlib)
+cmake_policy(SET CMP0042 NEW)
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
 
@@ -36,33 +37,26 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2")
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -O2")
 set(DEFAULT_DOC_PATH ${CMAKE_INSTALL_PREFIX}/bin)
 
-SET(SEPlib_DIRNAME_lib     "lib")
-SET(SEPlib_DIRNAME_cmake "cmake")
-SET(SEPlib_DIRNAME_include "include")
 
-INCLUDE(CMakePackageConfigHelpers)
+# Offer the user the choice of overriding the installation directories
+set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
+set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
+set(INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH
+  "Installation directory for CMake files")
+
+# Make relative paths absolute (needed later on)
+foreach(p LIB BIN INCLUDE CMAKE)
+  set(var INSTALL_${p}_DIR)
+  if(NOT IS_ABSOLUTE "${${var}}")
+    set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
+  endif()
+endforeach()
 
 
-CONFIGURE_PACKAGE_CONFIG_FILE(
-  "${CMAKE_CURRENT_SOURCE_DIR}/SEPlibConfig.cmake.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/SEPlibConfig.cmake"
-  INSTALL_DESTINATION
-    ${SEPlib_DIRNAME_lib}
-  PATH_VARS
-    SEPlib_DIRNAME_lib
-    SEPlib_DIRNAME_include
-  )
 
-INSTALL(
-  FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/SEPlibConfig.cmake
-  DESTINATION
-    ${SEPlib_DIRNAME_lib}
-  )
-  
-  
-install(FILES ${PROJECT_BINARY_DIR}/SEPlibConfig.cmake
-  DESTINATION lib)
+SET(SEPlib_DIRNAME_lib     ${CMAKE_INSTALL_PREFIX}/lib)
+SET(SEPlib_DIRNAME_include ${CMAKE_INSTALL_PREFIX}/include)
+SET(SEPlib_DIRNAME_cmake ${CMAKE_INSTALL_PREFIX}/cmake)
 
 find_package(SU)
 if(SU_LIBRARIES)
@@ -161,12 +155,31 @@ configure_file (
   )
 
 
-INSTALL(
-  EXPORT
-    SEPlibExports
-  DESTINATION
-    ${SEPlib_DIRNAME_cmake}
-  )
+###################
+
+export(TARGETS sep sep3d superset FILE "${PROJECT_BINARY_DIR}/SEPlibTargets.cmake")
+export(PACKAGE SEPlib)
+
+configure_file(${PROJECT_SOURCE_DIR}/cmake/SEPlibConfig.cmake.in
+  "${PROJECT_BINARY_DIR}/cmake/SEPlibConfig.cmake" @ONLY)
+# ... for both
+configure_file(${PROJECT_SOURCE_DIR}/cmake/SEPlibConfigVersion.cmake.in
+  "${PROJECT_BINARY_DIR}/cmake/SEPlibConfigVersion.cmake" @ONLY)
+
+install(FILES
+  "${PROJECT_BINARY_DIR}/cmake/SEPlibConfig.cmake"
+  "${PROJECT_BINARY_DIR}/cmake/SEPlibConfigVersion.cmake"
+  DESTINATION "${SEPlib_DIRNAME_cmake}" COMPONENT dev)
+
+install(EXPORT SEPlibTargets DESTINATION
+  "${SEPlib_DIRNAME_cmake}" COMPONENT dev)
+
+
+###################
+
+
+
+
 
 
 
