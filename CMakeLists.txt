@@ -171,7 +171,7 @@ install(FILES
   DESTINATION "${SEPlib_DIRNAME_cmake}" COMPONENT dev)
 
 install(EXPORT SEPlibTargets DESTINATION
-  "${SEPlib_DIRNAME_cmake}" COMPONENT dev)
+  cmake COMPONENT dev)
 
 
 ###################
