@@ -123,7 +123,7 @@ C<int srite_window(tag_history,n_dim_cube,n_cube,n_wind,f_wind,j_wind,esize,valu
 
          number of bytes per element
 
-=item    void* - values          
+=item    const void* - values          
 
          array of values to be written.
 
@@ -172,6 +172,7 @@ AUTHOR
 
 */
 #include <sepConfig.h>
+#include "assert.h"
 #ifdef HAVE_STRING_H
 #include <string.h>
 #endif
@@ -242,7 +243,7 @@ char *values;
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN 
 int srite_window(const char *tag_history, const int *n_dim_cube, const int *n_cube, 
-		const int *n_wind,const int *f_wind,const int *j_wind, const int esize, void *values)
+		const int *n_wind,const int *f_wind,const int *j_wind, const int esize, const void *values)
 _XFUNCPROTOEND 
 #else 
 int srite_window(tag_history, n_dim_cube, n_cube, n_wind, f_wind, j_wind, esize, values)
@@ -251,11 +252,23 @@ int  *n_dim_cube;
 int  *n_cube;
 int  *n_wind, *f_wind, *j_wind;
 int  esize;
-char *values;
+const char *values;
 #endif
 
 {
-    return (sep_window(WRITE,tag_history, n_dim_cube, n_cube, n_wind, f_wind, j_wind, esize, values));
+  int i,ierr;
+  size_t n;
+  unsigned char *buf2;
+  n=esize;
+for(i=0; i < *n_dim_cube; i++){
+  n=n*(size_t) n_wind[i];
+ }
+  assert(n>=0); 
+  buf2=(unsigned char*) malloc(n);
+   memcpy(buf2,values,n);
+    ierr=sep_window(WRITE,tag_history, n_dim_cube, n_cube, n_wind, f_wind, j_wind, esize, buf2);
+    free(buf2);
+   return ierr;
 }
 
 
@@ -373,7 +386,7 @@ for(i=0;i<ndim;i++){
 			ngrid[n_axis]=n_cube[i]; n_axis++;
 		}
 	  else if(n_wind[i] != n_cube[i] && j_wind[i]==1){
-			if((mode==READ)){ /*we might be able to buffer this axis*/
+			if(mode==READ){ /*we might be able to buffer this axis*/
         if(BUF_SIZE>= (sep_file_size_t) n_cube[i]*block && i <= last_rel){
 						mode=BUFFER_READ;
 						first_buf_ax=i;
@@ -468,21 +481,21 @@ for(i=0; i <nloop; i++){
 	else{
 
 		seek_to_off_t=(sep_off_t)pos*(sep_off_t)seek_block_elem+(sep_off_t)beg_seek;
-		if(fabs(seek_to_off_t) >MAX_INT_SIZE){
+		if((size_t)seek_to_off_t >MAX_INT_SIZE){
 			/*we need to be tricky.  We will figure out our relative position
        and then seek to where we want to go.  If the seek distance is greater
        than MAX_INT_SIZE we will do it in 2+ steps */
 			big_block=(sep_off_t)seek_block_elem * (sep_off_t) seek_block_size;
 			if(big_block >MAX_INT_SIZE)
 				return(sepwarn(-1,"can not handle seek, blocks are to large \n"));
-			if(0!=file_position(tag_history,seek_block_elem*seek_block_size,
-        &blocks,&remainder));
+file_position(tag_history,seek_block_elem*seek_block_size,
+        &blocks,&remainder);
        current_pos=big_block*(sep_off_t)blocks+(sep_off_t) remainder;
 			seek_distance=seek_to_off_t*seek_block_size-current_pos;
 			block_distance=seek_distance/(sep_off_t)seek_block_size; /*units to relative 
       seek in seek_block_size quantities*/
 /*      fprintf(stderr,"now time to check %g %g %g \n",(long long)current_pos,(long long)seek_distance,block_distance);*/
-			if(fabs(block_distance)>MAX_INT_SIZE){ /*if larger than max int */
+			if((size_t)block_distance>MAX_INT_SIZE){ /*if larger than max int */
 				seek_to=(int)(seek_distance/big_block);
 				derr=sseek_block_d(tag_history,seek_to,(int)big_block,SEEK_SET);
 				if(derr<0)
@@ -597,11 +610,23 @@ int sreed_window_new(const char *tag_history, const int ndim, const int *n_cube,
    return(window_it(tag_history,&compress,0,values));
 }
 int srite_window_new(const char *tag_history, const int ndim, const int *n_cube, 
-		const int *n_wind,const int *f_wind,const int *j_wind, const int esize, void *values){
+		const int *n_wind,const int *f_wind,const int *j_wind, const int esize, const void *values){
 		
+ size_t n;
+char *buf2;
+int i,ierr;
+ n=esize;
+for(i=0; i < ndim; i++){
+  n=n*n_wind[i];
+}
+assert(n>=0);
+buf2 =( char*) malloc(n);
+memcpy(buf2,values,n);
  wind compress;
   compress_it(ndim,n_cube,n_wind,f_wind,j_wind,esize,&compress,1);
-   return(window_it(tag_history,&compress,1,values));
+  ierr=window_it(tag_history,&compress,1,buf2);
+  free(buf2);
+  return ierr;
 }
 
 int window_it(const char *tag, wind *pars, int write,char *buffer){
