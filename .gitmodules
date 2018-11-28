@@ -1,0 +1,21 @@
+[submodule "java"]
+	path = java
+	url = http://zapad.Stanford.EDU/bob/sep-java.git
+[submodule "ratfor90"]
+	path = ratfor90
+	url = http://zapad.Stanford.EDU/SEP-external/ratsep.git
+[submodule "makerules"]
+	path = makerules
+	url = http://zapad.Stanford.EDU/bob/sep-makerules.git
+[submodule "progs/util"]
+	path = progs/util
+	url = http://zapad.Stanford.EDU/bob/seputil-progs.git
+[submodule "progs/converters"]
+	path = progs/converters
+	url = http://zapad.Stanford.EDU/SEP-external/sepconverters-progs.git
+[submodule "progs/seis"]
+	path = progs/seis
+	url = http://zapad.Stanford.EDU/SEP-external/sepseis-progs.git
+[submodule "progs/vplotProgs"]
+	path = progs/vplotProgs
+	url = http://zapad.Stanford.EDU/SEP-external/sepvplotgraphics.git

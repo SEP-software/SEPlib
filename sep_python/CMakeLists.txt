@@ -1,7 +1,0 @@
-project(SEPLIB-base)
-cmake_minimum_required(VERSION 2.8)
-add_subdirectory(base)
-add_subdirectory(flows)
-add_subdirectory(programs)
-add_subdirectory(seis)
-add_subdirectory(util)

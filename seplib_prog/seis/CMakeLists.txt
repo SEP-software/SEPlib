@@ -1,7 +1,0 @@
-cmake_minimum_required(VERSION 2.8)
-project(SEPLIB-prog-seis)
-add_subdirectory(filter)
-add_subdirectory(image)
-add_subdirectory(model)
-add_subdirectory(travel)
-add_subdirectory(velan)

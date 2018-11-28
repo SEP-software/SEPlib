@@ -1,7 +1,0 @@
-project(SEPLIB-vplot)
-cmake_minimum_required(VERSION 2.8)
-add_subdirectory(include)
-add_subdirectory(libvplot)
-add_subdirectory(glplot)
-add_subdirectory(filters)
-add_subdirectory(util)

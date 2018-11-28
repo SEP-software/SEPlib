@@ -1,6 +1,0 @@
-project(SEPLIB-lib-util)
-cmake_minimum_required(VERSION 2.8)
-add_subdirectory(corelibs)
-add_subdirectory(class)
-add_subdirectory(util)
-add_subdirectory(seis)
