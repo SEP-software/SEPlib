@@ -81,7 +81,6 @@ endif(NOT
       BUILD_VPLOT_GRAPHICS)
 
 
-message("BEFORE CONDITIONAL CLASS")
 if(NOT BUILD_SEISMIC_PROGS)
   option(BUILD_CLASS_LIBS "Build and class LIBS" ON)
   if(BUILD_CLASS_LIBS)
@@ -89,7 +88,6 @@ if(NOT BUILD_SEISMIC_PROGS)
   endif(BUILD_CLASS_LIBS)
 endif(NOT  BUILD_SEISMIC_PROGS)
 
-message("BEFORE CONDFITIONAL PYTHON")
 if(NOT BUILD_UTIL_PROGS)
   option(BUILD_PYTHON "Build python classes" ON)
   if(BUILD_PYTHON)
@@ -99,34 +97,41 @@ endif(NOT  BUILD_UTIL_PROGS)
 
 
 
-message("BEFORE RATFOR90")
 if(BUILD_RATFOR90)
   add_subdirectory(ratfor90)
 endif(BUILD_RATFOR90)
 
-message("BEFORE JAVA")
 if(BUILD_JAVA)
   add_subdirectory(java)
 endif(BUILD_JAVA)
 
-message("BEFORE SEISMIC PROGS")
 if(BUILD_SEISMIC_PROGS)
   add_subdirectory(progs/seis)
+  set(SEPCONFIGDIR ${CMAKE_CURRENT_BINARY_DIR}/progs/seis/corelibs)
+
 endif(BUILD_SEISMIC_PROGS)
 
-message("BEFORE UTIL PROGS")
 if(BUILD_UTIL_PROGS)
+
   add_subdirectory(progs/util)
+  if(NOT SEPCONFGIR)
+      set(SEPCONFIGDIR ${CMAKE_CURRENT_BINARY_DIR}/progs/util/corelibs)
+  endif(NOT SEPCONFIGDIR)
 endif(BUILD_UTIL_PROGS)
 
-message("BEFORE CONVERT PROGS")
 if(BUILD_CONVERTER_PROGS)
   add_subdirectory(progs/converters)
+    if(NOT SEPCONFGIR)
+      set(SEPCONFIGDIR ${CMAKE_CURRENT_BINARY_DIR}/progs/util/corelibs)
+  endif(NOT SEPCONFIGDIR)
 endif(BUILD_CONVERTER_PROGS)
 
 message("BEFORE VPLOt")
 if(BUILD_VPLOT_GRAPHICS)
   add_subdirectory(progs/vplotProgs)
+    if(NOT SEPCONFGIR)
+      set(SEPCONFIGDIR ${CMAKE_CURRENT_BINARY_DIR}/progs/vplotProgs/corelibs)
+  endif(NOT SEPCONFIGDIR)
 endif(BUILD_VPLOT_GRAPHICS)
 
 include(InstallRequiredSystemLibraries)
