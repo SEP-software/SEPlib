@@ -97,13 +97,7 @@ endif(NOT  BUILD_UTIL_PROGS)
 
 
 
-if(BUILD_RATFOR90)
-  add_subdirectory(ratfor90)
-endif(BUILD_RATFOR90)
 
-if(BUILD_JAVA)
-  add_subdirectory(java)
-endif(BUILD_JAVA)
 
 if(BUILD_SEISMIC_PROGS)
   add_subdirectory(progs/seis)
@@ -126,13 +120,20 @@ if(BUILD_CONVERTER_PROGS)
   endif(NOT SEPCONFIGDIR)
 endif(BUILD_CONVERTER_PROGS)
 
-message("BEFORE VPLOt")
 if(BUILD_VPLOT_GRAPHICS)
   add_subdirectory(progs/vplotProgs)
     if(NOT SEPCONFIGDIR)
       set(SEPCONFIGDIR ${CMAKE_CURRENT_BINARY_DIR}/progs/vplotProgs/corelibs)
   endif(NOT SEPCONFIGDIR)
 endif(BUILD_VPLOT_GRAPHICS)
+
+if(BUILD_RATFOR90)
+  add_subdirectory(ratfor90)
+endif(BUILD_RATFOR90)
+
+if(BUILD_JAVA)
+  add_subdirectory(java)
+endif(BUILD_JAVA)
 
 include(InstallRequiredSystemLibraries)
 set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/LICENSE")
