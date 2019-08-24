@@ -1,6 +1,10 @@
-project(SEPlib)
-message("IN MAIN")
-cmake_minimum_required(VERSION 2.8)
+ cmake_minimum_required(VERSION 3.7)
+if (POLICY CMP0048)
+	  cmake_policy(SET CMP0048 NEW)
+  endif (POLICY CMP0048)
+  project(SEPlib-seisProgs  VERSION 9.0.0 LANGUAGES CXX C Fortran)
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 set(SEPlib_MAJOR_VERSION 9)
 set(SEPlib_MINOR_VERSION 0)
@@ -12,7 +16,7 @@ option(BUILD_CONVERTER_PROGS "Build seismic programs" ON)
 option(BUILD_JAVA "Build java interfaces" OFF)
 option(BUILD_MAKERULES "Install makerules" OFF)
 option(BUILD_VPLOT_GRAPHICS "Build vplot programs" ON)
-option(BUILD_RATFOR90 "Build and install ratfor90" OFF)
+#option(BUILD_RATFOR90 "Build and install ratfor90" OFF)
 
 find_package(Git QUIET)
 if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
@@ -33,103 +37,61 @@ if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
   endif()
 endif()
 
-if(NOT EXISTS "${PROJECT_SOURCE_DIR}/progs/seis/corelibs/CMakeLists.txt")
+if(NOT EXISTS "${PROJECT_SOURCE_DIR}/libs/core/CMakeLists.txt")
   message(
     FATAL_ERROR
       "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again."
     )
 endif()
+add_subdirectory(libs/core)
+include_directories(libs/core/include)
+include_directories(libs/core/sep)
 
-message("BEORE CONDITIONAL IO")
-if(NOT BUILD_CLASS_LIBS
-   AND
-   NOT BUILD_JAVA
-   AND
-   NOT BUILD_SEISMIC_PROGS
-   AND
-   NOT BUILD_UTIL_PROGS
-   AND
-   NOT BUILD_CONVERTER_PROGS
-   AND
-   NOT BUILD_VPLOT_GRAPHICS)
-  option(BUILD_UTIL_LIBS "Build and install util LIBS" OFF)
-  if(BUILD_UTIL_LIBS)
-    add_subdirectory(progs/seis/libs)
-  else(BUILD_UTIL_LIBS)
-      option(BUILD_IO_LIBS "Build and install IO LIBS" ON)
-  if(BUILD_IO_LIBS)
-    add_subdirectory(progs/seis/corelibs)
-  endif(BUILD_IO_LIBS)
-
-  endif(BUILD_UTIL_LIBS)
-endif(NOT
-      BUILD_CLASS_LIBS
-      AND
-      NOT
-      BUILD_JAVA
-      AND
-      NOT
-      BUILD_SEISMIC_PROGS
-      AND
-      NOT
-      BUILD_UTIL_PROGS
-      AND
-      NOT
-      BUILD_CONVERTER_PROGS
-      AND
-      NOT
-      BUILD_VPLOT_GRAPHICS)
-
-
-if(NOT BUILD_SEISMIC_PROGS)
-  option(BUILD_CLASS_LIBS "Build and class LIBS" ON)
-  if(BUILD_CLASS_LIBS)
-    add_subdirectory(progs/seis/class)
-  endif(BUILD_CLASS_LIBS)
-endif(NOT  BUILD_SEISMIC_PROGS)
-
-if(NOT BUILD_UTIL_PROGS)
-  option(BUILD_PYTHON "Build python classes" ON)
-  if(BUILD_PYTHON)
-    add_subdirectory(progs/util/python)
-  endif(BUILD_PYTHON)
-endif(NOT  BUILD_UTIL_PROGS)
+set(CMAKE_Fortran_MODULE_DIRECTORY  ${CMAKE_INSTALL_PREFIX}/include)
+include_directories(${CMAKE_INSTALL_PREFIX}/include)
 
 
 
 
 
-if(BUILD_SEISMIC_PROGS)
-  add_subdirectory(progs/seis)
-  set(SEPCONFIGDIR ${CMAKE_CURRENT_BINARY_DIR}/progs/seis/corelibs)
 
-endif(BUILD_SEISMIC_PROGS)
+if(BUILD_CLASS_LIBS OR BUILD_JAVA OR BUILD_SEISMIC_PROGS OR  BUILD_UTIL_PROGS
+		OR BUILD_UTIL_LIBS OR  BUILD_CONVERTER_PROGS OR  BUILD_VPLOT_GRAPHICS)
+	add_subdirectory(libs/class) 
+FIND_PACKAGE(TBB)
+FIND_PACKAGE(FFTW)
+endif(BUILD_CLASS_LIBS OR BUILD_JAVA OR BUILD_SEISMIC_PROGS OR  BUILD_UTIL_PROGS
+	OR  BUILD_UTIL_LIBS OR BUILD_CONVERTER_PROGS OR  BUILD_VPLOT_GRAPHICS)
 
-if(BUILD_UTIL_PROGS)
+if( BUILD_JAVA OR BUILD_SEISMIC_PROGS OR  BUILD_UTIL_PROGS
+		OR BUILD_UTIL_LIBS OR  BUILD_CONVERTER_PROGS OR  BUILD_VPLOT_GRAPHICS)
+    add_subdirectory(libs/util)
+    add_subdirectory(libs/seis)
+endif( BUILD_JAVA OR BUILD_SEISMIC_PROGS OR  BUILD_UTIL_PROGS
+	OR  BUILD_UTIL_LIBS OR BUILD_CONVERTER_PROGS OR  BUILD_VPLOT_GRAPHICS)
 
-  add_subdirectory(progs/util)
-  if(NOT SEPCONFIGDIR)
-      set(SEPCONFIGDIR ${CMAKE_CURRENT_BINARY_DIR}/progs/util/corelibs)
-  endif(NOT SEPCONFIGDIR)
-endif(BUILD_UTIL_PROGS)
+set(SEPCONFIGDIR ${CMAKE_CURRENT_BINARY_DIR}/libs/core)
 
-if(BUILD_CONVERTER_PROGS)
-  add_subdirectory(progs/converters)
-    if(NOT SEPCONFIGDIR)
-      set(SEPCONFIGDIR ${CMAKE_CURRENT_BINARY_DIR}/progs/converters/corelibs)
-  endif(NOT SEPCONFIGDIR)
-endif(BUILD_CONVERTER_PROGS)
+if( BUILD_UTIL_PROGS)
+    add_subdirectory(progs/util)
+endif( BUILD_UTIL_PROGS)
+
+if( BUILD_SEISMIC_PROGS)
+    add_subdirectory(progs/seis)
+endif( BUILD_SEISMIC_PROGS)
+
+if( BUILD_CONVERTER_PROGS)
+    add_subdirectory(progs/converters)
+endif( BUILD_CONVERTER_PROGS)
+
 
 if(BUILD_VPLOT_GRAPHICS)
-  add_subdirectory(progs/vplotProgs)
-    if(NOT SEPCONFIGDIR)
-      set(SEPCONFIGDIR ${CMAKE_CURRENT_BINARY_DIR}/progs/vplotProgs/corelibs)
-  endif(NOT SEPCONFIGDIR)
+  add_subdirectory(progs/vplot)
 endif(BUILD_VPLOT_GRAPHICS)
 
-if(BUILD_RATFOR90)
-  add_subdirectory(ratfor90)
-endif(BUILD_RATFOR90)
+#if(BUILD_RATFOR90)
+#  add_subdirectory(ratfor90)
+#endif(BUILD_RATFOR90)
 
 if(BUILD_JAVA)
   add_subdirectory(java)

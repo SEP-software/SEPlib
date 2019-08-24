@@ -1,0 +1,8 @@
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../libs/include)
+add_subdirectory(cube)
+add_subdirectory(header)
+add_subdirectory(info)
+#add_subdirectory(par)
+add_subdirectory(unix)
+add_subdirectory(vector)

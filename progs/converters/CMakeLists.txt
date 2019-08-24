@@ -1,0 +1,8 @@
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../libs/include)
+add_subdirectory(arcgis)
+add_subdirectory(csv)
+add_subdirectory(grafconv)
+add_subdirectory(matlab)
+add_subdirectory(segy)
+add_subdirectory(su)
