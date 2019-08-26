@@ -10,7 +10,7 @@ set (SOURCES_SEP ${SOURCE1} psconf_SEP.c psopen_SEP.c)
 
 
 
-add_library(ps_pen ${SOURCES})
+add_library(ps_pen STATIC ${SOURCES})
 target_include_directories(ps_pen
 
 	PUBLIC
@@ -21,7 +21,7 @@ target_include_directories(ps_pen
 target_link_libraries(ps_pen  genlib loclib vplotutil vplot)
 install(TARGETS ps_pen DESTINATION lib   EXPORT  SEPlibTargets)
 
-add_library(ps_pen_SEP ${SOURCES_SEP})
+add_library(ps_pen_SEP STATIC ${SOURCES_SEP})
 target_include_directories(ps_pen_SEP
 
 	PUBLIC

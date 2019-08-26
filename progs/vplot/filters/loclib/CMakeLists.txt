@@ -15,7 +15,7 @@ file.c	  getch_.c  getpar_.c  getparin.c	puth.c)
 
 
 
-add_library(loclib ${SOURCES})
+add_library(loclib STATIC ${SOURCES})
 target_include_directories(loclib
 
 	PUBLIC

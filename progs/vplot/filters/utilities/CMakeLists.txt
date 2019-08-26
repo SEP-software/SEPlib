@@ -4,7 +4,7 @@ clip.c	   dither.c   error.c	greycorr.c   solve.c  vecoutline.c
 dashvec.c  dupside.c  fatvec.c	intersect.c  sort.c   vptodev.c)
 
 
-add_library(vplotutil ${SOURCES})
+add_library(vplotutil STATIC ${SOURCES})
 target_include_directories(vplotutil
 
 	PUBLIC

@@ -10,7 +10,8 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
 ADD_EXECUTABLE(makefont makefont.c)
 TARGET_LINK_LIBRARIES(makefont m c)
 
-add_library(genlib ${SOURCES})
+add_library(genlib STATIC ${SOURCES})
+target_link_libraries(genlib vplotutil)
 
 target_include_directories(genlib
 

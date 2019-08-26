@@ -14,7 +14,7 @@ set(SOURCES_SEP  ${SOURCE1} vpsepwhere_SEP.c vpconf_SEP.c)
 
 
 
-add_library(vp_pen ${SOURCES})
+add_library(vp_pen STATIC  ${SOURCES})
 target_include_directories(vp_pen
 
 	PUBLIC
@@ -25,7 +25,7 @@ target_include_directories(vp_pen
 target_link_libraries(vp_pen genlib loclib  vplotutil)
 install(TARGETS vp_pen DESTINATION lib   EXPORT  SEPlibTargets)
 
-add_library(vp_pen_SEP ${SOURCES_SEP})
+add_library(vp_pen_SEP STATIC ${SOURCES_SEP})
 target_include_directories(ps_pen_SEP
 
 	PUBLIC

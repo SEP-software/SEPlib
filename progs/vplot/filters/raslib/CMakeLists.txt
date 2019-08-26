@@ -14,7 +14,7 @@ set(SOURCES_SEP  ${SOURCE1} rasopen_SEP.c rasclose_SEP.c )
 
 
 
-add_library(ras_pen ${SOURCES})
+add_library(ras_pen STATIC ${SOURCES})
 target_include_directories(ps_pen
 
 	PUBLIC
@@ -25,7 +25,7 @@ target_include_directories(ps_pen
 target_link_libraries(ras_pen genlib loclib  ${NETPBM_LIBRARY}  vplotutil)
 install(TARGETS ras_pen DESTINATION lib   EXPORT  SEPlibTargets)
 
-add_library(ras_pen_SEP ${SOURCES_SEP})
+add_library(ras_pen_SEP  STATIC ${SOURCES_SEP})
 target_include_directories(ps_pen_SEP
 
 	PUBLIC
