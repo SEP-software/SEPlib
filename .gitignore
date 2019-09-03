@@ -8,6 +8,7 @@ ylwrap
 *.a
 *.la
 *~
+.*DS_Store
 sitedef.h
 m4
 *.bin
