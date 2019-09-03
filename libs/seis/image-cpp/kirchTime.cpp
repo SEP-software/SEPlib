@@ -9,86 +9,6 @@
 using namespace SEP;
 using namespace SEP::KirchTime;
 
-vel3d::vel3d(std::shared_ptr<genericRegFile> file) {
-  _file = file;
-  _axes = file->getHyper()->getAxes();
-  if (file->getHyper()->getNdimG1() != 3)
-    throw SEPException("Velocity must be 3-D");
-}
-
-long long vel3d::readVelocity(std::shared_ptr<hypercube> output,
-                              const long long maxMem) {
-  std::vector<int> fwind(3), jwind(3, 1), nwind(3);
-  std::vector<axis> axes = output->getAxes();
-
-  std::vector<int> mat(3, 0);
-  if (output->getNdimG1() == 5) {
-    mat[1] = 3;
-    mat[2] = 4;
-  } else {
-    mat[1] = 1;
-    mat[2] = 2;
-  }
-  long long tot = 4;
-  for (int i = 0; i < 3; i++) {
-    fwind[i] = (axes[mat[i]].o - _axes[i].o) / _axes[i].d;
-
-    int mx = std::min(
-        axes[mat[i]].n - 1,
-        (int)(((axes[mat[i]].o + axes[mat[i]].d * (axes[mat[i]].n - 1)) -
-               _axes[i].o) /
-              _axes[i].d));
-
-    nwind[i] = mx + 1 - fwind[i];
-    _axes[i].o += fwind[i] * _axes[i].d;
-    _axes[i].n = nwind[i];
-  }
-  if (maxMem < tot)
-    throw SEPException("output velocity size larger than total memory allowed");
-  _values.reset(new float3DReg(nwind[0], nwind[1], nwind[2]));
-
-  _file->readFloatWindow(nwind, fwind, jwind, _values);
-  return tot;
-}
-
-std::vector<float> vel3d::getVelocity(const int n1, const float o1,
-                                      const float d1, const float x,
-                                      const float y) {
-  std::vector<float> vel(n1);
-  float fx = (x - _axes[1].o) / _axes[1].d;
-  float fy = (y - _axes[2].o) / _axes[2].d;
-  int ix = fx, iy = fy;
-  fx = fx - ix;
-  fy = fy - iy;
-  if (ix == _axes[1].n - 1) {
-    ix = _axes[1].n - 2;
-    fx = 1;
-  }
-  if (iy == _axes[2].n - 1) {
-    iy = _axes[2].n - 2;
-    fy = 1;
-  }
-
-  for (int i1 = 0; i1 < n1; i1++) {
-    float t = o1 + d1 * i1;
-    float ft = (t - _axes[0].o) / _axes[0].d;
-    int it = ft;
-    ft = ft - it;
-    if (it == _axes[0].n - 1) {
-      it = _axes[0].n - 2;
-      ft = 1;
-    }
-    vel[i1] = (1. - ft) * (1. - fx) * (1. - fy) * (*_values->_mat)[iy][ix][it] +
-              (ft) * (1. - fx) * (1. - fy) * (*_values->_mat)[iy][ix][it + 1] +
-              (1. - ft) * (fx) * (1. - fy) * (*_values->_mat)[iy][ix + 1][it] +
-              (ft) * (fx) * (1. - fy) * (*_values->_mat)[iy][ix + 1][it + 1] +
-              (1. - ft) * (1. - fx) * (fy) * (*_values->_mat)[iy + 1][ix][it] +
-              (ft) * (1. - fx) * (fy) * (*_values->_mat)[iy + 1][ix][it + 1] +
-              (1. - ft) * (fx) * (fy) * (*_values->_mat)[iy + 1][ix + 1][it] +
-              (ft) * (fx) * (fy) * (*_values->_mat)[iy + 1][ix + 1][it + 1];
-  }
-  return vel;
-}
 // Create image from file
 data3DReg::data3DReg(std::shared_ptr<genericRegFile> file) {
   _hyper = file->getHyper();
@@ -168,22 +88,33 @@ data5DReg::data5DReg(std::shared_ptr<data3DReg> input, const axis aOX,
   _hyper = x;
 }
 void data5DReg::setFile(std::shared_ptr<genericRegFile> fle) { _file = fle; }
-void data5DReg::checkLogic(std::shared_ptr<vel3d> vrms) {
+void data5DReg::checkLogic(std::shared_ptr<SEP::velocity::vel3DFromFile> vrms) {
   std::vector<axis> vaxes = vrms->getHyper()->getAxes();
 
   std::vector<axis> oaxes = _hyper->getAxes();
 
-  if (vaxes[0].o > oaxes[0].o || vaxes[0].o + vaxes[0].d * (vaxes[0].n - 1) <
-                                     (oaxes[0].o + oaxes[0].d * oaxes[0].n - 1))
+  if (vaxes[0].o > oaxes[0].o ||
+      vaxes[0].o + vaxes[0].d * (vaxes[0].n - 1) <
+          (oaxes[0].o + oaxes[0].d * (oaxes[0].n - 1)))
     throw SEPException("Velocity does not span output along time axis");
 
-  if (vaxes[1].o > oaxes[3].o || vaxes[1].o + vaxes[1].d * (vaxes[1].n - 1) <
-                                     (oaxes[3].o + oaxes[3].d * oaxes[3].n - 1))
+  if (vaxes[1].o > oaxes[3].o ||
+      vaxes[1].o + vaxes[1].d * (vaxes[1].n - 1) <
+          (oaxes[3].o + oaxes[3].d * (oaxes[3].n - 1)))
     throw SEPException("Velocity does not span migration volume along X axis");
 
-  if (vaxes[2].o > oaxes[4].o || vaxes[2].o + vaxes[2].d * (vaxes[2].n - 1) <
-                                     (oaxes[4].o + oaxes[4].d * oaxes[4].n - 1))
-    throw SEPException("Velocity does not span output along Y axis");
+  if (vaxes[2].o > oaxes[4].o ||
+      vaxes[2].o + vaxes[2].d * (vaxes[2].n - 1) <
+          (oaxes[4].o + oaxes[4].d * (oaxes[4].n - 1)))
+
+    throw SEPException(
+        std::string(
+            "Velocity does not span output along Y axis Mins(v,domain)=") +
+        std::to_string(vaxes[2].o) + std::string(",") +
+        std::to_string(oaxes[4].o) + std::string("  maxs(vel,domain=") +
+        std::to_string(vaxes[2].o + vaxes[2].d * (vaxes[2].n - 1)) +
+        std::string(",") +
+        std::to_string(oaxes[4].o + oaxes[4].d * (oaxes[4].n - 1)));
 }
 
 std::shared_ptr<float5DReg> data5DReg::createWindow(
@@ -259,7 +190,8 @@ void basicTime::calcInputWindow(const std::vector<int> nout,
   _fin = fin;
 }
 
-model::model(std::shared_ptr<data5DReg> inp, std::shared_ptr<vel3d> vel,
+model::model(std::shared_ptr<data5DReg> inp,
+             std::shared_ptr<SEP::velocity::vel3DFromFile> vel,
              std::shared_ptr<float1DReg> wave, const float aper,
              const long long mem) {
   _vel = vel;
@@ -269,7 +201,8 @@ model::model(std::shared_ptr<data5DReg> inp, std::shared_ptr<vel3d> vel,
   _hyperData = inp->getHyper();
 }
 
-migrate::migrate(std::shared_ptr<data5DReg> inp, std::shared_ptr<vel3d> vel,
+migrate::migrate(std::shared_ptr<data5DReg> inp,
+                 std::shared_ptr<SEP::velocity::vel3DFromFile> vel,
                  const float aper, const long long mem) {
   _vel = vel;
   _aper = aper;
@@ -378,7 +311,7 @@ void model::apply(std::shared_ptr<float3DReg> image,
   std::vector<float> cxd(adata[3].n), cyd(adata[4].n), tmsq(adata[0].n);
   for (auto i = 0; i < cxd.size(); i++) cxd[i] = adata[3].o + adata[3].d * i;
   for (auto i = 0; i < cyd.size(); i++) cyd[i] = adata[4].o + adata[4].d * i;
-  std::vector<float> cxi(adata[3].n), cyi(adata[4].n);
+  std::vector<float> cxi(aimage[1].n), cyi(aimage[2].n);
   for (auto i = 0; i < cxi.size(); i++) {
     cxi[i] = aimage[1].o + aimage[1].d * i;
   }
@@ -387,60 +320,72 @@ void model::apply(std::shared_ptr<float3DReg> image,
   for (auto i = 0; i < tmsq.size(); i++)
     tmsq[i] = (adata[0].o + adata[0].d * i) * (adata[0].o + adata[0].d * i);
 
+  std::cerr << adata[1].n << " " << adata[2].n << " " << adata[3].n << " "
+            << adata[4].n << "data";
+  std::cerr << aimage[1].n << " " << aimage[2].n << "image";
+
+  std::cerr << "check loops " << cyi.size() << " " << cxi.size() << " "
+            << adata[1].n << " " << adata[2].n << " " << adata[3].n << " "
+            << adata[4].n << std::endl;
   tbb::parallel_for(
       tbb::blocked_range<int>(0, adata[4].n),
-      [&](const tbb::blocked_range<int> &r) {
-        for (int i5 = r.begin(); i5 != r.end(); ++i5) {
+      [&](const tbb::blocked_range<int> &s) {
+        for (int i5 = s.begin(); i5 != s.end(); ++i5) {
+          // for (int i5 = 0; i5 < adata[4].n; i5++) {
           float y = adata[4].o + adata[4].d * i5;
 
-          tbb::parallel_for(
-              tbb::blocked_range<int>(0, adata[3].n),
-              [&](const tbb::blocked_range<int> &r) {
-                for (int i4 = r.begin(); i4 != r.end(); ++i4) {
-                  float x = adata[3].o + adata[3].d * i4;
+          //  tbb::parallel_for(
+          //    tbb::blocked_range<int>(0, adata[3].n),
+          //  [&](const tbb::blocked_range<int> &r) {
+          //  for (int i4 = r.begin(); i4 != r.end(); ++i4) {
+          for (int i4 = 0; i4 < adata[3].n; i4++) {
+            float x = adata[3].o + adata[3].d * i4;
 
-                  std::vector<float> vel = _vel->getVelocity(
-                      adata[0].n, adata[0].o, adata[0].d, x, y);
+            std::vector<float> vel =
+                _vel->getVelocity(adata[0].n, adata[0].o, adata[0].d, x, y);
 
-                  std::vector<float> vtsq(adata[0].n), iv(adata[0].n);
-                  for (auto it = 0; it < vtsq.size(); it++) {
-                    vtsq[it] = tmsq[it] * vel[it] * vel[it];
-                    iv[it] = vel[it] * 2.;
-                    iv[it] = 1. / vel[it];
-                  }
-                  for (int iy = 0; iy < cyd.size(); iy++) {
-                    for (int ix = 0; ix < cxd.size(); ix++) {
-                      for (int i3 = 0; i3 < adata[2].n; i3++) {
-                        float disty2 = (cyd[i5] - cyi[iy] - offy[i3]) *
-                                       (cyd[i5] - cyi[iy] - offy[i3]);
+            std::vector<float> vtsq(adata[0].n), iv(adata[0].n);
+            for (auto it = 0; it < vtsq.size(); it++) {
+              vtsq[it] = tmsq[it] * vel[it] * vel[it];
+              iv[it] = vel[it] * 2.;
+              iv[it] = 1. / vel[it];
+            }
+            std::cerr << i4 << " of " << adata[3].n << " " << i5 << " of "
+                      << adata[4].n << std::endl;
+            for (int iy = 0; iy < cyi.size(); iy++) {
+              for (int ix = 0; ix < cxi.size(); ix++) {
+                for (int i3 = 0; i3 < adata[2].n; i3++) {
+                  float disty2 = (cyd[i5] - cyi[iy] - offy[i3]) *
+                                 (cyd[i5] - cyi[iy] - offy[i3]);
 
-                        for (int i2 = 0; i2 < adata[1].n; i2++) {
-                          float distx2 = (cxd[i4] - cxi[ix] - offx[i2]) *
-                                         (cxd[i4] - cxi[ix] - offx[i2]);
-                          bool end = false;
-                          int it = -1;
-                          while (!end && it < adata[0].n - 1) {
-                            it++;
-                            float tm =
-                                (sqrt7(tmsq[it] * vel[it] * vel[it] + disty2) +
-                                 sqrt7(tmsq[it] * vel[it] * vel[it] + distx2)) *
-                                iv[it];
+                  for (int i2 = 0; i2 < adata[1].n; i2++) {
+                    float distx2 = (cxd[i4] - cxi[ix] - offx[i2]) *
+                                   (cxd[i4] - cxi[ix] - offx[i2]);
+                    bool end = false;
+                    int it = -1;
 
-                            int i_t = (tm - adata[0].o) / adata[0].d + .5;
+                    while (!end && it < adata[0].n - 1) {
+                      it++;
+                      float tm =
+                          (sqrt7(tmsq[it] * vel[it] * vel[it] + disty2) +
+                           sqrt7(tmsq[it] * vel[it] * vel[it] + distx2)) *
+                          iv[it];
 
-                            if (i_t < adata[0].n)
-                              (*data->_mat)[i5][i4][i3][i2][i_t] +=
-                                  (*image->_mat)[iy][ix][it];
-                            else {
-                              end = true;
-                            }
-                          }
-                        }
+                      int i_t = (tm - adata[0].o) / adata[0].d + .5;
+
+                      if (i_t < adata[0].n)
+                        (*data->_mat)[i5][i4][i3][i2][i_t] +=
+                            (*image->_mat)[iy][ix][it];
+                      else {
+                        end = true;
                       }
                     }
                   }
                 }
-              });
+              }
+            }
+          }
+          //  });
         }
       });
   tbb::parallel_for(
@@ -501,7 +446,8 @@ void kirchhoffTime::modelData(std::shared_ptr<data3DReg> image,
   blockX = maxsize / nblockOut;
   if (blockX > adata[3].n) {
     blockX = adata[3].n;
-    blockY = std::min(adata[4].n, (int)(maxsize / blockX / nblockIn));
+    blockY = std::min((long long)adata[4].n,
+                      (long long)(maxsize / blockX / nblockOut));
   }
   if (blockY != adata[4].n)
     std::cerr << "Suboptimal parameters can't hold entire output volume "

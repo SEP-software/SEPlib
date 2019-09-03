@@ -4,71 +4,15 @@
 #include <genericIO.h>
 #include <ctime>
 #include <memory>
+#include "vel3D.h"
 
 namespace SEP {
 namespace KirchTime {
 
-/*!
-   Simple velocity class that is useful for NMO or Kirchoff Time Migration
-*/
-
-class vel3d {
- public:
-  vel3d() { ; }
-  /*!
-       Initalize the velocity object
-
-
-    \param file FIle object for velocity
-   */
-
-  vel3d(std::shared_ptr<genericRegFile> file);
-
-  /*!
-      Read  velocity (most likely a subset
-
-    \param  output   Describing output space
-
-    \param maxMem    Maximum amount of memory to use
-  */
-
-  long long readVelocity(std::shared_ptr<hypercube> output,
-                         const long long maxMem);
-
-  /*!
-     Return a trace containing velocity at a given location
-
-     \param  n1  Number of samples in time
-
-     \param  o1  First sample in time
-
-     \param  d1  Sampling in time
-
-     \param x  Location in X
-
-     \param y  Location in y
-
-      \return Vector containing the velocity
-
-   */
-  std::vector<float> getVelocity(const int n1, const float o1, const float d1,
-                                 const float x, const float y);
-
-  /*!
-     Return hypercube
-
-  */
-  ~vel3d() { ; }
-  std::shared_ptr<hypercube> getHyper() { return _file->getHyper(); }
-  float getMax() { return _values->max(); }
-  std::shared_ptr<genericRegFile> _file;  ///< File object
-  std::vector<axis> _axes;                ///< Axes for velocity
-  std::shared_ptr<float3DReg> _values;    ///< Value for the velocity
-};
-/*!
-  Basic subset class
-*/
-class dataND {
+    /*!
+      Basic subset class
+    */
+    class dataND {
  public:
   /*!
      Create data sub object
@@ -186,7 +130,7 @@ class data5DReg : public dataND {
 
     \param vrms  Velocity file
   */
-  void checkLogic(std::shared_ptr<vel3d> vrms);
+  void checkLogic(std::shared_ptr<SEP::velocity::vel3DFromFile> vrms);
 
   /*!
       Create a 5-D regularly sampled function a sub-sampled version of dataset
@@ -288,7 +232,7 @@ class basicTime {
   long long _mem;
   std::shared_ptr<hypercube> _hyperData, _hyperImage;
   std::vector<int> _nin, _fin, _bin;
-  std::shared_ptr<vel3d> _vel;
+  std::shared_ptr<SEP::velocity::vel3DFromFile> _vel;
   float _aper;
 };
 /*!
@@ -309,7 +253,8 @@ class model : public basicTime {
       \param mem  Amount of memory to use
 
   */
-  model(std::shared_ptr<data5DReg> inp, std::shared_ptr<vel3d> vel,
+  model(std::shared_ptr<data5DReg> inp,
+        std::shared_ptr<SEP::velocity::vel3DFromFile> vel,
         std::shared_ptr<float1DReg> wave, const float aper,
         const long long mem);
 
@@ -346,8 +291,9 @@ class migrate : public basicTime {
       \param mem  Amount of memory to use
 
   */
-  migrate(std::shared_ptr<data5DReg> inp, std::shared_ptr<vel3d> vel,
-          const float aper, const long long mem);
+  migrate(std::shared_ptr<data5DReg> inp,
+          std::shared_ptr<SEP::velocity::vel3DFromFile> vel, const float aper,
+          const long long mem);
 
   /*!
        Perform time migration
@@ -389,8 +335,9 @@ class windP {
 
 class kirchhoffTime {
  public:
-  kirchhoffTime(std::shared_ptr<vel3d> v, std::shared_ptr<data5DReg> d,
-                const long long mx, const float a) {
+  kirchhoffTime(std::shared_ptr<SEP::velocity::vel3DFromFile> v,
+                std::shared_ptr<data5DReg> d, const long long mx,
+                const float a) {
     vel = v;
     data = d;
     maxs = mx;
@@ -401,7 +348,7 @@ class kirchhoffTime {
   void migrateData(std::shared_ptr<data5DReg> data);
 
  private:
-  std::shared_ptr<vel3d> vel;
+  std::shared_ptr<SEP::velocity::vel3DFromFile> vel;
   std::shared_ptr<data5DReg> data;
   float aper;
   long long maxs;

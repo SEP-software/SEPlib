@@ -30,20 +30,20 @@ def migrateIt(args):
         aY.o = args.oy
     if args.dy:
         aY.d = args.dy
-    vel = inputIO.getRegFile(args.velocity)
-    image = KirchTime.data5DReg(data=data, aX=aX, aY=aY)
+
+    image = KirchTime.KirchTime.data5DReg(data=data, aX=aX, aY=aY)
     imageF = outputIO.getRegFile(
         args.image,
         fromHyper=image.getHyper(),
         storage="float",
         usage="output")
     image.setFile(imageF)
-    maxsize = long(args.maxsize) * 1024 * 1024 * 1024
-    data.checkLogic(vel)
-    maxsize -= vel.readVelocity(image.getHyper(), maxsize)
-    kir = kirchhoffTime(vel, data, maxsize, args.aper)
+    maxsize = args.maxsize * 1024 * 1024 * 1024
+    data.checkLogic(vel3d)
+    maxsize -= vel3d.readVelocity(image.getHyper(), maxsize)
+    kir = kirchTime.kirchTime(vel3d, data, maxsize, args.aper)
     kir.migrateData(image)
-    image.getFile.close()
+    image.getFile().close()
 
 
 def modelIt(args):
@@ -86,7 +86,6 @@ def modelIt(args):
         aOY.o = args.ooy
     if args.doy:
         aOY.d = args.doy
-    vel = inputIO.getRegFile(args.velocity)
     data = KirchTime.data5DReg(image=image, aOX=aOX, aOY=aOY, aX=aX, aY=aY)
     dataF = outputIO.getRegFile(
         args.data,
@@ -94,13 +93,24 @@ def modelIt(args):
         storage="float",
         usage="output")
     data.setFile(dataF)
+    print("w1")
     wave = inputIO.getVector(args.wavelet)
-    maxsize = long(args.maxsize) * 1024 * 1024 * 1024
-    data.checkLogic(vel)
-    maxsize -= vel.readVelocity(image.getHyper(), maxsize)
-    kir = kirchhoffTime(vel, data, maxsize, args.aper)
+    print("w1")
+
+    maxsize = args.maxsize * 1024 * 1024 * 1024
+    print("w1")
+
+    data.checkLogic(vel3d)
+    print("w1")
+
+    maxsize -= vel3d.readVelocity(image.getHyper(), maxsize)
+    print("w1")
+
+    kir = KirchTime.kirchTime(vel3d, data, maxsize, args.aper)
+    print("w1")
+
     kir.modelData(image, wave)
-    data.getFile.close()
+    data.getFile().close()
 parser = argparse.ArgumentParser(
     description="Kirchhoff 3D migration / modeling")
 subParser = parser.add_subparsers(help="sub command help")
@@ -151,6 +161,7 @@ def jointArguments(parser):
     parser.add_argument(
         "-maxsize",
         type=int,
+        default=24,
         help="Amount of memory to use in GB")
 
 modelParser = subParser.add_parser("model")

@@ -10,6 +10,8 @@ set(SEPlib_MAJOR_VERSION 9)
 set(SEPlib_MINOR_VERSION 0)
 set(SEPlib_VERSION_STRING ${SEPlib_MAJOR_VERSION}.${SEPlib_MINOR_VERSION})
 
+find_package(Python3 COMPONENTS Interpreter NumPy)
+
 option(BUILD_SEISMIC_PROGS "Build seismic programs" ON)
 option(BUILD_UTIL_PROGS "Build seismic programs" ON)
 option(BUILD_CONVERTER_PROGS "Build seismic programs" ON)
