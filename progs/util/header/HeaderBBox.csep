@@ -71,6 +71,8 @@ sep_add_doc_line("CATEGORY");\
 sep_add_doc_line("    util/header");\
 sep_add_doc_line(""); 
 
+
+ADD_DEF_SEP_DOCS
 #include <sep.main> 
 
 #include <sep3d.h> 

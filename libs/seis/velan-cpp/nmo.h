@@ -5,8 +5,11 @@
 #include "floatHyper.h"
 #include "sinc.h"
 #include "vel3D.h"
+
+#include "SEPException.h"
+
 namespace SEP {
-namespace velan {
+namespace velocity {
 
 /*!
 Basic class to nmo*/
@@ -18,21 +21,28 @@ class nmo {
     \param input dataset
     */
 
-  virtual std::vector<float> getOffSq(const std::shared_ptr<regSpace> in) = 0;
+  virtual std::vector<float> getOffSq(const std::shared_ptr<regSpace> in) {
+    throw SEPException("getOffSq must be overwritten");
+  }
   /*!
   Get CMPX location
 
     \param input dataset
   */
-  virtual std::vector<float> getCmpX(const std::shared_ptr<regSpace> in) = 0;
-  /*!
-   Ge CMPY location
+  virtual std::vector<float> getCmpX(const std::shared_ptr<regSpace> in) {
+    throw SEPException("getCmpX must be overwritten");
 
-     \param input dataset
+  }  // namespace velocity
+     /*!
+      Ge CMPY location
+   
+        \param input dataset
+   
+      */
 
-   */
-
-  virtual std::vector<float> getCmpY(const std::shared_ptr<regSpace> in) = 0;
+  virtual std::vector<float> getCmpY(const std::shared_ptr<regSpace> in) {
+    throw SEPException("getCmpY must be overwritten");
+  }
   /*!
    Make sinc table for NMO */
   void mkSinc() { _sinc = sinc(8, .0001); }
@@ -45,13 +55,21 @@ class nmo {
   /*!
    Return whether 2 or 3-D
    */
-  virtual bool is3D() = 0;
+  virtual bool is3D() { throw SEPException("Must override is3D"); }
 
   /*!
   Whether or not to run a stretch mute
   */
   void stretchMute(const bool muteIt) { _muteIt = muteIt; }
+  /*!
+  Set the stretch mute parameter
+  */
+
   void setSmute(const float smute) { _osmute = 1. / smute; }
+  /*!
+  Whether or not to do the inverse
+  */
+  void doInverse(const bool st) { _inverse = st; }
 
  protected:
   std::shared_ptr<SEP::velocity::vel3D> _vel;  ///< Velocity
@@ -60,14 +78,15 @@ class nmo {
   float _dt;                                   ///< Sampling in time
   float _osmute;                               ///< Invese stretch mute
   sinc _sinc;                                  ///< Sinc table
-  bool _muteIt = true;                         ///<
-};
+  bool _muteIt = true;                         ///< Whether or not mute
+  bool _inverse = false;                       ///< Whether or not to do inverse
+};                                             // namespace velocity
 
-class nmoRegCube : public SEP::loop::basicLoop, nmo {
+class nmoRegCube : public nmo, SEP::loop::basicLoop {
  public:
-  nmoRegCube(std::shared_ptr<SEP::velocity::vel3D> vel, axis &aTime,
+  nmoRegCube(std::shared_ptr<SEP::velocity::vel3D> vel, const axis &aTime,
              const std::vector<int> ioffAxes, const int cmpXAxis,
-             const int cmpYAxis = -1);
+             const int cmpYAxis);
 
   virtual std::vector<float> getOffSq(const std::shared_ptr<regSpace> in);
   virtual std::vector<float> getCmpX(const std::shared_ptr<regSpace> in);
@@ -81,7 +100,7 @@ class nmoRegCube : public SEP::loop::basicLoop, nmo {
   int _cmpXAxis, _cmpYAxis;
 };
 
-}  // namespace velan
+}  // namespace velocity
 }  // namespace SEP
 
 #endif

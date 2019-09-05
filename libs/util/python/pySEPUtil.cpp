@@ -4,8 +4,10 @@
 #include "basicLoop.h"
 #include "doubleLoop.h"
 #include "kirchTime.h"
+#include "nmo.h"
 #include "vel3D.h"
 using namespace SEP::loop;
+using namespace SEP::velocity;
 
 namespace py = pybind11;
 namespace SEP {
@@ -82,10 +84,44 @@ PYBIND11_MODULE(pySEPUtil, clsUtil) {
            "Read the velocity from a file");
 
   /*
-
-  Kirchhoff
-
+  NMO
   */
+
+  py::class_<SEP::velocity::nmo, std::shared_ptr<SEP::velocity::nmo>>(clsUtil,
+                                                                      "nmo")
+      .def(py::init<>(), "Initialize NMO object")
+
+      .def("stretchMute",
+           (void (SEP::velocity::nmo::*)(const bool)) &
+               SEP::velocity::nmo::stretchMute,
+           "Whether or not to apply a stretch mute")
+
+      .def("setSmute",
+           (void (SEP::velocity::nmo::*)(const float)) &
+               SEP::velocity::nmo::setSmute,
+           "Set smute value")
+
+      .def("nmoIt",
+           (void (SEP::velocity::nmo::*)(std::shared_ptr<regSpace>,
+                                         std::shared_ptr<regSpace>)) &
+               SEP::velocity::nmo::nmoIt,
+           "NMO dataset")
+
+      ;
+  py::class_<SEP::velocity::nmoRegCube, SEP::velocity::nmo,
+             std::shared_ptr<SEP::velocity::nmoRegCube>>(clsUtil, "nmoRegCube")
+
+      .def(py::init<std::shared_ptr<SEP::velocity::vel3D>, const axis &,
+                    const std::vector<int>, const int, const int>(),
+           "Initialize NMO for regular cube")
+
+      ;
+
+  /*
+
+Kirchhoff
+
+*/
 
   py::class_<SEP::KirchTime::data3DReg,
              std::shared_ptr<SEP::KirchTime::data3DReg>>(clsUtil, "data3DReg")
