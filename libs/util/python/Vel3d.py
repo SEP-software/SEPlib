@@ -2,7 +2,14 @@ import pySEPUtil
 import Hypercube
 
 
-class vel3dFromFile:
+class vel3d:
+
+    def __init__(self):
+        """Vel3d """
+        self.x = 1
+
+
+class vel3dFromFile(vel3d):
 
     def __init__(self, velFile):
         """Create a vel3DFromFile object"""
@@ -20,4 +27,3 @@ class vel3dFromFile:
 
             @return new memory used"""
         return self.cppMode.readVelocity(hyper.getCpp(), mem)
-

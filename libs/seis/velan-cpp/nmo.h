@@ -7,7 +7,6 @@
 #include "vel3D.h"
 
 #include "SEPException.h"
-
 namespace SEP {
 namespace velocity {
 
@@ -50,7 +49,8 @@ class nmo {
     \param input array
     \param output array
    */
-  void nmoIt(std::shared_ptr<regSpace> in, std::shared_ptr<regSpace> out);
+  virtual void applyIt(std::shared_ptr<regSpace> in,
+                       std::shared_ptr<regSpace> out);
 
   /*!
    Return whether 2 or 3-D
@@ -82,8 +82,10 @@ class nmo {
   bool _inverse = false;                       ///< Whether or not to do inverse
 };                                             // namespace velocity
 
-class nmoRegCube : public nmo, SEP::loop::basicLoop {
+class nmoRegCube : public SEP::loop::blockIO, nmo {
  public:
+  nmoRegCube() { ; }
+
   nmoRegCube(std::shared_ptr<SEP::velocity::vel3D> vel, const axis &aTime,
              const std::vector<int> ioffAxes, const int cmpXAxis,
              const int cmpYAxis);

@@ -6,6 +6,8 @@
 #include <memory>
 #include "genericFile.h"
 
+#include "SEPException.h"
+
 namespace SEP {
 namespace loop {
 
@@ -128,8 +130,6 @@ class basicLoop {
   int _ndata;
 };
 
-}  // namespace loop
-}  // namespace SEP
 /*!
   Virtual class to loop through dataset */
 class blockIO {
@@ -183,36 +183,38 @@ class blockIO {
                    const std::vector<int> jw, const std::vector<int> nbIn,
                    const std::vector<int> nbOut);
   /*!
-Loop through data applying operator
+  Loop through data applying operator
 
-\param in Input file
+  \param in Input file
 
-\param out Output file
+  \param out Output file
 
-*/
+  */
 
   virtual void loopData(std::shared_ptr<SEP::genericRegFile> in,
-                        std::shared_ptr<SEP::genericRegFile> out) = 0;
+                        std::shared_ptr<SEP::genericRegFile> out) {
+    throw SEPException("Loop through data applying operator");
+  }
 
   /*!
-Loop through data applying operator
+  Loop through data applying operator
 
-\param in Input file
+  \param in Input file
 
-\param out Output file
+  \param out Output file
 
-*/
+  */
 
   virtual void loopDataInOut(std::shared_ptr<SEP::genericRegFile> in,
                              std::shared_ptr<SEP::genericRegFile> out);
 
   /*!
-Loop through data applying operator
+  Loop through data applying operator
 
-\param in Input file
+  \param in Input file
 
 
-*/
+  */
 
   virtual void loopDataIn(std::shared_ptr<SEP::genericRegFile> in) {
     _inF = in;
@@ -226,7 +228,9 @@ Loop through data applying operator
     \param in regSpace
 
   */
-  virtual void applyIn(const std::shared_ptr<SEP::regSpace> in) = 0;
+  virtual void applyIn(const std::shared_ptr<SEP::regSpace> in) {
+    throw SEPException("Must override applyIn");
+  }
 
   /*!
     Apply operator just on output
@@ -234,8 +238,9 @@ Loop through data applying operator
     \param out regSpace
 
   */
-  virtual void applyOut(std::shared_ptr<SEP::regSpace> out) = 0;
-
+  virtual void applyOut(std::shared_ptr<SEP::regSpace> out) {
+    throw SEPException("Must override applyOut");
+  }
   /*!
     Apply operator on input and output
 
@@ -245,16 +250,17 @@ Loop through data applying operator
 
   */
   virtual void applyInOut(const std::shared_ptr<SEP::regSpace> in,
-                          std::shared_ptr<SEP::regSpace> out) = 0;
-
+                          std::shared_ptr<SEP::regSpace> out) {
+    throw SEPException("Must override applyInOut");
+  }
   /*!
-Loop through data applying operator
+  Loop through data applying operator
 
 
 
-\param out Output file
+  \param out Output file
 
-*/
+  */
   virtual void loopDataOut(std::shared_ptr<SEP::genericRegFile> out) {
     _outF = out;
     _hyper = out->getHyper();
@@ -290,5 +296,6 @@ Loop through data applying operator
       const std::vector<int> nw, const std::vector<int> fw,
       const std::vector<int> jw);
 };
-
+}  // namespace loop
+}  // namespace SEP
 #endif

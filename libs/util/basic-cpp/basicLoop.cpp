@@ -3,6 +3,7 @@
 #include "SEPException.h"
 #include "regVector.h"
 using namespace SEP::loop;
+
 std::vector<windP> basicLoop::createLoop(const std::vector<int> nblock) {
   int ndim = _nw.size();
   std::vector<int> n = create9(_n, 1);
@@ -81,12 +82,13 @@ std::vector<windP> basicLoop::createLoop(const std::vector<int> nblock) {
   return wind;
 }
 
-void blockIO::storeParams(const std::vector<int> nIn,
-                          const std::vector<int> nOut,
-                          const std::vector<int> nw, const std::vector<int> fw,
-                          const std::vector<int> jw,
-                          const std::vector<int> nbIn,
-                          const std::vector<int> nbOut) {
+void SEP::loop::blockIO::storeParams(const std::vector<int> nIn,
+                                     const std::vector<int> nOut,
+                                     const std::vector<int> nw,
+                                     const std::vector<int> fw,
+                                     const std::vector<int> jw,
+                                     const std::vector<int> nbIn,
+                                     const std::vector<int> nbOut) {
   if (nbIn.size() < nIn.size())
     throw SEPException(
         "Blocksize dimension less than data size dimension (input)");
@@ -143,6 +145,7 @@ void blockIO::loopDataInOut(std::shared_ptr<SEP::genericRegFile> in,
 
 /*!
   Create hypercube given window parameters */
+
 std::shared_ptr<SEP::hypercube> blockIOReg::createSubset(
     const std::vector<int> nw, const std::vector<int> fw,
     const std::vector<int> jw) {

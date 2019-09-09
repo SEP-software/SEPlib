@@ -17,6 +17,7 @@ PYBIND11_MODULE(pySEPUtil, clsUtil) {
 
    Looping
   */
+
   py::class_<windP>(clsUtil, "windP")
 
       .def(py::init<const std::vector<int>, const std::vector<int>,
@@ -68,6 +69,27 @@ PYBIND11_MODULE(pySEPUtil, clsUtil) {
 
       ;
 
+  /*Block IO*/
+  py::class_<blockIO, std::shared_ptr<blockIO>>(clsUtil, "blockIO2")
+
+      .def(py::init<>(), "Block IO")
+      .def("loopData",
+           (void (blockIO::*)(std::shared_ptr<SEP::genericRegFile>,
+                              std::shared_ptr<SEP::genericRegFile>)) &
+               blockIO::loopData,
+           "Loop through data applying 'applyIt'");
+
+  py::class_<blockIOReg, blockIO, std::shared_ptr<blockIOReg>>(clsUtil,
+                                                               "blockIOReg")
+      .def(py::init<>(), "Dummy initialization")
+
+      //    .def("loopData",
+      //        (void (blockIOReg::*)(std::shared_ptr<SEP::genericRegFile>,
+      //                             std::shared_ptr<SEP::genericRegFile>)) &
+      //           blockIOReg::loopData,
+      //      "Loop through data")
+      ;
+
   /*
   Velocity
   */
@@ -87,8 +109,7 @@ PYBIND11_MODULE(pySEPUtil, clsUtil) {
   NMO
   */
 
-  py::class_<SEP::velocity::nmo, std::shared_ptr<SEP::velocity::nmo>>(clsUtil,
-                                                                      "nmo")
+  py::class_<nmo>(clsUtil, "nmo")
       .def(py::init<>(), "Initialize NMO object")
 
       .def("stretchMute",
@@ -101,15 +122,18 @@ PYBIND11_MODULE(pySEPUtil, clsUtil) {
                SEP::velocity::nmo::setSmute,
            "Set smute value")
 
-      .def("nmoIt",
+      .def("applyIt",
            (void (SEP::velocity::nmo::*)(std::shared_ptr<regSpace>,
                                          std::shared_ptr<regSpace>)) &
-               SEP::velocity::nmo::nmoIt,
+               SEP::velocity::nmo::applyIt,
            "NMO dataset")
 
       ;
-  py::class_<SEP::velocity::nmoRegCube, SEP::velocity::nmo,
-             std::shared_ptr<SEP::velocity::nmoRegCube>>(clsUtil, "nmoRegCube")
+
+  py::class_<SEP::velocity::nmoRegCube,
+             std::shared_ptr<SEP::velocity::nmoRegCube>, blockIO>(clsUtil,
+                                                                  "nmoRegCube")
+      .def(py::init<>(), "Initialize nmo")
 
       .def(py::init<std::shared_ptr<SEP::velocity::vel3D>, const axis &,
                     const std::vector<int>, const int, const int>(),

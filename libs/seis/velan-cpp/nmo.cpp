@@ -49,7 +49,7 @@ std::vector<float> nmoRegCube::getCmpY(const std::shared_ptr<regSpace> in) {
   return in->axisToKey(_cmpYAxis);
 }
 
-void nmo::nmoIt(std::shared_ptr<regSpace> in, std::shared_ptr<regSpace> out) {
+void nmo::applyIt(std::shared_ptr<regSpace> in, std::shared_ptr<regSpace> out) {
   std::shared_ptr<floatHyper> inF = std::dynamic_pointer_cast<floatHyper>(in),
                               outF = std::dynamic_pointer_cast<floatHyper>(out);
   if (!inF || !outF) throw SEPException("Could not cast to floatHypers");
