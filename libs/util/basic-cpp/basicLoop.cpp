@@ -147,9 +147,9 @@ void blockIO::loopDataInOut(std::shared_ptr<SEP::genericRegFile> in,
   Create hypercube given window parameters */
 
 std::shared_ptr<SEP::hypercube> blockIOReg::createSubset(
-    const std::vector<int> nw, const std::vector<int> fw,
-    const std::vector<int> jw) {
-  std::vector<SEP::axis> axes = _hyper->getAxes();
+    std::shared_ptr<SEP::hypercube> hyper, const std::vector<int> nw,
+    const std::vector<int> fw, const std::vector<int> jw) {
+  std::vector<SEP::axis> axes = hyper->getAxes();
   for (int i = 0; i < axes.size(); i++) {
     axes[i].o += axes[i].d * fw[i];
     axes[i].n = nw[i];
@@ -184,7 +184,7 @@ void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
   if (doIn) {
     // Begin by starting a read for the first section
     tmp = SEP::vecFromHyper(
-        createSubset(_loopIn[0]._nw, _loopIn[0]._fw, _loopIn[0]._jw),
+        createSubset(_hyperIn, _loopIn[0]._nw, _loopIn[0]._fw, _loopIn[0]._jw),
         in->getDataType());
     readT =
         std::thread(readF, tmp, _loopIn[0]._nw, _loopIn[0]._fw, _loopIn[0]._jw);
@@ -194,17 +194,17 @@ void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
   for (int iout = 0; iout < _loopIn.size(); iout++) {
     if (doOut) {
       // Create  the output
-      std::shared_ptr<SEP::regSpace> windOut =
-          SEP::vecFromHyper(createSubset(_loopOut[iout]._nw, _loopOut[iout]._fw,
-                                         _loopOut[iout]._jw),
-                            out->getDataType());
+      std::shared_ptr<SEP::regSpace> windOut = SEP::vecFromHyper(
+          createSubset(_hyperOut, _loopOut[iout]._nw, _loopOut[iout]._fw,
+                       _loopOut[iout]._jw),
+          out->getDataType());
     }
     if (doIn) {
       readT.join();
       windIn = SEP::cloneRegSpace(tmp);
       if (iout + 1 != _loopIn.size()) {
         tmp = vecFromHyper(
-            createSubset(_loopIn[iout + 1]._nw, _loopIn[iout + 1]._fw,
+            createSubset(_hyperIn, _loopIn[iout + 1]._nw, _loopIn[iout + 1]._fw,
                          _loopIn[iout + 1]._jw),
             in->getDataType());
         readT = std::thread(readF, tmp, _loopIn[iout + 1]._nw,
@@ -225,4 +225,124 @@ void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
     }
   }
   if (doOut) writeT.join();
+}
+
+void SEP::loop::blockIORegPipe::setupPipe(
+    std::shared_ptr<genericRegFile> inF, std::shared_ptr<genericRegFile> outF,
+    std::vector<std::shared_ptr<blockIOReg>>& ops, const long long maxM) {
+  _inF = inF;
+  _outF = outF;
+
+  long mem = maxM;
+  std::vector<std::shared_ptr<hypercube>> hypers;
+  hypers.push_back(inF->getHyper());
+  int iop = 0;
+  for (auto o : ops) {
+    mem -= o->getExtraMem();
+    hypers.push_back(o->createHyperOut(hypers[iop]));
+    iop += 1;
+    _ops.push_back(o);
+  }
+
+  for (int i = 0; i < _ops.size() - 1; i++) {
+    if (_ops[i]->getDataTypeOut() != _ops[i + 1]->getDataTypeIn())
+      throw SEPException(std::string("Output of op ") + std::to_string(i) +
+                         " does not match input of next operator");
+  }
+
+  _hyperIn = inF->getHyper();
+  _hyperOut = outF->getHyper();
+
+  outF->setHyper(hypers[hypers.size() - 1]);
+  bool limit = false;
+  int idim = ops[ops.size() - 1]->getMinDims();
+  std::vector<int> ns = hypers[hypers.size() - 1]->getNs();
+
+  while (!limit || idim <= hypers[hypers.size() - 1]->getNdimG1()) {
+    ns = hypers[hypers.size() - 1]->getNs();
+    ns.resize(idim);
+    long long icopies = testHoldInMemory(mem, ns);
+    if (icopies < 1) {
+      if (idim == ops[ops.size() - 1]->getMinDims())
+        throw SEPException("Can not hold minimum size in memory");
+      ns.resize(ns.size() + 1);
+      ns[ns.size() - 1] = icopies;
+      limit = true;
+    }
+    idim += 1;
+  }
+
+  std::vector<int> nOut = hypers[hypers.size() - 1]->getNs();
+  std::vector<int> nw(nOut.size(), 1), fw(nw.size(), 0), jw(nw.size(), 1);
+  for (int i = 0; i < nw.size(); i++) nw[i] = ns[i];
+
+  std::shared_ptr<basicLoop> basic2(
+      new SEP::loop::basicLoop(nOut, nOut, fw, jw));
+  _loopOut = basic2->createLoop(nw);
+  std::vector<std::vector<windP>> temp;
+  for (int i = 0; i < _loopOut.size(); i++) {
+    std::vector<windP> tmp1;
+    for (int iop = _ops.size() - 1; iop >= 0; iop--) {
+      tmp1.push_back(_ops[iop]->getInputSize(_loopOut[i]));
+    }
+    temp.push_back(tmp1);
+  }
+  for (int iop = temp[0].size() - 2; iop >= 0; iop--) {
+    std::vector<windP> tmp1;
+    for (int i = 0; i < _loopOut.size(); i++) {
+      tmp1.push_back(temp[i][iop]);
+    }
+    _loopMid.push_back(tmp1);
+  }
+  for (int i = 0; i < _loopOut.size(); i++) {
+    _loopIn.push_back(temp[i][temp[0].size() - 1]);
+  }
+}
+void SEP::loop::blockIORegPipe::applyInOut(
+    const std::shared_ptr<SEP::regSpace> in,
+    std::shared_ptr<SEP::regSpace> out) {
+  std::shared_ptr<SEP::regSpace> inA = in, outA;
+  for (int iwind = 0; iwind < _loopIn.size(); iwind++) {
+    for (int iop = 0; iop < _ops.size(); iop++) {
+      if (iwind == _ops.size() - 1)
+        outA = out;
+      else
+        outA = SEP::vecFromHyper(
+            createSubset(_ops[iop]->getHyperOut(), _loopMid[iop][iwind]._nw,
+                         _loopMid[iop][iwind]._fw, _loopMid[iop][iwind]._jw),
+            _ops[iop]->getDataTypeIn());
+      _ops[iop]->applyInOut(inA, outA);
+      inA = outA;
+    }
+  }
+}
+long long SEP::loop::blockIORegPipe::testHoldInMemory(
+    const long long mem, std::vector<int> outputSize) {
+  long long memT = 0;
+  std::vector<windP> windows;
+  std::vector<int> fw(outputSize.size(), 0), jw(outputSize.size(), 1);
+  windows.push_back(windP(outputSize, fw, jw));
+  std::vector<int> esizes;
+  esizes.push_back(SEP::getDataTypeSize(_ops[0]->getDataTypeIn()));
+
+  for (int i = _ops.size() - 1; i >= 0; i++) {
+    esizes.push_back(SEP::getDataTypeSize(_ops[i]->getDataTypeOut()));
+    windows.push_back(_ops[i]->getInputSize(windows[windows.size() - 1]));
+  }
+
+  long long mT = esizes[0] * 2;
+  for (int idim = 0; idim < windows[0]._nw.size(); idim++)
+    mT = mT * windows[0]._nw[idim];
+  memT += mT;
+  mT = esizes[esizes.size() - 1] * 2;
+  for (int idim = 0; idim < windows[windows.size() - 1]._nw.size(); idim++)
+    mT = mT * windows[windows.size() - 1]._nw[idim];
+  memT += mT;
+  for (int imid = 1; imid < windows.size() - 1; imid++) {
+    mT = esizes[imid + 1];
+    for (int idim = 0; idim < windows[imid]._nw.size(); idim++)
+      mT = mT * windows[imid]._nw[idim];
+    memT += mT;
+  }
+  return mem / memT;
 }

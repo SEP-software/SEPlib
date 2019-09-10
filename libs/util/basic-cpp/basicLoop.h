@@ -218,7 +218,7 @@ class blockIO {
 
   virtual void loopDataIn(std::shared_ptr<SEP::genericRegFile> in) {
     _inF = in;
-    _hyper = in->getHyper();
+    _hyperIn = in->getHyper();
     loopData(in, nullptr);
   }
 
@@ -263,13 +263,50 @@ class blockIO {
   */
   virtual void loopDataOut(std::shared_ptr<SEP::genericRegFile> out) {
     _outF = out;
-    _hyper = out->getHyper();
+    _hyperOut = out->getHyper();
     loopData(nullptr, out);
   }
+  /*!  Create output hypercube from input hypercube
+
+     \param hyperIn Input hypercube
+
+  */
+  virtual std::shared_ptr<hypercube> createHyperOut(
+      const std::shared_ptr<hypercube> hyperIn) {
+    throw SEPException("Must override createHyperOut");
+  }
+
+  /*!
+    Minimum number of dimensions that need to be held in memory */
+  virtual int getMinDims() { throw SEPException("Must override getMinDims"); }
+
+  /*! Get data type for the input  */
+  virtual SEP::dataType getDataTypeIn() { return SEP::DATA_FLOAT; }
+
+  /*! Get data type for the output  */
+  virtual SEP::dataType getDataTypeOut() { return SEP::DATA_FLOAT; }
+  /*!
+  Get any extra memory used by program
+  */
+  virtual long long getExtraMem() { return 0; }
+
+  /*!
+  Return the maximum input size needed given output size
+  \param outP Output dimensions
+  */
+  virtual windP getInputSize(const windP &window) {
+    throw SEPException("Must override getMaxInputSize");
+  }
+  /*!
+    return Hypercube in*/
+  std::shared_ptr<SEP::hypercube> getHyperIn() { return _hyperIn; }
+  /*!
+    return Hypercube out*/
+  std::shared_ptr<SEP::hypercube> getHyperOut() { return _hyperOut; }
 
  protected:
   std::shared_ptr<SEP::genericRegFile> _inF, _outF;
-  std::shared_ptr<SEP::hypercube> _hyper;
+  std::shared_ptr<SEP::hypercube> _hyperIn, _hyperOut;
   std::vector<SEP::loop::windP> _loopIn, _loopOut;
 };
 class blockIOReg : public blockIO {
@@ -290,12 +327,51 @@ Loop through data applying operator
 
   /*!
     Create hypercube given window parameters
-
+    \param hyper Hypercube to base limits on
     \param nw,fw,jw Windowing parameters */
   virtual std::shared_ptr<SEP::hypercube> createSubset(
-      const std::vector<int> nw, const std::vector<int> fw,
-      const std::vector<int> jw);
+      std::shared_ptr<SEP::hypercube> hyper, const std::vector<int> nw,
+      const std::vector<int> fw, const std::vector<int> jw);
 };
+/*!
+Class to "pipe" several events in memory*/
+class blockIORegPipe : public blockIOReg {
+ public:
+  blockIORegPipe() { ; }
+  /*!
+   Initialize blockIO object
+   \param inF Input file
+   \param outF Output file
+     \param ops Operations to run
+     \param maxM Maximum memory in bytes */
+  void setupPipe(std::shared_ptr<SEP::genericRegFile> inF,
+                 std::shared_ptr<SEP::genericRegFile> outF,
+                 std::vector<std::shared_ptr<blockIOReg>> &ops,
+                 const long long maxM);
+  /*!
+    Apply operator on input and output
+
+    \oaram in regSace
+
+    \param out regSpace
+
+  */
+  virtual void applyInOut(const std::shared_ptr<SEP::regSpace> in,
+                          std::shared_ptr<SEP::regSpace> out);
+
+  /*!
+    Number of copies of required blocks we can hold in memory
+
+    \param Maximum memory to use
+    \param outputSize Output buffer size
+    */
+  long long testHoldInMemory(const long long mem, std::vector<int> outputSize);
+
+ private:
+  std::vector<std::shared_ptr<blockIOReg>> _ops;
+  std::vector<std::vector<SEP::loop::windP>> _loopMid;
+};
+
 }  // namespace loop
 }  // namespace SEP
 #endif

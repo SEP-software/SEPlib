@@ -5,14 +5,14 @@ find_package(Boost 1.40 COMPONENTS program_options unit_test_framework REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../velan-cpp)
 
-set(SOURCES kirchTime.cpp)
-set(INCLUDES kirchTime.h)
+set(SOURCES stack.cpp floatFilter.cpp)
+set(INCLUDES stack.h floatFilter.h)
 
-add_library(sepImageCpp ${SOURCES} ${INCLUDES})
+add_library(sepFilterCpp ${SOURCES} ${INCLUDES})
 
 
-target_link_libraries(sepImageCpp sepVelanCpp genericCpp hypercube tbb ${EXTERNAL_TARGETS})
+target_link_libraries(sepFilterCpp sepBasicCpp genericCpp hypercube tbb ${EXTERNAL_TARGETS})
 
-install(TARGETS sepImageCpp DESTINATION lib)
+install(TARGETS sepFilterCpp DESTINATION lib)
 
 
