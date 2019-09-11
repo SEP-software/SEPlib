@@ -31,7 +31,7 @@ target_link_libraries( sepdip sep ${FFTW_LIBRARIES})
 
 target_include_directories(sepdip
 	PRIVATE          
-	   ${CMAKE_CURRENT_SOURCE_DIR}/../include 
+	   ${CMAKE_CURRENT_SOURCE_DIR}/../../include 
 	PUBLIC
 	   $<INSTALL_INTERFACE:include> 
 	   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>  

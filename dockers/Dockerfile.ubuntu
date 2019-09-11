@@ -26,6 +26,6 @@ RUN git  clone http://zapad.Stanford.EDU/bob/SEPlib.git /opt/SEP/src &&\
    cd /opt/SEP/build && \
    cmake -DCMAKE_INSTALL_PREFIX=/opt/SEP ../src &&\
    cd /opt/SEP/build &&  \
-   make -j 8 install &&\
+   make install &&\
    rm -rf /opt/SEP/build
 

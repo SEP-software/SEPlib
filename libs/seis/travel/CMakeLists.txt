@@ -12,7 +12,7 @@ target_link_libraries( septravel sepaux sepfilter sep)
 
 target_include_directories(septravel
 	PRIVATE          
-	   ${CMAKE_CURRENT_SOURCE_DIR}/../include 
+	   ${CMAKE_CURRENT_SOURCE_DIR}/../../include 
 	PUBLIC
 	   $<INSTALL_INTERFACE:include> 
 	   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>  
