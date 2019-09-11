@@ -22,6 +22,7 @@ option(BUILD_VPLOT_GRAPHICS "Build vplot programs" ON)
 # option(BUILD_RATFOR90 "Build and install ratfor90" OFF)
     include_directories(
 	    ${CMAKE_CURRENT_BINARY_DIR}/libs/core/external/genericIO/)
+    include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/libs/core/external/genericIO/external/buffers/external/json)
 
 if(BUILD_TESTS)
