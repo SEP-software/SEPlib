@@ -71,6 +71,32 @@ class nmo {
   */
   void doInverse(const bool st) { _inverse = st; }
 
+  /*!
+    Create output hypercube, given input hypercube
+     */
+  virtual std::shared_ptr<hypercube> createHyperOut(
+      const std::shared_ptr<hypercube> hyperIn) {
+    return hyperIn->clone();
+  }
+
+  /*!
+    Minimum number of dimensions that need to be held in memory */
+  virtual int getMinDims() { return 1; }
+
+  /*!
+  Get any extra memory used by program
+  */
+  virtual long long getExtraMem() { _vel->getVelSize(); }
+
+  /*!
+  Return the maximum input size needed given output size
+  \param outP Output dimensions
+  */
+  virtual SEP::loop::windP getInputSize(const SEP::loop::windP &window) {
+    SEP::loop::windP x = window;
+    return x;
+  }
+
  protected:
   std::shared_ptr<SEP::velocity::vel3D> _vel;  ///< Velocity
   int _nt;                                     ///< Number of samples in time

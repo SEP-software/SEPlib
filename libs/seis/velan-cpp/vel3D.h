@@ -56,6 +56,11 @@ class vel3D {
                                          const float d1, const float x);
 
   /*!
+     Get size of velocity storage
+     */
+  virtual long long getVelSize() { return 0; }
+
+  /*!
     Get the maximum velocity
 
     @return maximum velocity
@@ -180,6 +185,11 @@ class vel3DFromFile : public vel3DCube {
 
   long long readVelocity(std::shared_ptr<hypercube> output,
                          const long long maxMem);
+
+  /*!
+     Get size of velocity storage
+     */
+  virtual long long getVelSize() { 4 * _file->getHyper()->getN123(); }
 
   /*!
   Return hypercube associated with velocity file

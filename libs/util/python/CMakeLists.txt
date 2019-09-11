@@ -3,7 +3,7 @@ project(python-SEP-util)
 
 include_directories(${Boost_INCLUDE_DIR})
 pybind11_add_module(pySEPUtil MODULE pySEPUtil.cpp)
-target_link_libraries(pySEPUtil PRIVATE sepImageCpp sepVelanCpp)
+target_link_libraries(pySEPUtil PRIVATE sepImageCpp sepVelanCpp sepFilterCpp)
 target_include_directories(
   pySEPUtil
   PUBLIC ${PYTHON_INCLUDE_DIR}
@@ -14,6 +14,7 @@ target_include_directories(
          ${CMAKE_CURRENT_SOURCE_DIR}/../core/external/genericIO/external/buffers/external/json
          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../seis/velan-cpp>
          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../seis/image-cpp>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../seis/filter-cpp>
          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../basic-cpp>)
 
 install(TARGETS pySEPUtil DESTINATION lib)

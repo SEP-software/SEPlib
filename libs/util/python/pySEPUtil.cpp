@@ -3,8 +3,10 @@
 
 #include "basicLoop.h"
 #include "doubleLoop.h"
+#include "floatFilter.h"
 #include "kirchTime.h"
 #include "nmo.h"
+#include "stack.h"
 #include "vel3D.h"
 using namespace SEP::loop;
 using namespace SEP::velocity;
@@ -81,14 +83,30 @@ PYBIND11_MODULE(pySEPUtil, clsUtil) {
 
   py::class_<blockIOReg, blockIO, std::shared_ptr<blockIOReg>>(clsUtil,
                                                                "blockIOReg")
-      .def(py::init<>(), "Dummy initialization")
+      .def(py::init<>(), "Dummy initialization");
 
-      //    .def("loopData",
-      //        (void (blockIOReg::*)(std::shared_ptr<SEP::genericRegFile>,
-      //                             std::shared_ptr<SEP::genericRegFile>)) &
-      //           blockIOReg::loopData,
-      //      "Loop through data")
-      ;
+  py::class_<blockIORegPipe, blockIOReg, std::shared_ptr<blockIORegPipe>>(
+      clsUtil, "blockIORegPipe")
+      .def(py::init<>(), "Dummy initialization")
+      .def("setupPipe",
+           (void (blockIORegPipe::*)(
+               std::shared_ptr<SEP::genericRegFile>,
+               std::shared_ptr<SEP::genericRegFile>,
+               std::vector<std::shared_ptr<blockIOReg>> &)) &
+               blockIORegPipe::setupPipe,
+           "Setup pipe'")
+      .def("applyInOut",
+           (void (blockIORegPipe::*)(std::shared_ptr<regSpace>,
+                                     std::shared_ptr<regSpace>)) &
+               blockIORegPipe::applyInOut,
+           "Apply operator");
+
+  //    .def("loopData",
+  //        (void (blockIOReg::*)(std::shared_ptr<SEP::genericRegFile>,
+  //                             std::shared_ptr<SEP::genericRegFile>)) &
+  //           blockIOReg::loopData,
+  //      "Loop through data")
+  ;
 
   /*
   Velocity
@@ -138,6 +156,43 @@ PYBIND11_MODULE(pySEPUtil, clsUtil) {
       .def(py::init<std::shared_ptr<SEP::velocity::vel3D>, const axis &,
                     const std::vector<int>, const int, const int>(),
            "Initialize NMO for regular cube")
+      .def("loopData",
+           (void (blockIO::*)(std::shared_ptr<SEP::genericRegFile>,
+                              std::shared_ptr<SEP::genericRegFile>)) &
+               blockIO::loopData,
+           "Loop through data applying 'applyIt'");
+  ;
+
+  /*
+  Stack
+  */
+
+  py::class_<SEP::filter::floatStackSpreadReg, blockIOReg>(
+      clsUtil, "floatStackSpreadReg")
+      .def(py::init<const std::vector<int>, bool>(),
+           "Initialize floatStackSpreadReg")
+
+      .def("applyIt",
+           (void (SEP::filter::floatStackSpreadReg::*)(
+               std::shared_ptr<regSpace>, std::shared_ptr<regSpace>)) &
+               SEP::filter::floatStackSpreadReg::applyIt,
+           "Stack")
+
+      ;
+
+  /*
+  Filter
+  */
+
+  py::class_<SEP::filter::floatfilter1D, blockIOReg>(clsUtil, "floatfilter1D")
+      .def(py::init<std::shared_ptr<SEP::rectFilter1D>>(),
+           "Initialize floatFilter1D")
+
+      .def("applyIt",
+           (void (SEP::filter::floatfilter1D::*)(std::shared_ptr<regSpace>,
+                                                 std::shared_ptr<regSpace>)) &
+               SEP::filter::floatfilter1D::applyIt,
+           "Stack")
 
       ;
 
