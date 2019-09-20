@@ -12,12 +12,12 @@ set(SEPlib_VERSION_STRING ${SEPlib_MAJOR_VERSION}.${SEPlib_MINOR_VERSION})
 
 find_package(Python3 COMPONENTS Interpreter NumPy)
 if(NOT SUBPACKAGE)
-	      option(BUILD_DOC "Build documentation" ON)
-	      option(BUILD_TEST "Build with test support" OFF)
+  option(BUILD_DOC "Build documentation" ON)
+  option(BUILD_TEST "Build with test support" OFF)
 
-	else(NOT SUBPACKAGE)
-		  option(BUILD_DOC "Build documentation" OFF)
-	  endif(NOT SUBPACKAGE)
+else(NOT SUBPACKAGE)
+  option(BUILD_DOC "Build documentation" OFF)
+endif(NOT SUBPACKAGE)
 
 option(BUILD_SEISMIC_PROGS "Build seismic programs" ON)
 option(BUILD_UTIL_PROGS "Build seismic programs" ON)
@@ -27,16 +27,17 @@ option(BUILD_GCP "Build GCP" OFF)
 option(BUILD_MAKERULES "Install makerules" OFF)
 option(BUILD_VPLOT_GRAPHICS "Build vplot programs" ON)
 # option(BUILD_RATFOR90 "Build and install ratfor90" OFF)
-    include_directories(
-	    ${CMAKE_CURRENT_BINARY_DIR}/libs/core/external/genericIO/)
-    include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/libs/core/external/genericIO/external/buffers/external/json)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/libs/core/external/genericIO/)
+include_directories(
+  ${CMAKE_CURRENT_SOURCE_DIR}/libs/core/external/genericIO/external/buffers/external/json
+  )
 
-if(BUILD_TESTS)
+if(BUILD_TEST)
   enable_testing()
-    include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/libs/core/external/genericIO/external/buffers/external/googletest/googletest/include)
-endif(BUILD_TESTS)
+  include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs/core/external/genericIO/external/buffers/external/googletest/googletest/include
+    )
+endif(BUILD_TEST)
 
 find_package(Git QUIET)
 if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")

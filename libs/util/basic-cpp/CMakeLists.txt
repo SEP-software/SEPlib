@@ -11,6 +11,15 @@ set(INCLUDES calcBlock.h basicLoop.h doubleLoop.h sinc.h maps.h)
 add_library(sepBasicCpp ${SOURCES} ${INCLUDES})
 target_link_libraries(sepBasicCpp sepVector)
 
+add_executable( test_calcBlock  test_calcBlock.cpp)
+target_link_libraries( test_calcBlock sepBasicCpp gtest gtest_main gtest)
+add_test(NAME  test_calcBlock COMMAND  test_calcBlock)
+
+#add_executable(test_basicLoop test_basicLoop.cpp)
+#target_link_libraries(test_basicLoop sepBasicCpp gtest gtest_main gtest)
+#add_test(NAME basicLoop COMMAND test_basicLoop)
+
+
 
 install(TARGETS sepBasicCpp  DESTINATION lib)
 

@@ -39,7 +39,7 @@ class blockSizeCalc {
 
    \param mem - Memory in bytes
    */
-  // blockSizeCalc(long long mem) { _mem = mem; }
+  blockSizeCalc(long long mem) { _mem = mem; }
   /*!
     Add a dataset that needs to looped through
     \param Name of dataset
