@@ -11,7 +11,14 @@ set(SEPlib_MINOR_VERSION 0)
 set(SEPlib_VERSION_STRING ${SEPlib_MAJOR_VERSION}.${SEPlib_MINOR_VERSION})
 
 find_package(Python3 COMPONENTS Interpreter NumPy)
-option(BUILD_TESTS "Build tests" ON)
+if(NOT SUBPACKAGE)
+	      option(BUILD_DOC "Build documentation" ON)
+	      option(BUILD_TEST "Build with test support" OFF)
+
+	else(NOT SUBPACKAGE)
+		  option(BUILD_DOC "Build documentation" OFF)
+	  endif(NOT SUBPACKAGE)
+
 option(BUILD_SEISMIC_PROGS "Build seismic programs" ON)
 option(BUILD_UTIL_PROGS "Build seismic programs" ON)
 option(BUILD_CONVERTER_PROGS "Build seismic programs" ON)
