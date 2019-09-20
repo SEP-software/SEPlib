@@ -8,7 +8,7 @@ sinc::sinc(const int lsinc, const float dsamp) {
     _table.push_back(mksinc(_lsinc, _dsamp * i));
   }
 }
-std::vector<float> mksinc(int lsinc, float d) {
+std::vector<float> sinc::mksinc(int lsinc, float d) {
   int j;
   float pi, pi2, snyq, snat, s0, ds, eta, s;
 

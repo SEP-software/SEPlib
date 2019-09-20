@@ -60,8 +60,9 @@ class blockSizeCalc {
    Return block size
    \param name Name of dataset
    */
-  // std::vector<int> getBlockSize(std::string &name) { return
-  // _datas[name]._nbs; }
+  std::vector<int> getBlockSize(const std::string &name) {
+    return _datas[name]._nbs;
+  }
 
  private:
   long long _mem;
