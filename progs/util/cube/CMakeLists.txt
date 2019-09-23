@@ -29,7 +29,7 @@ set_property(TARGET Sort3d PROPERTY LINKER_LANGUAGE Fortran)
 set_property(TARGET Stack3d PROPERTY LINKER_LANGUAGE Fortran)
 
 TARGET_LINK_LIBRARIES(Fold3d sepaux   sepfft sepmath ${FFTW_LIBRARIES} sep3d sep)
-TARGET_LINK_LIBRARIES(Stack3d superset sep3d sep)
+TARGET_LINK_LIBRARIES(Stack3d sepgeef90 superset sep3d sep)
 TARGET_LINK_LIBRARIES(Sort3d sepaux sepmath sep3d sep)
 if( ${SYMLINK_FOUND} )
 

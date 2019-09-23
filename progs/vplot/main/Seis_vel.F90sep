@@ -21,7 +21,7 @@
 !!$
 !!$=item  bg_min,bg_max - real (required)
 !!$
-!!$ clip background values (determine from velocity file min/max)
+!!$ clip background values (from velocity file min/max)
 !!$
 !!$=item  data2 - sepfile
 !!$
