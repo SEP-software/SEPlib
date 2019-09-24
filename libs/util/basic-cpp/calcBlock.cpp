@@ -1,4 +1,5 @@
 #include "calcBlock.h"
+#include <iostream>
 #include "SEPException.h"
 void SEP::blocking::blockSizeCalc::calcBlocks() {
   long long nbase = 0;
@@ -49,21 +50,23 @@ void SEP::blocking::blockSizeCalc::calcBlocks() {
   }
 
   bool found = false;
-  long long idim = nfirst;
-  std::vector<int> nb(first._nd.size() - nfirst, 1);
+  long long idim = first._ndimMin;
+  std::vector<int> nb(first._nd.size() - first._ndimMin, 1);
+  int iloop = 0;
   while (!found && idim < first._nd.size()) {
     if (nbase * first._nd[idim] < _mem) {
-      nb[idim] = first._nd[idim];
+      nb[iloop] = first._nd[idim];
       nbase *= first._nd[idim];
       idim++;
     } else {
       found = true;
-      nb[idim] = first._nd[idim] / nbase;
+      nb[iloop] = _mem / nbase;
     }
+    iloop++;
   }
   for (auto i = _datas.begin(); i != _datas.end(); i++) {
     for (int idim = 0; idim < nb.size(); idim++) {
-      i->second._nbs[i->second._ndimMin] = nb[idim];
+      i->second._nbs[i->second._ndimMin + idim] = nb[idim];
     }
   }
 }
