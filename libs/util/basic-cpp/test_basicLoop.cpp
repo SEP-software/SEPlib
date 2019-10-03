@@ -11,6 +11,8 @@ class simpleBlockIOReg1 : public blockIOReg {
                           std::shared_ptr<SEP::regSpace> out) {
     std::shared_ptr<SEP::float1DReg> in1D = std::dynamic_cast<float1DReg>(in),
                                      out1D = std::dynamic_cast<float1DReg>(out);
+    ASSERT_TRUE(in1D);
+    ASSERT_TRUE(out1D);
   }
 };
 
