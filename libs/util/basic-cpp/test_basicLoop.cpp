@@ -1,31 +1,80 @@
 #include <gtest/gtest.h>  // googletest header file
-
 #include <string>
+#include "calcBlock.h"
+#include "float3DReg.h"
 #include "hypercube.h"
 using std::string;
 using namespace SEP;
 
-class simpleBlockIOReg1 : public blockIOReg {
+std::vector<float> createArrayF(const int n1, const int n2, const int n3) {
+  long long n123 = (long long)n1 * (long long)n2 * (long long)n3;
+  std::vector<float> buf(n123);
+  long long i = 0;
+  for (int i3 = 0; i3 < n3; i3++) {
+    for (int i2 = 0; i2 < n2; i2++) {
+      for (int i1 = 0; i1 < n1; i1++, i++) {
+        buf[i] = i1 + i2 * 100 + i3 * 100 * 100;
+      }
+    }
+  }
+  return buf;
+}
+void checkArrayF(const float *buf, const int n1, const int f1, const int j1,
+                 const int n2, const int f2, const int j2, const int n3,
+                 const int f3, const int j3) {
+  long long i = 0;
+  for (int i3 = 0; i3 < n3; i3++) {
+    for (int i2 = 0; i2 < n2; i2++) {
+      for (int i1 = 0; i1 < n1; i1++, i++) {
+        EXPECT_EQ(buf[i], 2 * ((f1 + i1 * j1) + (f2 + i2 * j2) * 00 +
+                               (f3 + j3 * i3) * 100 * 100));
+      }
+    }
+  }
+}
+
+class simpleScaling : public blockIOReg {
  public:
+  simpleScaling(const std::vector<int> nd, const std::vector<int> nb) {
+    std::vector<int> fw(3, 0), jw(3, 1);
+    storeParams(nd, nd, fw, jw, nb);
+  }
   virtual void applyInOut(const std::shared_ptr<SEP::regSpace> in,
                           std::shared_ptr<SEP::regSpace> out) {
-    std::shared_ptr<SEP::float1DReg> in1D = std::dynamic_cast<float1DReg>(in),
-                                     out1D = std::dynamic_cast<float1DReg>(out);
-    ASSERT_TRUE(in1D);
-    ASSERT_TRUE(out1D);
+    std::shared_ptr<SEP::float3DReg> in3D = std::dynamic_cast<float3DReg>(in),
+                                     out3D = std::dynamic_cast<float3DReg>(out);
+    ASSERT_TRUE(in3D);
+    ASSERT_TRUE(out3D);
+
+    for (auto i = 0; i < in3D->getN123(); i++) {
+      (*out3D->vals)[i] = (*in3D->vals)[i] * 2.;
+    }
   }
 };
 
 TEST(calcBlock, simpleAll) {
-  std::vector<int> nd(3, 1000);
-  blockSizeCalc x = blockSizeCalc(99000l * 1000l * 1000l);
-  ASSERT_NO_THROW(x.addData("single", nd, 1, 4));
-  ASSERT_NO_THROW(x.calcBlocks());
-  std::vector<int> nv = x.getBlockSize(std::string("single"));
-  ASSERT_EQ(nv.size(), 3);
-  ASSERT_EQ(nv[0], 1000);
-  ASSERT_EQ(nv[1], 1000);
-  ASSERT_EQ(nv[2], 1000);
+  std::vector<std::string> pars;
+  ioMode mode = ioMode(pars);
+  std::shared_ptr<genericIO> io = mode.getIO("memory");
+  std::shared_pyt<genericRegFile> inF = io->getRegFile("in", usageIn);
+  std::shared_pyt<genericRegFile> outF = io->getRegFile("out", usageIn);
+  std::shared_ptr<hypercube> hyper(new hypercube(10, 10, 10));
+  inF->setHyper(hyper);
+  outF->setHyper(hyper);
+  std::vector<float> buf1 = createArrayF(10, 10, 10);
+  inf->writeFloatStream(buf1, 1000);
+  std::vector<int> nd(3, 10);
+  blockSizeCalc bl(800);
+  bl.addData("input", nd, 1, 4);
+  bl.addData("output", nd, 1, 4);
+  bl.calcBlocks();
+  std::vector<int> nb = bl.getBlockSize("input");
+
+  simpleScaling scale = simpleScaling();
+  scale.loopData(inF, outF);
+  std::vector<float> buf2(1000);
+
+  checkArrayF(buf2.data(),10,0,1,10,0,1,10,0,1));
 }
 
 /*

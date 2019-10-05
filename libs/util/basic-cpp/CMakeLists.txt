@@ -14,9 +14,9 @@ add_executable( test_calcBlock  test_calcBlock.cpp)
 target_link_libraries( test_calcBlock sepBasicCpp gtest gtest_main gtest)
 add_test(NAME  test_calcBlock COMMAND  test_calcBlock)
 
-#add_executable(test_basicLoop test_basicLoop.cpp)
-#target_link_libraries(test_basicLoop sepBasicCpp gtest gtest_main gtest)
-#add_test(NAME basicLoop COMMAND test_basicLoop)
+add_executable(test_basicLoop test_basicLoop.cpp)
+target_link_libraries(test_basicLoop sepBasicCpp gtest gtest_main gtest)
+add_test(NAME basicLoop COMMAND test_basicLoop)
 
 
 
