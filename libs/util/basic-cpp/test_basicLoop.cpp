@@ -1,10 +1,36 @@
 #include <gtest/gtest.h>  // googletest header file
 #include <string>
+#include "basicLoop.h"
 #include "calcBlock.h"
 #include "float3DReg.h"
+#include "genericIO.h"
 #include "hypercube.h"
+#include "ioModes.h"
+#include "memoryFile.h"
 using std::string;
 using namespace SEP;
+class simpleScaling : public SEP::loop::blockIOReg {
+ public:
+  simpleScaling(const std::vector<int> nd, const std::vector<int> nb) {
+    std::vector<int> fw(3, 0), jw(3, 1);
+    storeParams(nd, nd, fw, jw, nb);
+  }
+  virtual void applyInOut(const std::shared_ptr<SEP::regSpace> in,
+                          std::shared_ptr<SEP::regSpace> out) {
+    std::shared_ptr<SEP::float3DReg> in3D =
+                                         std::dynamic_pointer_cast<float3DReg>(
+                                             in),
+                                     out3D =
+                                         std::dynamic_pointer_cast<float3DReg>(
+                                             out);
+    ASSERT_TRUE(in3D);
+    ASSERT_TRUE(out3D);
+    float *outv = out3D->getVals(), *inv = in3D->getVals();
+    for (auto i = 0; i < in3D->getHyper()->getN123(); i++) {
+      outv[i] = inv[i] * 2.;
+    }
+  }
+};
 
 std::vector<float> createArrayF(const int n1, const int n2, const int n3) {
   long long n123 = (long long)n1 * (long long)n2 * (long long)n3;
@@ -33,48 +59,46 @@ void checkArrayF(const float *buf, const int n1, const int f1, const int j1,
   }
 }
 
-class simpleScaling : public blockIOReg {
- public:
-  simpleScaling(const std::vector<int> nd, const std::vector<int> nb) {
-    std::vector<int> fw(3, 0), jw(3, 1);
-    storeParams(nd, nd, fw, jw, nb);
-  }
-  virtual void applyInOut(const std::shared_ptr<SEP::regSpace> in,
-                          std::shared_ptr<SEP::regSpace> out) {
-    std::shared_ptr<SEP::float3DReg> in3D = std::dynamic_cast<float3DReg>(in),
-                                     out3D = std::dynamic_cast<float3DReg>(out);
-    ASSERT_TRUE(in3D);
-    ASSERT_TRUE(out3D);
-
-    for (auto i = 0; i < in3D->getN123(); i++) {
-      (*out3D->vals)[i] = (*in3D->vals)[i] * 2.;
-    }
-  }
-};
-
 TEST(calcBlock, simpleAll) {
+  std::cerr << "what 1 " << std::endl;
   std::vector<std::string> pars;
-  ioMode mode = ioMode(pars);
+  ioModes mode = ioModes(pars);
   std::shared_ptr<genericIO> io = mode.getIO("memory");
-  std::shared_pyt<genericRegFile> inF = io->getRegFile("in", usageIn);
-  std::shared_pyt<genericRegFile> outF = io->getRegFile("out", usageIn);
+  std::cerr << "what 1 " << std::endl;
+
+  std::shared_ptr<genericRegFile> inF = io->getRegFile("in", usageIn);
+  std::shared_ptr<genericRegFile> outF = io->getRegFile("out", usageIn);
+  std::shared_ptr<memoryRegFile> outM =
+      std::dynamic_pointer_cast<memoryRegFile>(outF);
+  outF->setDataType(DATA_FLOAT);
   std::shared_ptr<hypercube> hyper(new hypercube(10, 10, 10));
   inF->setHyper(hyper);
   outF->setHyper(hyper);
+  std::cerr << "what 1 " << std::endl;
+
   std::vector<float> buf1 = createArrayF(10, 10, 10);
-  inf->writeFloatStream(buf1, 1000);
+  inF->writeFloatStream(buf1.data(), 1000);
   std::vector<int> nd(3, 10);
-  blockSizeCalc bl(800);
+  std::cerr << "what 1 " << std::endl;
+
+  SEP::blocking::blockSizeCalc bl(16000);
+  std::cerr << "what 1 " << std::endl;
+
   bl.addData("input", nd, 1, 4);
   bl.addData("output", nd, 1, 4);
-  bl.calcBlocks();
-  std::vector<int> nb = bl.getBlockSize("input");
+  std::cerr << "what 1 " << std::endl;
 
-  simpleScaling scale = simpleScaling();
+  bl.calcBlocks();
+  std::cerr << "what 2" << std::endl;
+
+  std::vector<int> nb = bl.getBlockSize("input");
+  simpleScaling scale = simpleScaling(nd, nb);
+  std::cerr << "what 3 " << std::endl;
+
   scale.loopData(inF, outF);
   std::vector<float> buf2(1000);
 
-  checkArrayF(buf2.data(),10,0,1,10,0,1,10,0,1));
+  checkArrayF(buf2.data(), 10, 0, 1, 10, 0, 1, 10, 0, 1);
 }
 
 /*
