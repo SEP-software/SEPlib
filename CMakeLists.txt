@@ -34,9 +34,6 @@ include_directories(
 
 if(BUILD_TEST)
   enable_testing()
-  include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/libs/core/external/genericIO/external/buffers/external/googletest/googletest/include
-    )
 endif(BUILD_TEST)
 
 find_package(Git QUIET)

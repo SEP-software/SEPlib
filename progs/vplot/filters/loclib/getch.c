@@ -192,11 +192,11 @@ B<sep>
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-int getch_add_string(char *string)
+int getch_add_string(const char *string)
 _XFUNCPROTOEND
 #else
 int getch_add_string(string)
-char *string;
+const char *string;
 #endif
 {
      char* copy;
