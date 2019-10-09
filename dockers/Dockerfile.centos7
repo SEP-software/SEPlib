@@ -27,12 +27,13 @@ RUN cd /tmp &&\
   ./bootstrap &&\
   make  && \
   make install
-RUN yum -y install fftw-devel
+RUN yum -y install fftw-devel tbb-devel boost-devel python3-devel python36u-pytest 
+RUN python3 -m pip install --user  numpy
 RUN mkdir  -p /opt/SEP/build
 RUN git clone http://zapad.stanford.edu/bob/SEPlib.git /opt/SEP/src &&\
     cd /opt/SEP/build &&\
-     cmake -DCMAKE_INSTALL_PREFIX=/opt/SEP ../src &&\
+     cmake -DCMAKE_INSTALL_PREFIX=/opt/SEP   -DPYTHON_PREFIX=/usr/lib/python3.6  ../src &&\
      cd /opt/SEP/build &&\
-     make &&\
+     make -j 12  &&\
      make install &&\
      rm -rf /opt/SEP/build
