@@ -40,10 +40,10 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Git QUIET)
-if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
+if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git") 
   # Update submodules as needed
   option(GIT_SUBMODULE "Check submodules during build" ON)
-  if(GIT_SUBMODULE)
+  if(GIT_SUBMODULE AND NOT SUBPACKAGE)
     message(STATUS "Submodule update")
     execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init
                             --recursive
