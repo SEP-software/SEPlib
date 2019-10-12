@@ -13,8 +13,9 @@ void SEP::blocking::blockSizeCalc::calcBlocks() {
   nbase *= 2;
 
   if (nbase > _mem)
-    throw SEPException(std::string("Not enough memory requested, minimum ") +
-                       std::to_string(nbase / 1000 / 1000));
+    throw SEPException(
+        std::string("Not enough memory requested, minimum (MBs) ") +
+        std::to_string((float)nbase / 1000 / 1000));
   for (auto i = _datas.begin(); i != _datas.end(); i++) {
     if (i == _datas.begin()) continue;
     int ndat = i->second._nd.size() - i->second._ndimMin;

@@ -25,6 +25,7 @@ class simpleScaling : public SEP::loop::blockIOReg {
                                              out);
     ASSERT_TRUE(in3D);
     ASSERT_TRUE(out3D);
+    std::cerr << "in in out" << std::endl;
     float *outv = out3D->getVals(), *inv = in3D->getVals();
     for (auto i = 0; i < in3D->getHyper()->getN123(); i++) {
       outv[i] = inv[i] * 2.;
@@ -96,7 +97,80 @@ TEST(calcBlock, simpleAll) {
 
       (float *)xx->getPtr(), 10, 0, 1, 10, 0, 1, 10, 0, 1);
 }
+TEST(calcBlock, smaller) {
+  std::vector<std::string> pars;
+  ioModes mode = ioModes(pars);
+  std::shared_ptr<genericIO> io = mode.getIO("memory");
 
+  std::shared_ptr<genericRegFile> inF = io->getRegFile("in", usageIn);
+
+  std::shared_ptr<genericRegFile> outF = io->getRegFile("out", usageOut);
+  std::shared_ptr<memoryRegFile> outM =
+      std::dynamic_pointer_cast<memoryRegFile>(outF);
+  outF->setDataType(DATA_FLOAT);
+  std::shared_ptr<hypercube> hyper(new hypercube(10, 10, 10));
+  inF->setHyper(hyper);
+  outF->setHyper(hyper);
+
+  std::vector<float> buf1 = createArrayF(10, 10, 10);
+  inF->writeFloatStream(buf1.data(), 1000);
+  std::vector<int> nd(3, 10);
+
+  SEP::blocking::blockSizeCalc bl(4000);
+
+  bl.addData("input", nd, 1, 4);
+  bl.addData("output", nd, 1, 4);
+
+  bl.calcBlocks();
+
+  std::vector<int> nb = bl.getBlockSize("input");
+  simpleScaling scale = simpleScaling(nd, nb);
+
+  scale.loopDataInOut(inF, outF);
+  std::shared_ptr<memoryRegFile> xx =
+      std::dynamic_pointer_cast<memoryRegFile>(outF);
+
+  checkArrayF(
+
+      (float *)xx->getPtr(), 10, 0, 1, 10, 0, 1, 10, 0, 1);
+}
+TEST(calcBlock, smallest) {
+  std::vector<std::string> pars;
+  ioModes mode = ioModes(pars);
+  std::shared_ptr<genericIO> io = mode.getIO("memory");
+
+  std::shared_ptr<genericRegFile> inF = io->getRegFile("in", usageIn);
+
+  std::shared_ptr<genericRegFile> outF = io->getRegFile("out", usageOut);
+  std::shared_ptr<memoryRegFile> outM =
+      std::dynamic_pointer_cast<memoryRegFile>(outF);
+  outF->setDataType(DATA_FLOAT);
+  std::shared_ptr<hypercube> hyper(new hypercube(10, 10, 10));
+  inF->setHyper(hyper);
+  outF->setHyper(hyper);
+
+  std::vector<float> buf1 = createArrayF(10, 10, 10);
+  inF->writeFloatStream(buf1.data(), 1000);
+  std::vector<int> nd(3, 10);
+
+  SEP::blocking::blockSizeCalc bl(400);
+
+  bl.addData("input", nd, 1, 4);
+  bl.addData("output", nd, 1, 4);
+
+  bl.calcBlocks();
+
+  std::vector<int> nb = bl.getBlockSize("input");
+  simpleScaling scale = simpleScaling(nd, nb);
+
+  scale.loopDataInOut(inF, outF);
+  std::shared_ptr<memoryRegFile> xx =
+      std::dynamic_pointer_cast<memoryRegFile>(outF);
+
+  checkArrayF(
+
+      (float *)xx->getPtr(), 10, 0, 1, 10, 0, 1, 10, 0, 1);
+}
 /*
 class basicLoop {
  public:
