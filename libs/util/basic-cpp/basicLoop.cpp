@@ -234,9 +234,12 @@ void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
   auto writeF = [&](std::shared_ptr<SEP::regSpace> array,
                     const std::vector<int> nw, const std::vector<int> fw,
                     const std::vector<int> jw) {
+    std::cerr << "1in write F" << std::endl;
     std::shared_ptr<SEP::regSpace> tmp = SEP::cloneRegSpace(array);
+    std::cerr << "2in write F" << std::endl;
 
     _outF->writeWindow(nw, fw, jw, tmp);
+    std::cerr << "3in write F" << std::endl;
   };
 
   std::cerr << "in l2oop data" << std::endl;
@@ -265,7 +268,7 @@ void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
       // Create  the output
       std::cerr << "in doOut data " << SEP::getTypeString(out->getDataType())
                 << std::endl;
-      std::shared_ptr<SEP::regSpace> windOut = SEP::vecFromHyper(
+      windOut = SEP::vecFromHyper(
           createSubset(_hyperOut, _loopOut[iout]._nw, _loopOut[iout]._fw,
                        _loopOut[iout]._jw),
           out->getDataType());
