@@ -1,6 +1,7 @@
 #include "basicLoop.h"
 #include <thread>
 #include "SEPException.h"
+#include "memoryFile.h"
 #include "regVector.h"
 using namespace SEP::loop;
 
@@ -170,7 +171,8 @@ void blockIO::loopDataInOut(std::shared_ptr<SEP::genericRegFile> in,
   std::cerr << "loop data in out" << std::endl;
   _hyperIn = in->getHyper();
   _hyperOut = out->getHyper();
-
+  _inF = in;
+  _outF = out;
   loopData(in, out);
 }
 
@@ -211,7 +213,6 @@ void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
     std::cerr << "sss " << _hyperOut->getN123() << std::endl;
   }
 
-  std::cerr << "in loop data" << std::endl;
   std::thread readT, writeT;
   std::shared_ptr<SEP::regSpace> windIn, windOut, tmp;
 
@@ -219,7 +220,12 @@ void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
                    const std::vector<int> nw, const std::vector<int> fw,
                    const std::vector<int> jw) {
     std::cerr << "in read F " << std::endl;
-    std::cerr << typeid(array).name() << '\n';
+    std::cerr << typeid(_inF).name() << '\n';
+    std::shared_ptr<memoryRegFile> mf =
+        std::dynamic_pointer_cast<memoryRegFile>(_inF);
+    if (mf) std::cerr << "ins memopry reg file " << std::endl;
+    std::cerr << typeid(mf).name() << '\n';
+
     _inF->readWindow(nw, fw, jw, array);
     std::cerr << "finished read F" << std::endl;
   };
@@ -287,11 +293,14 @@ void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
       std::cerr << "6fdvddffga" << std::endl;
 
       if (doOut) {
+        std::cerr << "before in out " << std::endl;
         applyInOut(windIn, windOut);
+        std::cerr << "after in out" << std::endl;
       } else
         applyIn(windIn);
     } else
       applyOut(windOut);
+    std::cerr << "through in out" << std::endl;
 
     if (doOut) {
       if (iout != 0) writeT.join();
@@ -302,6 +311,7 @@ void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
   std::cerr << "in loo4p data" << std::endl;
 
   if (doOut) writeT.join();
+  std::cerr << " after join " << std::endl;
 }
 
 void SEP::loop::blockIORegPipe::setupPipe(

@@ -67,6 +67,14 @@ TEST(calcBlock, simpleAll) {
   std::cerr << "what 1 " << std::endl;
 
   std::shared_ptr<genericRegFile> inF = io->getRegFile("in", usageIn);
+
+  std::cerr << "in file type " << typeid(inF).name() << std::endl;
+  std::shared_ptr<memoryRegFile> mem =
+      std::dynamic_pointer_cast<memoryRegFile>(inF);
+  if (mem)
+    std::cerr << "is memory file" << std::endl;
+  else
+    std::cerr << "not memory file" << std::endl;
   std::shared_ptr<genericRegFile> outF = io->getRegFile("out", usageIn);
   std::shared_ptr<memoryRegFile> outM =
       std::dynamic_pointer_cast<memoryRegFile>(outF);
@@ -95,7 +103,7 @@ TEST(calcBlock, simpleAll) {
   simpleScaling scale = simpleScaling(nd, nb);
   std::cerr << "what 3 " << std::endl;
 
-  scale.loopData(inF, outF);
+  scale.loopDataInOut(inF, outF);
   std::vector<float> buf2(1000);
 
   checkArrayF(buf2.data(), 10, 0, 1, 10, 0, 1, 10, 0, 1);
