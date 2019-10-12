@@ -26,8 +26,10 @@ class simpleScaling : public SEP::loop::blockIOReg {
     ASSERT_TRUE(in3D);
     ASSERT_TRUE(out3D);
     float *outv = out3D->getVals(), *inv = in3D->getVals();
+    std::cerr << " loop " << in3D->getHyper()->getN123() << std::endl;
     for (auto i = 0; i < in3D->getHyper()->getN123(); i++) {
       outv[i] = inv[i] * 2.;
+      std::cerr << i << " " << inv[i] << " " << outv[i] << std::endl;
     }
   }
 };
@@ -52,6 +54,8 @@ void checkArrayF(const float *buf, const int n1, const int f1, const int j1,
   for (int i3 = 0; i3 < n3; i3++) {
     for (int i2 = 0; i2 < n2; i2++) {
       for (int i1 = 0; i1 < n1; i1++, i++) {
+        std::cerr << i << " " << f1 + i1 * j1 << " " << f2 + i2 * j2 << " "
+                  << f3 + j3 * i3 << " " << buf[i] << std::endl;
         EXPECT_EQ(buf[i], 2 * ((f1 + i1 * j1) + (f2 + i2 * j2) * 00 +
                                (f3 + j3 * i3) * 100 * 100));
       }
@@ -75,7 +79,7 @@ TEST(calcBlock, simpleAll) {
     std::cerr << "is memory file" << std::endl;
   else
     std::cerr << "not memory file" << std::endl;
-  std::shared_ptr<genericRegFile> outF = io->getRegFile("out", usageIn);
+  std::shared_ptr<genericRegFile> outF = io->getRegFile("out", usageOut);
   std::shared_ptr<memoryRegFile> outM =
       std::dynamic_pointer_cast<memoryRegFile>(outF);
   outF->setDataType(DATA_FLOAT);
