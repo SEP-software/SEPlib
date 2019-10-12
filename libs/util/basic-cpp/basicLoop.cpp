@@ -218,7 +218,9 @@ void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
   auto readF = [&](std::shared_ptr<SEP::regSpace> array,
                    const std::vector<int> nw, const std::vector<int> fw,
                    const std::vector<int> jw) {
+    std::cerr << "in read F " << std::endl;
     _inF->readWindow(nw, fw, jw, array);
+    std::cerr << "finished read F" << std::endl;
   };
   std::cerr << "in loop data" << std::endl;
 
