@@ -17,15 +17,14 @@ class simpleScaling : public SEP::loop::blockIOReg {
   }
   virtual void applyInOut(const std::shared_ptr<SEP::regSpace> in,
                           std::shared_ptr<SEP::regSpace> out) {
-    std::shared_ptr<SEP::float3DReg> in3D =
-                                         std::dynamic_pointer_cast<float3DReg>(
+    std::shared_ptr<SEP::floatHyper> in3D =
+                                         std::dynamic_pointer_cast<floatHyper>(
                                              in),
                                      out3D =
-                                         std::dynamic_pointer_cast<float3DReg>(
+                                         std::dynamic_pointer_cast<floatHyper>(
                                              out);
     ASSERT_TRUE(in3D);
     ASSERT_TRUE(out3D);
-    std::cerr << "in in out" << std::endl;
     float *outv = out3D->getVals(), *inv = in3D->getVals();
     for (auto i = 0; i < in3D->getHyper()->getN123(); i++) {
       outv[i] = inv[i] * 2.;
