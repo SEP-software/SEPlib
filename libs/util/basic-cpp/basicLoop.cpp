@@ -219,6 +219,7 @@ void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
                    const std::vector<int> nw, const std::vector<int> fw,
                    const std::vector<int> jw) {
     std::cerr << "in read F " << std::endl;
+    std::cerr << typeid(array).name() << '\n';
     _inF->readWindow(nw, fw, jw, array);
     std::cerr << "finished read F" << std::endl;
   };
