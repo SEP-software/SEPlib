@@ -26,10 +26,8 @@ class simpleScaling : public SEP::loop::blockIOReg {
     ASSERT_TRUE(in3D);
     ASSERT_TRUE(out3D);
     float *outv = out3D->getVals(), *inv = in3D->getVals();
-    std::cerr << " loop " << in3D->getHyper()->getN123() << std::endl;
     for (auto i = 0; i < in3D->getHyper()->getN123(); i++) {
       outv[i] = inv[i] * 2.;
-      std::cerr << i << " " << inv[i] << " " << outv[i] << std::endl;
     }
   }
 };
@@ -54,9 +52,7 @@ void checkArrayF(const float *buf, const int n1, const int f1, const int j1,
   for (int i3 = 0; i3 < n3; i3++) {
     for (int i2 = 0; i2 < n2; i2++) {
       for (int i1 = 0; i1 < n1; i1++, i++) {
-        std::cerr << i << " " << f1 + i1 * j1 << " " << f2 + i2 * j2 << " "
-                  << f3 + j3 * i3 << " " << buf[i] << std::endl;
-        EXPECT_EQ(buf[i], 2 * ((f1 + i1 * j1) + (f2 + i2 * j2) * 00 +
+        EXPECT_EQ(buf[i], 2 * ((f1 + i1 * j1) + (f2 + i2 * j2) * 100 +
                                (f3 + j3 * i3) * 100 * 100));
       }
     }
@@ -64,21 +60,12 @@ void checkArrayF(const float *buf, const int n1, const int f1, const int j1,
 }
 
 TEST(calcBlock, simpleAll) {
-  std::cerr << "what 1 " << std::endl;
   std::vector<std::string> pars;
   ioModes mode = ioModes(pars);
   std::shared_ptr<genericIO> io = mode.getIO("memory");
-  std::cerr << "what 1 " << std::endl;
 
   std::shared_ptr<genericRegFile> inF = io->getRegFile("in", usageIn);
 
-  std::cerr << "in file type " << typeid(inF).name() << std::endl;
-  std::shared_ptr<memoryRegFile> mem =
-      std::dynamic_pointer_cast<memoryRegFile>(inF);
-  if (mem)
-    std::cerr << "is memory file" << std::endl;
-  else
-    std::cerr << "not memory file" << std::endl;
   std::shared_ptr<genericRegFile> outF = io->getRegFile("out", usageOut);
   std::shared_ptr<memoryRegFile> outM =
       std::dynamic_pointer_cast<memoryRegFile>(outF);
@@ -86,31 +73,28 @@ TEST(calcBlock, simpleAll) {
   std::shared_ptr<hypercube> hyper(new hypercube(10, 10, 10));
   inF->setHyper(hyper);
   outF->setHyper(hyper);
-  std::cerr << "what 1 " << std::endl;
 
   std::vector<float> buf1 = createArrayF(10, 10, 10);
   inF->writeFloatStream(buf1.data(), 1000);
   std::vector<int> nd(3, 10);
-  std::cerr << "what 1 " << std::endl;
 
   SEP::blocking::blockSizeCalc bl(16000);
-  std::cerr << "what 1 " << std::endl;
 
   bl.addData("input", nd, 1, 4);
   bl.addData("output", nd, 1, 4);
-  std::cerr << "what 1 " << std::endl;
 
   bl.calcBlocks();
-  std::cerr << "what 2" << std::endl;
 
   std::vector<int> nb = bl.getBlockSize("input");
   simpleScaling scale = simpleScaling(nd, nb);
-  std::cerr << "what 3 " << std::endl;
 
   scale.loopDataInOut(inF, outF);
-  std::vector<float> buf2(1000);
+  std::shared_ptr<memoryRegFile> xx =
+      std::dynamic_pointer_cast<memoryRegFile>(outF);
 
-  checkArrayF(buf2.data(), 10, 0, 1, 10, 0, 1, 10, 0, 1);
+  checkArrayF(
+
+      (float *)xx->getPtr(), 10, 0, 1, 10, 0, 1, 10, 0, 1);
 }
 
 /*

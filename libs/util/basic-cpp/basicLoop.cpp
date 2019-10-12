@@ -107,7 +107,6 @@ void SEP::loop::blockIO::storeParams(const std::vector<int> nIn,
                                      const std::vector<int> jw,
                                      const std::vector<int> nbIn,
                                      const std::vector<int> nbOut) {
-  std::cerr << "x 1" << std::endl;
   if (nbIn.size() < nIn.size())
     throw SEPException(
         "Blocksize dimension less than data size dimension (input)");
@@ -115,7 +114,6 @@ void SEP::loop::blockIO::storeParams(const std::vector<int> nIn,
   if (nbOut.size() < nOut.size())
     throw SEPException(
         "Blocksize dimension less than data size dimension (output)");
-  std::cerr << "x 1" << std::endl;
 
   int inMaxAll = 0, outMaxAll = 0;
   for (int i = 0; i < nbIn.size(); i++) {
@@ -125,7 +123,6 @@ void SEP::loop::blockIO::storeParams(const std::vector<int> nIn,
   for (int i = 0; i < nbOut.size(); i++) {
     if (nbOut[i] == nOut[i]) outMaxAll = i;
   }
-  std::cerr << "x 21" << std::endl;
 
   if (nIn.size() - inMaxAll != nOut.size() - outMaxAll)
     throw SEPException("Number of axes beyond block size not equal");
@@ -138,15 +135,12 @@ void SEP::loop::blockIO::storeParams(const std::vector<int> nIn,
     if (nIn[inMaxAll + 1] == nOut[outMaxAll + 1])
       throw SEPException("The axis size of non complete axis not the same");
   }
-  std::cerr << "x 31" << std::endl;
 
   std::shared_ptr<basicLoop> basic(new SEP::loop::basicLoop(nIn, nw, fw, jw));
   _loopIn = basic->createLoop(nbIn);
-  std::cerr << "x 41" << std::endl;
 
   std::shared_ptr<basicLoop> basic2(new SEP::loop::basicLoop(nOut, nw, fw, jw));
   _loopOut = basic2->createLoop(nbOut);
-  std::cerr << "x 51" << std::endl;
 }
 std::vector<int> basicLoop::create9(const std::vector<int> x,
                                     const int def) const {
@@ -168,7 +162,6 @@ void basicLoop::checkLogic(const int n, const int nw, const int fw,
 
 void blockIO::loopDataInOut(std::shared_ptr<SEP::genericRegFile> in,
                             std::shared_ptr<SEP::genericRegFile> out) {
-  std::cerr << "loop data in out" << std::endl;
   _hyperIn = in->getHyper();
   _hyperOut = out->getHyper();
   _inF = in;
@@ -182,19 +175,15 @@ void blockIO::loopDataInOut(std::shared_ptr<SEP::genericRegFile> in,
 std::shared_ptr<SEP::hypercube> blockIOReg::createSubset(
     std::shared_ptr<SEP::hypercube> hyper, const std::vector<int> nw,
     const std::vector<int> fw, const std::vector<int> jw) {
-  std::cerr << "wh 1" << std::endl;
   std::vector<SEP::axis> axes = hyper->getAxes();
-  std::cerr << "wh 31" << std::endl;
 
   for (int i = 0; i < axes.size(); i++) {
     axes[i].o += axes[i].d * fw[i];
     axes[i].n = nw[i];
     axes[i].d *= jw[i];
   }
-  std::cerr << "wh 14" << std::endl;
 
   std::shared_ptr<SEP::hypercube> hyp(new SEP::hypercube(axes));
-  std::cerr << "wh 15" << std::endl;
 
   return hyp;
 }
@@ -210,7 +199,6 @@ void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
     doOut = true;
 
     _hyperOut = out->getHyper();
-    std::cerr << "sss " << _hyperOut->getN123() << std::endl;
   }
 
   std::thread readT, writeT;
@@ -219,73 +207,43 @@ void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
   auto readF = [&](std::shared_ptr<SEP::regSpace> array,
                    const std::vector<int> nw, const std::vector<int> fw,
                    const std::vector<int> jw) {
-    std::cerr << "in read F " << std::endl;
-    std::cerr << typeid(_inF).name() << '\n';
-    std::shared_ptr<memoryRegFile> mf =
-        std::dynamic_pointer_cast<memoryRegFile>(_inF);
-    if (mf) std::cerr << "ins memopry reg file " << std::endl;
-    std::cerr << typeid(mf).name() << '\n';
-
     _inF->readWindow(nw, fw, jw, array);
-    std::cerr << "finished read F" << std::endl;
   };
-  std::cerr << "in loop data" << std::endl;
 
   auto writeF = [&](std::shared_ptr<SEP::regSpace> array,
                     const std::vector<int> nw, const std::vector<int> fw,
                     const std::vector<int> jw) {
-    std::cerr << "1in write F" << std::endl;
     std::shared_ptr<SEP::regSpace> tmp = SEP::cloneRegSpace(array);
-    std::cerr << "2in write F" << std::endl;
 
     _outF->writeWindow(nw, fw, jw, tmp);
-    std::cerr << "3in write F" << std::endl;
   };
 
-  std::cerr << "in l2oop data" << std::endl;
   if (doIn) {
-    std::cerr << "in l2coop data " << SEP::getTypeString(in->getDataType())
-              << std::endl;
-
     // Begin by starting a read for the first section
     tmp = SEP::vecFromHyper(
         createSubset(_hyperIn, _loopIn[0]._nw, _loopIn[0]._fw, _loopIn[0]._jw),
         in->getDataType());
-    std::cerr << "in al2oop data" << std::endl;
 
     readT =
         std::thread(readF, tmp, _loopIn[0]._nw, _loopIn[0]._fw, _loopIn[0]._jw);
-    std::cerr << "in l2boop data" << std::endl;
   }
-  std::cerr << "in loop3 data" << std::endl;
 
   // Loop over output space
   for (int iout = 0; iout < _loopIn.size(); iout++) {
-    std::cerr << "in loop4 data " << iout << std::endl;
-
     if (doOut) {
-      std::cerr << "dfsfsfsfd" << std::endl;
       // Create  the output
-      std::cerr << "in doOut data " << SEP::getTypeString(out->getDataType())
-                << std::endl;
+
       windOut = SEP::vecFromHyper(
           createSubset(_hyperOut, _loopOut[iout]._nw, _loopOut[iout]._fw,
                        _loopOut[iout]._jw),
           out->getDataType());
     }
-    std::cerr << "fdvddffga" << std::endl;
     if (doIn) {
-      std::cerr << "1fdvddffga" << std::endl;
-
       readT.join();
-      std::cerr << "f2dvddffga" << std::endl;
 
       windIn = SEP::cloneRegSpace(tmp);
-      std::cerr << "3fdvddffga" << std::endl;
 
       if (iout + 1 != _loopIn.size()) {
-        std::cerr << "4fdvddffga" << std::endl;
-
         tmp = vecFromHyper(
             createSubset(_hyperIn, _loopIn[iout + 1]._nw, _loopIn[iout + 1]._fw,
                          _loopIn[iout + 1]._jw),
@@ -293,17 +251,13 @@ void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
         readT = std::thread(readF, tmp, _loopIn[iout + 1]._nw,
                             _loopIn[iout + 1]._fw, _loopIn[iout + 1]._jw);
       }
-      std::cerr << "6fdvddffga" << std::endl;
 
       if (doOut) {
-        std::cerr << "before in out " << std::endl;
         applyInOut(windIn, windOut);
-        std::cerr << "after in out" << std::endl;
       } else
         applyIn(windIn);
     } else
       applyOut(windOut);
-    std::cerr << "through in out" << std::endl;
 
     if (doOut) {
       if (iout != 0) writeT.join();
@@ -311,10 +265,8 @@ void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
                            _loopOut[iout]._fw, _loopOut[iout]._jw);
     }
   }
-  std::cerr << "in loo4p data" << std::endl;
 
   if (doOut) writeT.join();
-  std::cerr << " after join " << std::endl;
 }
 
 void SEP::loop::blockIORegPipe::setupPipe(

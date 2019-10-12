@@ -154,17 +154,12 @@ class blockIO {
   void storeParams(const std::vector<int> n, const std::vector<int> nw,
                    const std::vector<int> fw, const std::vector<int> jw,
                    const std::vector<int> nbIn) {
-    std::cerr << "1what 1" << std::endl;
-
     std::shared_ptr<SEP::loop::basicLoop> basic(
         new SEP::loop::basicLoop(n, nw, fw, jw));
-    std::cerr << "2what 1" << std::endl;
 
     _loopIn = basic->createLoop(nbIn);
-    std::cerr << "3what 1" << std::endl;
 
     _loopOut = basic->createLoop(nbIn);
-    std::cerr << "4what 1" << std::endl;
   }
 
   /*!
