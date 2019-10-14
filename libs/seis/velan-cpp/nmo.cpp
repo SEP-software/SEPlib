@@ -42,7 +42,7 @@ std::vector<float> nmoRegCube::getOffSq(const std::shared_ptr<regSpace> in) {
       throw SEPException(std::string("Offset axis beyond dataset size ioff=") +
                          std::to_string(ioff) + std::string(" axis=") +
                          std::to_string(_ioffAxes[ioff]));
-    std::cerr << "di0ec 1 " << std::endl;
+    std::cerr << "before axis to key 1 " << std::endl;
 
     std::vector<float> offset = in->axisToKey(_ioffAxes[ioff]);
     std::cerr << "di1ec 1 " << std::endl;
