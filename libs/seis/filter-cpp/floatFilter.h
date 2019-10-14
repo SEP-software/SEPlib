@@ -1,20 +1,21 @@
 #include "basicLoop.h"
 #include "floatHyper.h"
 #include "rectFilter.h"
-
+#ifndef FILTER_H
+#define FILTER_H 1
 namespace SEP {
 namespace filter {
 /*!
 Class fpr stacking (adjoing) or spreading (forward)
 */
-class floatfilter1D : public SEP::loop::blockIOReg {
+class floatFilter1D : public SEP::loop::blockIOReg {
  public:
   /*!
     iaxes - Axes to spread/stack over
     adj  - Whether or not to apply the adjoint
     */
 
-  floatfilter1D(std::shared_ptr<rectFilter1D> filt) { _filt = filt; }
+  floatFilter1D(std::shared_ptr<rectFilter1D> filt) { _filt = filt; }
 
   virtual std::shared_ptr<hypercube> createHyperOut(
       const std::shared_ptr<hypercube> hyperIn) {
@@ -34,7 +35,8 @@ class floatfilter1D : public SEP::loop::blockIOReg {
     return w;
   }
 
-  void applyIt(std::shared_ptr<regSpace> in, std::shared_ptr<regSpace> out);
+  virtual void applyInOut(std::shared_ptr<regSpace> in,
+                          std::shared_ptr<regSpace> out) override;
 
  protected:
   std::shared_ptr<rectFilter1D> _filt;
@@ -42,3 +44,4 @@ class floatfilter1D : public SEP::loop::blockIOReg {
 
 }  //  namespace filter
 }  // namespace SEP
+#endif

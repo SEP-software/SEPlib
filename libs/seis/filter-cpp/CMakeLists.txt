@@ -15,4 +15,15 @@ target_link_libraries(sepFilterCpp sepBasicCpp genericCpp hypercube tbb ${EXTERN
 
 install(TARGETS sepFilterCpp DESTINATION lib)
 
+if(BUILD_TEST)
+add_executable( testFilter  testFilter.cpp)
+target_link_libraries( testFilter sepFilterCpp gtest gtest_main gtest)
+add_test(NAME  testFilter COMMAND  testFilter)
+
+
+add_executable( testStack  testStack.cpp)
+target_link_libraries( testStack sepFilterCpp gtest gtest_main gtest)
+add_test(NAME  testStack COMMAND  testStack)
+
+endif(BUILD_TEST)
 

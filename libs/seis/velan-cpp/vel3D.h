@@ -35,7 +35,9 @@ class vel3D {
    */
   virtual std::vector<float> getVelocity(const int n1, const float o1,
                                          const float d1, const float x,
-                                         const float y) = 0;
+                                         const float y) {
+    throw SEPException("Must override get velocity");
+  }
 
   /*!
      Return a trace containing velocity at a given location in 3-D space
@@ -54,6 +56,7 @@ class vel3D {
    */
   virtual std::vector<float> getVelocity(const int n1, const float o1,
                                          const float d1, const float x);
+  ;
 
   /*!
      Get size of velocity storage
@@ -65,7 +68,7 @@ class vel3D {
 
     @return maximum velocity
     */
-  virtual float getMax() = 0;
+  virtual float getMax() { throw SEPException("Must override getMax"); }
   ~vel3D() { ; }
 
  protected:
@@ -100,11 +103,11 @@ class vel3DConstant : public vel3D {
    */
   virtual std::vector<float> getVelocity(const int n1, const float o1,
                                          const float d1, const float x,
-                                         const float y);
+                                         const float y) override;
   /*!
     Return maximum velocity
     */
-  virtual float getMax() { return _val; }
+  virtual float getMax() override { return _val; }
 
  private:
   float _val;

@@ -16,3 +16,15 @@ target_link_libraries(sepVelanCpp sepBasicCpp genericCpp hypercube tbb ${EXTERNA
 install(TARGETS sepVelanCpp DESTINATION lib)
 
 
+if(BUILD_TEST)
+
+
+add_executable( testVel3d  testVel3d.cpp)
+target_link_libraries( testVel3d sepVelanCpp gtest gtest_main gtest)
+add_test(NAME  testVel3d COMMAND  testVel3d)
+
+
+add_executable( testNMO  testNMO.cpp)
+target_link_libraries( testNMO sepVelanCpp gtest gtest_main gtest)
+add_test(NAME  testNMO COMMAND  testNMO)
+endif(BUILD_TEST)

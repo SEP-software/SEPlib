@@ -21,24 +21,44 @@ nmoRegCube::nmoRegCube(std::shared_ptr<SEP::velocity::vel3D> vel,
 }
 
 std::vector<float> nmoRegCube::getOffSq(const std::shared_ptr<regSpace> in) {
+  std::cerr << "die 1 " << std::endl;
   std::vector<std::vector<float>> offs;
+  std::cerr << "die a1 " << std::endl;
+
   std::vector<int> ns = in->getHyper()->getNs();
+  std::cerr << "dibe 1 " << _ioffAxes.size() << std::endl;
+
   for (int ioff = 0; ioff < _ioffAxes[ioff]; ioff++) {
+    std::cerr << "diec 1 " << _ioffAxes[ioff] << std::endl;
+
     _ioffAxes[ioff]--;
-    if (_ioffAxes[ioff] == 0)
+    std::cerr << "diec 1 " << std::endl;
+    if (_ioffAxes[ioff] <= 0)
+
       throw SEPException("Offset axis can not be first");
+    std::cerr << "diec 1 " << ioff << " " << _ioffAxes[ioff] << std::endl;
+
     if (_ioffAxes[ioff] >= ns.size())
       throw SEPException("Offset axis beyond dataset size");
+    std::cerr << "di0ec 1 " << std::endl;
+
     std::vector<float> offset = in->axisToKey(_ioffAxes[ioff]);
+    std::cerr << "di1ec 1 " << std::endl;
+
     offs.push_back(offset);
   }
+  std::cerr << "d2iec 1 " << std::endl;
+
   std::vector<float> offsq = offs[0];
+  std::cerr << "di3ec 1 " << std::endl;
 
   for (int i = 0; i < offs[0].size(); i++) {
     offsq[i] *= offsq[i];
     for (int ioff = 1; ioff < offs.size(); ioff++)
       offsq[i] += offs[ioff][i] * offs[ioff][i];
   }
+  std::cerr << "die4c 1 " << std::endl;
+
   return offsq;
 }
 
@@ -54,19 +74,29 @@ void nmo::applyIt(std::shared_ptr<regSpace> in, std::shared_ptr<regSpace> out) {
                               outF = std::dynamic_pointer_cast<floatHyper>(out);
   if (!inF || !outF) throw SEPException("Could not cast to floatHypers");
 
+  std::cerr << "die 1" << std::endl;
   std::vector<axis> axes = inF->getHyper()->getAxes();
+  std::cerr << "diea 1" << std::endl;
+
   long long n123 = inF->getHyper()->getN123();
+  std::cerr << "die b1" << std::endl;
 
   std::vector<float> offsq = getOffSq(in);
+  std::cerr << "diec 1" << std::endl;
 
   std::vector<float> cmpx = getCmpX(in), cmpy;
+  std::cerr << "died 1" << std::endl;
 
   std::vector<float> mfunc(10, 0.);
   for (int i = 0; i < 10; i++) mfunc[i] = (float)i / 10.;
+  std::cerr << "die 2" << std::endl;
 
   float *inv = inF->getVals(), *outv = outF->getVals();
+  std::cerr << "die 3" << std::endl;
 
   if (is3D()) cmpy = getCmpY(in);
+  std::cerr << "die 4" << std::endl;
+
   tbb::parallel_for(
       tbb::blocked_range<long long>(0, n123 / (long long)_nt),
       [&](const tbb::blocked_range<long long> &r) {

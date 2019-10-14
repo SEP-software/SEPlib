@@ -115,10 +115,20 @@ class nmoRegCube : public SEP::loop::blockIO, nmo {
   nmoRegCube(std::shared_ptr<SEP::velocity::vel3D> vel, const axis &aTime,
              const std::vector<int> ioffAxes, const int cmpXAxis,
              const int cmpYAxis);
-
-  virtual std::vector<float> getOffSq(const std::shared_ptr<regSpace> in);
-  virtual std::vector<float> getCmpX(const std::shared_ptr<regSpace> in);
-  virtual std::vector<float> getCmpY(const std::shared_ptr<regSpace> in);
+  /*!
+    \param input array
+    \param output array
+   */
+  virtual void applyInOut(std::shared_ptr<regSpace> in,
+                          std::shared_ptr<regSpace> out) {
+    applyIt(in, out);
+  }
+  virtual std::vector<float> getOffSq(
+      const std::shared_ptr<regSpace> in) override;
+  virtual std::vector<float> getCmpX(
+      const std::shared_ptr<regSpace> in) override;
+  virtual std::vector<float> getCmpY(
+      const std::shared_ptr<regSpace> in) override;
   virtual bool is3D() {
     if (_cmpYAxis > 0) return true;
   }

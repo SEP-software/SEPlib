@@ -13,11 +13,11 @@ class floatStackSpreadReg : public SEP::loop::blockIOReg {
     */
 
   floatStackSpreadReg(const std::vector<int> iaxes, bool adj) {
-    for (auto ax : iaxes) _iaxes.push_back(ax - 1);
+    for (auto ax : iaxes) _iaxes.push_back(ax);
     _adj = adj;
   }
 
-  void applyIt(std::shared_ptr<regSpace> in, std::shared_ptr<regSpace> out);
+  void applyInOut(std::shared_ptr<regSpace> in, std::shared_ptr<regSpace> out);
 
   /*!
     Create output hypercube, given input hypercube

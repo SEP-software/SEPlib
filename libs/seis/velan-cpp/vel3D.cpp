@@ -12,10 +12,10 @@ vel3DConstant::vel3DConstant(const float vel) {
   _axes.push_back(axis(1, 0., 1.));
 }
 
-std::vector<float> vel3D::getVelocity(const int n1, const float o1,
-                                      const float d1, const float x,
-                                      const float y) {
-  return getVelocity(n1, o1, d1, x, y);
+std::vector<float> vel3DConstant::getVelocity(const int n1, const float o1,
+                                              const float d1, const float x,
+                                              const float y) {
+  return std::vector<float>(n1, _val);
 }
 
 std::vector<float> vel3DCube::getVelocity(const int n1, const float o1,

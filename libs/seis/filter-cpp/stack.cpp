@@ -1,87 +1,116 @@
 #include <tbb/blocked_range.h>
 #include <tbb/parallel_for.h>
 #include <tbb/tbb.h>
+#include <algorithm>
 #include <thread>
-
 #include "SEPException.h"
+
 #include "stack.h"
 
-void SEP::filter::floatStackSpreadReg::applyIt(std::shared_ptr<regSpace> in,
-                                               std::shared_ptr<regSpace> out) {
+void SEP::filter::floatStackSpreadReg::applyInOut(
+    std::shared_ptr<regSpace> in, std::shared_ptr<regSpace> out) {
   std::shared_ptr<floatHyper> inF = std::dynamic_pointer_cast<floatHyper>(in),
                               outF = std::dynamic_pointer_cast<floatHyper>(out);
+
   if (!inF || !outF) throw SEPException("Could not cast to floatHypers");
+
   std::vector<axis> inA = inF->getHyper()->getAxes(),
                     outA = outF->getHyper()->getAxes(), smallA, bigA;
-  if (_adj) {
+
+  if (!_adj) {
     smallA = inF->getHyper()->getAxes();
     bigA = outF->getHyper()->getAxes();
+
     if (outF->getHyper()->getNdimG1() - inF->getHyper()->getNdimG1() !=
         _iaxes.size())
       throw SEPException(
           "Non-stacked dimensions not size of stack axes + stacked size");
   } else {
-    bigA = outF->getHyper()->getAxes();
-    smallA = inF->getHyper()->getAxes();
+    bigA = inF->getHyper()->getAxes();
+    smallA = outF->getHyper()->getAxes();
     if (inF->getHyper()->getNdimG1() - outF->getHyper()->getNdimG1() !=
         _iaxes.size())
       throw SEPException(
           "Non-stacked dimensions not size of stack axes + stacked size");
   }
-  std::vector<int> ns(8, 1);
+
+  //We are going to paralleize over axis after the last stacked\
+//Figure out the last stacked axis and the parallelization loop
+  int stackMax = *max_element(_iaxes.begin(), _iaxes.end());
+  int stackMin = *min_element(_iaxes.begin(), _iaxes.end());
+
+  if (stackMax >= bigA.size())
+    throw SEPException(std::string("Maximum stack axis ") +
+                       std::to_string(stackMax) +
+                       std::string("larger then number of dimensions"));
+
+  if (stackMin < 0) throw SEPException("Illegal stack axis < 0");
+
   long long n123 = 1;
-  for (int i = 0; i < smallA.size(); i++) {
-    ns[i] = smallA[i].n;
-    n123 *= ns[i];
-  }
-  if (bigA.size() > 5)
-    throw SEPException("Can only handle stack over 5 dimensions");
+  for (int i = stackMax + 1; i < bigA.size(); i++) n123 *= (long long)bigA[i].n;
 
-  std::vector<int> n(5, 0), b(5, 0), j(5, 1);
-  long long nb = 1;
+  // Loop over stacking up to six directions
+  std::vector<int> jsmall(6, 1), jbig(6, 1);
+  std::vector<int> n(6, 1);
 
-  int ismall = 0;
+  long long n123Big = 1, n123Small = 1;
   int istack = 0;
-  for (auto i = 0; i < bigA.size(); i++) {
+  for (int iax = 0; iax <= stackMax; iax++) {
     bool found = false;
-    for (auto iax = 0; iax < _iaxes.size(); iax++) {
-      if (_iaxes[iax] < 0 || _iaxes[iax] >= bigA.size())
-        throw SEPException(std::string("Unacceptable axis ") +
-                           std::to_string(_iaxes[iax]) +
-                           std::string(" is outside axis range"));
+    for (auto iaxS : _iaxes) {
+      if (iax == iaxS) found = true;
+    }
+    if (!found) {
+      // We are not stacking over this axis
 
-      if (i == _iaxes[iax]) found = true;
-    }
-    if (found) {
-      if (bigA[i].n != smallA[ismall].n)
-        throw SEPException(std::string("Axis ") + std::to_string(i + 1) +
+      if (bigA[iax].n != smallA[istack].n)
+        throw SEPException(std::string("Axis ") + std::to_string(iax + 1) +
                            std::string(" of big size not equal to axis ") +
-                           std::to_string(ismall + 1) +
+                           std::to_string(istack + 1) +
                            std::string(" of small "));
-      ismall += 1;
+      jsmall[iax] = n123Small;
+      n123Small *= (long long)smallA[istack].n;
+      istack++;
     } else {
-      n[istack] = bigA[i].n;
-      j[istack] = nb;
-      istack += 1;
+      // Stacking over this axis
+      jsmall[iax] = 0;
     }
-    nb = nb * bigA[i].n;
+    n[iax] = bigA[iax].n;
+
+    jbig[iax] = n123Big;
+    n123Big *= (long long)bigA[iax].n;
   }
+
   float *outV = outF->getVals(), *inV = inF->getVals();
+  outF->scale(0.);
+
   if (_adj) {
     tbb::parallel_for(tbb::blocked_range<int>(0, n123),
                       [&](const tbb::blocked_range<int> &r) {
                         for (int iy = r.begin(); iy != r.end(); ++iy) {
-                          outV[iy] = 0;
-                          for (int i4 = 0; i4 < n[4]; i4++) {
-                            long long b4 = i4 * j[4];
-                            for (int i3 = 0; i3 < n[3]; i3++) {
-                              long long b3 = b4 + i3 * j[3];
-                              for (int i2 = 0; i2 < n[2]; i2++) {
-                                long long b2 = b3 + i2 * j[2];
-                                for (int i1 = 0; i1 < n[1]; i1++) {
-                                  long long b1 = b2 + j[1];
-                                  for (int i0 = 0; i0 < n[0]; i0++) {
-                                    outV[iy] += inV[iy + b1 + i0 * j[0]];
+                          long long bbig = n123Big * iy;
+                          long long bSmall = n123Small * iy;
+                          for (int i5 = 0; i5 < n[5]; i5++) {
+                            long long b5B = bbig + i5 * jbig[5];
+                            long long b5S = bSmall + i5 * jsmall[5];
+                            for (int i4 = 0; i4 < n[4]; i4++) {
+                              long long b4B = b5B + i4 * jbig[4];
+                              long long b4S = b5S + i4 * jsmall[4];
+                              for (int i3 = 0; i3 < n[3]; i3++) {
+                                long long b3B = b4B + i3 * jbig[3];
+                                long long b3S = b4S + i3 * jsmall[3];
+                                for (int i2 = 0; i2 < n[2]; i2++) {
+                                  long long b2B = b3B + i2 * jbig[2];
+                                  long long b2S = b3S + i2 * jsmall[2];
+                                  for (int i1 = 0; i1 < n[1]; i1++) {
+                                    long long b1B = b2B + i1 * jbig[1];
+                                    long long b1S = b2S + i1 * jsmall[1];
+                                    for (int i0 = 0; i0 < n[0]; i0++) {
+                                      long long b0B = b1B + i0 * jbig[0];
+                                      long long b0S = b1S + i0 * jsmall[0];
+                                      outV[b1S + i0 * jsmall[0]] +=
+                                          inV[b1B + i0 * jbig[0]];
+                                    }
                                   }
                                 }
                               }
@@ -93,16 +122,29 @@ void SEP::filter::floatStackSpreadReg::applyIt(std::shared_ptr<regSpace> in,
     tbb::parallel_for(tbb::blocked_range<int>(0, n123),
                       [&](const tbb::blocked_range<int> &r) {
                         for (int iy = r.begin(); iy != r.end(); ++iy) {
-                          for (int i4 = 0; i4 < n[4]; i4++) {
-                            long long b4 = i4 * j[4];
-                            for (int i3 = 0; i3 < n[3]; i3++) {
-                              long long b3 = b4 + i3 * j[3];
-                              for (int i2 = 0; i2 < n[2]; i2++) {
-                                long long b2 = b3 + i2 * j[2];
-                                for (int i1 = 0; i1 < n[1]; i1++) {
-                                  long long b1 = b2 + j[1];
-                                  for (int i0 = 0; i0 < n[0]; i0++) {
-                                    inV[iy + b1 + i0 * j[0]] = outV[iy];
+                          long long bbig = n123Big * iy;
+                          long long bSmall = n123Small * iy;
+                          for (int i5 = 0; i5 < n[5]; i5++) {
+                            long long b5B = bbig + i5 * jbig[5];
+                            long long b5S = bSmall + i5 * jsmall[5];
+                            for (int i4 = 0; i4 < n[4]; i4++) {
+                              long long b4B = b5B + i4 * jbig[4];
+                              long long b4S = b5S + i4 * jsmall[4];
+                              for (int i3 = 0; i3 < n[3]; i3++) {
+                                long long b3B = b4B + i3 * jbig[3];
+                                long long b3S = b4S + i3 * jsmall[3];
+                                for (int i2 = 0; i2 < n[2]; i2++) {
+                                  long long b2B = b3B + i2 * jbig[2];
+                                  long long b2S = b3S + i2 * jsmall[2];
+                                  for (int i1 = 0; i1 < n[1]; i1++) {
+                                    long long b1B = b2B + i1 * jbig[1];
+                                    long long b1S = b2S + i1 * jsmall[1];
+                                    for (int i0 = 0; i0 < n[0]; i0++) {
+                                      long long b0B = b1B + i0 * jbig[0];
+                                      long long b0S = b1S + i0 * jsmall[0];
+                                      outV[b1B + i0 * jbig[0]] +=
+                                          inV[b1S + i0 * jsmall[0]];
+                                    }
                                   }
                                 }
                               }
