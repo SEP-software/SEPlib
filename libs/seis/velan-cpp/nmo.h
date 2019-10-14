@@ -131,6 +131,7 @@ class nmoRegCube : public SEP::loop::blockIO, nmo {
       const std::shared_ptr<regSpace> in) override;
   virtual bool is3D() {
     if (_cmpYAxis > 0) return true;
+    return false;
   }
 
  private:

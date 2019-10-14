@@ -172,10 +172,10 @@ PYBIND11_MODULE(pySEPUtil, clsUtil) {
       .def(py::init<const std::vector<int>, bool>(),
            "Initialize floatStackSpreadReg")
 
-      .def("applyIt",
+      .def("applyInOut",
            (void (SEP::filter::floatStackSpreadReg::*)(
                std::shared_ptr<regSpace>, std::shared_ptr<regSpace>)) &
-               SEP::filter::floatStackSpreadReg::applyIt,
+               SEP::filter::floatStackSpreadReg::applyInOut,
            "Stack")
 
       ;
@@ -184,14 +184,14 @@ PYBIND11_MODULE(pySEPUtil, clsUtil) {
   Filter
   */
 
-  py::class_<SEP::filter::floatfilter1D, blockIOReg>(clsUtil, "floatfilter1D")
+  py::class_<SEP::filter::floatFilter1D, blockIOReg>(clsUtil, "floatFilter1D")
       .def(py::init<std::shared_ptr<SEP::rectFilter1D>>(),
            "Initialize floatFilter1D")
 
-      .def("applyIt",
-           (void (SEP::filter::floatfilter1D::*)(std::shared_ptr<regSpace>,
+      .def("applyInOut",
+           (void (SEP::filter::floatFilter1D::*)(std::shared_ptr<regSpace>,
                                                  std::shared_ptr<regSpace>)) &
-               SEP::filter::floatfilter1D::applyIt,
+               SEP::filter::floatFilter1D::applyInOut,
            "Stack")
 
       ;
