@@ -44,7 +44,7 @@ std::vector<float> nmoRegCube::getOffSq(const std::shared_ptr<regSpace> in) {
                          std::to_string(_ioffAxes[ioff]));
     std::cerr << "before axis to key 1 " << std::endl;
 
-    std::vector<float> offset = in->axisToKey(_ioffAxes[ioff]);
+    std::vector<float> offset = in->axisToKey(_ioffAxes[ioff] + 1);
     std::cerr << "di1ec 1 " << std::endl;
     std::cerr << "offset size " << offset.size() << " " << offs.size()
               << std::endl;
@@ -66,10 +66,11 @@ std::vector<float> nmoRegCube::getOffSq(const std::shared_ptr<regSpace> in) {
 }
 
 std::vector<float> nmoRegCube::getCmpX(const std::shared_ptr<regSpace> in) {
-  return in->axisToKey(_cmpXAxis);
+  std::cerr << "in get cnpx " << _cmpXAxis << std::endl;
+  return in->axisToKey(_cmpXAxis - 1);
 }
 std::vector<float> nmoRegCube::getCmpY(const std::shared_ptr<regSpace> in) {
-  return in->axisToKey(_cmpYAxis);
+  return in->axisToKey(_cmpYAxis - 1);
 }
 
 void nmo::applyIt(std::shared_ptr<regSpace> in, std::shared_ptr<regSpace> out) {
@@ -147,8 +148,11 @@ void nmo::applyIt(std::shared_ptr<regSpace> in, std::shared_ptr<regSpace> out) {
               << "=itr offsqsize=" << offsq.size() << " " << vsq.size()
               << " =vsq" << std::endl;
     float tm = _ot;
-    for (int it = 0; it < _nt; it++, tm += _dt)
+    for (int it = 0; it < _nt; it++, tm += _dt) {
       ttn[it] = sqrtf(tm * tm + offsq[itr] * vsq[it] - _ot) / _dt;
+      std::cerr << it << "=it ttn[it]=" << ttn[it] << "  tm=" << tm << " "
+                << offsq[itr] << "=offsq vsq=" << vsq[it] << std::endl;
+    }
     std::cerr << " lo5xxow2 " << itr << std::endl;
 
     int itmute;
@@ -160,16 +164,22 @@ void nmo::applyIt(std::shared_ptr<regSpace> in, std::shared_ptr<regSpace> out) {
     std::cerr << " l6o5ow2 " << itr << std::endl;
 
     if (!_inverse) {
+      std::cerr << "in not inverse " << ttn.size() << std::endl;
       for (int it = 0; it < _nt; it++) {
         int ig = ttn[it];
         float f = ttn[it] - ig;
+
         int itable = (int)(f / _sinc._dsamp + .5);
-        if (ig < _nt) {
+        std::cerr << "before loop " << itable << " " << f << std::endl;
+        if (ig > 3 && ig < _nt - 4) {
+          std::cerr << "what the " << ig << " " << _nt << std::endl;
           for (int i8 = 0; i8 < 8; i8++)
             *outp = inp[i8 + ig + 4] * _sinc._table[itable][i8];
         }
         outp++;
       }
+      std::cerr << "in n2ot inverse " << std::endl;
+
       if (itmute != -1 && _muteIt) {
         if (itmute >= 10) {
           for (int i = 0; i < itmute - 10; i++) outv[itr * _nt + i] = 0.;
@@ -177,6 +187,8 @@ void nmo::applyIt(std::shared_ptr<regSpace> in, std::shared_ptr<regSpace> out) {
             outv[itr * _nt + itmute - 10 + i] *= mfunc[i];
         }
       }
+      std::cerr << "in n32ot inverse " << std::endl;
+
     } else {
       axis aX = axis(_nt, 0., 1.);
       std::vector<float> tti = SEP::maps::invert1DMap(aX, aX, ttn, -1, _nt + 1);
