@@ -1,13 +1,15 @@
 #include "sinc.h"
+#include <iostream>
 #include "math.h"
+using namespace SEP;
 sinc::sinc(const int lsinc, const float dsamp) {
   _dsamp = dsamp;
-  int nsamp = 1. / _dsamp;
+  int nsamp = 1. / _dsamp + .5;
   _lsinc = lsinc;
   for (int i = 0; i < nsamp; i++) {
     _table.push_back(mksinc(_lsinc, _dsamp * i));
   }
-    _table.push_back(mksinc(_lsinc, 0.));
+  _table.push_back(mksinc(_lsinc, 0.));
 }
 std::vector<float> sinc::mksinc(int lsinc, float d) {
   int j;
@@ -34,14 +36,13 @@ std::vector<float> sinc::mksinc(int lsinc, float d) {
   }
 
   /* solve the system for sinc coefficients */
-  return (b, c, work);
+  return toep(b, c, work);
 }
 
-std::vector<float> toep(std::vector<float> r, std::vector<float> g,
-                        std::vector<float> a) {
+std::vector<float> sinc::toep(std::vector<float> r, std::vector<float> g,
+                              std::vector<float> a) {
   int i, j, jh;
   double c, e, v, w, bot;
-
   int m = r.size();
   std::vector<float> f(m);
   a[0] = 1.;
@@ -67,5 +68,6 @@ std::vector<float> toep(std::vector<float> r, std::vector<float> g,
     c = (g[j] - w) / v;
     for (i = 0; i <= j; i++) f[i] += c * a[j - i];
   }
+
   return f;
 }

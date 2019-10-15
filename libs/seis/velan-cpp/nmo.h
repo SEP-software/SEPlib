@@ -108,7 +108,7 @@ class nmo {
   bool _inverse = false;                       ///< Whether or not to do inverse
 };                                             // namespace velocity
 
-class nmoRegCube : public SEP::loop::blockIO, nmo {
+class nmoRegCube : public SEP::loop::blockIO, public nmo {
  public:
   nmoRegCube() { ; }
 

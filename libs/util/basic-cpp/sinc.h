@@ -1,6 +1,7 @@
 #ifndef SINC_H
 #define SINC_H 1
 #include <vector>
+namespace SEP {
 class sinc {
  public:
   sinc() { ; }
@@ -15,4 +16,5 @@ class sinc {
   float _dsamp;
   int _lsinc;
 };
+}  // namespace SEP
 #endif
