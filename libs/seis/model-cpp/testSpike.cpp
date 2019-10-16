@@ -118,8 +118,10 @@ TEST(spike, loop) {
   std::shared_ptr<hypercube> hyper(new hypercube(20, 20, 20));
   std::cerr << "what 1" << std::endl;
   floatSpike op(hyper, vals);
-  std::cerr << "what 2" << std::endl;
+  std::cerr << "before set 2" << std::endl;
   outF->setHyper(hyper);
+  std::cerr << "in get set 2" << std::endl;
+
   std::shared_ptr<hypercube> hyp = outF->getHyper();
   op.loopDataOut(outF);
   std::cerr << "what 3" << std::endl;
