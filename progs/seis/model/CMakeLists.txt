@@ -60,6 +60,15 @@ TARGET_LINK_LIBRARIES(Spike  sepfft superset sep3d sep)
 TARGET_LINK_LIBRARIES(Surface  superset sep3d sep)
 TARGET_LINK_LIBRARIES(Wavelet  sepfft superset sep3d sep m)
 
+install(PROGRAMS ${progs} DESTINATION bin)
+set(SCRIPTS  Spike2)
+FOREACH(prg ${SCRIPTS})
+   configure_file (
+  "${CMAKE_CURRENT_SOURCE_DIR}/${prg}.py"
+  "${CMAKE_CURRENT_BINARY_DIR}/${prg}"
+  )
+   install(PROGRAMS  ${CMAKE_CURRENT_BINARY_DIR}/${prg} DESTINATION bin)
+ENDFOREACH(prg)
 
 install(PROGRAMS ${progs} DESTINATION bin)
 

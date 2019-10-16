@@ -92,22 +92,20 @@ TEST(spike, singlePart) {
     }
   }
 }
+
 TEST(spike, loop) {
   std::vector<std::string> pars;
   ioModes mode = ioModes(pars);
   std::shared_ptr<genericIO> io = mode.getIO("memory");
 
   std::shared_ptr<genericRegFile> outF = io->getRegFile("out", usageOut);
-  std::cerr << "what is going on" << std::endl;
 
   outF->setDataType(DATA_FLOAT);
   std::shared_ptr<hypercube> hyper(new hypercube(20, 20, 20));
   std::shared_ptr<memoryRegFile> outM =
       std::dynamic_pointer_cast<memoryRegFile>(outF);
 
-  std::cerr << "what is going on" << std::endl;
   outF->setHyper(hyper);
-  std::cerr << "what is going on" << std::endl;
 
   std::shared_ptr<hypercube> hyp = outF->getHyper();
 
