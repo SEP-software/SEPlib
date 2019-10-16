@@ -264,8 +264,13 @@ class blockIO {
 
   */
   virtual void loopDataOut(std::shared_ptr<SEP::genericRegFile> out) {
+    std::cerr << "what a" << std::endl;
     _outF = out;
+    std::cerr << "what before get hyper" << std::endl;
+
     _hyperOut = out->getHyper();
+    std::cerr << "what c" << std::endl;
+
     loopData(nullptr, out);
   }
   /*!  Create output hypercube from input hypercube
