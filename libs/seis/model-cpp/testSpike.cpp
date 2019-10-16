@@ -98,13 +98,22 @@ TEST(spike, loop) {
   std::shared_ptr<genericIO> io = mode.getIO("memory");
 
   std::shared_ptr<genericRegFile> outF = io->getRegFile("out", usageOut);
-  std::shared_ptr<memoryRegFile> outM =
-      std::dynamic_pointer_cast<memoryRegFile>(outF);
+  std::cerr << "what is going on" << std::endl;
+
   outF->setDataType(DATA_FLOAT);
   std::shared_ptr<hypercube> hyper(new hypercube(20, 20, 20));
+  std::shared_ptr<memoryRegFile> outM =
+      std::dynamic_pointer_cast<memoryRegFile>(outF);
+
+  std::cerr << "what is going on" << std::endl;
   outF->setHyper(hyper);
+  std::cerr << "what is going on" << std::endl;
+
+  std::shared_ptr<hypercube> hyp = outF->getHyper();
+
   SEP::blocking::blockSizeCalc bl(200);
-  std::vector<int> nd(3, 20);
+
+  std::vector<int> nd(3, 20), fw(3, 0), jw(3, 1);
   bl.addData("output", nd, 1, 4);
   bl.calcBlocks();
   std::vector<int> nb = bl.getBlockSize("output");
@@ -117,14 +126,10 @@ TEST(spike, loop) {
   std::vector<spikeVal> vals;
   vals.push_back(sp);
 
-  std::cerr << "what 1" << std::endl;
   floatSpike op(hyper, vals);
-  std::cerr << "before set 2" << std::endl;
-  std::cerr << "in get set 2" << std::endl;
+  op.storeParams(nd, nd, fw, jw, nb);
 
-  std::shared_ptr<hypercube> hyp = outF->getHyper();
   op.loopDataOut(outF);
-  std::cerr << "what 3" << std::endl;
   std::shared_ptr<memoryRegFile> xx =
       std::dynamic_pointer_cast<memoryRegFile>(outF);
   int ii = 0;

@@ -191,11 +191,11 @@ std::shared_ptr<SEP::hypercube> blockIOReg::createSubset(
 void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
                           std::shared_ptr<SEP::genericRegFile> out) {
   bool doIn = false, doOut = false;
-  if (in) {
+  if (in != nullptr) {
     doIn = true;
     _hyperIn = in->getHyper();
   }
-  if (out) {
+  if (out != nullptr) {
     doOut = true;
 
     _hyperOut = out->getHyper();
@@ -220,9 +220,10 @@ void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
 
   if (doIn) {
     // Begin by starting a read for the first section
+
     tmp = SEP::vecFromHyper(
         createSubset(_hyperIn, _loopIn[0]._nw, _loopIn[0]._fw, _loopIn[0]._jw),
-        in->getDataType());
+        in->getDataType(), false);
 
     readT =
         std::thread(readF, tmp, _loopIn[0]._nw, _loopIn[0]._fw, _loopIn[0]._jw);
@@ -236,7 +237,7 @@ void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
       windOut = SEP::vecFromHyper(
           createSubset(_hyperOut, _loopOut[iout]._nw, _loopOut[iout]._fw,
                        _loopOut[iout]._jw),
-          out->getDataType());
+          out->getDataType(), false);
     }
     if (doIn) {
       readT.join();
@@ -247,7 +248,7 @@ void blockIOReg::loopData(std::shared_ptr<SEP::genericRegFile> in,
         tmp = vecFromHyper(
             createSubset(_hyperIn, _loopIn[iout + 1]._nw, _loopIn[iout + 1]._fw,
                          _loopIn[iout + 1]._jw),
-            in->getDataType());
+            in->getDataType(), false);
         readT = std::thread(readF, tmp, _loopIn[iout + 1]._nw,
                             _loopIn[iout + 1]._fw, _loopIn[iout + 1]._jw);
       }
@@ -352,7 +353,7 @@ void SEP::loop::blockIORegPipe::applyInOut(
         outA = SEP::vecFromHyper(
             createSubset(_ops[iop]->getHyperOut(), _loopMid[iop][iwind]._nw,
                          _loopMid[iop][iwind]._fw, _loopMid[iop][iwind]._jw),
-            _ops[iop]->getDataTypeIn());
+            _ops[iop]->getDataTypeIn(), false);
       _ops[iop]->applyInOut(inA, outA);
       inA = outA;
     }

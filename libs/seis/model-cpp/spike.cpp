@@ -11,7 +11,6 @@
 #include "SEPException.h"
 
 void SEP::model::floatSpike::applyOut(std::shared_ptr<regSpace> out) {
-  std::cerr << "in model " << std::endl;
   std::shared_ptr<floatHyper> outF = std::dynamic_pointer_cast<floatHyper>(out);
 
   std::vector<int> f(7, 0), n(7, 1);
@@ -23,6 +22,7 @@ void SEP::model::floatSpike::applyOut(std::shared_ptr<regSpace> out) {
     f[i] = (axesSmall[i].o - axesBig[i].o) / axesBig[i].d + .5;
     b[i + 1] = b[i] * (long long)n[i];
   }
+
   for (int i = axesSmall.size() + 1; i < 8; i++) b[i] = b[i - 1];
   outF->scale(0.);
   for (int ivals = 0; ivals < _vals.size(); ivals++) {
