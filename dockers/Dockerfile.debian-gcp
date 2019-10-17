@@ -1,0 +1,45 @@
+From debian:9
+MAINTAINER Bob Clapp <bob@sep.stanford.edu>
+RUN apt-get update && apt-get install -y git gcc gfortran  make libxt-dev git
+RUN mkdir -p /opt/SU
+RUN git clone https://github.com/JohnWStockwellJr/SeisUnix.git /opt/SU;cd /opt/SU/src && \
+  touch cwp_su_version LICENSE_44R2_ACCEPTED MAILHOME_44R2 &&\
+  echo "echo boo"  >chkroot.sh && \
+  chmod 777 chkroot.sh &&\
+  cd /opt/SU/src/par/include&&\
+   CWPROOT=/opt/SU make INSTALL  &&\
+  cd /opt/SU/src/par/lib&&\
+   CWPROOT=/opt/SU make INSTALL  &&\
+  cd /opt/SU/src/cwp/lib &&\
+   CWPROOT=/opt/SU make INSTALL   &&\
+ cd /opt/SU/src/su/include &&\
+   CWPROOT=/opt/SU make INSTALL   &&\
+  cd /opt/SU/src/cwp/include &&\
+   CWPROOT=/opt/SU make INSTALL   &&\
+    rm -rf  /opt/SU/bin
+RUN apt-get update && apt-get install -y cmake libxaw7-dev g++  flex libfftw3-single3 libfftw3-dev
+RUN mkdir -p /opt/SEP/build
+RUN echo export PATH=/usr/local/bin:/$PATH >>~root/.bash_profile
+ENV CMAKE_PREFIX_PATH="/opt/SU"
+RUN  apt update && \
+ apt install -y build-essential cmake git gcc g++ cmake \
+        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl1.0-dev make \
+        pkg-config tar wget zlib1g-dev ninja-build
+RUN mkdir -p /opt/google
+RUN cd /opt/google && \
+  wget https://github.com/googleapis/google-cloud-cpp-common/archive/v0.13.0.tar.gz &&\
+  tar xf v0.13.0.tar.gz 
+RUN  cd /opt/google/google-cloud-cpp-common-0.13.0 &&\
+  cmake -Hsuper -Bcmake-out  -GNinja
+RUN  cd /opt/google/google-cloud-cpp-common-0.13.0/cmake-out &&\
+   ninja 
+
+RUN apt update &&\
+apt install -y libtbb-dev libboost-all-dev  libboost-dev python3-dev python3-numpy-dbg python3-pytest
+RUN git  clone http://zapad.Stanford.EDU/bob/SEPlib.git /opt/SEP/src &&\
+   cd /opt/SEP/build && \
+   cmake  -DCMAKE_CXX_FLAGS="-g -O3"  -DBUILD_GCP=yes -DPYTHON_EXECUTABLE=/usr/bin/python3.5 -DCMAKE_INSTALL_PREFIX=/opt/SEP -DCMAKE_PREFIX_PATH=/opt/google/google-cloud-cpp-common-0.13.0/cmake-out/external/lib -DPYTHON_PATH=/usr/lib/python3.5 ../src &&\
+   cd /opt/SEP/build &&  \
+   make install &&\
+   rm -rf /opt/SEP/build
+
