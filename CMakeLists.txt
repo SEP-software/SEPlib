@@ -73,6 +73,8 @@ include_directories(${CMAKE_INSTALL_PREFIX}/include)
 
 find_package(TBB REQUIRED)
 find_package(FFTW REQUIRED)
+
+set(SUBPACKAGE yes)
 if(BUILD_CLASS_LIBS
    OR BUILD_JAVA
    OR BUILD_SEISMIC_PROGS
