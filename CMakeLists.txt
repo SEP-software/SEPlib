@@ -3,6 +3,7 @@ if(POLICY CMP0048)
   cmake_policy(SET CMP0048 NEW)
 endif(POLICY CMP0048)
 project(SEPlib-seisProgs VERSION 9.0.0 LANGUAGES CXX C Fortran)
+find_package (Python3 COMPONENTS Interpreter Development Numpy REQUIRED)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
