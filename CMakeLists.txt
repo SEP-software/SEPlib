@@ -10,7 +10,7 @@ set(SEPlib_MAJOR_VERSION 9)
 set(SEPlib_MINOR_VERSION 0)
 set(SEPlib_VERSION_STRING ${SEPlib_MAJOR_VERSION}.${SEPlib_MINOR_VERSION})
 
-find_package(Python3 COMPONENTS Interpreter NumPy)
+#find_package(Python3 COMPONENTS Interpreter NumPy)
 if(NOT SUBPACKAGE)
 	option(BUILD_DOC "Build documentation" OFF)
   option(BUILD_TEST "Build with test support" OFF)
