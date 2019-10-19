@@ -162,6 +162,6 @@ RUN git  clone http://zapad.Stanford.EDU/bob/SEPlib.git /opt/SEP/src &&\
    cd /opt/SEP/build && \
    cmake  -DCMAKE_CXX_FLAGS="-g -O3 -fPIC"  -DBUILD_GCP=yes -DPYTHON_EXECUTABLE=/usr/bin/python3.5 -DCMAKE_INSTALL_PREFIX=/opt/SEP -DCMAKE_PREFIX_PATH=/opt/google-cloud-cpp-common-0.13.0/cmake-out/external/lib -DPYTHON_PATH=/usr/lib/python3.5 ../src &&\
    cd /opt/SEP/build &&  \
-   make install &&\
+   make  -j 12 install &&\
    rm -rf /opt/SEP/build
 

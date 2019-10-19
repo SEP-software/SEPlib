@@ -1,6 +1,7 @@
 
 set(FORTRANSEP 
-Dip_azim.F90sep  Seis_vel.F90sep
+Dip_azim.F90sep  
+#Seis_vel.F90sep
 )
 
 set(CSEP
@@ -22,7 +23,7 @@ FOREACH(fort ${FORTRANSEP})
   install(TARGETS ${prog} DESTINATION bin)
 ENDFOREACH(fort)
 TARGET_LINK_LIBRARIES(Dip_azim glplot vplot sep3d sep)
-TARGET_LINK_LIBRARIES(Seis_vel glplot vplot sep3d sep)
+#TARGET_LINK_LIBRARIES(Seis_vel glplot vplot sep3d sep)
 endif(CMAKE_Fortran_COMPILER)
 
 
