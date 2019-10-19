@@ -3,6 +3,7 @@ if(POLICY CMP0048)
   cmake_policy(SET CMP0048 NEW)
 endif(POLICY CMP0048)
 project(SEPlib-seisProgs VERSION 9.0.0 LANGUAGES CXX C Fortran)
+find_package (Python3 COMPONENTS Interpreter Development Numpy REQUIRED)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
@@ -10,7 +11,7 @@ set(SEPlib_MAJOR_VERSION 9)
 set(SEPlib_MINOR_VERSION 0)
 set(SEPlib_VERSION_STRING ${SEPlib_MAJOR_VERSION}.${SEPlib_MINOR_VERSION})
 
-find_package(Python3 COMPONENTS Interpreter NumPy)
+#find_package(Python3 COMPONENTS Interpreter NumPy)
 if(NOT SUBPACKAGE)
 	option(BUILD_DOC "Build documentation" OFF)
   option(BUILD_TEST "Build with test support" OFF)
@@ -49,12 +50,6 @@ if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
                             --recursive
                     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
                     RESULT_VARIABLE GIT_SUBMOD_RESULT)
-    if(NOT GIT_SUBMOD_RESULT EQUAL "0")
-      message(
-        FATAL_ERROR
-          "git submodule update --init failed with ${GIT_SUBMOD_RESULT}, please checkout submodules"
-        )
-    endif()
   endif()
 endif()
 
@@ -73,6 +68,8 @@ include_directories(${CMAKE_INSTALL_PREFIX}/include)
 
 find_package(TBB REQUIRED)
 find_package(FFTW REQUIRED)
+
+set(SUBPACKAGE yes)
 if(BUILD_CLASS_LIBS
    OR BUILD_JAVA
    OR BUILD_SEISMIC_PROGS
