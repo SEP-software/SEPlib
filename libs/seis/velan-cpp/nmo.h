@@ -83,10 +83,6 @@ class nmo {
     Minimum number of dimensions that need to be held in memory */
   virtual int getMinDims() { return 1; }
 
-  /*!
-  Get any extra memory used by program
-  */
-  virtual long long getExtraMem() override { return _vel->getVelSize(); }
 
   /*!
   Return the maximum input size needed given output size
@@ -129,7 +125,11 @@ class nmoRegCube : public SEP::loop::blockIO, public nmo {
       const std::shared_ptr<regSpace> in) override;
   virtual std::vector<float> getCmpY(
       const std::shared_ptr<regSpace> in) override;
-  virtual bool is3D() {
+  /*!
+  Get any extra memory used by program
+  */
+  virtual long long getExtraMem() override { return _vel->getVelSize(); }
+  virtual bool is3D() override {
     if (_cmpYAxis > 0) return true;
     return false;
   }

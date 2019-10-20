@@ -34,7 +34,7 @@ char *ainput; char *aoutput; integer nchar;
     char *input, *output;
 
 /*# 2 "zasc.f"*/
-/*       INTEGER NCHAR >/
+/*       INTEGER NCHAR */
 /*# 3 "zasc.f"*/
 /*       CHARACTER*1 INPUT(NCHAR),OUTPUT(NCHAR) >*/
 /*# 4 "zasc.f"*/
