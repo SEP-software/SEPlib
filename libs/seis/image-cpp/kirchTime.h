@@ -329,6 +329,7 @@ class windP {
   windP &operator=(windP other) {
     _nw = other._nw;
     _fw = other._fw;
+     return *this;
   }
   std::vector<int> _nw, _fw;  ///<  Number and origin of samples
 };
