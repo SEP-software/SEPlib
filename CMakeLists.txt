@@ -35,6 +35,7 @@ include_directories(
 if(BUILD_TEST)
   enable_testing()
 endif(BUILD_TEST)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

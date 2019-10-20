@@ -523,7 +523,7 @@ int wavlet(float complex *s,int nt,float dt,int nx,int np,char *domain,
        else { box=boxcar  ; jt=-1; }
        t=0;
        for (it=0;it<nt;it++) {
-	 if(abs(t)>box) s[it]=0 ; 
+	 if(fabsf(t)>box) s[it]=0 ; 
 	 if(it==nt/2) t *= jt ; 
 	 t += dt ;
        }

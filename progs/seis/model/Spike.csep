@@ -207,8 +207,8 @@ for(i3=0; i3 < n3; i3++){
 	for(i2=0; i2 < n2; i2++){
 		for(i1=0; i1 < n1; i1++) array[i1]=0.;
 		for(isp=0; isp < nsp; isp++){
-			if(k1[isp]==-2 && k2[isp]==-2 || k3[isp]==-2 ||
-          k4[isp]==-2 && k5[isp]==-2){}  /*put 0 spikes */
+			if(k1[isp]==-2 &&( k2[isp]==-2 || k3[isp]==-2 ||
+          k4[isp]==-2 && k5[isp]==-2)){}  /*put 0 spikes */
 			else{
 			if(k1[isp]!=-1){ /*one spike per trace */
 				if(k2[isp]==-1 || k2[isp]==i2){

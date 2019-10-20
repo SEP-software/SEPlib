@@ -288,7 +288,7 @@ ADD_SEP_DOC
 
 		for (i2=0;i2<n2;i2++)
 			for (i1=0;i1<n1;i1++)
-				if (absval > 0) SMOO(i2,i1) = abs( DATA(i2,i1));
+				if (absval > 0) SMOO(i2,i1) = fabs( DATA(i2,i1));
 				else            SMOO(i2,i1) =      DATA(i2,i1) ;
 
 		for (irepeat=0;irepeat<nrepeat;irepeat++) {

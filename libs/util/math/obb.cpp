@@ -438,8 +438,8 @@ icvRotatingCalipers( Point<ftype>* points, int n, int mode, ftype out[6] )
         break;
     }
 
-    delete inv_vect_length;
-    delete vect;
+    delete [] inv_vect_length;
+    delete[]  vect;
 }
 
     template<class ftype> std::vector< Point<ftype> > *CalcOmbb(int n, Point<ftype> *points)

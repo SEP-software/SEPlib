@@ -127,7 +127,7 @@ int MAIN (void)
 	else
 		{							/* taplot */
 		ierr=gain1(data,n,clip);
-		for (i=0; i<n;) data1[i++] = data[i];
+		for (i=0; i<n;i++) data1[i] = data[i];
 		set_output_data_format("native_byte");
 		srite ("out",data1,n*esize);
 		}
@@ -163,7 +163,7 @@ int n;
 	int i1;
 
 	clip=0;
-	for(i1=0;i1<n;i1++) clip=MAX(clip,abs(x[i1]));
+	for(i1=0;i1<n;i1++) clip=MAX(clip,fabsf(x[i1]));
 
 	return (clip);
 }

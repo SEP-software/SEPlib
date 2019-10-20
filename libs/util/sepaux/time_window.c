@@ -20,11 +20,12 @@ Lib:Aux
 
 COMPILE LEVEL
 DISTR
-*>/
+>*/
 
 
 
-/*    return a 1d window function
+/*    
+  return a 1d window function
 			    reference:  Marple, 1987
 
 	KEYWORDS :  window-design signal-processing

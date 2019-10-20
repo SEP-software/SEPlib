@@ -36,6 +36,7 @@ class windP {
     _nw = other._nw;
     _fw = other._fw;
     _jw = other._jw;
+    return *this;
   }
   std::vector<int> _nw, _fw, _jw;  ///<  Number,origin, and sampling
 };

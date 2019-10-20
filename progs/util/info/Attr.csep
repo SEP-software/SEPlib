@@ -455,7 +455,8 @@ int MAIN(void){
     else           printf("meanval=%g \n",meansngl);
   }
   if(0==strcmp(par->want,"norm") || 0==strcmp(par->want,"all"))
-    if( par->param==0 ) printf("norm value = %g \n",norm);
+    if( par->param==0 ) printf("norm value = %g \n",norm){
+    }
     else           printf("norm=%g \n",norm);
     if(par->esize==8){
     if(0==strcmp(par->want,"max") || 0==strcmp(par->want,"all")){

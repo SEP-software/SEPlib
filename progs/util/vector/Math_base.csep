@@ -858,7 +858,7 @@ int off,i,ioff;
 if((int)strlen(name) ==8  || (int)strlen(name) ==9){
   if((int)strlen(name) ==8  ) ioff=5;
   else ioff=6;
-   if(name[ioff]='.' && ((name[ioff+1]=='r' && name[ioff+2]=='e') || 
+   if(name[ioff]=='.' && ((name[ioff+1]=='r' && name[ioff+2]=='e') || 
     (name[ioff+1]=='i' && name[ioff+2]=='m'))){
      if(name[ioff+1]=='i') off=1;
     else off=0;

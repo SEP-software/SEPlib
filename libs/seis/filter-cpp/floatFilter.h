@@ -18,19 +18,19 @@ class floatFilter1D : public SEP::loop::blockIOReg {
   floatFilter1D(std::shared_ptr<rectFilter1D> filt) { _filt = filt; }
 
   virtual std::shared_ptr<hypercube> createHyperOut(
-      const std::shared_ptr<hypercube> hyperIn) {
+      const std::shared_ptr<hypercube> hyperIn) override {
     throw SEPException("Must override createHyperOut");
   }
 
   /*!
     Minimum number of dimensions that need to be held in memory */
-  virtual int getMinDims() { return 1; }
+  virtual int getMinDims() override { return 1; }
 
   /*!
   Return the maximum input size needed given output size
   \param outP Output dimensions
   */
-  virtual SEP::loop::windP getInputSize(const SEP::loop::windP &window) {
+  virtual SEP::loop::windP getInputSize(const SEP::loop::windP &window)  override{
     SEP::loop::windP w = window;
     return w;
   }

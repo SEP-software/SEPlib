@@ -104,7 +104,7 @@ int found,i;
        if(0==strcmp(info->name,name)) found=1;
          else info = info->next;
     }
-    if(found==0) return(-1,sepwarn(-1,"can't find loop %s requested \n",name));
+    if(found==0) return(sepwarn(-1,"can't find loop %s requested \n",name));
 
   for(i=0; i < info->ndims;i++){
     fwind[i]=0; nwind[i]=info->n[i];

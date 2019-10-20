@@ -17,7 +17,7 @@ endif(FFTWF_LIBRARIES)
 set(CSEP Kirch_2d_depth.csep)
 set(CXXSEP Kirch_3d_time.cppsep)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../libs/seis/image-cpp)
+#include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../libs/seis/image-cpp)
 
 if(CMAKE_Fortran_COMPILER)
 

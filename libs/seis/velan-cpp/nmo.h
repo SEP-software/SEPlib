@@ -86,7 +86,7 @@ class nmo {
   /*!
   Get any extra memory used by program
   */
-  virtual long long getExtraMem() { _vel->getVelSize(); }
+  virtual long long getExtraMem() override { return _vel->getVelSize(); }
 
   /*!
   Return the maximum input size needed given output size
@@ -120,7 +120,7 @@ class nmoRegCube : public SEP::loop::blockIO, public nmo {
     \param output array
    */
   virtual void applyInOut(std::shared_ptr<regSpace> in,
-                          std::shared_ptr<regSpace> out) {
+                          std::shared_ptr<regSpace> out) override {
     applyIt(in, out);
   }
   virtual std::vector<float> getOffSq(

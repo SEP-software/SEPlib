@@ -37,7 +37,7 @@ target_include_directories(sepwei
 	PRIVATE          
 	   ${CMAKE_CURRENT_SOURCE_DIR}/../../include 
 	PUBLIC
-	   $<INSTALL_INTERFACE:include> 
+#	   $<INSTALL_INTERFACE:include> 
 	   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>  
       )
 install(TARGETS sepwei DESTINATION lib EXPORT  SEPlibTargets)

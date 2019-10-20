@@ -178,7 +178,6 @@ class vel3DFromFile : public vel3DCube {
   /*!
  Initialize with constant
 
-/*!
     Read  velocity (most likely a subset
 
   \param  output   Describing output space
@@ -192,7 +191,7 @@ class vel3DFromFile : public vel3DCube {
   /*!
      Get size of velocity storage
      */
-  virtual long long getVelSize() { 4 * _file->getHyper()->getN123(); }
+  virtual long long getVelSize()  {  return 4 * _file->getHyper()->getN123(); }
 
   /*!
   Return hypercube associated with velocity file
