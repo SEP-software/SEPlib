@@ -62,6 +62,14 @@
 !!$
 !!$      [1.]  variance  of gaussian anomalies
 !!$
+!!$=item rat31 - real
+!!$
+!!$      [1.] Skew factor for annomaly axis3/axis1
+!!$
+!!$=item rat21 - real
+!!$
+!!$      [1.] Skew factor for annomaly axis2/axis1
+!!$
 !!$=item max1    - real
 !!$
 !!$      [center of axis 1]location of maximum along 1 dimension
@@ -118,6 +126,7 @@ program Gauss
   integer i1,i2,i3,ngauss,ierr,igauss
   real,dimension(:,:), allocatable :: array
   real,allocatable :: max1(:),max2(:),max3(:),maxvel(:),var(:)
+  real,allocatable :: rat31(:),rat32(:)
   call SEP_ADD_DOC()
   call sep_init('')
   call sep_begin_prog()
@@ -141,6 +150,7 @@ program Gauss
     call seperr("trouble put data axis par")
   allocate(maxvel(ngauss),max1(ngauss),max2(ngauss),max3(ngauss),var&
     &(ngauss))
+    allocate(rat31(ngauss),rat21(ngaus))
   ierr=getch("maxvel","f",maxvel)
   if (ierr.eq.0) then
     maxvel=1.
@@ -170,6 +180,20 @@ program Gauss
     var=1.
   else if (ierr.ne.ngauss) then
     call erexit("number of var not equal to ngauss")
+  end if
+  ierr=getch("rat31","f",rat31)
+
+    if (ierr.eq.0) then
+    rat31=1.
+  else if (ierr.ne.ngauss) then
+    call erexit("number of rat31 not equal to ngauss")
+  end if
+  ierr=getch("rat21","f",rat21)
+
+    if (ierr.eq.0) then
+    rat21=1.
+  else if (ierr.ne.ngauss) then
+    call erexit("number of rat21 not equal to ngauss")
   end if
     if (0>= getch('zero_at','f',zero_at )) then
       zero_at = 100000000000000000.
@@ -218,11 +242,11 @@ program Gauss
   do i3=1,n3 
     array=velback
     do igauss=1,ngauss 
-      dist3=max3(igauss)-(o3+d3*(i3-1))
+      dist3=abs(max3(igauss)-(o3+d3*(i3-1)))*rat31(igauss)
       do i2=1,n2 
-        dist2=max2(igauss)-(o2+d2*(i2-1))
+        dist2=abs(max2(igauss)-(o2+d2*(i2-1)))*rat21(igauss)
         do i1=1,n1 
-          dist1=max1(igauss)-(o1+d1*(i1-1))
+          dist1=abs(max1(igauss)-(o1+d1*(i1-1)))
           distance=sqrt(dist1**2 + dist2**2 + dist3**2)
 !					write(0,*) "distance",distance
           if (distance< zero_at) then
