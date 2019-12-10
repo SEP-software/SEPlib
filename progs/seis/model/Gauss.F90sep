@@ -126,7 +126,7 @@ program Gauss
   integer i1,i2,i3,ngauss,ierr,igauss
   real,dimension(:,:), allocatable :: array
   real,allocatable :: max1(:),max2(:),max3(:),maxvel(:),var(:)
-  real,allocatable :: rat31(:),rat32(:)
+  real,allocatable :: rat31(:),rat21(:)
   call SEP_ADD_DOC()
   call sep_init('')
   call sep_begin_prog()
