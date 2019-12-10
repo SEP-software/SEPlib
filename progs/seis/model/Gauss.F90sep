@@ -150,7 +150,7 @@ program Gauss
     call seperr("trouble put data axis par")
   allocate(maxvel(ngauss),max1(ngauss),max2(ngauss),max3(ngauss),var&
     &(ngauss))
-    allocate(rat31(ngauss),rat21(ngaus))
+    allocate(rat31(ngauss),rat21(ngauss))
   ierr=getch("maxvel","f",maxvel)
   if (ierr.eq.0) then
     maxvel=1.
