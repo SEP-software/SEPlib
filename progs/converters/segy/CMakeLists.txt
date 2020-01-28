@@ -44,13 +44,14 @@ ENDFOREACH(cprog)
 
 FOREACH(cppprog ${KMLSRCS})
   STRING(REGEX REPLACE ".cpp\$" "" prog "${cppprog}")
+   message(${prog})
     ADD_EXECUTABLE(${prog} ${cppprog})
   install(TARGETS ${prog} DESTINATION bin)
 ENDFOREACH(cppprog)
 
 if (CCS_INCLUDES)
 if (TDB_INCLUDE)
-TARGET_LINK_LIBRARIES(segykml ${CCS_LIBRARIES} ${TDB_LIBRARY})
+#TARGET_LINK_LIBRARIES(segykml ${CCS_LIBRARIES} ${TDB_LIBRARY})
 endif (TDB_INCLUDE)
 endif (CCS_INCLUDES)
 

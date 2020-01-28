@@ -41,11 +41,11 @@ TARGET_LINK_LIBRARIES(Spspen ps_pen_SEP)
 
 if(NETPBM_FOUND)
 ADD_EXECUTABLE(ppmpen ${NOSEPPEN_BASE})
-TARGET_LINK_LIBRARIES(ppmpen ras_pen )
+TARGET_LINK_LIBRARIES(ppmpen ras_pen  m)
 
-ADD_EXECUTABLE(Sppmpen ${SEPPEN_BASE})
-TARGET_LINK_LIBRARIES(Sppmpen ras_pen_SEP )
-install(TARGETS Sppmpen ppmpen Spspen pspen Svppen vppen Sxtpen xtpen  DESTINATION bin)
+#ADD_EXECUTABLE(Sppmpen ${SEPPEN_BASE}  )
+#TARGET_LINK_LIBRARIES(Sppmpen ras_pen_SEP sep m )
+install(TARGETS  ppmpen Spspen pspen Svppen vppen Sxtpen xtpen  DESTINATION bin)
 else(NETPBM_FOUND)
 install(TARGETS  Spspen pspen Svppen vppen Sxtpen xtpen  DESTINATION bin)
 
