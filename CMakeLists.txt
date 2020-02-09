@@ -60,6 +60,12 @@ if(NOT EXISTS "${PROJECT_SOURCE_DIR}/libs/core/CMakeLists.txt")
       "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again."
     )
 endif()
+macro(install_symlink filepath sympath)
+    install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${filepath} ${sympath})")
+    install(CODE "message(\"-- Created symlink: ${sympath} -> ${filepath}\")")
+endmacro(install_symlink)
+set(SYMLINK_FOUND True)
+
 add_subdirectory(libs/core)
 include_directories(libs/core/include)
 include_directories(libs/core/sep)
