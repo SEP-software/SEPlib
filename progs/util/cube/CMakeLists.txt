@@ -68,6 +68,7 @@ install(PROGRAMS ${links} Scat DESTINATION bin)
 
 if( ${SYMLINK_FOUND} )
 install_symlink( "${CMAKE_INSTALL_PREFIX}/bin/Window3d" "${CMAKE_INSTALL_PREFIX}/bin/Window")
+install_symlink( "${CMAKE_INSTALL_PREFIX}/bin/Stack3d" "${CMAKE_INSTALL_PREFIX}/bin/Stack")
 install_symlink( "${CMAKE_INSTALL_PREFIX}/bin/Scat3d" "${CMAKE_INSTALL_PREFIX}/bin/Cat3d")
 
 if(NOT CMAKE_HOST_APPLE)
