@@ -170,9 +170,10 @@ if(0==auxpar("data_format","s",temp4,tag)){
 sprintf(temp3,"format=%s",temp4);
 
 if(sep3dc->data_format[0]=='F') sprintf(temp4,"esize=4");
-if(sep3dc->data_format[0]=='C') sprintf(temp4,"esize=8");
+if(0==strcmp(sep3dc->data_format,"COMPLEXDOUBLE")) sprintf(temp4,"esize=16");
 if(sep3dc->data_format[0]=='I') sprintf(temp4,"esize=4");
 if(sep3dc->data_format[0]=='B') sprintf(temp4,"esize=1");
+if(sep3dc->data_format[0]=='D') sprintf(temp4,"esize=8");
 
 nsize=(int)(strlen(temp1)+strlen(temp2)+strlen(temp3)+strlen(temp4));
 nremain=WIDTH-nsize;
@@ -387,7 +388,7 @@ if(ierr==0) sizes[1]=-1;
 else{
   sizes[1]=ssize_info(tag);
   if(sizes[1] < my_check) my_check=sizes[1];
-  sizes[2]=-1;;
+  sizes[2]=-1;
   if(do_check==1){
     logic=-1; ndone=0;
     while(logic==-1 && ndone < my_check){

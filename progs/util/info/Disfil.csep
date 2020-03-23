@@ -6,7 +6,7 @@ Disfil - Display data values
  
 =head1 SYNOPSIS
 
-Disfil [ type=f,c,d,i,s,b,n col= format=(printf format) number=y ] < in.H
+Disfil [ type=f,c,d,i,s,b,n,m col= format=(printf format) number=y ] < in.H
     
 =head1 INPUT PARAMETERS
 
@@ -18,6 +18,7 @@ Disfil [ type=f,c,d,i,s,b,n col= format=(printf format) number=y ] < in.H
       n -4-byte NATIVE FLOAT   (doesn't use sreed)
       c -8-byte COMPLEX  (default if esize=8)
       d -8-byte FLOAT
+      m -16-byte COMPLEX DOUBLE (default if esize=16)
       i-  4-byte INT
       s- 2-byte INT    (default if esize=2)
       b- 1-byte INT    (default if esize=1)
@@ -96,11 +97,11 @@ copyright (c) 1991 Stanford University
  * Keyword: data display  binary  ascii
  */
 
-#define NTYPE  7
+#define NTYPE  8
 #define MAXCOL  128
 struct
 {
-    char            name[10];  /* name of type */
+    char            name[20];  /* name of type */
     int             bytes;  /* byte size of type */
     int             col;/* default number of columns */
     char            Format[80];  /* format of type */
@@ -109,6 +110,7 @@ struct
     "float", 4, 5, "%13.4g ",
     "native", 4, 5, "%13.4g ",
     "complex", 8, 3, "%10.4g,%10.4gi  ",
+    "complexDouble", 8, 5, "%13.4g,%13.4gi  ",
     "double", 8, 5, "%13.4g ",
     "int", 4, 10, "%4d ",
     "short", 2, 10, "%4d ",
@@ -116,9 +118,9 @@ struct
 };
 enum
 {
-    Float, NativeFloat, Complex, Double, Int, Short, Byte
+    Float, NativeFloat, Complex, ComplexDouble, Double, Int, Short, Byte
 };      /* index to Type */
-char            type[10] = "float";  /* default type */
+char            type[20] = "float";  /* default type */
 int             number = 1;
 
 #define OUT "stdout"
@@ -169,6 +171,9 @@ fprintf(stderr,"called doc(%s)\n",SOURCE);
   case 8:
       strcpy (type, "complex");
       break;
+  case 16:
+      strcpy(type, "complexdouble");
+      break;
   }
     }
 
@@ -190,6 +195,9 @@ fprintf(stderr,"called doc(%s)\n",SOURCE);
     case 'c':
     case 'C':
   TYPE = &Type[(int) Complex];
+      case 'm':
+    case 'M':
+  TYPE = &Type[(int) ComplexDouble];
   break;
     case 'd':
     case 'D':
