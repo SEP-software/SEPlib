@@ -32,6 +32,7 @@ MACRO(ADD_FILE_DEPENDANCY file)
       PROPERTIES OBJECT_DEPENDS "${${file}_deps}" ) 
 ENDMACRO(ADD_FILE_DEPENDANCY) 
 
+
 FOREACH(font ${FONTS})
   STRING(REGEX REPLACE ".vplot_font\$" "" base "${font}")
   set(baseloc "${CMAKE_CURRENT_BINARY_DIR}/${base}")
@@ -54,8 +55,10 @@ FOREACH(font ${FONTS})
      DEPENDS "${infile}" makefont
      )
     add_dependencies(genlib  ${myinc})
+    install(FILES ${outfile} DESTINATION include)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${myinc}  DESTINATION include)
 ENDFOREACH(font)
 ADD_CUSTOM_TARGET(ProcessFiles ALL DEPENDS ${fontFiles})
 
-install(FILES ${fontFiles} DESTINATION include)
+
 install(TARGETS genlib DESTINATION lib)

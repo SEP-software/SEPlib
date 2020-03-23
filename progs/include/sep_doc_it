@@ -66,6 +66,7 @@ while ($line=<STDIN>) {
 #close(MYFILE);
 $d=`date`; chomp($d);
 $d=~s/ /_/gm;
+$d=rand(1000000);
 $file=$ENV{"USER"}.$d;
 $file1="/tmp/$file"."1";
 $file2="/tmp/$file"."2";

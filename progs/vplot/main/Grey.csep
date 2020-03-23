@@ -1678,7 +1678,7 @@ if(newclip==0){
       tmp=(tmp-minval[counter])/delta;
       if(((int)tmp)>256.0f) seperr("specified a maxval for a bar that is greater than the specified clip");
       if(tmp>255.0f) tmp=255.0f;
-      barmn = (unsigned char) tmp;
+      barmx = (unsigned char) tmp;
     }
     if(getch("minval","f",&tmp)==1){
       tmp=(tmp-minval[counter])/delta;
@@ -1697,7 +1697,9 @@ if(newclip==0){
 		/* hack  for when all data2 values are the same*/
 
 		if(numbcol==0) numbcol=1;
-    for (ii = 0; ii < numbcol; ii++)  bdata[ii] = barmn + ii;
+    for (ii = 0; ii < numbcol; ii++)  {
+      bdata[ii] = barmn + ii;
+   }
     }
     else{
       mymin = datas[0];

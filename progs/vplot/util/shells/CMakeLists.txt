@@ -10,3 +10,4 @@ vp_annotate vp_Unrotate
 Rasterize	vp_OverUnderIso)
 
 install(PROGRAMS ${SCRIPTS} DESTINATION bin)
+

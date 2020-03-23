@@ -126,7 +126,7 @@ program Gauss
   integer i1,i2,i3,ngauss,ierr,igauss
   real,dimension(:,:), allocatable :: array
   real,allocatable :: max1(:),max2(:),max3(:),maxvel(:),var(:)
-  real,allocatable :: rat31(:),rat32(:)
+  real,allocatable :: rat31(:),rat21(:)
   call SEP_ADD_DOC()
   call sep_init('')
   call sep_begin_prog()
@@ -150,7 +150,7 @@ program Gauss
     call seperr("trouble put data axis par")
   allocate(maxvel(ngauss),max1(ngauss),max2(ngauss),max3(ngauss),var&
     &(ngauss))
-    allocate(rat31(ngauss),rat21(ngaus))
+    allocate(rat31(ngauss),rat21(ngauss))
   ierr=getch("maxvel","f",maxvel)
   if (ierr.eq.0) then
     maxvel=1.
