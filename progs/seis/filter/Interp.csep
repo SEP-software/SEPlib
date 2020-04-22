@@ -308,7 +308,7 @@ int MAIN(void)
 		/* contruct sinc table */
 		for(i=0; i< ntab; i++){
 			d=i*dsinc;
-			mksinc( &sinc_table[i*lsinc], lsinc, d, space);
+			mksinc2( &sinc_table[i*lsinc], lsinc, d, space);
 		}
 		if(verb) 
 			fprintf(stderr,"finished constructing sinc table of size %d by %d\n",

@@ -5,7 +5,7 @@ use, intrinsic :: iso_c_binding
 
 
 interface
-  subroutine mksinc(ar,n,f,ar2) bind(c,name="mksinc")
+  subroutine mksinc(ar,n,f,ar2) bind(c,name="mksinc2")
     import
     integer(C_INT),value :: n
     real(C_FLOAT),value :: f

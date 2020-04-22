@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <sepfilter.h>
+#include "stdio.h"
 
 /************************************************************************
 *                          Subroutine mksinc                            *
@@ -21,10 +22,10 @@
 ************************************************************************/
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-int mksinc (float *sinc,int lsinc,float d,float *space)
+int mksinc2(float *sinc,int lsinc,float d,float *space)
 _XFUNCPROTOEND
 #else
-int mksinc (sinc,lsinc,d,space)
+int mksinc2(sinc,lsinc,d,space)
 int lsinc; 
 float *sinc,d,*space;
 #endif
@@ -55,6 +56,7 @@ float *sinc,d,*space;
 
 	/* solve the system for sinc coefficients */
 	toep (lsinc,b,sinc,c,work);
+	for(j=0; j < lsinc;j++)
 	return(0);
 }
 
