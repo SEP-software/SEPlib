@@ -2,3 +2,6 @@
 	path = libs/core
 	url = http://zapad.Stanford.EDU/SEP-external/sep-iolibs.git
 	ignore = dirty
+[submodule "examples/xaw"]
+	path = examples/xaw
+	url = https://github.com/freedesktop/xorg-libXaw.git
