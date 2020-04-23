@@ -1,4 +1,4 @@
-From debian:latest
+From ubuntu:16.04
 MAINTAINER Bob Clapp <bob@sep.stanford.edu>
 RUN apt-get -y update &&\
     apt-get -y  install g++ python3-numpy git make gcc libboost-all-dev  libboost-dev &&\
@@ -15,13 +15,23 @@ RUN apt-get -y update&&\
   apt-get -y install flex libxaw7-dev  &&\
   apt-get -y clean
 
+RUN apt-get -y update&&\
+     apt-get -y install x11vnc  wget vnc4server gnome-session gdm3  python3-pip&&\
+  apt-get -y clean
+RUN cd /tmp &&\
+   wget https://github.com/Kitware/CMake/releases/download/v3.14.3/cmake-3.14.3.tar.gz &&\
+   cd /tmp/ &&\
+   tar xzf /tmp/cmake-3.14.3.tar.gz &&\
+   cd cmake-3.14.3 &&\
+  ./bootstrap &&\
+  make -j 12  && \
+  make -j 12 install
+
 RUN git clone http://zapad.Stanford.EDU/bob/SEPlib.git  /opt/sep-main/src && \
     mkdir /opt/sep-main/build &&\
     cd /opt/sep-main/build &&\
     cmake  -DCMAKE_INSTALL_PREFIX=/opt/SEP ../src &&\
     make  -j 12  install
 
-RUN apt-get -y update&&\
-     apt-get -y install x11vnc  vnc4server gnome-session gdm3  python3-pip&&\
-  apt-get -y clean
+
 #RUN vnc4server

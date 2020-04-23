@@ -17,7 +17,7 @@ ExternalProject_Add (xorg_macros
 ExternalProject_Add (xaw_build
   URL https://github.com/freedesktop/xorg-libXaw/archive/libXaw-1.0.13.tar.gz
   DEPENDS xorg_macros
-  CONFIGURE_COMMAND autoreconf -vif -I ${CMAKE_INSTALL_PREFIX}/share/aclocal  && ./configure  --prefix=${CMAKE_INSTALL_PREFIX}
+  CONFIGURE_COMMAND autoreconf -vif -I ${CMAKE_INSTALL_PREFIX}/share/aclocal -I${CMAKE_INSTALL_PREFIX}/share -I${CMAKE_INSTALL_PREFIX}/share/pkgconfig  && ./configure  --prefix=${CMAKE_INSTALL_PREFIX}
   BUILD_COMMAND make
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND make install
