@@ -10,6 +10,18 @@ set(SEPlib_MAJOR_VERSION 9)
 set(SEPlib_MINOR_VERSION 0)
 set(SEPlib_VERSION_STRING ${SEPlib_MAJOR_VERSION}.${SEPlib_MINOR_VERSION})
 
+  
+
+# Handle superbuild first
+option (USE_SUPERBUILD "Whether or not a superbuild should be invoked" OFF)
+if (USE_SUPERBUILD)
+message("IN SPUER")
+  project (SUPERBUILD NONE)
+  # execute the superbuild (this script will be invoked again without the
+  # USE_SUPERBUILD option this time)
+  include (cmake/SuperBuild.cmake)
+else()
+
 
 if(NOT SUBPACKAGE)
 	option(BUILD_DOC "Build documentation" OFF)
@@ -150,3 +162,4 @@ set(CPACK_PACKAGE_VERSION_PATCH "0")
 set(CPACK_PACKAGE_NAME "SEPlib")
 set(CPACK_PACKAGE_CONTACT "Robert Clapp")
 include(CPack)
+endif()
