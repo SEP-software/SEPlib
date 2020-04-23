@@ -123,7 +123,7 @@ static int first_invoke = 1;
 
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
-int getch( const char *tag, char *type, void *ptr )
+int getch( const char *tag, const char *type, void *ptr )
 _XFUNCPROTOEND
 #else
 int
