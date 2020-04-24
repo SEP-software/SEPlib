@@ -87,7 +87,7 @@ int getch2(va_alist /*str1,str2,var,headname*/) va_dcl
   resetArgCV(2, parlist);
   (void)sprintf(parline, "par=%s", headname);
   count = getparin(str1, str2, var);
-  resetArgCV(oldxargc, oldxargv);
+  resetSepArgCV(oldxargc, oldxargv);
   for (int i = 0; i < oldxargc; i++)
     free(oldxargv[i]);
   free(oldxargv);
