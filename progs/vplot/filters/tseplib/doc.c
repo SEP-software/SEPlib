@@ -20,6 +20,7 @@
 #include <strings.h>
 #endif
 #include "../include/extern.h"
+#include "sep_pars_external.h"
 
 int doc (char *sourcefile)
 {
@@ -30,7 +31,7 @@ int             ii;
 	xargfix();
 #endif
  
-    if ((sepxargc == 1 || (sepxargc == 2 && !strncmp ("wstype=", sepxargv[1], 7)))
+    if ((getSepArgC() == 1 || (getSepArgC() == 2 && !strncmp ("wstype=", getSepArgV()[1], 7)))
 	&& !redin ())
     {
 	for (ii = 0; ii < doclength; ii++)

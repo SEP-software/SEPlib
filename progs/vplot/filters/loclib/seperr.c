@@ -74,7 +74,6 @@ char           *format;
 int seperr (a, b, c, d, e, f, g, h)
     char           *a, *b, *c, *d, *e, *f, *g, *h;
 {
-extern char   **sepxargv;
 char            string[120];
 
     sprintf (string, a, b, c, d, e, f, g, h);

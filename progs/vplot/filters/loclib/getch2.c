@@ -66,15 +66,22 @@ va_dcl
 	headname = va_arg(apptr,char *);
 	va_end(apptr);
 
-	oldxargv = sepxargv; oldxargc = sepxargc;
+	char **tmp = getSepArgV(); 
+        oldxargc = getSepArgC();
+        oldargv=(char**)malloc(sizeof(char*)*oldargc);
+        for(int i=0; i < oldargc; i++){
+           oldargv[i]=(char*)malloc(sizeof(char)*(strlen(tmp[i]+1));
+           strcpy(oldargv[i],tmp[i]);
+        }
+		
 
-	parlist[0]=sepxargv[0]; parlist[1]= &(parline[0]); parlist[2]=(char *)NULL;
-	sepxargv = &(parlist[0]);
-	sepxargc = 2;
+	parlist[0]=getSepArgV()[0]; parlist[1]= &(parline[0]); parlist[2]=(char *)NULL;
+	getSepArgV() = &(parlist[0]);
+        resetArgVC(2,parlist);
 	(void) sprintf(parline,"par=%s",headname);
 	count = getparin( str1, str2, var);
-
-	sepxargv = oldxargv;
-	sepxargc = oldxargc;
+        resetArgVC(oldargc,oldargv);
+        for(int i=0; i < oldargc; i++) free(oldargv[i]);
+        free(oldargv);
 	return (count);
 }

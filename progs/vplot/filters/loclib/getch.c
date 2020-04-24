@@ -121,6 +121,7 @@ int getch_queue_size = GETCH_QUEUE_SIZE;
 
 static int first_invoke = 1;
 
+#include "sep_pars_external.h"
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
 int getch( const char *tag, const char *type, void *ptr )
@@ -137,8 +138,8 @@ char* ptr;
 
 
  if(first_invoke) {
-    for(iargc=1; iargc<sepxargc; iargc++) {
-	getpar_string_store(getch_queue,getch_queue_size,sepxargv[iargc]);
+    for(iargc=1; iargc<getSepArgC(); iargc++) {
+	getpar_string_store(getch_queue,getch_queue_size,getSepArgV()[iargc]);
   }
     first_invoke = 0;
     }
@@ -189,7 +190,7 @@ B<sep>
 =cut
 
 */
-
+#include "sep_pars_external.h"
 #if NeedFunctionPrototypes
 _XFUNCPROTOBEGIN
 int getch_add_string(const char *string)
@@ -203,8 +204,8 @@ const char *string;
      int iargc;
 
     if(first_invoke) {
-        for(iargc=1; iargc<sepxargc; iargc++) 
-    	    getpar_string_store(getch_queue,getch_queue_size,sepxargv[iargc]);
+        for(iargc=1; iargc<getSepArgC(); iargc++) 
+    	    getpar_string_store(getch_queue,getch_queue_size,getSepArgV()[iargc]);
         first_invoke = 0;
     }
 

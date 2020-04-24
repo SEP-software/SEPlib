@@ -55,6 +55,7 @@ static int getp_neq(char,char *);
 static int getm_same(char *,int);
 static int count_found(int);
 static int parser(char *,MIXED,char[MAXLINE],int,int);
+#include "sep_pars_external.h"
 
 int getparin(char *name, char *type, MIXED ptr)
 {
@@ -63,7 +64,7 @@ int getparin(char *name, char *type, MIXED ptr)
 	FILE *file;
 	MIXED un_fname;
 
-	if( (ac= sepxargc)==0 || (av= sepxargv)== NULL)
+	if( (ac= getSepArgC())==0 || (av= getSepArgV())== NULL)
 		seperr("getpar() sepxargc or sepxargv not initialized\n");
 	INPAR = 0;
 	/* break the parameter names in name into a list */

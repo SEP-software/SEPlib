@@ -292,11 +292,11 @@ int ii;
     else
 	strncpy (callname, argv[0], 24);
 #else /* SEP */
-    orig_argv0 = getSepArgV[0];
-    if (stringptr = strrchr(getSepArgV[0], '/'))
+    orig_argv0 = getSepArgV()[0];
+    if (stringptr = strrchr(getSepArgV()[0], '/'))
 	strncpy (callname, ++stringptr, 24);
     else
-	strncpy (callname, getSepArgV[0], 24);
+	strncpy (callname, getSepArgV()[0], 24);
 #endif /* SEP */
 
 #ifdef SEP
@@ -472,8 +472,8 @@ int ii;
     else
 	ERR (WARN, name, "cannot read input pipe");
 
-    xsepxargc = getSepArgC()+0*tempfileindex;
-    xsepxargv = getSepArgV();
+    int xsepxargc = getSepArgC()+0*tempfileindex;
+    char **xsepxargv = getSepArgV();
 
     for (xsepxargc--, xsepxargv++; xsepxargc; xsepxargc--, xsepxargv++)
     {
