@@ -49,7 +49,7 @@
  */
  
 #include "xtpen.h"
-
+#include "sep_pars_external.h"
 #ifndef XT_SET_TRANSLATIONS
 #define XT_SET_TRANSLATIONS
 #endif
@@ -148,9 +148,9 @@ char ** myxargv;
    * save the command line arguments
    */
   
-  myxargc = sepxargc;
+  myxargc = getSepArgC();
   myxargv = (char **) XtMalloc (myxargc * sizeof (char *));
-  bcopy ((char *) sepxargv, (char *) myxargv, myxargc * sizeof (char *));
+  bcopy ((char *) getSepArgV(), (char *) myxargv, myxargc * sizeof (char *));
   
     
     /* device capabilities */
@@ -170,16 +170,16 @@ char ** myxargv;
     if(syncplot == YES) _Xdebug = 1;
 
     /* initialize the first app (we will delete this one later ) */
-    xtargc = sepxargc;
+    xtargc = getSepArgC();
     xtpen = XtVaAppInitialize(
 		&pen_context,
 		"XTpen",
 		NULL, ZERO,
-		&xtargc, sepxargv,
+		&xtargc, getSepArgV(),
 		fallback_resources,
 		NULL );
 		
-    sepxargc=xtargc;
+    //sepxargc=xtargc;
 
     /* get app data from the resource database */
     xt_app_data( xtpen );

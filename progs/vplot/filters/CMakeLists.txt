@@ -20,28 +20,28 @@ set(BASE dovplot.c proc_vplot.c)
 set(NOSEPPEN_BASE ${BASE}  main_vplot.c init_vplot.c)
 set(SEPPEN_BASE ${BASE} init_vplot_SEP.c main_vplot_SEP.c)
 ADD_EXECUTABLE(xtpen ${NOSEPPEN_BASE})
-TARGET_LINK_LIBRARIES(xtpen xt_pen  genlib vplotutil loclib  vplot ${X11_XAW} ${X11_XT} ${X11_LIBRARIES} m)
+TARGET_LINK_LIBRARIES(xtpen xt_pen  genlib vplotutil loclib  vplot ${X11_XAW} ${X11_XT} ${X11_LIBRARIES} sep m)
 
 ADD_EXECUTABLE(Sxtpen ${SEPPEN_BASE})
-TARGET_LINK_LIBRARIES(Sxtpen xt_pen_SEP   ${X11_XAW} ${X11_XT} ${X11_LIBRARIES} m)
+TARGET_LINK_LIBRARIES(Sxtpen xt_pen_SEP   ${X11_XAW} ${X11_XT} ${X11_LIBRARIES} sep m)
 
 
 ADD_EXECUTABLE(vppen ${NOSEPPEN_BASE})
-TARGET_LINK_LIBRARIES(vppen vp_pen m)
+TARGET_LINK_LIBRARIES(vppen vp_pen sep  m)
 
 ADD_EXECUTABLE(Svppen ${SEPPEN_BASE})
-TARGET_LINK_LIBRARIES(Svppen xt_pen_SEP )
+TARGET_LINK_LIBRARIES(Svppen xt_pen_SEP sep m )
 
 
 ADD_EXECUTABLE(pspen ${NOSEPPEN_BASE})
-TARGET_LINK_LIBRARIES(pspen ps_pen m  )
+TARGET_LINK_LIBRARIES(pspen ps_pen sep m  )
 
 ADD_EXECUTABLE(Spspen ${SEPPEN_BASE})
 TARGET_LINK_LIBRARIES(Spspen ps_pen_SEP sep)
 
 if(NETPBM_FOUND)
 ADD_EXECUTABLE(ppmpen ${NOSEPPEN_BASE})
-TARGET_LINK_LIBRARIES(ppmpen ras_pen  m)
+TARGET_LINK_LIBRARIES(ppmpen ras_pen sep  m)
 
 #ADD_EXECUTABLE(Sppmpen ${SEPPEN_BASE}  )
 #TARGET_LINK_LIBRARIES(Sppmpen ras_pen_SEP sep m )
