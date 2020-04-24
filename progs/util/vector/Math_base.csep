@@ -171,6 +171,7 @@ Purpose:
 #include <string.h>
 #endif
 #include <sys/stat.h>
+#include "sepInternal.h"
 
 
 struct _seek_info{
@@ -185,8 +186,6 @@ typedef struct _seek_info seek_info;
 #define MAX_EXP_LEN 8192
 #define MAX_FILES 100
 
-extern int      sepxargc;
-extern char   **sepxargv;
 
 
 
@@ -237,8 +236,6 @@ int             argc;;
 char          **argv, **envp;
 #endif
 {
-  extern int      sepxargc;
-  extern char   **sepxargv;
   char exp[MAX_EXP_LEN],exp_real[MAX_EXP_LEN],exp_imag[MAX_EXP_LEN],temp_ch[MAX_EXP_LEN];
   char temp2_ch[MAX_EXP_LEN];
   int  eout,maxsize;
@@ -256,7 +253,7 @@ ADD_SEP_DOC
 
 
   grab_pars(exp,&verb,&maxsize);
-  modify_exp(&eout,sepxargv,exp,exp_real,exp_imag);
+  modify_exp(&eout,getSepArgV(),exp,exp_real,exp_imag);
 
   putch("esize","d",&eout);
   check_consistent();
@@ -613,9 +610,9 @@ else if(0==strcmp(name,"Add")){
    /*get scale parameter*/
    for(i=0; i < MAX_FILES;i++) scale[i]=1.;
    getch("scale","f",scale);
-   for (i = 1; i < sepxargc; ++i){
-     if (0 == strchr (sepxargv[i], '=')){
-       strcpy(files[nfiles],sepxargv[i]);
+   for (i = 1; i < getSepArgC(); ++i){
+     if (0 == strchr (getSepArgV()[i], '=')){
+       strcpy(files[nfiles],getSepArgV()[i]);
        nfiles++;
      }
    }
