@@ -226,7 +226,7 @@ fprintf(stderr,"called doc(%s)\n",SOURCE);
 
     byte_grab=-1;
     if (0==hetch ("n1", "d", &byte_grab))
-  fprintf (stderr, "%s: n1 not set; assuming n1=-1 %d \n", sepxargv[0],byte_grab);
+  fprintf (stderr, "n1 not set; assuming n1=-1 %d \n", byte_grab);
     bytetotsize=(double)byte_grab;
     if (bytetotsize == -1)
     {
@@ -235,7 +235,7 @@ fprintf(stderr,"called doc(%s)\n",SOURCE);
   if (bytetotsize < 0)
       seperr ("Can't figure out size of file\n");
 
-  fprintf (stderr, "%s: File is %f bytes long\n", sepxargv[0], bytetotsize);
+  fprintf (stderr, "File is %f bytes long\n",  bytetotsize);
     }
     else
     {
@@ -281,13 +281,13 @@ fprintf(stderr,"called doc(%s)\n",SOURCE);
 /*  if (bytetotsize % TYPE->bytes)*/
   if (byte_grab !=0)
   {
-      fprintf (stderr, "%s: Discarding %d bytes of partial element at end.\n", sepxargv[0], byte_grab);
+      fprintf (stderr, " Discarding %d bytes of partial element at end.\n",  byte_grab);
   }
     }
     else totsize = (double) byte_grab;
     if (totsize * (double)TYPE->bytes > bytetotsize)
     {
-  fprintf (stderr, "%s: count (%f) > number elements (%f); stopping at end.\n", sepxargv[0], totsize, bytetotsize / TYPE->bytes);
+  fprintf (stderr, "count (%f) > number elements (%f); stopping at end.\n",  totsize, bytetotsize / TYPE->bytes);
     }
 
     hclose ();
