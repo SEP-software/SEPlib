@@ -258,8 +258,6 @@ static char *tspoolnam=(char*)NULL;
  */
 
 #ifdef SEP
-int             xsepxargc;
-char          **xsepxargv;
 char            scrap[MAXFLEN + 1];
 int             hclose_done = NO;
 int             fake_header = NO;
@@ -268,8 +266,6 @@ FILE *get_headstream(void) { return headstream;}
 int MAIN (void)
 
 #else /* SEP */
-int             sepxargc;
-char          **sepxargv;	/* for getpar */
 int MAIN_(void){return 0;} /* dummy for shared linkage */
 int main (int argc, char *argv[])
 #endif /* SEP */
@@ -296,11 +292,11 @@ int ii;
     else
 	strncpy (callname, argv[0], 24);
 #else /* SEP */
-    orig_argv0 = sepxargv[0];
-    if (stringptr = strrchr(sepxargv[0], '/'))
+    orig_argv0 = getSepArgV[0];
+    if (stringptr = strrchr(getSepArgV[0], '/'))
 	strncpy (callname, ++stringptr, 24);
     else
-	strncpy (callname, sepxargv[0], 24);
+	strncpy (callname, getSepArgV[0], 24);
 #endif /* SEP */
 
 #ifdef SEP
@@ -363,8 +359,7 @@ int ii;
      * doesn't count as an argument for our purposes 
      */
     in_isatty = isatty ((int) (fileno (stdin)));
-    sepxargc = argc;
-    sepxargv = argv;
+    initFromArgs(argc,argv);
     docflag = 0;
     if (argc == 1)
 	docflag = 1;
@@ -477,8 +472,8 @@ int ii;
     else
 	ERR (WARN, name, "cannot read input pipe");
 
-    xsepxargc = sepxargc+0*tempfileindex;
-    xsepxargv = sepxargv;
+    xsepxargc = getSepArgC()+0*tempfileindex;
+    xsepxargv = getSepArgV();
 
     for (xsepxargc--, xsepxargv++; xsepxargc; xsepxargc--, xsepxargv++)
     {
