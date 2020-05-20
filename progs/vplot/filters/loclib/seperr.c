@@ -39,12 +39,12 @@
 #if defined (SUN) || defined (ULTRIX)
 #include <varargs.h>
 /*VARARGS1*/
-int seperr (va_alist)
+int seperr2(va_alist)
 va_dcl
 #endif
 #if defined (LINUX)
 #include <stdarg.h>
-int seperr (char *format, ...)
+int seperr2(char *format, ...)
 #endif
 {
 va_list         apdum;
@@ -71,7 +71,7 @@ char           *format;
 }
 #else
 /*VARARGS1*/
-int seperr (a, b, c, d, e, f, g, h)
+int seperr2(a, b, c, d, e, f, g, h)
     char           *a, *b, *c, *d, *e, *f, *g, *h;
 {
 char            string[120];
