@@ -52,6 +52,8 @@ install(TARGETS  Spspen pspen Svppen vppen Sxtpen xtpen  DESTINATION bin)
 endif(NETPBM_FOUND)
 
 if(${SYMLINK_FOUND})
+if(NOT APPLE)
+
 install_symlink("${CMAKE_INSTALL_PREFIX}/bin/Spspen" "${CMAKE_INSTALL_PREFIX}/bin/Pspen")
 install_symlink("${CMAKE_INSTALL_PREFIX}/bin/Svppen" "${CMAKE_INSTALL_PREFIX}/bin/Vppen")
 #install_symlink("Sxtpen" "${CMAKE_INSTALL_PREFIX}/bin/Xtpen")
@@ -60,7 +62,6 @@ install_symlink("${CMAKE_INSTALL_PREFIX}/bin/Sxtpen" "${CMAKE_INSTALL_PREFIX}/bi
 if(NETPBM_FOUND)
 install_symlink("${CMAKE_INSTALL_PREFIX}/bin/Sppmpen" "${CMAKE_INSTALL_PREFIX}/bin/Pmpen")
 endif(NETPBM_FOUND)
-if(NOT APPLE)
 if(NOT CMAKE_HOST_APPLE)
 install_symlink("${CMAKE_INSTALL_PREFIX}/bin/Sxtpen" "${CMAKE_INSTALL_PREFIX}/bin/Tube")
 endif(NOT CMAKE_HOST_APPLE)

@@ -119,76 +119,74 @@
 #include <stdio.h>
 
 #ifdef SEP
-extern void     sepwhere ();
-extern char     sepoutwhere[];
-extern char     sepheadwhere[];
+extern void sepwhere();
+extern char sepoutwhere[];
+extern char sepheadwhere[];
 
-#define		OUT	sepoutwhere
-#define		HEAD	sepheadwhere
+#define OUT sepoutwhere
+#define HEAD sepheadwhere
 #if !defined(RS6000) && !defined(SOURCE)
-#define		SOURCE  "\014Joe Dellinger, Stanford Exploration Project\014"
+#define SOURCE "\014Joe Dellinger, Stanford Exploration Project\014"
 #endif
-#include	<string.h>
-#include	<sep.main>
-#define		GETPAR	fetch
+#include <string.h>
+#include <sep.main>
+#define GETPAR fetch
 
 #else /* SEP */
-#include	<stdio.h>
-#include	<math.h>
-#include	<string.h>
-#define		GETPAR	getpar
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+#define GETPAR getpar
 #endif /* SEP */
 
-
 #if defined(HAVE_TERMIOS_H)
-#include	<termios.h>
+#include <termios.h>
 #else
 #if defined(HAVE_TERMIO_H)
-#include	<termio.h>
+#include <termio.h>
 #else
-#if defined (HAVE_SGTTY_H)
-#include	<sgtty.h>
+#if defined(HAVE_SGTTY_H)
+#include <sgtty.h>
 #else
-#include	<sys/ioctl.h>
+#include <sys/ioctl.h>
 #endif
 #endif /* HAVE_TERMIO_H */
 #endif /* HAVE_TERMIOS_H */
 
 #ifdef HAVE_SYS_TYPES_H
-#include	<sys/types.h>
+#include <sys/types.h>
 #endif
 #ifdef HAVE_SYS_IOCTL_H
-#include	<sys/ioctl.h>
+#include <sys/ioctl.h>
 #endif
 #ifdef HAVE_SYS_STAT_H
-#include	<sys/stat.h>
+#include <sys/stat.h>
 #endif
 #ifdef HAVE_CTYPE_H
-#include	<ctype.h>
+#include <ctype.h>
 #endif
 #ifdef HAVE_SIGNAL_H
-#include	<signal.h>
+#include <signal.h>
 #endif
 
 #ifdef __APPLE__
 #include <term.h>
 #endif
 
-#include	"../include/vplot.h"
+#include "../include/vplot.h"
 
-#include	"./include/params.h"	/* for machine dependencies */
-#include	"./include/enum.h"
-#include	"./include/err.h"
-#include	"./include/attrcom.h"
-#include	"./include/intcom.h"
-#include	"./include/mesgcom.h"
-#include	"./include/erasecom.h"
-#include	"./include/closestat.h"
-#include	"./include/pat.h"
-#include	"./include/vertex.h"
-#include	"./include/round.h"
-#include	"./include/extern.h"
-
+#include "./include/params.h" /* for machine dependencies */
+#include "./include/enum.h"
+#include "./include/err.h"
+#include "./include/attrcom.h"
+#include "./include/intcom.h"
+#include "./include/mesgcom.h"
+#include "./include/erasecom.h"
+#include "./include/closestat.h"
+#include "./include/pat.h"
+#include "./include/vertex.h"
+#include "./include/round.h"
+#include "./include/extern.h"
 
 #if defined(HAVE_TERMIO_H)
 #else /* USG */
@@ -196,61 +194,59 @@ extern char     sepheadwhere[];
  * signal catching
  */
 #if defined(__APPLE__)
-void            cleanup (int);
+void cleanup(int);
 #else
 #if defined(SIGFNC_RTN_VOID)
-void            cleanup (void);
+void cleanup(void);
 #else
-int             cleanup (void);
+int cleanup(void);
 #endif
 #endif
-int             signum[] =
-{
+int signum[] =
+	{
 #if defined(LINUX) || defined(__APPLE__)
- SIGHUP, SIGINT, SIGQUIT, SIGIOT, SIGBUS, SIGPIPE, SIGTERM, SIGXCPU, SIGXFSZ
+		SIGHUP, SIGINT, SIGQUIT, SIGIOT, SIGBUS, SIGPIPE, SIGTERM, SIGXCPU, SIGXFSZ
 #else
- SIGHUP, SIGINT, SIGQUIT, SIGIOT, SIGEMT, SIGPIPE, SIGTERM, SIGXCPU, SIGXFSZ
+		SIGHUP, SIGINT, SIGQUIT, SIGIOT, SIGEMT, SIGPIPE, SIGTERM, SIGXCPU, SIGXFSZ
 #endif
 };
-#define NOSIG (sizeof (signum)/sizeof (int))	/* number of signals caught */
-#if defined(SOLARIS ) || defined(LINUX) || defined(__APPLE__)
-struct sigaction   errhandler =
-{
+#define NOSIG (sizeof(signum) / sizeof(int)) /* number of signals caught */
+#if defined(SOLARIS) || defined(LINUX) || defined(__APPLE__)
+struct sigaction errhandler =
+	{
 #if defined(LINUX) || defined(__APPLE__)
 #if defined(LINUX)
- cleanup, 0, 0
+		cleanup, 0, 0
 #else
- (union __sigaction_u) cleanup, 0, 0
+		(union __sigaction_u)cleanup, 0, 0
 #endif
 #else
- 0, cleanup, 0
+		0, cleanup, 0
 #endif
 };
-struct sigaction   ignored =
-{
+struct sigaction ignored =
+	{
 #if defined(LINUX) || defined(__APPLE__)
- SIG_IGN, 0, 0
+		SIG_IGN, 0, 0
 #else
- 0, SIG_IGN, 0
+		0, SIG_IGN, 0
 #endif
 };
-struct sigaction   oldvec;
-#else /*SOLARIS*/
-int             sigvec ();
-struct sigvec   errhandler =
-{
- cleanup, 0, 0
-};
-struct sigvec   ignored =
-{
- SIG_IGN, 0, 0
-};
-struct sigvec   oldvec;
+struct sigaction oldvec;
+#else  /*SOLARIS*/
+int sigvec();
+struct sigvec errhandler =
+	{
+		cleanup, 0, 0};
+struct sigvec ignored =
+	{
+		SIG_IGN, 0, 0};
+struct sigvec oldvec;
 #endif /*SOLARIS*/
 #endif /* USG */
 
 /* the name of the temporary file */
-static char *tspoolnam=(char*)NULL;
+static char *tspoolnam = (char *)NULL;
 
 /*
  * This routine is responsible for finding the input files,
@@ -261,452 +257,451 @@ static char *tspoolnam=(char*)NULL;
  */
 
 #ifdef SEP
-int             xsepxargc;
-char          **xsepxargv;
-char            scrap[MAXFLEN + 1];
-int             hclose_done = NO;
-int             fake_header = NO;
-MAIN ()
+int xsepxargc;
+char **xsepxargv;
+char scrap[MAXFLEN + 1];
+int hclose_done = NO;
+int fake_header = NO;
+MAIN()
 
-#else /* SEP */
-int             sepxargc;
-char          **sepxargv;	/* for getpar */
+#else  /* SEP */
+int sepxargc;
+char **sepxargv; /* for getpar */
 
-int MAIN_(void){ return (EXIT_SUCCESS); } /* dummy for shared linkage */
-int main (int argc, char *argv[])
+int MAIN_(void) { return (EXIT_SUCCESS); } /* dummy for shared linkage */
+int main(int argc, char *argv[])
 #endif /* SEP */
 {
 #ifndef SEP
-int             in_isatty, num_vplot, docflag;
-char            instring[MAXFLEN + 1];
+	int in_isatty, num_vplot, docflag;
+	char instring[MAXFLEN + 1];
 #endif /* SEP */
 
-char           *cptr;
-char           *stringptr;
-int             ii;
-FILE           *temp;
-char            string[MAXFLEN + 1];
-int		tempfileindex = -1;
-MIXED		vartemp;
-
+	char *cptr;
+	char *stringptr;
+	int ii;
+	FILE *temp;
+	char string[MAXFLEN + 1];
+	int tempfileindex = -1;
+	MIXED vartemp;
+	initpar(argc, argv);
 
 #ifndef SEP
-    orig_argv0 = argv[0];
-    if (stringptr = strrchr(argv[0], '/'))
-	strncpy (callname, ++stringptr, 24);
-    else
-	strncpy (callname, argv[0], 24);
-#else /* SEP */
-    orig_argv0 = sepxargv[0];
-    if (stringptr = strrchr(sepxargv[0], '/'))
-	strncpy (callname, ++stringptr, 24);
-    else
-	strncpy (callname, sepxargv[0], 24);
+	orig_argv0 = argv[0];
+	if (stringptr = strrchr(argv[0], '/'))
+		strncpy(callname, ++stringptr, 24);
+	else
+		strncpy(callname, argv[0], 24);
+#else  /* SEP */
+	orig_argv0 = sepxargv[0];
+	if (stringptr = strrchr(sepxargv[0], '/'))
+		strncpy(callname, ++stringptr, 24);
+	else
+		strncpy(callname, sepxargv[0], 24);
 #endif /* SEP */
 
 #ifdef SEP
-    pltout = outstream;
-    if (redout ())
-    {
-	getch ("head", "s", scrap);
-	if (strcmp (scrap, "/dev/null") == 0 &&
-	    strcmp (sepheadwhere, "/dev/null") == 0)
+	pltout = outstream;
+	if (redout())
 	{
-	    fake_header = YES;
-	    getch ("out", "s", scrap);
-	    if (strcmp (scrap, "stdout") != 0)
-	    {
-		/*
+		getch("head", "s", scrap);
+		if (strcmp(scrap, "/dev/null") == 0 &&
+			strcmp(sepheadwhere, "/dev/null") == 0)
+		{
+			fake_header = YES;
+			getch("out", "s", scrap);
+			if (strcmp(scrap, "stdout") != 0)
+			{
+				/*
 		 * They probably want the header output into the redirected
 		 * output. (SEP only) 
 		 */
-		headstream = stdout;
-		headfd = fileno (headstream);
-		Puthead ("Fake header for special device-dependent data only.\n");
-		Puthead ("To get input history passed along, over-ride default with head = stdout\n");
-		/*
+				headstream = stdout;
+				headfd = fileno(headstream);
+				Puthead("Fake header for special device-dependent data only.\n");
+				Puthead("To get input history passed along, over-ride default with head = stdout\n");
+				/*
 		 * If the output is going into a file, then put this
 		 * information into the header file. 
 		 */
-		if (strcmp (scrap, "/dev/tty") != 0)
-		{
-		    fullnm (scrap, MAXFLEN + 1);
-		    Puthead ("\tin=%s\n", scrap);
-		}
-		else
-		{
-		    Puthead ("\tin= nowhere\n");
-		    Puthead ("\t(Sorry, the data went to the terminal; it's gone now!)\n");
-		}
+				if (strcmp(scrap, "/dev/tty") != 0)
+				{
+					fullnm(scrap, MAXFLEN + 1);
+					Puthead("\tin=%s\n", scrap);
+				}
+				else
+				{
+					Puthead("\tin= nowhere\n");
+					Puthead("\t(Sorry, the data went to the terminal; it's gone now!)\n");
+				}
 
-		/*
+				/*
 		 * Have to use my own puthead routine. Standard ones such as
 		 * putch, etc, don't work with this. They remember where the
 		 * header used to be. Puthead does this, checking for
 		 * headstream not null. This is so this will work without
 		 * sep, as well. 
 		 */
-	    }
+			}
+		}
 	}
-    }
 
-    if (!fake_header)
-    {
-	Puthead ("\tn3 = unknown\n\t(Sorry, SEPlib requires the header be closed now.)\n");
-	Puthead ("\t(Normally you won't care that n3 is unknown unless you're using Raspen!\n)");
-	hclose ();
-	hclose_done = YES;
-    }
-#else /* SEP */
+	if (!fake_header)
+	{
+		Puthead("\tn3 = unknown\n\t(Sorry, SEPlib requires the header be closed now.)\n");
+		Puthead("\t(Normally you won't care that n3 is unknown unless you're using Raspen!\n)");
+		hclose();
+		hclose_done = YES;
+	}
+#else		   /* SEP */
 
-    /*
+	/*
      * If no arguments, and not in a pipeline, self document "wstype="
      * doesn't count as an argument for our purposes 
      */
-    in_isatty = isatty ((int) (fileno (stdin)));
-    sepxargc = argc;
-    sepxargv = argv;
-    docflag = 0;
-    if (argc == 1)
-	docflag = 1;
-    if ((argc == 2) && !strncmp ("wstype=", argv[1], 7))
-	docflag = 1;
-    vartemp.i = &docflag;
-    getpar ("selfdoc", "1", vartemp);
-    if (in_isatty && docflag)
-    {
-	for (ii = 0; ii < doclength; ii++)
-	    printf ("%s\n", documentation[ii]);
-	exit (0);
-    }
-
-    pltout = stdout;
-#endif /* SEP */
-
-    nulldev ();			/* Just to make sure it gets loaded */
+	in_isatty = isatty((int)(fileno(stdin)));
+	sepxargc = argc;
+	sepxargv = argv;
+	docflag = 0;
+	if (argc == 1)
+		docflag = 1;
+	if ((argc == 2) && !strncmp("wstype=", argv[1], 7))
+		docflag = 1;
+	vartemp.i = &docflag;
+	getpar("selfdoc", "1", vartemp);
+	if (in_isatty && docflag)
+	{
+		for (ii = 0; ii < doclength; ii++)
+			printf("%s\n", documentation[ii]);
+		exit(0);
+	}
+	pltout = stdout;
+#endif		   /* SEP */
+	nulldev(); /* Just to make sure it gets loaded */
 
 #if defined(HAVE_TERMIO_H)
 
 #else /* USG */
-    /*
+	/*
      * This getpar for signal is only included for debugging purposes. By
      * using a signal option, one can stop any signals from being caught. 
      */
-    vartemp.s = &(string[0]);
-    if (getpar ("signal", "s", vartemp) == 0)
-    {
+	vartemp.s = &(string[0]);
+	if (getpar("signal", "s", vartemp) == 0)
+	{
 /*#ifdef SOLARIS*/
 #if defined(SOLARIS) || defined(LINUX) || defined(__APPLE__)
-        sigfillset(&(errhandler.sa_mask));
+		sigfillset(&(errhandler.sa_mask));
 #endif
-	for (ii = 0; ii < NOSIG; ++ii)
-	{
+		for (ii = 0; ii < NOSIG; ++ii)
+		{
 #if defined(SOLARIS) || defined(LINUX) || defined(__APPLE__)
-	    if (-1 == sigaction (signum[ii], &ignored, &oldvec))
-	    {
-		ERR (FATAL, name, "Bad sigvec call!");
-	    }
-	    if (oldvec.sa_handler == ignored.sa_handler)
-		(void) sigaction (signum[ii], &oldvec, (struct sigaction *) NULL);
-	    else
-		(void) sigaction (signum[ii], &errhandler, (struct sigaction *) NULL);
+			if (-1 == sigaction(signum[ii], &ignored, &oldvec))
+			{
+				ERR(FATAL, name, "Bad sigvec call!");
+			}
+			if (oldvec.sa_handler == ignored.sa_handler)
+				(void)sigaction(signum[ii], &oldvec, (struct sigaction *)NULL);
+			else
+				(void)sigaction(signum[ii], &errhandler, (struct sigaction *)NULL);
 #else
-	    if (-1 == sigvec (signum[ii], &ignored, &oldvec))
-	    {
-		ERR (FATAL, name, "Bad sigvec call!");
-	    }
-	    if (oldvec.sv_handler == ignored.sv_handler)
-		(void) sigvec (signum[ii], &oldvec, (struct sigvec *) NULL);
-	    else
-		(void) sigvec (signum[ii], &errhandler, (struct sigvec *) NULL);
+			if (-1 == sigvec(signum[ii], &ignored, &oldvec))
+			{
+				ERR(FATAL, name, "Bad sigvec call!");
+			}
+			if (oldvec.sv_handler == ignored.sv_handler)
+				(void)sigvec(signum[ii], &oldvec, (struct sigvec *)NULL);
+			else
+				(void)sigvec(signum[ii], &errhandler, (struct sigvec *)NULL);
 #endif
+		}
 	}
-    }
 #endif /* USG */
 
-/*
+	/*
  ****************************************************************************
  * Set all global variables, open the device.
  ****************************************************************************
  */
 
-    init_vplot ();
+	init_vplot();
 
-/*
+	/*
  ****************************************************************************
  * Start processing input files
  ****************************************************************************
  */
 
-
-#ifdef SEP/* { */
-    if (instream != NULL)
-    {
-	if (infileno >= MAXIN)
+#ifdef SEP /* { */
+	if (instream != NULL)
 	{
-	    ERR (FATAL, name, "too many input files (%d max)", MAXIN);
-	}
-	if( cachepipe && isapipe(fileno( instream)) )
-	{
-	    if( (pltinarray[infileno] = tempcopy(instream,string) ) == NULL )
-	    {
-	    	ERR( FATAL, name, "copy of piped input failed");
-	    }
-            tspoolnam = strdup(string);
-	 
-            /* check for zero length input (e.g. /dev/null ) */
-	    if( pltinarray[infileno] != (FILE*) -1 ) {
-
-	    strcpy( pltinname[infileno], string );
-	    /*remember what number this file is so we can delete it later*/
-	    tempfileindex = infileno;
-	    infileno++;
-	    }
-	}
-	else
-	{
-	    if (!allow_pipe && isapipe (fileno (instream)))
-	    {
-	    	ERR (WARN, name, "cannot use pipes with this device, try cachepipe=y ");
-	    }
-	    else
-	    {
-	        strcpy (pltinname[infileno], "Pipe");
-	    	pltinarray[infileno] = instream;
-	    	infileno++;
-	    }
-	}
-    }
-    else
-	ERR (WARN, name, "cannot read input pipe");
-
-    xsepxargc = sepxargc;
-    xsepxargv = sepxargv;
-
-    for (xsepxargc--, xsepxargv++; xsepxargc; xsepxargc--, xsepxargv++)
-    {
-	cptr = *xsepxargv;
-	while (*cptr)
-	{
-	    if (*cptr == '=')
-		break;
-	    cptr++;
-	}
-	if (*cptr)
-	    continue;
-	/* Ignore dummy arguments */
-	if (strcmp (*xsepxargv, "dummy") == 0)
-	    continue;
-	if ((temp = fopen (*xsepxargv, "r")) == NULL)
-	{
-	    ERR (WARN, name, "cannot open header file %s", *xsepxargv);
-	    continue;
-	}
-	fclose (temp);
-	if (getch2 ("in", "s", string, *xsepxargv))
-	{
-	    if ((temp = fopen (string, "r")) != NULL)
-	    {
-		Puthead ("   +  %s --> in = %s\n", *xsepxargv, string);
 		if (infileno >= MAXIN)
 		{
-		    ERR (FATAL, name, "too many input files (%d max)", MAXIN);
+			ERR(FATAL, name, "too many input files (%d max)", MAXIN);
 		}
-		strcpy (pltinname[infileno], string);
-		pltinarray[infileno] = temp;
-		infileno++;
-	    }
-	    else
-	    {
-		ERR (WARN, name, "cannot open input file %s", string);
-	    }
-	}
-    }
+		if (cachepipe && isapipe(fileno(instream)))
+		{
+			if ((pltinarray[infileno] = tempcopy(instream, string)) == NULL)
+			{
+				ERR(FATAL, name, "copy of piped input failed");
+			}
+			tspoolnam = strdup(string);
 
-#else /* } !SEP { */
-    /*
+			/* check for zero length input (e.g. /dev/null ) */
+			if (pltinarray[infileno] != (FILE *)-1)
+			{
+
+				strcpy(pltinname[infileno], string);
+				/*remember what number this file is so we can delete it later*/
+				tempfileindex = infileno;
+				infileno++;
+			}
+		}
+		else
+		{
+			if (!allow_pipe && isapipe(fileno(instream)))
+			{
+				ERR(WARN, name, "cannot use pipes with this device, try cachepipe=y ");
+			}
+			else
+			{
+				strcpy(pltinname[infileno], "Pipe");
+				pltinarray[infileno] = instream;
+				infileno++;
+			}
+		}
+	}
+	else
+		ERR(WARN, name, "cannot read input pipe");
+
+	xsepxargc = sepxargc;
+	xsepxargv = sepxargv;
+
+	for (xsepxargc--, xsepxargv++; xsepxargc; xsepxargc--, xsepxargv++)
+	{
+		cptr = *xsepxargv;
+		while (*cptr)
+		{
+			if (*cptr == '=')
+				break;
+			cptr++;
+		}
+		if (*cptr)
+			continue;
+		/* Ignore dummy arguments */
+		if (strcmp(*xsepxargv, "dummy") == 0)
+			continue;
+		if ((temp = fopen(*xsepxargv, "r")) == NULL)
+		{
+			ERR(WARN, name, "cannot open header file %s", *xsepxargv);
+			continue;
+		}
+		fclose(temp);
+		if (getch2("in", "s", string, *xsepxargv))
+		{
+			if ((temp = fopen(string, "r")) != NULL)
+			{
+				Puthead("   +  %s --> in = %s\n", *xsepxargv, string);
+				if (infileno >= MAXIN)
+				{
+					ERR(FATAL, name, "too many input files (%d max)", MAXIN);
+				}
+				strcpy(pltinname[infileno], string);
+				pltinarray[infileno] = temp;
+				infileno++;
+			}
+			else
+			{
+				ERR(WARN, name, "cannot open input file %s", string);
+			}
+		}
+	}
+
+#else  /* } !SEP { */
+	/*
      * first process pipe input 
      */
-    if (!in_isatty)
-    {
-	if (infileno >= MAXIN)
+	if (!in_isatty)
 	{
-	    ERR (FATAL, name, "too many input files (%d max)", MAXIN);
+		if (infileno >= MAXIN)
+		{
+			ERR(FATAL, name, "too many input files (%d max)", MAXIN);
+		}
+
+		if (cachepipe)
+		{
+			if ((pltinarray[infileno] = tempcopy(stdin, string)) == NULL)
+			{
+				ERR(FATAL, name, "copy of piped input failed");
+			}
+
+			tspoolnam = strdup(string);
+
+			/* check for zero length input (e.g. /dev/null ) */
+			if (pltinarray[infileno] != (FILE *)-1)
+			{
+
+				strcpy(pltinname[infileno], string);
+				/* remember what number this file is so we can delete it later*/
+				tempfileindex = infileno;
+				infileno++;
+			}
+		}
+		else
+		{
+			if (!allow_pipe)
+			{
+				ERR(WARN, name, "cannot use pipes with this device, try cachepipe=y ");
+			}
+			else
+			{
+				strcpy(pltinname[infileno], "stdin");
+				pltinarray[infileno] = stdin;
+				infileno++;
+			}
+		}
 	}
 
-  	if( cachepipe )
-        {
-            if( (pltinarray[infileno] = tempcopy( stdin,string) ) == NULL )
-            {
-                ERR( FATAL, name, "copy of piped input failed");
-	    }
-
-	    tspoolnam = strdup(string);
-
-            /* check for zero length input (e.g. /dev/null ) */
-	    if( pltinarray[infileno] != (FILE*)-1 ) {
-
-	    strcpy( pltinname[infileno], string );
-	    /* remember what number this file is so we can delete it later*/
-	    tempfileindex = infileno;
-            infileno++;
-	    }
-        }
-        else
-        {
-	    if (!allow_pipe)
-	    {
-	    	ERR (WARN, name, "cannot use pipes with this device, try cachepipe=y ");
-	    }
-	    else
-	    {
-	    	strcpy (pltinname[infileno], "stdin");
-	    	pltinarray[infileno] = stdin;
-	    	infileno++;
-	    }
-	}
-    }
-
-    /*
+	/*
      * next process in= inputfiles If they set num_vplot, also look for in1=
      * in2= etc 
      */
 
-    num_vplot = 0*tempfileindex;
-    vartemp.i = &num_vplot;
-    getpar ("numvplot", "d", vartemp);
+	num_vplot = 0 * tempfileindex;
+	vartemp.i = &num_vplot;
+	getpar("numvplot", "d", vartemp);
 
-    for (ii = 0; ii <= num_vplot; ii++)
-    {
-	if (ii == 0)
-	    strcpy (instring, "in");
-	else
-	    sprintf (instring, "in%d", ii);
-
-        vartemp.s = &(string[0]);
-	if (getpar (instring, "s", vartemp))
+	for (ii = 0; ii <= num_vplot; ii++)
 	{
-	    if ((temp = fopen (string, "r")) != NULL)
-	    {
-		if (infileno >= MAXIN)
-		{
-		    ERR (FATAL, name, "too many input files (%d max)", MAXIN);
-		}
-		strcpy (pltinname[infileno], string);
-		pltinarray[infileno] = temp;
-		infileno++;
-	    }
-	    else
-	    {
-		ERR (WARN, name, "cannot open %s", string);
-	    }
-	}
-    }
+		if (ii == 0)
+			strcpy(instring, "in");
+		else
+			sprintf(instring, "in%d", ii);
 
-    /*
+		vartemp.s = &(string[0]);
+		if (getpar(instring, "s", vartemp))
+		{
+			if ((temp = fopen(string, "r")) != NULL)
+			{
+				if (infileno >= MAXIN)
+				{
+					ERR(FATAL, name, "too many input files (%d max)", MAXIN);
+				}
+				strcpy(pltinname[infileno], string);
+				pltinarray[infileno] = temp;
+				infileno++;
+			}
+			else
+			{
+				ERR(WARN, name, "cannot open %s", string);
+			}
+		}
+	}
+
+	/*
      * finally process input line for non-getpar arguments and assume they
      * are also input files 
      */
-    for (sepxargc--, sepxargv++; sepxargc; sepxargc--, sepxargv++)
-    {
-	cptr = *sepxargv;
-	while (*cptr)
+	for (sepxargc--, sepxargv++; sepxargc; sepxargc--, sepxargv++)
 	{
-	    if (*cptr == '=')
-		break;
-	    cptr++;
+		cptr = *sepxargv;
+		while (*cptr)
+		{
+			if (*cptr == '=')
+				break;
+			cptr++;
+		}
+		if (*cptr)
+			continue;
+		cptr = *sepxargv;
+		if ((temp = fopen(cptr, "r")) != NULL)
+		{
+			if (infileno >= MAXIN)
+			{
+				ERR(FATAL, name, "too many input files (%d max)", MAXIN);
+			}
+			strcpy(pltinname[infileno], cptr);
+			pltinarray[infileno] = temp;
+			infileno++;
+		}
+		else
+		{
+			ERR(WARN, name, "cannot open %s", cptr);
+		}
 	}
-	if (*cptr)
-	    continue;
-	cptr = *sepxargv;
-	if ((temp = fopen (cptr, "r")) != NULL)
-	{
-	    if (infileno >= MAXIN)
-	    {
-		ERR (FATAL, name, "too many input files (%d max)", MAXIN);
-	    }
-	    strcpy (pltinname[infileno], cptr);
-	    pltinarray[infileno] = temp;
-	    infileno++;
-	}
-	else
-	{
-	    ERR (WARN, name, "cannot open %s", cptr);
-	}
-    }
 #endif /* } SEP */
 
-/*
+	/*
  ****************************************************************************
  * Go do the plots
  ****************************************************************************
  */
 
-    proc_vplot ();
+	proc_vplot();
 
 #ifdef SEP
-    if (!hclose_done)
-    {
-	Puthead ("\tn3=%d\n", nplots);
-	hclose ();
-	hclose_done = YES;
-    }
+	if (!hclose_done)
+	{
+		Puthead("\tn3=%d\n", nplots);
+		hclose();
+		hclose_done = YES;
+	}
 #endif /* SEP */
 
-    /*  delete the temporary copy of piped input if there is one*/
-    removtemp();
+	/*  delete the temporary copy of piped input if there is one*/
+	removtemp();
 
-    /* All done */
-    exit (0);
-    return 0;
+	/* All done */
+	exit(0);
+	return 0;
 }
 
 #if defined(HAVE_TERMIO_H)
 #else /* USG */
 #ifdef __APPLE__
 /*ARGSUSED*/
-void cleanup (int signum)
+void cleanup(int signum)
 #else
 #ifdef SIGFNC_RTN_VOID
-void cleanup (void)
+void cleanup(void)
 #else
-int cleanup (void)
+int cleanup(void)
 #endif
 #endif
 {
 #ifndef SOLARIS
 #if defined(LINUX) || defined(__APPLE__)
 #else
-    sigblock (~(SIGKILL | SIGSTOP | SIGCONT));
+	sigblock(~(SIGKILL | SIGSTOP | SIGCONT));
 #endif
 #endif
-    char            dummystr[] = " "; 
-    dev.close (CLOSE_INTERRUPT);
-    message (MESG_ON,dummystr);
-    ERR (COMMENT, name, "Interrupted out.");
-    dev.close (CLOSE_DONE);
-    /*  delete the temporary copy of piped input if there is one*/
-    removtemp();
-    /*
+	char dummystr[] = " ";
+	dev.close(CLOSE_INTERRUPT);
+	message(MESG_ON, dummystr);
+	ERR(COMMENT, name, "Interrupted out.");
+	dev.close(CLOSE_DONE);
+	/*  delete the temporary copy of piped input if there is one*/
+	removtemp();
+	/*
      * Let them see what they are doing again 
      */
-    if (!allowecho)
-    {
+	if (!allowecho)
+	{
 /*#ifdef SOLARIS*/
 #if defined(SOLARIS) || defined(LINUX) || defined(__APPLE__)
 #ifndef TCSETAW
 #define TCSETAW TCSADRAIN
 #endif
-	ioctl (pltoutfd, TCSETAW, (char *) (&tty_clean_state));
+		ioctl(pltoutfd, TCSETAW, (char *)(&tty_clean_state));
 #else
-	ioctl (pltoutfd, TIOCLSET, (char *) (&tty_clean_local_mode));
-	ioctl (pltoutfd, TIOCSETN, (char *) (&tty_clean_state));
+		ioctl(pltoutfd, TIOCLSET, (char *)(&tty_clean_local_mode));
+		ioctl(pltoutfd, TIOCSETN, (char *)(&tty_clean_state));
 #endif
-    }
-    exit (0);
+	}
+	exit(0);
 #if !defined(SIGFNC_RTN_VOID) && !defined(__APPLE__)
-/*NOTREACHED*/
-    return 0;
+	/*NOTREACHED*/
+	return 0;
 #endif
 }
 #endif /* USG */
@@ -717,75 +712,83 @@ int cleanup (void)
 
 #define XFER_SIZE 1024
 
-void removtemp(void){
-    if( tspoolnam != (char*)NULL )
-        if( unlink(tspoolnam) )
-               ERR (WARN, name, "unable to delete temporary file");
-    tspoolnam = (char*)NULL;
+void removtemp(void)
+{
+	if (tspoolnam != (char *)NULL)
+		if (unlink(tspoolnam))
+			ERR(WARN, name, "unable to delete temporary file");
+	tspoolnam = (char *)NULL;
 }
 
-FILE* tempcopy( FILE *infile, char *filename )
+FILE *tempcopy(FILE *infile, char *filename)
 {
-    FILE *temp;
-    int len,total;
-    char xfer_buf[ XFER_SIZE];
-    char* spooldirnm;
-    char* tspoolnm;
+	FILE *temp;
+	int len, total;
+	char xfer_buf[XFER_SIZE];
+	char *spooldirnm;
+	char *tspoolnm;
 
-
-    /* make up a temporary file name 
+	/* make up a temporary file name 
      * I know there are beter routines to make up the name 
      * but this one is more portable.
      * PEN_SPOOL is a directory we can put temporary files in
      * it is defined in params.h. It can be overridden by the
      * environment variable VPLOTSPOOLDIR.
      */
-    if( (spooldirnm = getenv("VPLOTSPOOLDIR")) != NULL ){
-	tspoolnm = (char *) malloc( strlen( spooldirnm ) +13 );
-        strcpy( tspoolnm, spooldirnm );
-    }else{
-        tspoolnm = (char *) malloc( strlen( PEN_SPOOL ) + 13 );
-        strcpy( tspoolnm, PEN_SPOOL );
-    }
-    tspoolnm = strcat( tspoolnm, "/vplotXXXXXX" );
-    if(-1 == mkstemp( tspoolnm ))
-    {
-	ERR (WARN, name, "mkstemp() for temporary vplot file");
-    }
-
-    if ( (temp = fopen(tspoolnm, "w")) == NULL) {
-	ERR (WARN, name, "unable to create temporary file");
-	return NULL;
-    }
-
-    /* now copy everything from the input stream to our temporary file */
-    total=0;
-    while( (len=fread( xfer_buf, sizeof(char), XFER_SIZE, infile ) ) != 0 ){
-	if( ferror(infile) ) {
-	    ERR (WARN, name, "read error from pipe ");
-	    return NULL;
+	if ((spooldirnm = getenv("VPLOTSPOOLDIR")) != NULL)
+	{
+		tspoolnm = (char *)malloc(strlen(spooldirnm) + 13);
+		strcpy(tspoolnm, spooldirnm);
 	}
-	    
-        if( ( fwrite(xfer_buf,sizeof(char),len,temp) != len ) || ferror(temp) ) 	{
-	    ERR (WARN, name, "write error to temp ");
-	    return NULL;
+	else
+	{
+		tspoolnm = (char *)malloc(strlen(PEN_SPOOL) + 13);
+		strcpy(tspoolnm, PEN_SPOOL);
 	}
-	total += len;
-    }
+	tspoolnm = strcat(tspoolnm, "/vplotXXXXXX");
+	if (-1 == mkstemp(tspoolnm))
+	{
+		ERR(WARN, name, "mkstemp() for temporary vplot file");
+	}
 
-    fclose(temp);
+	if ((temp = fopen(tspoolnm, "w")) == NULL)
+	{
+		ERR(WARN, name, "unable to create temporary file");
+		return NULL;
+	}
 
-    /* We could unlink the file after we reopen it to make it really
+	/* now copy everything from the input stream to our temporary file */
+	total = 0;
+	while ((len = fread(xfer_buf, sizeof(char), XFER_SIZE, infile)) != 0)
+	{
+		if (ferror(infile))
+		{
+			ERR(WARN, name, "read error from pipe ");
+			return NULL;
+		}
+
+		if ((fwrite(xfer_buf, sizeof(char), len, temp) != len) || ferror(temp))
+		{
+			ERR(WARN, name, "write error to temp ");
+			return NULL;
+		}
+		total += len;
+	}
+
+	fclose(temp);
+
+	/* We could unlink the file after we reopen it to make it really
      * temporary but we don't know for sure that a filter isn't going
      * to close the file and try to reopen it.
      * Hence the business with tempfileindex in the main routine.
      */
 
 #ifdef notdef
-    /* check for zero length input */
-    if( total == 0 ) return (FILE*)-1;
+	/* check for zero length input */
+	if (total == 0)
+		return (FILE *)-1;
 #endif
 
-    strcpy( filename, tspoolnm );
-    return fopen( tspoolnm, "r");
+	strcpy(filename, tspoolnm);
+	return fopen(tspoolnm, "r");
 }
