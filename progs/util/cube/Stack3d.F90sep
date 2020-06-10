@@ -122,12 +122,13 @@ program Stack3d
   call from_param("normalize",normalize,.false.)
   call from_param("verb",verbose,.false.)
   call sep_prog(progname)
+ axes=2;
   if (progname(1:8).eq."Infill3d") then
     axes=1
-  else
-    axes=2
   end if 
+  !write(0 ,*) "what the ",axes
   call from_param("axes",axes,axes)
+  !write(0,*) "what the 2",axes
   call from_param("keep_headers",keep_headers,.false.)
 !##########################
 !LETS FIGURE OUT THE INPUT#
@@ -145,6 +146,8 @@ program Stack3d
 !###################################
 !if(axes==1) call erexit("Call Infill3d instead ")
   if (axes<1 .or. axes > in%ndims) then
+    write(0,*) "CHECK THIS",axes,in%ndims
+
     call erexit("axes out of range")
   end if
   if (verbose) then
