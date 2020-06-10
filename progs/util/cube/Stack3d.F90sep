@@ -109,6 +109,7 @@ program Stack3d
   logical               :: keep_headers,create_trid
   integer       :: ndone_big,i1,i
   integer       :: ndo_big,nblock_big
+
 !INITIALIZE
   call SEP_ADD_DOC()
   call SEP_INIT('')
@@ -121,14 +122,16 @@ program Stack3d
   call from_param("maxsize",maxsize,10)
   call from_param("normalize",normalize,.false.)
   call from_param("verb",verbose,.false.)
+write(0,*)  "where i die "
   call sep_prog(progname)
+write(0,*)  "where2i die "
  axes=2;
   if (progname(1:8).eq."Infill3d") then
     axes=1
   end if 
-  !write(0 ,*) "what the ",axes
+  write(0 ,*) "what the ",axes
   call from_param("axes",axes,axes)
-  !write(0,*) "what the 2",axes
+  write(0,*) "what the 2",axes
   call from_param("keep_headers",keep_headers,.false.)
 !##########################
 !LETS FIGURE OUT THE INPUT#
