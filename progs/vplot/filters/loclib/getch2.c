@@ -47,6 +47,7 @@ int getch2(va_alist /*str1,str2,var,headname*/) va_dcl
   va_list apptr;
   /*	union { double *g; float *f; int *i; char *s; } var;*/
   MIXED var;
+  int i;
 
 #if NeedFunctionPrototypes
   va_start(apptr, str2);
@@ -76,7 +77,7 @@ int getch2(va_alist /*str1,str2,var,headname*/) va_dcl
   char **tmp = getSepArgV();
   oldxargc = getSepArgC();
   oldxargv = (char **)malloc(sizeof(char *) * oldxargc);
-  for (int i = 0; i < oldxargc; i++) {
+  for (i = 0; i < oldxargc; i++) {
     oldxargv[i] = (char *)malloc(sizeof(char) * (strlen(tmp[i]) + 1));
     strcpy(oldxargv[i], tmp[i]);
   }
@@ -88,7 +89,7 @@ int getch2(va_alist /*str1,str2,var,headname*/) va_dcl
   (void)sprintf(parline, "par=%s", headname);
   count = getparin(str1, str2, var);
   resetSepArgCV(oldxargc, oldxargv);
-  for (int i = 0; i < oldxargc; i++)
+  for (i = 0; i < oldxargc; i++)
     free(oldxargv[i]);
   free(oldxargv);
   return (count);
