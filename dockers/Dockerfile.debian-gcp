@@ -1,6 +1,6 @@
 From debian:9
 MAINTAINER Bob Clapp <bob@sep.stanford.edu>
-RUN apt-get update && apt-get install -y git gcc gfortran  make libxt-dev git
+RUN apt-get update && apt-get install -y git gcc gfortran  make libxt-dev git python3-pip
 RUN mkdir -p /opt/SU
 RUN git clone https://github.com/JohnWStockwellJr/SeisUnix.git /opt/SU;cd /opt/SU/src && \
   touch cwp_su_version LICENSE_44R2_ACCEPTED MAILHOME_44R2 &&\
@@ -158,6 +158,8 @@ RUN cd /opt/google-common/build && \
    ninja install
 
 
+
+RUN python3 -m pip install scikit-build
 RUN git  clone http://zapad.Stanford.EDU/bob/SEPlib.git /opt/SEP/src &&\
    cd /opt/SEP/build && \
    cmake  -DCMAKE_CXX_FLAGS="-g -O3 -fPIC"  -DBUILD_GCP=yes -DPYTHON_EXECUTABLE=/usr/bin/python3.5 -DCMAKE_INSTALL_PREFIX=/opt/SEP -DCMAKE_PREFIX_PATH=/opt/google-cloud-cpp-common-0.13.0/cmake-out/external/lib -DPYTHON_PATH=/usr/lib/python3.5 ../src &&\

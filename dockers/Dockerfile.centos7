@@ -29,6 +29,7 @@ RUN cd /tmp &&\
   make install
 RUN yum -y install fftw-devel tbb-devel boost-devel python3-devel python36u-pytest 
 RUN python3 -m pip install --user  numpy
+RUN python3 -m pip install --user  scikit-build
 RUN mkdir  -p /opt/SEP/build
 RUN git clone http://zapad.stanford.edu/bob/SEPlib.git /opt/SEP/src &&\
     cd /opt/SEP/build &&\
