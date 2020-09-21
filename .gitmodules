@@ -1,4 +1,0 @@
-[submodule "libs/core"]
-	path = libs/core
-	url = http://zapad.Stanford.EDU/SEP-external/sep-iolibs.git
-	ignore = dirty
