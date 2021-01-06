@@ -1,5 +1,5 @@
 project(SEPLIB-prog-converters-segy)
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.4)
 
 if (CCS_INCLUDES)
 if (TDB_INCLUDE)

@@ -1138,6 +1138,8 @@ int convert_4_to_1(float *data,float *tgain,register char *tbl,char *buf,unsigne
     gainip = i3 + 1;
     sseek("in",0,0);
 
+fprintf(stderr,"wat is going on %f %f %f \n",qclp,phalf,clp);
+
     sgainpar ("in",data,datain.n1,&hbytes,&datain.n2,&gainstep,&tpow,
           datain.o1,&qclp,&phalf,&clp,&gpow,&pbias,datain.d1,&datain.n3,&gainip);
 

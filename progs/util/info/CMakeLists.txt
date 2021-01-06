@@ -1,5 +1,5 @@
 project(SEPLIB-prog-util-header)
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.4)
 include_directories(${SEPCONFIGDIR}/sep)
 
 set(FORTRANSEP Attr3dhead.F90sep Dis3dhead.F90sep 

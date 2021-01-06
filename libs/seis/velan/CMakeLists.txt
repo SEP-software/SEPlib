@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.3)
 
 set (SOURCES 
 hypint.f90  nmo_subs.f90    rms2int.f90    velansub.f90  vint2rms.f90

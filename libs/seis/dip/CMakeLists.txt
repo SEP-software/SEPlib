@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.4)
 
 set(CMAKE_MACOSX_RPATH 1)
 if(FFTW_LIBRARIES)
