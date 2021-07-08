@@ -25,14 +25,14 @@ namespace KirchTime {
 
   std::shared_ptr<hypercube> getHyper() { return _hyper; }
   virtual ~dataND() { ; }
-  std::shared_ptr<genericRegFile> getFile() {
+  std::shared_ptr<genericReg> getFile() {
     if (!_file) throw SEPException("File has not been defined");
     return _file;
   }
 
  protected:
   std::shared_ptr<hypercube> _hyper;
-  std::shared_ptr<genericRegFile> _file;
+  std::shared_ptr<genericReg> _file;
   float _aper;
 };
 
@@ -50,7 +50,7 @@ class data3DReg : public dataND {
 
  */
 
-  data3DReg(std::shared_ptr<genericRegFile> file);
+  data3DReg(std::shared_ptr<genericReg> file);
 
   /*!
       Set window we care about
@@ -89,7 +89,7 @@ class data5DReg : public dataND {
 
    */
 
-  data5DReg(std::shared_ptr<genericRegFile> file);
+  data5DReg(std::shared_ptr<genericReg> file);
   /*!
 
      Create output dataset (based on parameters)
@@ -185,7 +185,7 @@ class data5DReg : public dataND {
 
   ~data5DReg() { ; }
 
-  void setFile(std::shared_ptr<genericRegFile> fle);
+  void setFile(std::shared_ptr<genericReg> fle);
   std::shared_ptr<hypercube> _hyper;  ///< Hypercube describing dataset
 };
 
