@@ -80,6 +80,14 @@ set(SYMLINK_FOUND True)
 add_subdirectory(libs/core)
 include_directories(libs/core/include)
 include_directories(libs/core/sep)
+find_package(TIRPC)
+if(${TIRPC_FOUND})
+  include_directories(${TIRPC_INCLUDE_DIRS})
+  set(TIRPC ${TIRPC_LIBRARIES})
+else()
+  set(TIRPC "")
+endif()
+
 
 set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_INSTALL_PREFIX}/include)
 include_directories(${CMAKE_INSTALL_PREFIX}/include)
@@ -131,14 +139,6 @@ endif(BUILD_JAVA
       BUILD_VPLOT_GRAPHICS)
 
 set(SEPCONFIGDIR ${CMAKE_CURRENT_BINARY_DIR}/libs/core)
-
-find_package(TIRPC)
-if(${TIRPC_FOUND})
-  include_directories(${TIRPC_INCLUDE_DIRS})
-  set(TIRPC ${TIRPC_LIBRARIES})
-else()
-  set(TIRPC "")
-endif()
 
 if(BUILD_UTIL_PROGS)
   add_subdirectory(progs/util)
