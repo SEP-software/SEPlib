@@ -173,7 +173,7 @@ class vel3DFromFile : public vel3DCube {
     \param file FIle object for velocity
    */
 
-  vel3DFromFile(std::shared_ptr<genericRegFile> file);
+  vel3DFromFile(std::shared_ptr<genericReg> file);
 
   /*!
  Initialize with constant
@@ -202,7 +202,7 @@ class vel3DFromFile : public vel3DCube {
   ~vel3DFromFile() { ; }
 
  private:
-  std::shared_ptr<genericRegFile> _file;  ///< File object
+  std::shared_ptr<genericReg> _file;  ///< File object
 };
 class vel3dFromArray : public vel3DCube {
  public:
