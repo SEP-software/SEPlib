@@ -132,6 +132,14 @@ endif(BUILD_JAVA
 
 set(SEPCONFIGDIR ${CMAKE_CURRENT_BINARY_DIR}/libs/core)
 
+find_package(TIRPC)
+if(${TIRPC_FOUND})
+  include_directories(${TIRPC_INCLUDE_DIRS})
+  set(TIRPC ${TIRPC_LIBRARIES})
+else()
+  set(TIRPC "")
+endif()
+
 if(BUILD_UTIL_PROGS)
   add_subdirectory(progs/util)
 endif(BUILD_UTIL_PROGS)
