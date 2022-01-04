@@ -62,7 +62,7 @@ vel3DFromArray::vel3DFromArray(std::shared_ptr<float3DReg> vals) {
   _axes = vals->getHyper()->getAxes();
 }
 
-vel3DFromFile::vel3DFromFile(std::shared_ptr<genericRegFile> file) {
+vel3DFromFile::vel3DFromFile(std::shared_ptr<genericReg> file) {
   _file = file;
   _axes = file->getHyper()->getAxes();
   if (file->getHyper()->getNdimG1() != 3)

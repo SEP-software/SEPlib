@@ -35,8 +35,8 @@ foreach(p LIB BIN INCLUDE CMAKE)
 endforeach()
 MESSAGE ( STATUS "Searching for X11..." )
 FIND_PACKAGE ( X11 REQUIRED )
-FIND_LIBRARY(X11_XT Xt PATHS /opt/local /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 /opt/X11/lib /opt/local/lib)
-FIND_LIBRARY(X11_XAW Xaw PATHS ${CMAKE_INSTALL_PREFIX}/lib /opt/local /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 /opt/X11/lib /opt/local/lib)
+FIND_LIBRARY(X11_XT Xt  HINTS ${X11_PATH}/lib PATHS /opt/local /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 /opt/X11/lib /opt/local/lib)
+FIND_LIBRARY(X11_XAW Xaw HINTS ${X11_PATH}/lib PATHS ${CMAKE_INSTALL_PREFIX}/lib /opt/local /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 /opt/X11/lib /opt/local/lib)
 FIND_LIBRARY(X11_XP Xp PATHS /opt/local /usr/lib /usr/lib64 /usr/lib/X11 /usr/lib64/X11 /opt/X11/lib /opt/local/lib)
 
 

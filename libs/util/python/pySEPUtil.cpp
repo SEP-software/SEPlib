@@ -76,8 +76,8 @@ PYBIND11_MODULE(pySEPUtil, clsUtil) {
 
       .def(py::init<>(), "Block IO")
       .def("loopData",
-           (void (blockIO::*)(std::shared_ptr<SEP::genericRegFile>,
-                              std::shared_ptr<SEP::genericRegFile>)) &
+           (void (blockIO::*)(std::shared_ptr<SEP::genericReg>,
+                              std::shared_ptr<SEP::genericReg>)) &
                blockIO::loopData,
            "Loop through data applying 'applyIt'");
 
@@ -90,8 +90,8 @@ PYBIND11_MODULE(pySEPUtil, clsUtil) {
       .def(py::init<>(), "Dummy initialization")
       .def("setupPipe",
            (void (blockIORegPipe::*)(
-               std::shared_ptr<SEP::genericRegFile>,
-               std::shared_ptr<SEP::genericRegFile>,
+               std::shared_ptr<SEP::genericReg>,
+               std::shared_ptr<SEP::genericReg>,
                std::vector<std::shared_ptr<blockIOReg>> &)) &
                blockIORegPipe::setupPipe,
            "Setup pipe'")
@@ -102,8 +102,8 @@ PYBIND11_MODULE(pySEPUtil, clsUtil) {
            "Apply operator");
 
   //    .def("loopData",
-  //        (void (blockIOReg::*)(std::shared_ptr<SEP::genericRegFile>,
-  //                             std::shared_ptr<SEP::genericRegFile>)) &
+  //        (void (blockIOReg::*)(std::shared_ptr<SEP::genericReg>,
+  //                             std::shared_ptr<SEP::genericReg>)) &
   //           blockIOReg::loopData,
   //      "Loop through data")
   ;
@@ -115,7 +115,7 @@ PYBIND11_MODULE(pySEPUtil, clsUtil) {
   py::class_<SEP::velocity::vel3DFromFile,
              std::shared_ptr<SEP::velocity::vel3DFromFile>>(clsUtil,
                                                             "vel3DFromFile")
-      .def(py::init<std::shared_ptr<genericRegFile>>(),
+      .def(py::init<std::shared_ptr<genericReg>>(),
            "Initialize velocity with file object")
       .def("readVelocity",
            (long long (SEP::velocity::vel3DFromFile::*)(
@@ -157,8 +157,8 @@ PYBIND11_MODULE(pySEPUtil, clsUtil) {
                     const std::vector<int>, const int, const int>(),
            "Initialize NMO for regular cube")
       .def("loopData",
-           (void (blockIO::*)(std::shared_ptr<SEP::genericRegFile>,
-                              std::shared_ptr<SEP::genericRegFile>)) &
+           (void (blockIO::*)(std::shared_ptr<SEP::genericReg>,
+                              std::shared_ptr<SEP::genericReg>)) &
                blockIO::loopData,
            "Loop through data applying 'applyIt'");
   ;
@@ -204,7 +204,7 @@ Kirchhoff
 
   py::class_<SEP::KirchTime::data3DReg,
              std::shared_ptr<SEP::KirchTime::data3DReg>>(clsUtil, "data3DReg")
-      .def(py::init<std::shared_ptr<genericRegFile>>(),
+      .def(py::init<std::shared_ptr<genericReg>>(),
            "Initialize a 3-D dataset object")
       .def("getHyper",
            (std::shared_ptr<hypercube>(SEP::KirchTime::data3DReg::*)()) &
@@ -224,14 +224,14 @@ Kirchhoff
       .def(py::init<std::shared_ptr<SEP::KirchTime::data3DReg>, const axis,
                     const axis, const axis, const axis>(),
            "Initialize a 5-D dataset object replacing midpoint and offset axes")
-      .def(py::init<std::shared_ptr<genericRegFile>>(),
+      .def(py::init<std::shared_ptr<genericReg>>(),
            "Initialize a 5-D dataset object with a file")
       .def("getHyper",
            (std::shared_ptr<hypercube>(SEP::KirchTime::data5DReg::*)()) &
                SEP::KirchTime::data5DReg::getHyper,
            "Get hypercube")
       .def("getFile",
-           (std::shared_ptr<genericRegFile>(SEP::KirchTime::data5DReg::*)()) &
+           (std::shared_ptr<genericReg>(SEP::KirchTime::data5DReg::*)()) &
                SEP::KirchTime::data5DReg::getFile,
            "Get file")
       .def("checkLogic",
@@ -241,7 +241,7 @@ Kirchhoff
            "Make sure velocity contains domain")
       .def("setFile",
            (void (SEP::KirchTime::data5DReg::*)(
-               std::shared_ptr<genericRegFile>)) &
+               std::shared_ptr<genericReg>)) &
                SEP::KirchTime::data5DReg::setFile,
            "Set file associated with data structure")
       .def("readWindow",

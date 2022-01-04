@@ -10,7 +10,7 @@ using namespace SEP;
 using namespace SEP::KirchTime;
 
 // Create image from file
-data3DReg::data3DReg(std::shared_ptr<genericRegFile> file) {
+data3DReg::data3DReg(std::shared_ptr<genericReg> file) {
   _hyper = file->getHyper();
   _file = file;
 
@@ -18,7 +18,7 @@ data3DReg::data3DReg(std::shared_ptr<genericRegFile> file) {
 }
 
 // Create data from file
-data5DReg::data5DReg(std::shared_ptr<genericRegFile> file) {
+data5DReg::data5DReg(std::shared_ptr<genericReg> file) {
   _file = file;
   _hyper = _file->getHyper();
   if (_hyper->getNdim() != 5) throw SEPException("Input must be 5-D");
@@ -87,7 +87,7 @@ data5DReg::data5DReg(std::shared_ptr<data3DReg> input, const axis aOX,
   std::shared_ptr<hypercube> x(new hypercube(axes));
   _hyper = x;
 }
-void data5DReg::setFile(std::shared_ptr<genericRegFile> fle) { _file = fle; }
+void data5DReg::setFile(std::shared_ptr<genericReg> fle) { _file = fle; }
 void data5DReg::checkLogic(std::shared_ptr<SEP::velocity::vel3DFromFile> vrms) {
   std::vector<axis> vaxes = vrms->getHyper()->getAxes();
 

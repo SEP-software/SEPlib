@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
   std::shared_ptr<vel3d> vel;
 
   try {
-    vel.reset(new vel3d(ioIn->getDocRegFile(
+    vel.reset(new vel3d(ioIn->getDocReg(
         "velocity", "Velocity file (nt,cmpx,cmpy)", usageIn)));
   } catch (SEPException& e) {
     std::cout << e.what() << std::endl;
@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
   std::shared_ptr<float1DReg> wave;
 
   if (!modelIt) {
-    std::shared_ptr<genericRegFile> dataF = ioIn->getDocRegFile(
+    std::shared_ptr<genericReg> dataF = ioIn->getDocReg(
         "data", "Data file (t,ox,oy,cmpx,cmpy)", SEP::usageIn);
 
     data.reset(new data5DReg(dataF));
@@ -83,14 +83,14 @@ int main(int argc, char** argv) {
         par->getDocFloat("dy", "Sampling  CMPs in T for output", axData[4].d);
     image5.reset(new data5DReg(data, axX, axY));
 
-    std::shared_ptr<genericRegFile> imageF = ioOut->getDocRegFile(
+    std::shared_ptr<genericReg> imageF = ioOut->getDocReg(
         "image",
         "Image file (t,cmpx,cmpy)<--modeling migrating-->(t,ox,oy,cmpx,cmpy)",
         SEP::usageOut);
     imageF->setHyper(image5->getHyper());
     image5->setFile(imageF);
   } else {
-    std::shared_ptr<genericRegFile> imageF = ioIn->getDocRegFile(
+    std::shared_ptr<genericReg> imageF = ioIn->getDocReg(
         "image",
         "Image file (t,cmpx,cmpy)<--modeling migrating-->(t,ox,oy,cmpx,cmpy)",
         SEP::usageIn);
@@ -121,13 +121,13 @@ int main(int argc, char** argv) {
     std::shared_ptr<data5DReg> d(new data5DReg(image3, axOX, axOY, axX, axY));
     data = d;
 
-    std::shared_ptr<genericRegFile> dataF = ioOut->getDocRegFile(
+    std::shared_ptr<genericReg> dataF = ioOut->getDocReg(
         "data", "Data file (t,ox,oy,cmpx,cmpy)", SEP::usageOut);
 
     dataF->setHyper(data->getHyper());
     d->setFile(dataF);
 
-    std::shared_ptr<genericRegFile> waveF = ioIn->getDocRegFile(
+    std::shared_ptr<genericReg> waveF = ioIn->getDocReg(
         "wave", "Wavelet (only needed for modeling)", SEP::usageIn);
     std::shared_ptr<float1DReg> w(new float1DReg(waveF->getHyper()));
     wave = w;
