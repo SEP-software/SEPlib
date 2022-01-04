@@ -48,8 +48,7 @@
 #define TEXT_HEIGHT	50
 #define TEXT_PAD	18
 
-float           psscale;
-
+extern float           psscale;
 void pserase (int command)
 {
 char            full_label[100];

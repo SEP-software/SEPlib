@@ -121,27 +121,18 @@ real, allocatable, dimension (:,:) :: s2
 real, allocatable, dimension (:,:) :: s3
 real, allocatable, dimension (:,:) :: s4
 real, allocatable, dimension (:,:) :: s5
-integer      :: conj,inv, n1, n2p, n2q
+integer      ::  n1, n2p, n2q
+logical :: conj,inv
 call initpar()
 call SEP_ADD_DOC()
 call SEP_INIT('')
-  if (0>= getch('conj','d',conj )) then
-    conj = 0
-  end if
-  if (0.ne.putch('Read  from param: #conj ','d',conj)) then
-    call erexit('Trouble writing conj to history')
-  end if
-  if (0>= getch('inv','d',inv )) then
-    inv = 0
-  end if
-  if (0.ne.putch('Read  from param: #inv ','d',inv)) then
-    call erexit('Trouble writing inv to history')
-  end if
+  call from_param("conj",conj,.false.) 
+  call from_param("inv",inv,.false.) 
   if (0>= hetch('n1','d',n1 )) then
     call erexit('Trouble reading  n1 from history  ')
   end if
 call sep_begin_prog()
-if ( conj.eq.inv) then
+if ( conj.eqv.inv) then
     if (0>= hetch('n2','d',n2p )) then
       call erexit('Trouble reading  n2 from history  ')
     end if
@@ -167,10 +158,12 @@ call strech ( n1, n2p, n2q, pp, qq, s1,s2,s3,s4,s5 )
 end program zyxabc 
 subroutine strech( n1, n2p, n2q, pp, qq, s1,s2,s3,s4,s5 )
 use sep_mod
+use sep
 integer :: ierr
 integer           :: i1, n1, i2, n2p, n2q, i3, n3, n2vel, nvel,       &
   &                velfd,         &
-  &             junk, conj, inv
+  &             junk
+logical :: conj, inv
 real              :: vel, o1, d1, o2, d2, pp(n1,n2p), qq(n1,n2q),     &
   &                 s1(n1,n2q), s2(n1,n2q), s3(n1,n2q), s4(n1,n2q),&
   & s5(n1,n2q),                      o1q, d1q, o2q, d2q
@@ -181,18 +174,8 @@ allocate(slow(n1))
   if (0>= fetch('n3','d',n3 )) then
     n3 = 1
   end if
-  if (0>= getch('conj','d',conj )) then
-    conj = 0
-  end if
-  if (0.ne.putch('Read  from param: #conj ','d',conj)) then
-    call erexit('Trouble writing conj to history')
-  end if
-  if (0>= getch('inv','d',inv )) then
-    inv = 0
-  end if
-  if (0.ne.putch('Read  from param: #inv ','d',inv)) then
-    call erexit('Trouble writing inv to history')
-  end if
+  call from_param("conj",conj,.false.)
+  call from_param("inv",inv,.false.)
 if ( getch('velfile', 's', hvel) > 0 ) then
   junk = auxpar('n1', 'i', nvel, 'velfile')
   junk = auxpar('n2', 'i', n2vel, 'velfile')
@@ -237,19 +220,20 @@ else
       call erexit('trouble writing to file ')
     end if
 end if 
-if (      conj .eq. 0 .and. inv .eq. 0 ) then
+if (     .not. conj .and. .not. inv ) then
+
     if (0 .ne. putch ('Operation is','s','itself')) then
       call erexit('trouble writing to file ')
     end if
-else if ( conj .eq. 1  .and. inv .eq. 0 ) then
+else if ( conj  .and. .not. inv) then
     if (0 .ne. putch ('Operation is','s','conjugate transpose')) then
       call erexit('trouble writing to file ')
     end if
-else if ( conj .eq. 0  .and. inv .eq. 1 ) then
+else if ( .not. conj  .and. inv ) then
     if (0 .ne. putch ('Operation is','s','pseudoinverse')) then
       call erexit('trouble writing to file ')
     end if
-else if ( conj .eq. 1  .and. inv .eq. 1 ) then
+else if ( conj  .and. inv  ) then
     if (0 .ne. putch ('Operation is','s','conjugate-transpose-pseudoinverse'&
       &)) then
       call erexit('trouble writing to file ')
@@ -267,7 +251,7 @@ if ( rule(1:6) .eq. 'radnmo' ) then
     &,d2q)
 end if
 if ( rule(1:6) .eq. 'radial' ) then
-  if (conj.eq.inv) then
+  if (conj.eqv.inv) then
       if (0>= hetch('d2','f',d2 )) then
         call erexit('Trouble reading  d2 from history  ')
       end if
@@ -329,7 +313,7 @@ if ( rule(1:6) .eq. 'radial' ) then
 !  from conj: character label2:label2='distance': label2q='unscaled_velocity'//char(0)
 else if (  rule(1:6) .eq. 'offset' ) then
 !  from conj: real d2: d2=d2q*(n2q-1.)/(n2p-1.): d2q=d2*(n2p-1.)/(n2q-1.)
-  if (conj.eq.inv) then
+  if (conj.eqv.inv) then
       if (0>= hetch('d2','f',d2 )) then
         call erexit('Trouble reading  d2 from history  ')
       end if
@@ -370,7 +354,7 @@ o2q = o2q - d2q
 ! real world to grid is now:  o = o1 + i1 * d1
 call hclose()  !  putch() no longer allowed.
 do i3=1,n3  
-  if ( conj .eq. inv ) then
+  if ( conj .eqv. inv ) then
     ierr= sreed('in',pp,n1*n2p*4)
   else
     ierr= sreed('in',qq,n1*n2q*4)
@@ -384,10 +368,10 @@ do i3=1,n3
   else if ( rule(1:6) .eq. 'rownmo') then
     call row_nmo_2d (conj,inv,slow,o1,d1,o2,d2,n1,n2p,pp,qq)
   else if ( rule(1:3) .eq. 'nmo' ) then
-    call nmo_2d_l_tab(conj,inv,i3,slow,o1,d1,o2,d2,n1,n2p,pp,qq,s1,s2&
+    call nmo_2d_l_tab(conj,inv,slow,o1,d1,o2,d2,n1,n2p,pp,qq,s1,s2&
       &,s3,s4,s5)
   else if ( rule(1:4) .eq. 'unmo' ) then
-    call unmo_2d(conj,inv,i3,slow,o1,d1,o2,d2,n1,n2p,pp,qq,s1,s2,s3,s4&
+    call unmo_2d(conj,inv,slow,o1,d1,o2,d2,n1,n2p,pp,qq,s1,s2,s3,s4&
       &,s5)
   else if ( rule(1:6) .eq. 'offset' ) then
     call offset(conj,inv,slow,n1,o1,d1,n2p,o2,d2,n2q,o2q,d2q,pp,qq)
@@ -401,10 +385,11 @@ do i3=1,n3
   else if ( rule(1:4) .eq. 'lmo2') then
     call lmo_2d_l (conj,inv,slow,o1,d1,o2,d2,n1,n2p,pp,qq)
   else
-    call nmo_2d_l(conj,inv,i3,slow,o1,d1,o2,d2,n1,n2p,pp,qq,s1,s2,s3,s4&
-      &,s5)
+     call seperr("unimpleted")
+    !call nmo_2d_l(conj,inv,slow,o1,d1,o2,d2,n1,n2p,pp,qq,s1,s2,s3,s4&
+    !  &,s5)
   end if 
-  if ( conj .eq. inv ) then
+  if ( conj .eqv. inv ) then
     ierr= srite( 'out', qq, n1 * n2q * 4 )
   else
     ierr= srite( 'out', pp, n1 * n2p * 4 )

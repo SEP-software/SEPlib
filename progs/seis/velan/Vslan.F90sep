@@ -379,7 +379,7 @@ use sep_aux_mod
     end if
   end do 
 !  make p,w transform
-  call zero( lfft/2+1 , rcond )
+  rcond=0;
 ! has offset range changed ? It is always new first time through!
   changed = .TRUE.
   do i2=1,n2  
@@ -401,14 +401,14 @@ use sep_aux_mod
         call erexit('Too many dead traces in option 3: nlive<n2o')
       end if
     end if
-    call zero(lfft*n2*2, ctrace)
+    ctrace=0
     do i2=1,n2  
       do i1=1,n1  
         ctrace(i1,i2) = cmplx(data(i1,i2), 0.)
       end do
     end do 
     call ft3d_sub(lfft, n2, 1, ctrace, -1., 0., 0., 0.,0.,0.) 
-    call zero(lfft*n2o*2, cdata)
+    cdata=0
     if (option <= 2) then
       do i2o=1,n2o  
 ! calculate max frequency to use
@@ -455,7 +455,7 @@ use sep_aux_mod
 ! least squares inverses
       do i1=2,lfft/2+1  
 ! loop over frequencies
-        call zero8(n2o*2, b)
+	b=0
         do i2o=1,n2o  
           do i2=1,n2    
             aa(i2,i2o)=cexp(cmplx(0.,om(i1)*tau(i2,i2o)))*xwindow(i2)

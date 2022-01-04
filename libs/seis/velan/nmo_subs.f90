@@ -28,16 +28,21 @@
 subroutine nmo_neighbor( adj, add, slow,    x, t0, dt, n,zz,  tt )
 use sep_mod
 use sep_func_mod
-integer  it, iz, adj, add,                        n
+logical :: adj,add
+integer  it, iz,                        n
 real  xs, t , z,           slow(n), x, t0, dt, zz(n), tt(n)
-call adjnull(    adj, add,                     zz,n,  tt,n)
+if(.not. adj) then
+  tt=0
+else
+  zz=0
+end if
 do iz= 1, n  
   z = t0 + dt*(iz-1)              ! Travel-time depth
   xs= x * slow(iz)
   t = sqrt ( z * z + xs * xs)
   it= 1 + .5 + (t - t0) / dt      ! Round to nearest neighbor.
   if ( it <= n ) then
-    if ( adj .eq. 0 ) then
+    if (.not.  adj ) then
       tt(it) = tt(it) + zz(iz)
     else
       zz(iz) = zz(iz) + tt(it)
@@ -76,9 +81,10 @@ end
 subroutine nmo_neighbor_w( adj, add, slow,    x, t0, dt, n,zz,  tt )
 use sep_mod
 use sep_func_mod
-integer  it, iz, adj, add,                        n
-real  xs, t , z,           slow(n), x, t0, dt, zz(n), tt(n), wt
-call adjnull(    adj, add,                     zz,n,  tt,n)
+logical :: adj,add
+integer  it, iz,                        n
+real  xs, t , z,          slow(n), x, t0, dt, zz(n), tt(n), wt
+
 do iz= 1, n  
   z = t0 + dt*(iz-1)
   xs = x * slow(iz)
@@ -86,7 +92,7 @@ do iz= 1, n
   wt = z/t * (1./sqrt(t))                 !  weighting function
   it = 1 + .5 + (t - t0) / dt
   if ( it <= n ) then
-    if ( adj .eq. 0 ) then
+    if ( .not. adj  ) then
       tt(it) = tt(it) + zz(iz) * wt
     else
       zz(iz) = zz(iz) + tt(it) * wt
@@ -138,7 +144,8 @@ end
 subroutine nmo_2d_i( tra, inv, slow, t0, dt, x0, dx, n1, n2, tt, zz)
 use sep_mod
 use sep_func_mod
-integer  tra, inv, n1, n2, i1, i2, it, it0, ix, ix0, islow(2048)
+logical :: tra,inv
+integer  n1, n2, i1, i2, it, it0, ix, ix0, islow(2048)
 real slow(n1), t0, dt, x0, dx, x
 real tt(n1,n2), zz(n1,n2)
 ix0 = .5 + x0 / dx
@@ -195,11 +202,12 @@ end
 subroutine nmo_i( tra, inv, islow, ix, it0, n1, tt, zz )
 use sep_mod
 use sep_func_mod
-integer  tra, inv, i1,n1, itab(n1), off, last
+logical :: tra,inv
+integer   i1,n1, itab(n1), off, last
 integer it0, it, ix, iz, ixs, iarg
 integer islow(n1), count(n1)
 real tt(n1), zz(n1)
-if ( tra .eq. inv ) then
+if ( tra .eqv. inv ) then
   do iz = 1,n1
     zz(iz) = 0.0
   end do
@@ -208,7 +216,7 @@ else
     tt(i1) = 0.0
   end do
 end if 
-if ( inv > 0 ) then
+if ( inv ) then
   do i1 = 1,n1
     count(i1) = 0.0
   end do 
@@ -236,14 +244,14 @@ do iz = n1, 1, -1
   end if
 end do 
 last = off - 1
-if ( tra .eq. 1  .and. inv .eq. 1 ) then
+if ( tra   .and. inv ) then
   do i1 = 1, n1
     if ( count(i1) .ne. 0.0 ) then
       tt(i1) = tt(i1) / count(i1)
     end if
   end do
 end if
-if ( tra .eq. inv ) then
+if ( tra .eqv. inv ) then
   do iz = 1, last  
     i1 = itab(iz)
     zz(iz) = zz(iz) + tt(i1)
@@ -254,7 +262,7 @@ else
     tt(i1) = tt(i1) + zz(iz)
   end do
 end if 
-if ( tra .eq. 0  .and. inv .eq. 1 ) then
+if ( .not. tra   .and. inv  ) then
   do i1 = 1, n1
     if ( count(i1) .ne. 0.0 ) then
       tt(i1) = tt(i1) / count(i1)
@@ -304,7 +312,8 @@ end
 subroutine lmo_2d_n( tra, inv, slow, t0, dt, x0, dx, nt, nx, tt, zz)
 use sep_mod
 use sep_func_mod
-integer  tra, inv, nt, ix, nx
+logical :: tra,inv
+integer  ::  nt, ix, nx
 real slow(nt), t0, dt, x0, dx, x, tt(nt,nx), zz(nt,nx)
 write (0,*) nt,nx
 do ix = 1, nx  
@@ -352,10 +361,11 @@ end
 subroutine lmo_n( tra, inv, slow, x, t0, dt, nt, tt, zz )
 use sep_mod
 use sep_func_mod
-integer  tra, inv, it, nt, iz, itab(nt), off, last
+logical :: tra,inv
+integer ::  it, nt, iz, itab(nt), off, last
 real slow(nt), t0, dt, tt(nt), zz(nt), count(nt)
 real t, x, z, xs, arg
-if ( tra .eq. inv ) then
+if ( tra .eqv. inv ) then
   do iz = 1,nt
     zz(iz) = 0.0
   end do
@@ -364,7 +374,7 @@ else
     tt(it) = 0.0
   end do
 end if 
-if ( inv > 0 ) then
+if ( inv ) then
   do it = 1,nt
     count(it) = 0.0
   end do
@@ -386,14 +396,14 @@ do iz = nt, 1, -1
   z = z - dt
 end do 
 last = off - 1
-if ( tra .eq. 1  .and. inv .eq. 1 ) then
+if ( tra   .and. inv  ) then
   do it = 1, nt
     if ( count(it) .ne. 0.0 ) then
       tt(it) = tt(it) / count(it)
     end if
   end do
 end if
-if ( tra .eq. inv ) then
+if ( tra .eqv. inv ) then
   do iz = 1, last  
     it = itab(iz)
     zz(iz) = zz(iz) + tt(it)
@@ -404,7 +414,7 @@ else
     tt(it) = tt(it) + zz(iz)
   end do
 end if 
-if ( tra .eq. 0  .and. inv .eq. 1 ) then
+if ( .not. tra   .and. inv ) then
   do it = 1, nt
     if ( count(it) .ne. 0.0 ) then
       tt(it) = tt(it) / count(it)
@@ -454,7 +464,8 @@ end
 subroutine nmo_2d_n( tra, inv, slow, t0, dt, x0, dx, nt, nx, tt, zz)
 use sep_mod
 use sep_func_mod
-integer  tra, inv, nt, ix, nx
+logical :: tra,inv
+integer  ::  nt, ix, nx
 real slow(nt), t0, dt, x0, dx, x, tt(nt,nx), zz(nt,nx)
 do ix = 1, nx  
   x = x0 + ix * dx
@@ -501,10 +512,11 @@ end
 subroutine nmo_n( tra, inv, slow, x, t0, dt, nt, tt, zz )
 use sep_mod
 use sep_func_mod
-integer  tra, inv, it, nt, iz, itab(nt), off, last
+logical :: tra,inv
+integer  :: it, nt, iz, itab(nt), off, last
 real slow(nt), t0, dt, tt(nt), zz(nt), count(nt)
 real t, x, z, xs, arg
-if ( tra .eq. inv ) then
+if ( tra .eqv. inv ) then
   do iz = 1,nt
     zz(iz) = 0.0
   end do
@@ -513,7 +525,7 @@ else
     tt(it) = 0.0
   end do
 end if 
-if ( inv > 0 ) then
+if ( inv ) then
   do it = 1,nt
     count(it) = 0.0
   end do
@@ -536,14 +548,14 @@ do iz = nt, 1, -1
   z = z - dt
 end do 
 last = off - 1
-if ( tra .eq. 1  .and. inv .eq. 1 ) then
+if ( tra   .and. inv ) then
   do it = 1, nt
     if ( count(it) .ne. 0.0 ) then
       tt(it) = tt(it) / count(it)
     end if
   end do
 end if
-if ( tra .eq. inv ) then
+if ( tra .eqv. inv ) then
   do iz = 1, last  
     it = itab(iz)
     zz(iz) = zz(iz) + tt(it)
@@ -554,7 +566,7 @@ else
     tt(it) = tt(it) + zz(iz)
   end do
 end if 
-if ( tra .eq. 0  .and. inv .eq. 1 ) then
+if ( .not. tra   .and. inv ) then
   do it = 1, nt
     if ( count(it) .ne. 0.0 ) then
       tt(it) = tt(it) / count(it)
@@ -612,7 +624,8 @@ subroutine nmo_2d_l_tab( tra, inv, i3, slow, t0, dt, x0, dx, nt, nx, tt&
   &, zz,itab, bb, cc, w0, w1 )
 use sep_mod
 use sep_func_mod
-integer  tra, inv, i3, nt, ix, nx, itab(nt,nx)
+integer  i3, nt, ix, nx, itab(nt,nx)
+logical :: inv,tra
 real slow(nt), t0, dt, x0, dx, x, tt(nt,nx), zz(nt,nx),bb(nt,nx), cc(nt&
   &,nx), w0(nt,nx), w1(nt,nx)
 do ix = 1, nx  
@@ -662,7 +675,8 @@ end
 subroutine nmo_2d_l( tra, inv, slow, t0, dt, x0, dx, nt, nx, tt, zz)
 use sep_mod
 use sep_func_mod
-integer  tra, inv, nt, ix, nx, itab(nt)
+integer :: nt, ix, nx, itab(nt)
+logical :: inv,tra
 real slow(nt), t0, dt, x0, dx, x, tt(nt,nx), zz(nt,nx),bb(nt), cc(nt),&
   & w0(nt), w1(nt)
 do ix = 1, nx  
@@ -717,11 +731,12 @@ subroutine nmo_l( tra, inv, mktab, slow, x, t0, dt, nt, tt, zz,itab, bb&
   &, cc, w0, w1 )                ! work space
 use sep_mod
 use sep_func_mod
-integer  tra, inv, it, nt, iz, mktab, itab(nt)
+logical :: inv,tra
+integer  :: it, nt, iz, mktab, itab(nt)
 real slow(nt), t0, dt, tt(nt), zz(nt),t, x, z, tm, tpart, xs, arg,bb(nt&
   &), cc(nt), w0(nt), w1(nt), ts(nt)
 !automatic ts
-if ( tra .eq. inv ) then
+if ( tra .eqv. inv ) then
   do iz = 1, nt
     zz(iz) = 0.
   end do
@@ -771,7 +786,7 @@ end if
 do it = 1, nt                        ! avoid destruction of input.
   ts(it) = tt(it)
 end do 
-if ( tra .eq. 1  .and. inv .eq. 1 ) then
+if ( tra  .and. inv ) then
 ! transpose pseudoinverse
   do it = 1, nt
     if ( bb(it) .eq. 0.0 ) then
@@ -781,7 +796,7 @@ if ( tra .eq. 1  .and. inv .eq. 1 ) then
   end do 
   call vtris(nt, cc, bb, cc, ts, ts)   ! vtris allows overlay.
 end if
-if ( tra .eq. inv ) then
+if ( tra .eqv. inv ) then
 ! Operator itself or transpose pseudoinverse
   do iz = 1, nt  
     it = itab(iz)
@@ -806,7 +821,7 @@ else
     end if
   end do
 end if 
-if ( tra .eq. 0  .and.  inv .eq. 1 ) then
+if (.not.  tra   .and.  inv ) then
 ! pseudoinverse
   do it = 1, nt
     if ( bb(it) .eq. 0.0 ) then
@@ -832,8 +847,8 @@ end
 ! Lmo by linear interpolation for a gather
 !
 ! INPUT PARAMETERS
-!  tra    -  integer  1=transpose, 0=don't
-!  inv    -  integer  1=inverse, 0=forward
+!  tra    -  logical  1=transpose, 0=don't
+!  inv    -  logical  1=inverse, 0=forward
 !  slow   -  real(n1) slowness
 !  t0     -  real     first time
 !  dt     -  real     sampling in time
@@ -861,7 +876,8 @@ end
 !
 subroutine lmo_2d_l( tra, inv, slow, t0, dt, x0, dx, nt, nx, tt, zz)
 use sep_mod
-integer  tra, inv, nt, ix, nx, itab(nt)
+logical :: tra,inv
+integer  nt, ix, nx, itab(nt)
 real slow(nt), t0, dt, x0, dx, x, tt(nt,nx), zz(nt,nx),bb(nt), cc(nt),&
   & w0(nt), w1(nt)
 do ix = 1, nx  
@@ -915,11 +931,12 @@ end
 subroutine lmo_l( tra, inv, mktab, slow, x, t0, dt, nt, tt, zz,itab, bb&
   &, cc, w0, w1 )                ! work space
 use sep_mod
-integer  tra, inv, it, nt, iz, mktab, itab(nt)
+logical :: tra,inv
+integer :: it, nt, iz, mktab, itab(nt)
 real slow(nt), t0, dt, tt(nt), zz(nt),t, x, z, tm, tpart, xs, arg,bb(nt&
   &), cc(nt), w0(nt), w1(nt), ts(nt)
 !automatic ts
-if ( tra .eq. inv ) then
+if ( tra .eqv. inv ) then
   do iz = 1, nt
     zz(iz) = 0.
   end do
@@ -967,7 +984,7 @@ end if
 do it = 1, nt                        ! avoid destruction of input.
   ts(it) = tt(it)
 end do 
-if ( tra .eq. 1  .and. inv .eq. 1 ) then
+if ( tra   .and. inv ) then
 ! transpose pseudoinverse
   do it = 1, nt
     if ( bb(it) .eq. 0.0 ) then
@@ -977,14 +994,14 @@ if ( tra .eq. 1  .and. inv .eq. 1 ) then
   end do 
   call vtris(nt, cc, bb, cc, ts, ts)   ! vtris allows overlay.
 end if
-if ( tra .eq. inv ) then
+if ( tra .eqv. inv ) then
 ! Operator itself or transpose pseudoinverse
   do iz = 1, nt  
     it = itab(iz)
     if ( it > 0 ) then
-      zz(iz) = zz(iz) + w0(iz) * ts(it)
-      zz(iz) = zz(iz) + w1(iz) * ts(it+1)
-    else if ( it < 0 ) then
+      zz(iz) = zz(iz) + w0(iz) * ts(it) 
+      zz(iz) = zz(iz) + w1(iz) * ts(it+1) 
+    else if ( it < 0 ) then 
       it = -it
       zz(iz) = zz(iz) + w0(iz) * ts(it)
     end if
@@ -1002,7 +1019,7 @@ else
     end if
   end do
 end if 
-if ( tra .eq. 0  .and.  inv .eq. 1 ) then
+if (.not. tra   .and.  inv ) then
 ! pseudoinverse
   do it = 1, nt
     if ( bb(it) .eq. 0.0 ) then
@@ -1065,7 +1082,8 @@ end
 subroutine unmo_2d( conj, inv, i3, slow, t0, dt, x0, dx, nt, nx, tt, zz&
   &,itab, dd, ee, w0, w1 )
 use sep_mod
-integer  conj,inv, i3, nt, ix, nx, itab(nt,nx)
+logical :: conj,inv
+integer  ::  i3, nt, ix, nx, itab(nt,nx)
 real slow(nt), t0, dt, x0, dx, x, tt(nt,nx), zz(nt,nx),dd(nt,nx), ee(nt&
   &,nx), w0(nt,nx), w1(nt,nx)
 do ix = 1, nx  
@@ -1120,7 +1138,8 @@ end
 subroutine unmo( conj, inv, mktab, slow, x, t0, dt, nt, tt, zz,itab, dd&
   &, ee, w0, w1 )                ! work space
 use sep_mod
-integer  conj, inv, it, nt, iz, mktab, itab(nt)
+logical :: conj,inv
+integer  :: it, nt, iz, mktab, itab(nt)
 real slow(nt), t0, dt, tt(nt), zz(nt),t, x, z, tm, tpart, xs, arg,w0(nt&
   &), w1(nt), dd(nt), ee(nt),bb(4000), cc(4000), zt(4000)
 if ( mktab .eq. 1 ) then
@@ -1169,7 +1188,7 @@ if ( mktab .eq. 1 ) then
     dd(it+1) = sqrt( bb(it+1) - ee(it)*ee(it) )
   end do
 end if
-if ( conj .eq. inv ) then
+if ( conj .eqv. inv ) then
 ! Operator itself
   if ( dd(nt) .ne. 0. ) then
     zt(nt) = tt(nt) / dd(nt)
@@ -1269,7 +1288,8 @@ end
 subroutine row_nmo_2d( conj, inv, slow, t0, dt, x0, dx, nt, nx, tt, zz&
   &)
 use sep_mod
-integer  conj, inv, nt, ix, nx, itab(nt)
+logical :: conj,inv
+integer   nt, ix, nx, itab(nt)
 real slow(nt), t0, dt, x0, dx, x, tt(nt,nx), zz(nt,nx),w0(nt), w1(nt),&
   & zsum(nt)
 do ix = 1, nx  
@@ -1324,10 +1344,11 @@ end
 subroutine row_nmo( conj, inv, mktab, slow, x, t0, dt, nt, tt, zz,itab&
   &, w0, w1, zsum )
 use sep_mod
-integer  conj, inv, it, nt, iz, mktab, itab(nt)
+logical :: conj,inv
+integer ::  it, nt, iz, mktab, itab(nt)
 real slow(nt), t0, dt, tt(nt), zz(nt),t, x, z, tm, tpart, xs, arg,w0(nt&
   &), w1(nt), zsum(nt), ts(nt)
-if ( conj .eq. inv ) then
+if ( conj .eqv. inv ) then
   do iz = 1, nt
     zz(iz) = 0.
   end do
@@ -1373,7 +1394,7 @@ end if
 do it = 1, nt                        ! avoid destruction of input.
   ts(it) = tt(it)
 end do 
-if ( conj .eq. 1  .and. inv .eq. 1 ) then
+if ( conj  .and. inv ) then
 ! transpose pseudoinverse
   do it = 1,nt
     if ( zsum(it) > 0. ) then
@@ -1381,7 +1402,7 @@ if ( conj .eq. 1  .and. inv .eq. 1 ) then
     end if
   end do
 end if
-if ( conj .eq. inv ) then
+if ( conj .eqv. inv ) then
 ! Operator itself or transpose pseudoinverse
   do iz = 1, nt  
     it = itab(iz)
@@ -1406,7 +1427,7 @@ else
     end if
   end do
 end if 
-if ( conj .eq. 0  .and.  inv .eq. 1 ) then
+if ( .not. conj .and.  inv ) then
 ! pseudoinverse
   do it = 1,nt
     if ( zsum(it) > 0. ) then
@@ -1454,14 +1475,15 @@ end
 !
 subroutine offset(conj,inv,slow,nt,t0,dt,nx,x0,dx,ny,y0,dy,xx,yy)
 use sep_mod
-integer conj,inv, it, nt, ix, nx, iy, ny, jt, kt, iz, iter
+logical :: conj,inv
+integer :: it, nt, ix, nx, iy, ny, jt, kt, iz, iter
 real t0,dt, x0,dx, y0,dy, xx(nt,nx), yy(nt,ny), slow(nt),x, y, w0, w1,&
   & xm, part, arg, xs, dtodx, z, t
-if ( inv.eq.1 ) then
+if ( inv ) then
   call erexit('program offset not smart enough to do inverse')
 end if
 do it=1,nt
-  if ( conj .eq. 0 ) then
+  if (.not.  conj ) then
     do iy = 1, ny
       yy(it,iy) = 0.
     end do
@@ -1502,7 +1524,7 @@ do it=1,nt
     kt = it + (dx-part) * dtodx + .5
     if ( 0 < ix .and. ix+1 <= nx  .and.  0 < jt .and.   jt <= nt  .and.&
       &  0 < kt .and.   kt <= nt   ) then
-      if ( conj .eq. 0 ) then
+      if ( .not. conj  ) then
         yy(it,iy) = yy(it,iy) + w0 * xx(jt,ix  )
         yy(it,iy) = yy(it,iy) + w1 * xx(kt,ix+1)
       else
@@ -1551,13 +1573,14 @@ end
 subroutine radial(conj, inv, t0, dt, x0, dx, u0, du , nt, nx, nu, xx,&
   & uu, count)
 use sep_mod
-integer nt, nx, nu, nz, conj,inv,it, ix, iu, iz
+logical :: conj,inv
+integer nt, nx, nu, nz,it, ix, iu, iz
 real xx(nt,nx), uu(nt,nu), count(nt,nx),t0, x0,  dt, dx,z0, u0,  dz, du&
   &,t, x, z, u, tanang, cosi
 z0 = t0   ! removed moveout
 dz = dt   ! removed moveout
 nz = nt
-if ( conj .eq. inv ) then
+if ( conj .eqv. inv ) then
   do iz=1,nz
     do iu=1,nu
       uu   (iz,iu) = 0.
@@ -1584,7 +1607,7 @@ do iu=1,nu
     it = (t - t0) / dt + .5
     if ( 0 < ix  .and.  ix <= nx  .and.  0 < it  .and.  it <= nt )&
       & then
-      if ( conj .eq. inv ) then
+      if ( conj .eqv. inv ) then
         uu(iz,iu) = uu(iz,iu) + xx(it,ix)
       else
         xx(it,ix) = xx(it,ix) + uu(iz,iu)
@@ -1593,7 +1616,7 @@ do iu=1,nu
     end if
   end do
 end do 
-if ( inv .eq. 1 ) then
+if ( inv ) then
   do ix=1,nx
     do it=1,nt
       if ( count(it,ix) > 0.0 ) then
@@ -1609,11 +1632,12 @@ end
 subroutine radnmo( conj,inv, slow, t0, dt, x0, dx, z0, dz, u0, du,nt,&
   & nx, nu, xx, uu, count)
 use sep_mod
-integer nt, nx, nu, nz, conj,inv,it, ix, iu, iz
+logical :: conj,inv
+integer nt, nx, nu, nz,it, ix, iu, iz
 real xx(nt,nx), uu(nt,nu), count(nt,nx), slow(nt),t0, x0,  dt, dx,z0,&
   & u0,  dz, du,t, x, z, u, tanang, cosi
 nz = nt
-if ( conj .eq. inv ) then
+if ( conj .eqv. inv ) then
   do iz=1,nz
     do iu=1,nu
       uu   (iz,iu) = 0.
@@ -1639,7 +1663,7 @@ do iu=1,nu
     it = (t - t0) / dt + .5
     if ( 0 < ix  .and.  ix <= nx  .and.  0 < it  .and.  it <= nt )&
       & then
-      if ( conj .eq. inv ) then
+      if ( conj .eqv. inv ) then
         uu(iz,iu) = uu(iz,iu) + xx(it,ix)
       else
         xx(it,ix) = xx(it,ix) + uu(iz,iu)
@@ -1648,7 +1672,7 @@ do iu=1,nu
     end if
   end do
 end do 
-if ( inv .eq. 1 ) then
+if ( inv  ) then
   do ix=1,nx
     do it=1,nt
       if ( count(it,ix) > 0.0 ) then
@@ -1662,11 +1686,12 @@ end
 ! Determine the grid for radial traces
 subroutine radgrd(conj,inv,nt,nx,t0,dt,x0,dx,slow,nz,nu,z0,dz,u0,du)
 use sep_mod
-integer  nt, nx, nz, nu, iter, conj,inv, junk,ierr
+logical :: conj,inv
+integer  nt, nx, nz, nu, iter, junk,ierr
 real    t0, x0,  dt, dx,    slow,z0, u0,  dz, du,tmax, uritee, ulefte,&
   & umax, zmax,xl, xr, cl, cr
 character*40 labelx, labelu
-if ( conj .eq. inv ) then
+if ( conj .eqv. inv ) then
   if (1.ne.hetch("label2","s",labelx)) then
     call seperr("couldn't get label2")
   end if

@@ -129,7 +129,7 @@ char            scratch_file[100];
 int             hold;
 
 int             default_ps_font = DEFAULT_HARDCOPY_FONT;
-float           psscale;
+ float           psscale;
 
 int             ps_color = NO;
 int             dumb_fat = NO;

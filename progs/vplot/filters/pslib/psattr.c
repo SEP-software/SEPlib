@@ -71,7 +71,10 @@
 int             ps_dash_pattern_set = NO;
 /* Is there a dash pattern saved in postscript's memory? */
 int             ps_dash_pattern_exists = NO;
-float           psscale;
+/*
+static float           psscale;
+*/
+extern float           psscale;
 
 /* black, blue, red, magenta, green, cyan, yellow, white, ... */
 int             red[32768] = {0, 0, 255, 255, 0, 0, 255, 255};
