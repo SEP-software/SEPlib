@@ -1,5 +1,5 @@
 project(SEPLIB-java)
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.8)
 
 set(SEPlib-java_MAJOR_VERSION 9)
 set(SEPlib-java_MINOR_VERSION 0)
