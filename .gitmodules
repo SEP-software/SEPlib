@@ -2,8 +2,3 @@
 	path = libs/core
 	url = http://zapad.Stanford.EDU/SEP-external/sep-iolibs.git
 	ignore = dirty
-[submodule "scripts"]
-	path = scripts
-	url = http://cees-gitlab.stanford.edu/bob/spack-sep.git
-	ignore = dirty
-	
