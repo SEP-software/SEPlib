@@ -18,7 +18,7 @@ set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -O2")
 find_package(X11)
 
 find_package(PBM)
-find_package(Xt)
+find_package(Xt )
 
 
 # Offer the user the choice of overriding the installation directories

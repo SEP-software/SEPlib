@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
 set(CMAKE_MACOSX_RPATH 1)
-find_package(Boost 1.40 COMPONENTS program_options unit_test_framework REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../velan-cpp)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../util/basic-cpp)
@@ -15,15 +14,4 @@ target_link_libraries(sepFilterCpp sepBasicCpp genericCpp hypercube tbb ${EXTERN
 
 install(TARGETS sepFilterCpp DESTINATION lib)
 
-if(BUILD_TEST)
-add_executable( testFilter  testFilter.cpp)
-target_link_libraries( testFilter sepFilterCpp gtest gtest_main gtest)
-add_test(NAME  testFilter COMMAND  testFilter)
-
-
-add_executable( testStack  testStack.cpp)
-target_link_libraries( testStack sepFilterCpp gtest gtest_main gtest)
-add_test(NAME  testStack COMMAND  testStack)
-
-endif(BUILD_TEST)
 
