@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 3.10)
 
 find_package(Boost REQUIRED)
 find_package(TBB REQUIRED)
