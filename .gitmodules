@@ -1,7 +1,7 @@
 [submodule "libs/core"]
 	path = libs/core
-	url = http://zapad.Stanford.EDU/SEP-external/sep-iolibs.git
+	url = https://github.com/SEP-software/sep-iolibs.git
 	ignore = dirty
-[submodule "scripts"]
-	path = scripts
-	url = https://premonition.stanford.edu/bob/sep-software.git
+#[submodule "scripts"]
+#	path = scripts
+#	url = https://premonition.stanford.edu/bob/sep-software.git
